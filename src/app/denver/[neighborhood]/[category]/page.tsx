@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory } from "@/lib/neighborhoods";
+import { getPlaces } from "@/lib/places";
+import PlaceCard from "@/components/PlaceCard";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
@@ -45,6 +47,7 @@ export default async function CategoryPage({ params }: Props) {
   if (!n || !c) notFound();
 
   const otherCategories = CATEGORIES.filter((cat) => cat.slug !== cSlug);
+  const places = await getPlaces(nSlug, cSlug);
 
   return (
     <>
@@ -88,26 +91,29 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Business listings — placeholder for Google Places API */}
+      {/* Business listings */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900 animate-pulse"
-            >
-              <div className="aspect-video bg-slate-100 dark:bg-slate-800" />
-              <div className="p-5 space-y-3">
-                <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-3/4" />
-                <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/2" />
-                <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-2/3" />
-              </div>
+        {places.length > 0 ? (
+          <>
+            <p className="text-sm text-slate-400 mb-6">
+              {places.length} places found · Rated by Google
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {places.map((place) => (
+                <PlaceCard
+                  key={place.place_id}
+                  place={place}
+                  neighborhoodSlug={nSlug}
+                  categorySlug={cSlug}
+                />
+              ))}
             </div>
-          ))}
-        </div>
-        <p className="mt-8 text-center text-slate-400 text-sm">
-          Business listings powered by Google Places API — coming soon.
-        </p>
+          </>
+        ) : (
+          <p className="text-center text-slate-400 py-16">
+            No listings found. Check back soon.
+          </p>
+        )}
       </section>
 
       {/* YouTube Section */}
