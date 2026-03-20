@@ -6,6 +6,7 @@ interface Props {
   place: Place;
   neighborhoodSlug: string;
   categorySlug: string;
+  tag?: string | null;
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -36,7 +37,7 @@ function PriceLevel({ level }: { level: number }) {
   );
 }
 
-export default function PlaceCard({ place, neighborhoodSlug, categorySlug }: Props) {
+export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }: Props) {
   const photo = place.photos?.[0];
   const isOpen = place.hours?.openNow;
 
@@ -59,6 +60,12 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug }: Pro
           <div className="w-full h-full flex items-center justify-center">
             <span className="text-slate-300 dark:text-slate-600 text-sm">No photo</span>
           </div>
+        )}
+        {/* Cuisine/type tag */}
+        {tag && (
+          <span className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-semibold px-2 py-0.5 rounded-full backdrop-blur-sm">
+            {tag}
+          </span>
         )}
         {/* Open/closed badge */}
         {place.hours && (

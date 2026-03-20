@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory } from "@/lib/neighborhoods";
+import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory, CATEGORY_DESCRIPTIONS, getPlaceTag } from "@/lib/neighborhoods";
 import { getPlaces } from "@/lib/places";
+import { photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
@@ -55,6 +56,18 @@ export default async function CategoryPage({ params }: Props) {
     getVideosForPage(nSlug, cSlug, 3),
   ]);
 
+  const description = CATEGORY_DESCRIPTIONS[nSlug]?.[cSlug] ??
+    `Local picks for the best ${c!.name.toLowerCase()} in ${n!.name}, Denver.`;
+
+  // Score by rating × log(reviews) to reward well-reviewed places over obscure high-raters
+  const scored = [...places].sort(
+    (a, b) =>
+      (b.rating ?? 0) * Math.log10((b.review_count ?? 0) + 10) -
+      (a.rating ?? 0) * Math.log10((a.review_count ?? 0) + 10)
+  );
+  const topPicks = scored.slice(0, 3);
+  const rest = scored.slice(3);
+
   return (
     <>
       <SchemaMarkup
@@ -92,8 +105,7 @@ export default async function CategoryPage({ params }: Props) {
           Best {c.name} in {n.name}
         </h1>
         <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">
-          Local picks for the best {c.name.toLowerCase()} in {n.name}, Denver — with live Google ratings,
-          hours, and real recommendations.
+          {description}
         </p>
       </section>
 
@@ -112,28 +124,100 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Business listings */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {places.length > 0 ? (
-          <>
-            <p className="text-sm text-slate-400 mb-6">
-              {places.length} places found · Rated by Google
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {places.map((place) => (
-                <PlaceCard
-                  key={place.place_id}
-                  place={place}
-                  neighborhoodSlug={nSlug}
-                  categorySlug={cSlug}
-                />
-              ))}
-            </div>
-          </>
+      {/* Listings */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+        {places.length === 0 ? (
+          <p className="text-center text-slate-400 py-16">No listings found. Check back soon.</p>
         ) : (
-          <p className="text-center text-slate-400 py-16">
-            No listings found. Check back soon.
-          </p>
+          <>
+            {/* Top Local Picks */}
+            {topPicks.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6">Top Local Picks</h2>
+                <div className="space-y-4">
+                  {topPicks.map((place, i) => {
+                    const tag = getPlaceTag(place.types);
+                    const photo = place.photos?.[0];
+                    return (
+                      <a
+                        key={place.place_id}
+                        href={`/denver/${nSlug}/${cSlug}/${place.slug}`}
+                        className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
+                      >
+                        {/* Photo */}
+                        <div className="w-36 sm:w-48 shrink-0 relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                          {photo ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={photoUrl(photo.name, 400, 300)}
+                              alt={place.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full min-h-[120px]" />
+                          )}
+                          <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                            #{i + 1}
+                          </span>
+                        </div>
+                        {/* Info */}
+                        <div className="flex flex-col justify-center py-4 pr-4 gap-1.5">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {tag && (
+                              <span className="text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">
+                                {tag}
+                              </span>
+                            )}
+                            {place.hours?.openNow !== undefined && (
+                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                                {place.hours.openNow ? "Open" : "Closed"}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="font-bold text-lg leading-tight group-hover:text-denver-amber transition-colors">
+                            {place.name}
+                          </h3>
+                          {place.rating && (
+                            <div className="flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400">
+                              <span className="font-semibold text-amber-500">{place.rating.toFixed(1)}</span>
+                              <span className="text-amber-400">★</span>
+                              {place.review_count && (
+                                <span className="text-slate-400">({place.review_count.toLocaleString()} reviews)</span>
+                              )}
+                              {place.price_level != null && place.price_level > 0 && (
+                                <span className="text-slate-400">· {"$".repeat(place.price_level)}</span>
+                              )}
+                            </div>
+                          )}
+                          {place.address && (
+                            <p className="text-xs text-slate-400 line-clamp-1">{place.address}</p>
+                          )}
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* All listings grid */}
+            {rest.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6">All {c!.name} in {n!.name}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {rest.map((place) => (
+                    <PlaceCard
+                      key={place.place_id}
+                      place={place}
+                      neighborhoodSlug={nSlug}
+                      categorySlug={cSlug}
+                      tag={getPlaceTag(place.types)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </section>
 

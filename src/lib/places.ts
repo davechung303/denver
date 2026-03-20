@@ -161,7 +161,7 @@ async function fetchFromGooglePlaces(
       hours: p.hours as any,
       photos: p.photos as any,
       types: p.types,
-      reviews: p.reviews as any,
+      // reviews and review_summary intentionally omitted — managed separately by maybeGenerateSummary
       cached_at: p.cached_at,
     }));
     await supabase.from("places").upsert(rows, { onConflict: "place_id" });
@@ -251,10 +251,10 @@ export async function getPlace(
     .eq("slug", slug)
     .single();
 
-  // If cached but missing reviews, re-fetch from Google to get them
-  if (data && data.reviews) return maybeGenerateSummary(data as Place);
+  // Row exists — generate summary if needed (fetches reviews lazily if missing)
+  if (data) return maybeGenerateSummary(data as Place);
 
-  // No row or missing reviews — fetch the full category from Google and find the match
+  // No row — fetch the full category from Google and find the match
   const places = await fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
   const found = places.find((p) => p.slug === slug) ?? null;
   if (found) return maybeGenerateSummary(found);
