@@ -169,7 +169,11 @@ export async function getPlace(
     .eq("slug", slug)
     .single();
 
-  return (data as Place) ?? null;
+  if (data) return data as Place;
+
+  // Not in Supabase cache — fetch the full category from Google and find the match
+  const places = await fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
+  return places.find((p) => p.slug === slug) ?? null;
 }
 
 export async function getPlaces(
