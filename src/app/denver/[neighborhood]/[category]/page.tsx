@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory, CATEGORY_DESCRIPTIONS, getPlaceTag } from "@/lib/neighborhoods";
+import { getSubcategories } from "@/lib/subcategories";
 import { getPlaces } from "@/lib/places";
 import { photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
@@ -51,6 +52,7 @@ export default async function CategoryPage({ params }: Props) {
   if (!n || !c) notFound();
 
   const otherCategories = CATEGORIES.filter((cat) => cat.slug !== cSlug);
+  const subcategories = getSubcategories(cSlug!);
   const [places, videos] = await Promise.all([
     getPlaces(nSlug, cSlug),
     getVideosForPage(nSlug, cSlug, 3),
@@ -109,8 +111,25 @@ export default async function CategoryPage({ params }: Props) {
         </p>
       </section>
 
+      {/* Subcategory filters (restaurants & bars) */}
+      {subcategories.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
+          <div className="flex flex-wrap gap-2">
+            {subcategories.map((s) => (
+              <Link
+                key={s.slug}
+                href={`/denver/${nSlug}/${cSlug}/${s.slug}`}
+                className="px-4 py-1.5 bg-denver-amber/10 text-denver-amber border border-denver-amber/30 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors"
+              >
+                {s.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Other categories in this neighborhood */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 pt-3">
         <div className="flex flex-wrap gap-2">
           {otherCategories.map((cat) => (
             <Link

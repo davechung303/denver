@@ -61,54 +61,60 @@ function photoUrl(photoName: string, width = 600, height = 400): string {
 
 export { photoUrl };
 
+const FIELD_MASK = [
+  "places.id",
+  "places.displayName",
+  "places.formattedAddress",
+  "places.nationalPhoneNumber",
+  "places.websiteUri",
+  "places.location",
+  "places.rating",
+  "places.userRatingCount",
+  "places.priceLevel",
+  "places.regularOpeningHours",
+  "places.photos",
+  "places.types",
+  "places.businessStatus",
+  "nextPageToken",
+].join(",");
+
+async function searchPlaces(body: Record<string, unknown>): Promise<{ places: any[]; nextPageToken?: string }> {
+  const response = await fetch("https://places.googleapis.com/v1/places:searchText", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": PLACES_API_KEY,
+      "X-Goog-FieldMask": FIELD_MASK,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) {
+    console.error("Google Places API error:", response.status, await response.text());
+    return { places: [] };
+  }
+  const data = await response.json();
+  return { places: data.places ?? [], nextPageToken: data.nextPageToken };
+}
+
 async function fetchFromGooglePlaces(
   neighborhoodSlug: string,
-  categorySlug: string
+  categorySlug: string,
+  overrideQuery?: string
 ): Promise<Place[]> {
   const neighborhood = getNeighborhood(neighborhoodSlug);
   const category = getCategory(categorySlug);
-  if (!neighborhood || !category) return [];
+  if (!neighborhood || (!category && !overrideQuery)) return [];
 
-  const textQuery = `${category.searchQuery} in ${neighborhood.searchName}`;
+  const textQuery = overrideQuery ?? `${category!.searchQuery} in ${neighborhood.searchName}`;
 
-  const response = await fetch(
-    "https://places.googleapis.com/v1/places:searchText",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Goog-Api-Key": PLACES_API_KEY,
-        "X-Goog-FieldMask": [
-          "places.id",
-          "places.displayName",
-          "places.formattedAddress",
-          "places.nationalPhoneNumber",
-          "places.websiteUri",
-          "places.location",
-          "places.rating",
-          "places.userRatingCount",
-          "places.priceLevel",
-          "places.regularOpeningHours",
-          "places.photos",
-          "places.types",
-          "places.businessStatus",
-        ].join(","),
-      },
-      body: JSON.stringify({
-        textQuery,
-        maxResultCount: 20,
-        languageCode: "en",
-      }),
-    }
-  );
+  // Fetch up to 2 pages (40 results)
+  const page1 = await searchPlaces({ textQuery, maxResultCount: 20, languageCode: "en" });
+  let rawPlaces = page1.places;
 
-  if (!response.ok) {
-    console.error("Google Places API error:", response.status, await response.text());
-    return [];
+  if (page1.nextPageToken) {
+    const page2 = await searchPlaces({ pageToken: page1.nextPageToken, maxResultCount: 20, languageCode: "en" });
+    rawPlaces = [...rawPlaces, ...page2.places];
   }
-
-  const data = await response.json();
-  const rawPlaces = data.places ?? [];
 
   const places: Place[] = rawPlaces
     .filter((p: any) => p.businessStatus !== "CLOSED_PERMANENTLY")
@@ -259,6 +265,44 @@ export async function getPlace(
   const found = places.find((p) => p.slug === slug) ?? null;
   if (found) return maybeGenerateSummary(found);
   return null;
+}
+
+export async function getPlacesForSubcategory(
+  neighborhoodSlug: string,
+  categorySlug: string,
+  subcategoryTypes: string[],
+  subcategorySearchQuery: string,
+  neighborhoodSearchName: string
+): Promise<Place[]> {
+  // First: filter from the already-cached category results
+  const all = await getPlaces(neighborhoodSlug, categorySlug);
+  const filtered = all.filter((p) => p.types?.some((t) => subcategoryTypes.includes(t)));
+
+  if (filtered.length >= 4) return filtered;
+
+  // Too sparse — do a targeted Google fetch and cache under a compound key
+  const compoundSlug = `${categorySlug}-${subcategoryTypes[0]}`;
+  const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
+  const { data: cached } = await supabase
+    .from("places")
+    .select("*")
+    .eq("neighborhood_slug", neighborhoodSlug)
+    .eq("category_slug", compoundSlug)
+    .gt("cached_at", cutoff)
+    .order("rating", { ascending: false });
+
+  if (cached && cached.length > 0) {
+    const merged = [...filtered, ...(cached as Place[]).filter((c) => !filtered.some((f) => f.place_id === c.place_id))];
+    return merged;
+  }
+
+  const fresh = await fetchFromGooglePlaces(
+    neighborhoodSlug,
+    compoundSlug,
+    `${subcategorySearchQuery} in ${neighborhoodSearchName}`
+  );
+  const merged = [...filtered, ...fresh.filter((f) => !filtered.some((e) => e.place_id === f.place_id))];
+  return merged;
 }
 
 export async function getPlaces(

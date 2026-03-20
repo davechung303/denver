@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPlace, getPlaces, photoUrl } from "@/lib/places";
+import { getPlace, getPlaces, getPlacesForSubcategory, photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import { hotelSearchUrl } from "@/lib/travelpayouts";
-import { getNeighborhood, getCategory } from "@/lib/neighborhoods";
+import { getNeighborhood, getCategory, getPlaceTag } from "@/lib/neighborhoods";
+import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -27,10 +28,26 @@ const SCHEMA_TYPES: Record<string, string> = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { neighborhood: nSlug, category: cSlug, slug } = await params;
-  const place = await getPlace(nSlug, cSlug, slug);
   const n = getNeighborhood(nSlug);
   const c = getCategory(cSlug);
-  if (!place || !n || !c) return {};
+  if (!n || !c) return {};
+
+  // Subcategory page
+  const subcategory = getSubcategory(cSlug, slug);
+  if (subcategory) {
+    const title = `Best ${subcategory.name} in ${n.name}, Denver`;
+    const description = subcategory.description(n.name);
+    return {
+      title,
+      description,
+      openGraph: { title, description, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
+      alternates: { canonical: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
+    };
+  }
+
+  // Business page
+  const place = await getPlace(nSlug, cSlug, slug);
+  if (!place) return {};
 
   const title = `${place.name} — ${c.name} in ${n.name}, Denver`;
   const description = `${place.name} in ${n.name}, Denver. ${place.rating ? `Rated ${place.rating}/5` : ""} ${place.address ? `· ${place.address}` : ""}. Find hours, photos, and more on Dave Loves Denver.`;
@@ -72,14 +89,95 @@ function StarRating({ rating }: { rating: number }) {
 
 export default async function BusinessPage({ params }: Props) {
   const { neighborhood: nSlug, category: cSlug, slug } = await params;
+  const n = getNeighborhood(nSlug);
+  const c = getCategory(cSlug);
+  if (!n || !c) notFound();
 
-  const [place, n, c] = await Promise.all([
-    getPlace(nSlug, cSlug, slug),
-    Promise.resolve(getNeighborhood(nSlug)),
-    Promise.resolve(getCategory(cSlug)),
-  ]);
+  // ── Subcategory listing page ────────────────────────────────────────────
+  const subcategory = getSubcategory(cSlug, slug);
+  if (subcategory) {
+    const [places, videos] = await Promise.all([
+      getPlacesForSubcategory(nSlug, cSlug, subcategory.types, subcategory.searchQuery, n.searchName),
+      getVideosForPage(nSlug, cSlug, 3),
+    ]);
+    const otherSubs = getSubcategories(cSlug).filter((s) => s.slug !== slug);
 
-  if (!place || !n || !c) notFound();
+    return (
+      <>
+        <SchemaMarkup
+          breadcrumbs={[
+            { name: "Home", url: "https://davelovesdenver.com" },
+            { name: n.name, url: `https://davelovesdenver.com/denver/${nSlug}` },
+            { name: c.name, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}` },
+            { name: subcategory.name, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
+          ]}
+          videos={videos.map((v) => ({ name: v.title, description: v.description, thumbnailUrl: v.thumbnail_url, uploadDate: v.published_at, videoId: v.video_id }))}
+        />
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <ol className="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
+            <li><Link href="/" className="hover:text-foreground transition-colors">Home</Link></li>
+            <li>/</li>
+            <li><Link href={`/denver/${nSlug}`} className="hover:text-foreground transition-colors">{n.name}</Link></li>
+            <li>/</li>
+            <li><Link href={`/denver/${nSlug}/${cSlug}`} className="hover:text-foreground transition-colors">{c.name}</Link></li>
+            <li>/</li>
+            <li className="text-foreground font-medium">{subcategory.name}</li>
+          </ol>
+        </nav>
+
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">{n.name} &middot; {c.name}</p>
+          <h1 className="text-4xl md:text-5xl font-bold">Best {subcategory.name} in {n.name}</h1>
+          <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">{subcategory.description(n.name)}</p>
+        </section>
+
+        {/* Other subcategory pills */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 flex flex-wrap gap-2">
+          <Link href={`/denver/${nSlug}/${cSlug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors">
+            All {c.name}
+          </Link>
+          {otherSubs.map((s) => (
+            <Link key={s.slug} href={`/denver/${nSlug}/${cSlug}/${s.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors">
+              {s.name}
+            </Link>
+          ))}
+        </div>
+
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {places.length === 0 ? (
+            <p className="text-center text-slate-400 py-16">No listings found yet — check back soon.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {places.map((place) => (
+                <PlaceCard key={place.place_id} place={place} neighborhoodSlug={nSlug} categorySlug={cSlug} tag={getPlaceTag(place.types)} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {videos.length > 0 && (
+          <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-2xl font-bold mb-8">{subcategory.name} Videos from {n.name}</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {videos.map((v) => <VideoCard key={v.video_id} video={v} neighborhood={n.name} category={c.name} />)}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <Link href={`/denver/${nSlug}/${cSlug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-denver-amber hover:underline">
+            &larr; All {c.name} in {n.name}
+          </Link>
+        </div>
+      </>
+    );
+  }
+
+  // ── Business detail page ────────────────────────────────────────────────
+  const place = await getPlace(nSlug, cSlug, slug);
+  if (!place) notFound();
 
   const [relatedPlaces, videos] = await Promise.all([
     getPlaces(nSlug, cSlug),
