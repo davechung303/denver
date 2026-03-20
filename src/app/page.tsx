@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
+import { getVideosForPage } from "@/lib/youtube";
+import VideoCard from "@/components/VideoCard";
 
 export const metadata: Metadata = {
   title: "Dave Loves Denver — Hyperlocal Denver Neighborhood Guide",
@@ -14,7 +16,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const videos = await getVideosForPage(null, null, 6);
   return (
     <>
       {/* Hero */}
@@ -121,32 +124,9 @@ export default function HomePage() {
           </a>
         </div>
 
-        {/* Video placeholder cards — will be replaced with YouTube API data */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {[
-            { title: "The Best Brunch in RiNo, Denver", neighborhood: "RiNo" },
-            { title: "Walking LoDo — Union Station to Coors Field", neighborhood: "LoDo" },
-            { title: "Denver's Most Underrated Neighborhood", neighborhood: "Highlands" },
-          ].map((v) => (
-            <a
-              key={v.title}
-              href="https://youtube.com/davechung"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
-            >
-              <div className="aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                <svg className="w-12 h-12 text-slate-300 dark:text-slate-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-              <div className="p-4">
-                <p className="text-xs font-medium text-denver-amber mb-1">{v.neighborhood}</p>
-                <h3 className="text-sm font-semibold leading-snug group-hover:text-denver-amber transition-colors">
-                  {v.title}
-                </h3>
-              </div>
-            </a>
+          {videos.map((video) => (
+            <VideoCard key={video.video_id} video={video} />
           ))}
         </div>
 
