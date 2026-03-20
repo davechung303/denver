@@ -1,7 +1,9 @@
 import { supabase } from "./supabase";
 import { getNeighborhood, getCategory } from "./neighborhoods";
 
-const PLACES_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY!;
+// Use server-side key (no referrer restrictions) for API calls
+// NEXT_PUBLIC_ key is for client-side map embeds only
+const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
 const CACHE_TTL_HOURS = 24;
 
 export interface Place {
