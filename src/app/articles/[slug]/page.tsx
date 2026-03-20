@@ -210,9 +210,15 @@ export default async function ArticlePage({ params }: Props) {
           );
         })()}
 
-        <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-          {firstPara}
-        </p>
+        {firstPara.startsWith("## ") ? (
+          <h2 className="text-xl font-bold mt-8 mb-3 text-slate-900 dark:text-slate-100">
+            {firstPara.replace("## ", "")}
+          </h2>
+        ) : (
+          <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+            {firstPara}
+          </p>
+        )}
         {video && (
           <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
             <div className="aspect-video">
@@ -305,7 +311,7 @@ export default async function ArticlePage({ params }: Props) {
           </div>
           <div className="flex-1">
             <p className="text-white font-semibold">Enjoyed this guide?</p>
-            <p className="text-slate-400 text-sm mt-0.5">Subscribe to Dave Loves Denver on YouTube for new videos every week</p>
+            <p className="text-slate-400 text-sm mt-0.5">Subscribe to Dave Chung on YouTube for new Denver videos every week</p>
           </div>
           <a href="https://youtube.com/davechung?sub_confirmation=1" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 px-5 py-2.5 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-500 transition-colors">
             Subscribe

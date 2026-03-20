@@ -17,6 +17,12 @@ interface ArticleSnippet {
   date: string;
 }
 
+export interface WeeklyPhoto {
+  url: string;
+  credit: string;
+  creditUrl: string;
+}
+
 function generateSlug(title: string): string {
   const date = new Date().toISOString().split("T")[0];
   const base = title
@@ -71,31 +77,59 @@ async function fetchPageHtml(url: string): Promise<string> {
   }
 }
 
-function extractArticleText(html: string): string {
-  // Remove scripts, styles, nav, ads
-  let text = html
+function cleanHtml(html: string): string {
+  return html
     .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<style[\s\S]*?<\/style>/gi, "")
-    .replace(/<nav[\s\S]*?<\/nav>/gi, "")
-    .replace(/<header[\s\S]*?<\/header>/gi, "")
-    .replace(/<footer[\s\S]*?<\/footer>/gi, "")
-    .replace(/<aside[\s\S]*?<\/aside>/gi, "")
-    .replace(/<!--[\s\S]*?-->/g, "")
     .replace(/<[^>]+>/g, " ")
     .replace(/&amp;/g, "&")
     .replace(/&nbsp;/g, " ")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
     .replace(/\s{2,}/g, " ")
     .trim();
-  // Return first 3000 chars of article body
-  return text.slice(0, 3000);
 }
 
-export interface WeeklyPhoto {
-  url: string;
-  credit: string;
-  creditUrl: string;
+function extractArticleBody(html: string): string {
+  // Extract Westword article body
+  const westwordMatch =
+    html.match(/class="article-content"[^>]*>([\s\S]*?)<div class="article-related/i) ||
+    html.match(/class="article-content "[^>]*>([\s\S]*?)<div class="article-author/i);
+
+  // Extract Denver Post article body
+  const denverPostMatch =
+    html.match(/class="[^"]*article-body[^"]*"[^>]*>([\s\S]*?)<section/i) ||
+    html.match(/class="[^"]*body-copy[^"]*"[^>]*>([\s\S]*?)<div class="[^"]*tags/i);
+
+  const bodyHtml = westwordMatch?.[1] || denverPostMatch?.[1] || "";
+  const body = bodyHtml ? cleanHtml(bodyHtml).slice(0, 5000) : "";
+
+  // Also grab the end of the full page text where Westword puts the structured address list
+  const fullText = cleanHtml(html);
+  const openingsIdx = fullText.lastIndexOf("Openings");
+  const addressList = openingsIdx > -1 ? fullText.slice(openingsIdx, openingsIdx + 1500) : "";
+
+  return body + (addressList ? "\n\nADDRESS LIST:\n" + addressList : "");
+}
+
+function extractOgImage(html: string): string | null {
+  const match =
+    html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+  return match ? match[1] : null;
+}
+
+function findWeeklyRoundupUrl(articles: ArticleSnippet[]): string | null {
+  const roundup = articles.find(
+    (a) =>
+      a.title.toLowerCase().includes("every opening") ||
+      a.title.toLowerCase().includes("opening and closing this week") ||
+      a.title.toLowerCase().includes("restaurant roll call")
+  );
+  return roundup?.url ?? null;
 }
 
 async function getGooglePlacesPhoto(restaurantName: string, city = "Denver"): Promise<string | null> {
@@ -105,80 +139,125 @@ async function getGooglePlacesPhoto(restaurantName: string, city = "Denver"): Pr
       headers: {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": PLACES_API_KEY,
-        "X-Goog-FieldMask": "places.photos",
+        "X-Goog-FieldMask": "places.photos,places.userRatingCount",
       },
       body: JSON.stringify({
         textQuery: `${restaurantName} ${city}`,
-        maxResultCount: 1,
+        maxResultCount: 3,
         languageCode: "en",
       }),
     });
     if (!res.ok) return null;
     const data = await res.json();
-    // Store just the photo name (resource path), not the full URL with key
-    const photoName = data.places?.[0]?.photos?.[0]?.name;
-    if (!photoName) return null;
-    return photoName;
+    // Pick the place with the most photos (better established)
+    const places = data.places ?? [];
+    let bestPhoto: string | null = null;
+    let mostPhotos = 0;
+    for (const place of places) {
+      const photoCount = place.photos?.length ?? 0;
+      if (photoCount > mostPhotos) {
+        mostPhotos = photoCount;
+        bestPhoto = place.photos[0]?.name ?? null;
+      }
+    }
+    return bestPhoto;
   } catch {
     return null;
   }
-}
-
-function extractOgImage(html: string): string | null {
-  const match = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
-    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
-  return match ? match[1] : null;
 }
 
 export async function getWeeklyPhoto(
   restaurantNames: string[],
   sourceArticles: ArticleSnippet[]
 ): Promise<WeeklyPhoto | null> {
-  // Try Google Places for each restaurant name
-  for (const name of restaurantNames.slice(0, 3)) {
+  for (const name of restaurantNames.slice(0, 6)) {
     if (!name || name.length < 3) continue;
     const photoName = await getGooglePlacesPhoto(name);
     if (photoName) {
       return { url: photoName, credit: "Google Places", creditUrl: "" };
     }
   }
-
-  // Fall back to og:image from source articles
   for (const article of sourceArticles.slice(0, 4)) {
     if (!article.description) continue;
     const ogImage = extractOgImage(article.description);
     if (ogImage && ogImage.startsWith("http")) {
-      return {
-        url: ogImage,
-        credit: article.source,
-        creditUrl: article.url,
-      };
+      return { url: ogImage, credit: article.source, creditUrl: article.url };
     }
   }
-
   return null;
 }
 
 async function fetchArticleDetails(articles: ArticleSnippet[]): Promise<ArticleSnippet[]> {
   const enriched: ArticleSnippet[] = [];
-  // Only fetch top 6 articles to stay within reasonable time
   const toFetch = articles.slice(0, 6);
-  
-  await Promise.all(toFetch.map(async (article) => {
-    try {
-      const html = await fetchPageHtml(article.url);
-      if (html) {
-        const fullText = extractArticleText(html);
-        enriched.push({ ...article, description: fullText });
-      } else {
+
+  await Promise.all(
+    toFetch.map(async (article) => {
+      try {
+        const html = await fetchPageHtml(article.url);
+        if (html) {
+          const body = extractArticleBody(html);
+          enriched.push({ ...article, description: body || article.description });
+        } else {
+          enriched.push(article);
+        }
+      } catch {
         enriched.push(article);
       }
-    } catch {
-      enriched.push(article);
-    }
-  }));
-  
+    })
+  );
+
   return enriched;
+}
+
+export interface PlaceCard {
+  name: string;
+  address: string | null;
+  rating: number | null;
+  website: string | null;
+  maps_url: string | null;
+  photo_name: string | null;
+  place_id: string | null;
+}
+
+async function lookupRestaurantPlaces(names: string[]): Promise<PlaceCard[]> {
+  const cards: PlaceCard[] = [];
+  for (const name of names.slice(0, 8)) {
+    if (!name || name.length < 3) continue;
+    try {
+      const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": PLACES_API_KEY,
+          "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.rating,places.websiteUri,places.photos",
+        },
+        body: JSON.stringify({
+          textQuery: `${name} Denver Colorado`,
+          maxResultCount: 1,
+          languageCode: "en",
+        }),
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const place = data.places?.[0];
+      if (!place) continue;
+      cards.push({
+        name: place.displayName?.text ?? name,
+        address: place.formattedAddress ?? null,
+        rating: place.rating ?? null,
+        website: place.websiteUri ?? null,
+        maps_url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + " Denver")}&query_place_id=${place.id}`,
+        photo_name: place.photos?.[0]?.name ?? null,
+        place_id: place.id ?? null,
+      });
+    } catch {
+      continue;
+    }
+    // Small delay to avoid rate limiting
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  return cards;
 }
 
 export async function generateWeeklyOpenings(): Promise<{ success: boolean; slug?: string; error?: string }> {
@@ -201,8 +280,13 @@ export async function generateWeeklyOpenings(): Promise<{ success: boolean; slug
     return { success: false, error: "Could not fetch articles from sources" };
   }
 
-  const sourceText = allArticles
-    .map((a) => `SOURCE: ${a.source}\nTITLE: ${a.title}\nDATE: ${a.date}\nDESCRIPTION: ${a.description}\nURL: ${a.url}`)
+  const enrichedArticles = await fetchArticleDetails(allArticles);
+
+  const sourceText = enrichedArticles
+    .map(
+      (a) =>
+        `SOURCE: ${a.source}\nSOURCE URL: ${a.url}\nTITLE: ${a.title}\nDATE: ${a.date}\nARTICLE BODY:\n${a.description}`
+    )
     .join("\n\n---\n\n");
 
   const prompt = `You are writing a weekly Denver restaurant openings roundup for DaveLovesDenver.com, written by Dave Chung — a Denver local, YouTube creator with over 2 million views, and genuine expert on the city's food scene.
@@ -211,7 +295,10 @@ DAVE'S VOICE AND STYLE:
 - Casual, entertaining, and warm — like a knowledgeable local friend
 - First person, conversational, never stuffy
 - Grounds everything in real social context — who should go, who it's best for
-- Enthusiastic but honest
+- Matter-of-fact and honest — describe things as they are, not as hype
+- Avoid superlatives and sensationalist language — never say "absolutely crushed it", "best ever", "can't miss", "game changer", "blew my mind"
+- If something is good, say why it's good specifically — not just that it's amazing
+- Enthusiasm comes from specific details, not from exclamation points or hyperbole
 - Never uses travel brochure language
 
 THIS WEEK'S DATE: ${weekDate}
@@ -223,33 +310,37 @@ Write a 800-1,000 word weekly roundup article covering only the OPENINGS (not cl
 
 ## What's Opening in Denver This Week
 
-2-3 sentence intro in Dave's voice about the week's openings and what stands out.
+2-3 sentence intro in Dave's voice about the week's openings.
 
-## [Restaurant Name] — [Neighborhood]
+## [Exact Restaurant Name] — [Neighborhood or City]
 
-For each opening: 2-3 sentences covering what it is, what kind of food/drink, where it is, and who it's best for. Be specific about the social context — is this a date night spot? Great for groups? Family friendly? Quick lunch?
+For each opening write exactly in this format:
+
+First write 2-3 sentences about what it is, the food, and who it is best for. Do NOT include the address in this paragraph.
+
+Then on a new line write ONLY the address if found:
+**Address:** 1234 Main St, Denver
+
+Then on a new line write the website if found:
+**Website:** [restaurantname.com](URL)
+
+The address and website must always be on their own separate lines after the description paragraph, never inside it.
 
 ## Worth Keeping an Eye On
 
-1 paragraph covering any upcoming openings mentioned that aren't open yet but are worth knowing about.
+1 paragraph on upcoming openings not yet open.
 
 ## Dave's Pick of the Week
 
-1-2 sentences naming the single most interesting opening this week and why Dave would personally want to check it out first.
+1-2 sentences on the single most interesting opening and why Dave would check it out first.
 
 IMPORTANT RULES:
-- Only cover openings, not closings
-- Only mention places explicitly named in the source articles above — use the EXACT restaurant name, never say "a Mexican restaurant" or "a Japanese spot"
-- Include the full street address for every restaurant — look carefully through the full text for street addresses, they are often mentioned in the body of the article
-- Format the address on its own line after the restaurant description like: **Address:** 1234 Main St, Denver, CO
-- If a restaurant website is mentioned in the source text, include it as a markdown link like: [Visit their website](https://example.com)
-- If no address is found in the source text, do not include one — never make up an address
-- Include one natural link back to the original Westword article AND one link back to the original Denver Post article somewhere in the piece — format as: [read more at Westword](URL) or [as Denver Post reported](URL)
-- Do not invent or add businesses not mentioned in sources
-- Use ## headers for each restaurant section formatted as: ## Restaurant Name — Neighborhood
+- Only cover openings not closings
+- Use EXACT restaurant names from the source — never say "a Mexican restaurant"
+- Reference Westword or Denver Post naturally — e.g. [as Westword reported](URL)
 - Write in first person as Dave
-- End with something like "I'll be checking some of these out soon — I'll catch you over there when I do"
-- Return ONLY the article text with markdown links — no explanation`;
+- End with "I'll be checking some of these out soon — I'll catch you over there when I do"
+- Return ONLY the article text`;
 
   try {
     const message = await anthropic.messages.create({
@@ -264,27 +355,36 @@ IMPORTANT RULES:
     const articleText = content.text.trim();
     const title = `New Denver Restaurant Openings — Week of ${weekDate}`;
 
-    // Extract restaurant names from ## headers in the article
     const restaurantNames = [...articleText.matchAll(/^## ([^\u2014\n]+)/gm)]
       .map((m) => m[1].trim())
-      .filter((n) => !n.toLowerCase().includes("worth keeping") && !n.toLowerCase().includes("pick of"));
+      .filter(
+        (n) =>
+          !n.toLowerCase().includes("worth keeping") &&
+          !n.toLowerCase().includes("pick of") &&
+          !n.toLowerCase().includes("opening in denver")
+      );
 
-    // Get a photo — try Google Places first, fall back to source og:image
-    const photo = await getWeeklyPhoto(restaurantNames, allArticles);
+    const photo = await getWeeklyPhoto(restaurantNames, enrichedArticles);
 
-    const { error } = await supabase.from("articles").upsert({
-      video_id: null,
-      slug,
-      title,
-      content: articleText,
-      content_type: "roundup",
-      neighborhood_slug: null,
-      category_slug: "restaurants",
-      expedia_url: null,
-      places_mentioned: photo ? [{ photo_url: photo.url, photo_credit: photo.credit, photo_credit_url: photo.creditUrl }] : [],
-      generated_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    }, { onConflict: "slug" });
+    const { error } = await supabase.from("articles").upsert(
+      {
+        video_id: null,
+        slug,
+        title,
+        content: articleText,
+        content_type: "roundup",
+        neighborhood_slug: null,
+        category_slug: "restaurants",
+        expedia_url: null,
+        places_mentioned: [
+          ...(photo ? [{ photo_url: photo.url, photo_credit: photo.credit, photo_credit_url: photo.creditUrl }] : []),
+          ...(await lookupRestaurantPlaces(restaurantNames)),
+        ],
+        generated_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "slug" }
+    );
 
     if (error) return { success: false, error: error.message };
     return { success: true, slug };
