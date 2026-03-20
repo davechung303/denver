@@ -156,6 +156,22 @@ async function fetchFromGooglePlaces(
   return places;
 }
 
+export async function getPlace(
+  neighborhoodSlug: string,
+  categorySlug: string,
+  slug: string
+): Promise<Place | null> {
+  const { data } = await supabase
+    .from("places")
+    .select("*")
+    .eq("neighborhood_slug", neighborhoodSlug)
+    .eq("category_slug", categorySlug)
+    .eq("slug", slug)
+    .single();
+
+  return (data as Place) ?? null;
+}
+
 export async function getPlaces(
   neighborhoodSlug: string,
   categorySlug: string
