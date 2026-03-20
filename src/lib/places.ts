@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 import { getNeighborhood, getCategory } from "./neighborhoods";
+import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
 
 // Use server-side key (no referrer restrictions) for API calls
 // NEXT_PUBLIC_ key is for client-side map embeds only
@@ -24,6 +25,8 @@ export interface Place {
   hours: GoogleHours | null;
   photos: GooglePhoto[] | null;
   types: string[] | null;
+  reviews: GoogleReview[] | null;
+  review_summary: ReviewSummary | null;
   cached_at: string;
 }
 
@@ -34,6 +37,14 @@ export interface GoogleHours {
 
 export interface GooglePhoto {
   name: string; // resource name e.g. places/xxx/photos/yyy
+}
+
+export interface GoogleReview {
+  name: string;
+  relativePublishTimeDescription: string;
+  rating: number;
+  text?: { text: string; languageCode: string };
+  authorAttribution?: { displayName: string; photoUri?: string };
 }
 
 function slugify(name: string): string {
@@ -81,6 +92,7 @@ async function fetchFromGooglePlaces(
           "places.photos",
           "places.types",
           "places.businessStatus",
+          "places.reviews",
         ].join(","),
       },
       body: JSON.stringify({
@@ -126,6 +138,16 @@ async function fetchFromGooglePlaces(
         : null,
       photos: p.photos?.slice(0, 3).map((ph: any) => ({ name: ph.name })) ?? null,
       types: p.types ?? null,
+      reviews: p.reviews
+        ? p.reviews.slice(0, 5).map((r: any) => ({
+            name: r.name,
+            relativePublishTimeDescription: r.relativePublishTimeDescription ?? "",
+            rating: r.rating ?? 0,
+            text: r.text ?? null,
+            authorAttribution: r.authorAttribution ?? null,
+          }))
+        : null,
+      review_summary: null,
       cached_at: new Date().toISOString(),
     }));
 
@@ -148,12 +170,41 @@ async function fetchFromGooglePlaces(
       hours: p.hours as any,
       photos: p.photos as any,
       types: p.types,
+      reviews: p.reviews as any,
       cached_at: p.cached_at,
     }));
     await supabase.from("places").upsert(rows, { onConflict: "place_id" });
   }
 
   return places;
+}
+
+const FOOD_CATEGORIES = new Set(["restaurants", "bars", "coffee"]);
+
+async function maybeGenerateSummary(place: Place): Promise<Place> {
+  if (!place.reviews || place.reviews.length === 0) return place;
+
+  const needsSummary = !place.review_summary;
+  const needsDishes =
+    FOOD_CATEGORIES.has(place.category_slug) &&
+    place.review_summary &&
+    !place.review_summary.popular_dishes;
+
+  if (!needsSummary && !needsDishes) return place;
+
+  const summary = await generateReviewSummary(
+    place.name,
+    place.reviews,
+    place.category_slug
+  );
+  if (summary) {
+    await supabase
+      .from("places")
+      .update({ review_summary: summary as any })
+      .eq("place_id", place.place_id);
+    return { ...place, review_summary: summary };
+  }
+  return place;
 }
 
 export async function getPlace(
@@ -169,11 +220,13 @@ export async function getPlace(
     .eq("slug", slug)
     .single();
 
-  if (data) return data as Place;
+  if (data) return maybeGenerateSummary(data as Place);
 
   // Not in Supabase cache — fetch the full category from Google and find the match
   const places = await fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
-  return places.find((p) => p.slug === slug) ?? null;
+  const found = places.find((p) => p.slug === slug) ?? null;
+  if (found) return maybeGenerateSummary(found);
+  return null;
 }
 
 export async function getPlaces(

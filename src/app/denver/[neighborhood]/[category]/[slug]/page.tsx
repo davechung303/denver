@@ -81,6 +81,13 @@ export default async function BusinessPage({ params }: Props) {
 
   if (!place || !n || !c) notFound();
 
+  const HOTEL_PRICE_RANGES: Record<number, string> = {
+    1: "$75–$150 / night",
+    2: "$150–$250 / night",
+    3: "$250–$400 / night",
+    4: "$400+ / night",
+  };
+
   const [relatedPlaces, videos] = await Promise.all([
     getPlaces(nSlug, cSlug),
     getVideosForPage(nSlug, cSlug, 3),
@@ -193,6 +200,49 @@ export default async function BusinessPage({ params }: Props) {
               )}
             </div>
 
+            {/* Dave's Take — AI review summary */}
+            {place.review_summary && (
+              <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6 space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Dave&apos;s Take</p>
+                <blockquote className="text-lg font-medium leading-snug text-slate-800 dark:text-slate-100 border-l-4 border-denver-amber pl-4">
+                  &ldquo;{place.review_summary.consensus}&rdquo;
+                </blockquote>
+                {place.review_summary.highlights.length > 0 && (
+                  <ul className="space-y-1">
+                    {place.review_summary.highlights.map((h, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                        <span className="text-green-500 mt-0.5 shrink-0">✓</span>
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {place.review_summary.lowlights.length > 0 && (
+                  <ul className="space-y-1">
+                    {place.review_summary.lowlights.map((l, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                        <span className="text-amber-500 mt-0.5 shrink-0">⚠</span>
+                        {l}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {place.review_summary.popular_dishes && place.review_summary.popular_dishes.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">People Order</p>
+                    <div className="flex flex-wrap gap-2">
+                      {place.review_summary.popular_dishes.map((dish, i) => (
+                        <span key={i} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">
+                          {dish}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <p className="text-xs text-slate-400">Based on Google reviews · Summarized by AI in Dave&apos;s voice</p>
+              </div>
+            )}
+
             {/* Hours */}
             {place.hours?.weekdayDescriptions && (
               <div>
@@ -207,6 +257,38 @@ export default async function BusinessPage({ params }: Props) {
                     {place.hours.openNow ? "Open now" : "Closed now"}
                   </span>
                 )}
+              </div>
+            )}
+
+            {/* Google Reviews */}
+            {place.reviews && place.reviews.length > 0 && (
+              <div>
+                <h2 className="text-lg font-semibold mb-4">What Visitors Say</h2>
+                <div className="space-y-4">
+                  {place.reviews.filter((r) => r.text?.text).slice(0, 4).map((review, i) => (
+                    <div key={i} className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-4 space-y-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-denver-amber/20 flex items-center justify-center text-sm font-bold text-denver-amber shrink-0">
+                          {review.authorAttribution?.displayName?.[0] ?? "G"}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{review.authorAttribution?.displayName ?? "Google Reviewer"}</p>
+                          <p className="text-xs text-slate-400">{review.relativePublishTimeDescription}</p>
+                        </div>
+                        <div className="ml-auto flex items-center gap-0.5">
+                          {[1,2,3,4,5].map((s) => (
+                            <svg key={s} className={`w-3 h-3 ${s <= review.rating ? "text-amber-400" : "text-slate-200 dark:text-slate-700"}`} fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-4">
+                        {review.text!.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -228,14 +310,24 @@ export default async function BusinessPage({ params }: Props) {
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 sticky top-20">
               {/* Hotel booking CTA */}
               {isHotel && bookingUrl && (
-                <a
-                  href={bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
-                >
-                  Check Availability &rarr;
-                </a>
+                <>
+                  {place.price_level != null && place.price_level > 0 && HOTEL_PRICE_RANGES[place.price_level] && (
+                    <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                      <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Typically {HOTEL_PRICE_RANGES[place.price_level]}
+                    </div>
+                  )}
+                  <a
+                    href={bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
+                  >
+                    Check Availability &rarr;
+                  </a>
+                </>
               )}
 
               {place.phone && (
