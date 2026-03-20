@@ -203,10 +203,10 @@ export default async function BusinessPage({ params }: Props) {
             {/* Dave's Take — AI review summary */}
             {place.review_summary && (
               <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6 space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Dave&apos;s Take</p>
-                <blockquote className="text-lg font-medium leading-snug text-slate-800 dark:text-slate-100 border-l-4 border-denver-amber pl-4">
-                  &ldquo;{place.review_summary.consensus}&rdquo;
-                </blockquote>
+                <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Things to Know</p>
+                <p className="text-lg font-medium leading-snug text-slate-800 dark:text-slate-100">
+                  {place.review_summary.consensus}
+                </p>
                 {place.review_summary.highlights.length > 0 && (
                   <ul className="space-y-1">
                     {place.review_summary.highlights.map((h, i) => (
@@ -239,7 +239,7 @@ export default async function BusinessPage({ params }: Props) {
                     </div>
                   </div>
                 )}
-                <p className="text-xs text-slate-400">Based on Google reviews · Summarized by AI in Dave&apos;s voice</p>
+                <p className="text-xs text-slate-400">Based on Google reviews · AI summarized</p>
               </div>
             )}
 

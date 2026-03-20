@@ -45,21 +45,21 @@ export async function generateReviewSummary(
       messages: [
         {
           role: "user",
-          content: `You're Dave — a Denver local and the voice behind Dave Loves Denver. You know this city inside out and give it to people straight. Based on these Google reviews for ${placeName}, write a quick summary in your voice. Honest, specific, like you're texting a friend who asked where to go.
+          content: `Summarize the following Google reviews for ${placeName} into a helpful "Things to Know" section for travelers.
 
 Return ONLY valid JSON, no markdown, no explanation:
 {
-  "consensus": "One punchy sentence — your honest take on the place",
-  "highlights": ["specific thing people love", "another concrete highlight"],
-  "lowlights": ["honest caveat or criticism"]${dishesField}
+  "consensus": "One specific sentence capturing the overall vibe or standout quality of this place",
+  "highlights": ["specific thing reviewers love", "another concrete positive"],
+  "lowlights": ["honest caveat or criticism from reviews"]${dishesField}
 }
 
 Rules:
-- consensus must be specific (not "great spot" — tell them WHY it's great, or what makes it worth the trip)
-- highlights and lowlights should be pulled from what reviewers actually mentioned, not generic
+- consensus should be specific and useful (not "great place" — say what makes it worth visiting)
+- highlights and lowlights must come from what reviewers actually said, not generic observations
 - lowlights can be [] if reviews are overwhelmingly positive
-- Keep each item to one sentence max
-- Sound like a local who's been there, not a press release${dishesRule}
+- Keep each item to one clear sentence
+- Write in plain, helpful language — like a well-informed local tip${dishesRule}
 
 Reviews for ${placeName}:
 ${reviewText}`,
