@@ -20,6 +20,7 @@ async function getArticles() {
       neighborhood_slug,
       category_slug,
       generated_at,
+      places_mentioned,
       youtube_videos (
         video_id,
         thumbnail_url,
@@ -59,21 +60,19 @@ export default async function ArticlesPage() {
                   href={`/articles/${article.slug}`}
                   className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
                 >
-                  {(article.youtube_videos?.thumbnail_url || article.places_mentioned?.[0]?.photo_url) && (
-                    <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
-                      <img
-                        src={
-                          article.youtube_videos?.thumbnail_url ||
-                          (article.places_mentioned?.[0]?.photo_url?.startsWith("places/")
-                            ? `/api/places-photo?name=${encodeURIComponent(article.places_mentioned[0].photo_url)}`
-                            : article.places_mentioned?.[0]?.photo_url)
-                        }
-                        alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
+                  {(() => {
+                    const thumb = article.youtube_videos?.thumbnail_url;
+                    const pUrl = article.places_mentioned?.[0]?.photo_url;
+                    const src = thumb || (pUrl?.startsWith("places/")
+                      ? `/api/places-photo?name=${encodeURIComponent(pUrl)}`
+                      : pUrl);
+                    if (!src) return null;
+                    return (
+                      <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                      </div>
+                    );
+                  })()}
                   <div className="p-4 flex flex-col gap-2 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       {article.neighborhood_slug && (
