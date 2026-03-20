@@ -92,7 +92,6 @@ async function fetchFromGooglePlaces(
           "places.photos",
           "places.types",
           "places.businessStatus",
-          "places.reviews",
         ].join(","),
       },
       body: JSON.stringify({
@@ -138,15 +137,7 @@ async function fetchFromGooglePlaces(
         : null,
       photos: p.photos?.slice(0, 3).map((ph: any) => ({ name: ph.name })) ?? null,
       types: p.types ?? null,
-      reviews: p.reviews
-        ? p.reviews.slice(0, 5).map((r: any) => ({
-            name: r.name,
-            relativePublishTimeDescription: r.relativePublishTimeDescription ?? "",
-            rating: r.rating ?? 0,
-            text: r.text ?? null,
-            authorAttribution: r.authorAttribution ?? null,
-          }))
-        : null,
+      reviews: null,
       review_summary: null,
       cached_at: new Date().toISOString(),
     }));
@@ -179,12 +170,36 @@ async function fetchFromGooglePlaces(
   return places;
 }
 
+async function fetchReviewsForPlace(placeId: string): Promise<GoogleReview[] | null> {
+  try {
+    const res = await fetch(
+      `https://places.googleapis.com/v1/places/${placeId}`,
+      {
+        headers: {
+          "X-Goog-Api-Key": PLACES_API_KEY,
+          "X-Goog-FieldMask": "reviews",
+        },
+      }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.reviews) return null;
+    return data.reviews.slice(0, 5).map((r: any) => ({
+      name: r.name,
+      relativePublishTimeDescription: r.relativePublishTimeDescription ?? "",
+      rating: r.rating ?? 0,
+      text: r.text ?? null,
+      authorAttribution: r.authorAttribution ?? null,
+    }));
+  } catch {
+    return null;
+  }
+}
+
 const FOOD_CATEGORIES = new Set(["restaurants", "bars", "coffee"]);
 
 
 async function maybeGenerateSummary(place: Place): Promise<Place> {
-  if (!place.reviews || place.reviews.length === 0) return place;
-
   const needsSummary = !place.review_summary;
   const needsDishes =
     FOOD_CATEGORIES.has(place.category_slug) &&
@@ -193,9 +208,24 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
 
   if (!needsSummary && !needsDishes) return place;
 
+  // Fetch reviews from Place Details API if not already cached
+  let reviews = place.reviews;
+  if (!reviews || reviews.length === 0) {
+    reviews = await fetchReviewsForPlace(place.place_id);
+    if (reviews && reviews.length > 0) {
+      await supabase
+        .from("places")
+        .update({ reviews: reviews as any })
+        .eq("place_id", place.place_id);
+      place = { ...place, reviews };
+    }
+  }
+
+  if (!reviews || reviews.length === 0) return place;
+
   const summary = await generateReviewSummary(
     place.name,
-    place.reviews,
+    reviews,
     place.category_slug
   );
   if (summary) {
