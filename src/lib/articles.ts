@@ -112,8 +112,60 @@ export async function generateArticle(videoId: string): Promise<{ success: boole
   const category = associations?.[0]?.category_slug ?? null;
   const contentType = detectContentType(video.title, video.description ?? "");
 
+  // Fetch real places from database to ground the article
+  let realPlaces = "";
+  if (neighborhood || category) {
+    const { createClient } = await import("@supabase/supabase-js");
+    const db = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+    let query = db
+      .from("places")
+      .select("name, address, rating, review_count, price_level")
+      .order("rating", { ascending: false })
+      .limit(15);
+    if (neighborhood) query = query.eq("neighborhood_slug", neighborhood);
+    if (category) query = query.eq("category_slug", category);
+    const { data: places } = await query;
+    if (places && places.length > 0) {
+      realPlaces = places
+        .map((p: any) => `- ${p.name} | ${p.address} | Rating: ${p.rating} | Price: ${"$".repeat(p.price_level ?? 1)}`)
+        .join("\n");
+    }
+  }
+
+  // Search for local press coverage to add credibility
+  const pressQuery = encodeURIComponent(`${video.title} site:westword.com OR site:denverpost.com`);
+  let pressMentions = "";
+  try {
+    const searchRes = await fetch(
+      `https://api.search.brave.com/res/v1/web/search?q=${pressQuery}&count=3`,
+      { headers: { "Accept": "application/json", "Accept-Encoding": "gzip", "X-Subscription-Token": process.env.BRAVE_SEARCH_API_KEY ?? "" } }
+    );
+    if (searchRes.ok) {
+      const searchData = await searchRes.json();
+      const results = searchData.web?.results ?? [];
+      pressMentions = results
+        .map((r: any) => `- ${r.title}: ${r.description}`)
+        .join("\n");
+    }
+  } catch {
+    // Press search is optional — continue without it
+  }
+
   // Build the prompt
-  const prompt = `You are writing a local Denver travel article for DaveLovesDenver.com, a hyperlocal Denver guide run by Dave Chung — a Denver local, YouTube creator, and genuine expert on the city's neighborhoods, restaurants, hotels, and things to do.
+  const prompt = `You are writing a local Denver travel article for DaveLovesDenver.com, a hyperlocal Denver guide run by Dave Chung — a Denver local, YouTube creator with over 2 million views, and genuine expert on the city's neighborhoods, restaurants, hotels, and things to do.
+
+DAVE'S VOICE AND STYLE:
+- Casual, entertaining, and warm — like a knowledgeable local friend giving honest advice
+- First person, conversational, never stuffy or formal
+- Grounds everything in real social context — who should go, who it's best for, what kind of occasion it fits
+- Uses phrases like: "This is a place you're gonna want to go with your friends", "This place is better for small groups", "They're great with families", "This is a really casual spot", "This is the kind of place where..."
+- When referencing other videos says "I'll catch you over there" not "check out my other video"
+- Enthusiastic but honest — if something has a downside, mentions it naturally without being negative
+- Never uses travel brochure language like "nestled", "boasts", "culinary journey", "gastronomic experience"
+- Specific and practical — gives people the details they actually need to decide whether to go
 
 VIDEO TITLE: ${video.title}
 VIDEO DESCRIPTION: ${video.description ?? "Not available"}
@@ -121,25 +173,32 @@ ${transcript ? `TRANSCRIPT: ${transcript.slice(0, 4000)}` : "No transcript avail
 CONTENT TYPE: ${contentType} (${contentType === "guide" ? "covers multiple places" : "focuses on one business"})
 ${neighborhood ? `NEIGHBORHOOD: ${neighborhood}` : ""}
 ${category ? `CATEGORY: ${category}` : ""}
+${realPlaces ? `REAL BUSINESSES FROM OUR DATABASE (ONLY mention businesses from this list — do not invent or hallucinate business names):\n${realPlaces}` : ""}
+${pressMentions ? `LOCAL PRESS COVERAGE (weave in naturally where relevant, do not quote directly):\n${pressMentions}` : ""}
 
 Write a ${contentType === "guide" ? "1,200-1,500" : "700-900"} word article following this exact structure:
 
-1. INTRO (2-3 paragraphs): Hook the reader with Dave's personal take. Why does this place/neighborhood matter? What makes it worth visiting? Write in first person as Dave — warm, knowledgeable, and genuinely enthusiastic without being over the top.
+1. INTRO (2-3 paragraphs): Hook the reader with Dave's personal take. Why does this place or experience matter? What makes it worth visiting? Be specific about who it's best for right from the start.
 
-2. ${contentType === "guide" ? "THE PLACES (one section per place mentioned, 2-3 sentences each): For each place, describe what makes it worth visiting, what to order or do, and who it's best for." : "THE EXPERIENCE (3-4 paragraphs): What to expect, atmosphere, what Dave tried, honest pros and cons. Be specific — mention dishes, prices, atmosphere, parking, best time to visit."}
+2. ${contentType === "guide" ? "THE PLACES (one section per place mentioned, 2-3 sentences each): For each place describe what makes it worth visiting, what to order or do, and crucially — who it is best for. A family? A date night? A group of friends? Solo? Be specific." : "THE EXPERIENCE (3-4 paragraphs): What to expect, atmosphere, what Dave tried, honest pros and cons. Include who the place is best suited for — families, couples, groups, solo visitors. Be specific about what makes it worth going."}
 
-3. INSIDER TIPS (1 paragraph): Things only a local would know. Seasonality, parking, best time to visit, hidden details.
+3. PRACTICAL DETAILS (1 paragraph): Things that help people actually plan the visit. Parking situation, best time to go, how busy it gets, whether to book ahead, what to wear, anything a local would tell a friend.
 
-4. DAVE'S VERDICT (2-3 sentences): Clear, punchy recommendation. Who should go, when, and why.
+4. DAVE'S VERDICT (2-3 sentences): Clear, direct recommendation. Who should go, when, and why. End with "Check out the video above for the full experience" or "I'll catch you over there" if referencing another video.
 
 IMPORTANT RULES:
-- Write in first person as Dave
-- Be specific and local — mention real Denver details
+- Write in first person as Dave throughout
+- Ground every recommendation in who it is best for socially — this is Dave's signature angle
+- Be specific and local — mention real Denver context, streets, landmarks where natural
+- If local press coverage is provided above, weave in a natural reference without quoting directly — e.g. "Westword has called this one of Denver's best kept secrets" or "The Denver Post picked this up when it first opened"
+- CRITICAL: Only mention businesses that appear in the REAL BUSINESSES list above — never invent or hallucinate business names
 - Do not invent specific prices, hours, or addresses — those come from our database
-- Do not include headers or markdown — just clean paragraphs with natural section breaks
+- Use ## for section headers to break up the content — each restaurant or major section should have a ## header
+- Use clean paragraphs under each header
+- Do not use bullet points
 - Do not mention affiliate links or hotel booking in the article body
-- Sound like a knowledgeable local friend, not a travel brochure
-- End with a natural transition like "Check out the video above for the full experience" or similar
+- Never use words like: nestled, boasts, culinary journey, gastronomic, vibrant, bustling, gem
+- Return ONLY the article text — no introduction, no explanation, just the article
 
 Return ONLY the article text. No introduction, no explanation, just the article.`;
 

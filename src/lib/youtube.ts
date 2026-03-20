@@ -17,36 +17,93 @@ export interface Video {
 }
 
 // Keyword maps for matching videos to pages
+const DENVER_KEYWORDS = [
+  "denver", "colorado", "co ", "mile high", "front range",
+  "blucifer", "red rocks", "coors field", "union station", "lodo",
+  "rino", "river north", "capitol hill", "highlands", "cherry creek",
+  "wash park", "washington park", "five points", "baker", "golden triangle",
+  "uptown", "sloan lake", "berkeley", "platt park", "jefferson park",
+  "aurora", "lakewood", "littleton", "englewood", "arvada", "westminster",
+  "thornton", "broomfield", "centennial", "parker", "castle rock",
+  "boulder", "fort collins", "colorado springs", "pueblo", "cripple creek",
+  "gaylord rockies", "dmns", "denver museum", "denver airport", "dia",
+  "denver international", "nuggets", "broncos", "rockies", "avalanche",
+  "ball arena", "empower field", "havana", "federal", "colfax",
+  "16th street", "larimer", "tennyson", "south pearl", "santa fe",
+  "congress park", "city park", "cheesman", "globeville", "swansea",
+  "elyria", "montbello", "green valley", "stapleton", "central park",
+  "lowry", "hilltop", "mayfair", "hale", "eckerd", "university hills",
+  "virginia village", "harvey park", "barnum", "villa park",
+  "west colfax", "sloan", "sun valley", "lincoln park",
+];
+
 const NEIGHBORHOOD_KEYWORDS: Record<string, string[]> = {
-  rino: ["rino", "river north", "art district"],
-  lodo: ["lodo", "lower downtown", "union station", "coors field"],
-  "capitol-hill": ["capitol hill", "cap hill"],
-  highlands: ["highlands", "lohi", "lo-hi"],
-  "cherry-creek": ["cherry creek"],
-  "washington-park": ["washington park", "wash park"],
-  "five-points": ["five points"],
+  rino: ["rino", "river north", "art district", "larimer street", "walnut street"],
+  lodo: ["lodo", "lower downtown", "union station", "coors field", "16th street mall", "larimer square", "dairy block"],
+  "capitol-hill": ["capitol hill", "cap hill", "colfax", "cheesman park", "congress park"],
+  highlands: ["highlands", "lohi", "lo-hi", "tennyson", "32nd avenue", "highland bridge"],
+  "cherry-creek": ["cherry creek", "fillmore", "steele street"],
+  "washington-park": ["washington park", "wash park", "south gaylord", "old south pearl"],
+  "five-points": ["five points", "welton", "historic five points"],
   cole: ["cole neighborhood", "cole denver"],
-  "curtis-park": ["curtis park"],
-  baker: ["baker", "south broadway", "sobo"],
-  "golden-triangle": ["golden triangle", "santa fe", "art museum"],
-  uptown: ["uptown denver"],
-  "sloan-lake": ["sloan lake"],
-  berkeley: ["tennyson", "berkeley denver"],
-  "platt-park": ["platt park", "south pearl"],
-  "jefferson-park": ["jefferson park", "jeff park"],
+  "curtis-park": ["curtis park", "37th avenue"],
+  baker: ["baker", "south broadway", "sobo", "antique row"],
+  "golden-triangle": ["golden triangle", "santa fe", "art museum", "clyfford still", "byers"],
+  uptown: ["uptown denver", "17th avenue", "restaurant row"],
+  "sloan-lake": ["sloan lake", "edgewater", "sheridan"],
+  berkeley: ["tennyson street", "berkeley denver", "44th avenue"],
+  "platt-park": ["platt park", "south pearl", "pearl street"],
+  "jefferson-park": ["jefferson park", "jeff park", "29th avenue"],
+  airport: ["denver airport", "dia", "denver international", "blucifer", "airport horse", "united club", "concourse"],
+  downtown: ["downtown denver", "16th street", "civic center", "convention center", "union station"],
+  suburbs: ["aurora", "lakewood", "littleton", "englewood", "arvada", "westminster", "thornton", "centennial", "parker", "castle rock", "gaylord rockies", "broomfield"],
 };
 
 const CATEGORY_KEYWORDS: Record<string, string[]> = {
-  restaurants: ["restaurant", "food", "eat", "dining", "brunch", "lunch", "dinner", "taco", "burger", "pizza", "sushi", "chef", "menu", "foodie"],
-  hotels: ["hotel", "stay", "where to stay", "accommodation", "airbnb", "hostel"],
-  bars: ["bar", "drink", "cocktail", "beer", "brewery", "nightlife", "happy hour", "whiskey", "wine"],
-  "things-to-do": ["things to do", "activity", "attraction", "visit", "explore", "hike", "park", "museum", "concert", "event"],
+  restaurants: [
+    "restaurant", "food", "eat", "dining", "brunch", "lunch", "dinner",
+    "taco", "burger", "pizza", "sushi", "chef", "menu", "foodie",
+    "noodle", "ramen", "bbq", "barbecue", "dim sum", "omakase",
+    "chicken", "donuts", "ice cream", "cone", "sushi", "korean",
+    "japanese", "chinese", "mexican", "italian", "thai", "vietnamese",
+    "green chile", "pickleball", "brunch spot", "conveyor belt",
+    "hand-pulled", "crispy", "flavors", "kimchi", "robots", "robot",
+    "shark tank", "cursed location", "classic", "neighborhood vibes",
+    "hidden", "secret", "best", "new restaurant", "worth trying",
+    "challenger", "favorite", "newcomer",
+  ],
+  hotels: [
+    "hotel", "stay", "where to stay", "accommodation", "airbnb", "hostel",
+    "resort", "gaylord", "lounge", "club lounge", "castle hotel",
+    "legoland hotel", "what it's really like", "full tour", "review",
+  ],
+  bars: [
+    "bar", "drink", "cocktail", "beer", "brewery", "nightlife",
+    "happy hour", "whiskey", "wine", "distillery",
+  ],
+  "things-to-do": [
+    "things to do", "activity", "attraction", "visit", "explore",
+    "hike", "park", "museum", "concert", "event", "experience",
+    "immersive", "lego", "bricks", "dinos", "dinosaur", "titanic",
+    "ice castle", "ice slide", "mini golf", "golf course", "pickleball",
+    "basketball", "nuggets", "broncos", "rockies", "avalanche",
+    "night market", "festival", "japanese festival", "holiday market",
+    "christmas", "holiday", "railroad", "loop", "vr", "virtual reality",
+    "ancient egypt", "tunnels", "underground", "airport tour",
+    "opening night", "crowd", "sneak peek", "what it's really like",
+    "worth the drive", "fun or flop", "instagram vs reality",
+  ],
   coffee: ["coffee", "cafe", "espresso", "latte", "cappuccino", "roaster"],
 };
 
 function scoreText(text: string, keywords: string[]): number {
   const lower = text.toLowerCase();
   return keywords.reduce((score, kw) => score + (lower.includes(kw) ? 1 : 0), 0);
+}
+
+function isDenverContent(text: string): boolean {
+  const lower = text.toLowerCase();
+  return DENVER_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
 function mapVideoToPages(video: { title: string; description: string | null; tags: string[] | null }) {
@@ -67,6 +124,8 @@ function mapVideoToPages(video: { title: string; description: string | null; tag
     if (score > 0) categoryMatches.push({ slug, score });
   }
 
+  const isDenver = isDenverContent(searchText);
+
   // Cross-match neighborhoods and categories
   if (neighborhoodMatches.length > 0 && categoryMatches.length > 0) {
     for (const n of neighborhoodMatches) {
@@ -84,8 +143,20 @@ function mapVideoToPages(video: { title: string; description: string | null; tag
     }
   } else if (categoryMatches.length > 0) {
     for (const c of categoryMatches) {
-      associations.push({ neighborhood_slug: null, category_slug: c.slug, relevance_score: c.score });
+      // Use "downtown" as default neighborhood for Denver content without a specific neighborhood
+      associations.push({
+        neighborhood_slug: isDenver ? "downtown" : null,
+        category_slug: c.slug,
+        relevance_score: c.score,
+      });
     }
+  } else if (isDenver) {
+    // Denver content that did not match any specific category — still include it
+    associations.push({
+      neighborhood_slug: "downtown",
+      category_slug: "things-to-do",
+      relevance_score: 0.5,
+    });
   }
 
   return associations;

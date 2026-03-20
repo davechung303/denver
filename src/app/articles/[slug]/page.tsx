@@ -185,6 +185,31 @@ export default async function ArticlePage({ params }: Props) {
             <p className="text-xs text-slate-500">{updatedDate}</p>
           </div>
         </div>
+        {/* Hero image for roundup articles */}
+        {(() => {
+          const a = article as any;
+          const photo = a.places_mentioned?.[0];
+          if (a.content_type !== "roundup" || !photo?.photo_url) return null;
+          const imgSrc = photo.photo_url.startsWith("places/")
+            ? `/api/places-photo?name=${encodeURIComponent(photo.photo_url)}`
+            : photo.photo_url;
+          return (
+            <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+              <img src={imgSrc} alt={article.title} className="w-full h-64 object-cover" />
+              {photo.photo_credit && photo.photo_credit !== "Google Places" && (
+                <div className="px-4 py-2 bg-slate-50 dark:bg-slate-900">
+                  <p className="text-xs text-slate-400">
+                    Photo:{" "}
+                    <a href={photo.photo_credit_url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      {photo.photo_credit}
+                    </a>
+                  </p>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
         <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
           {firstPara}
         </p>
@@ -208,11 +233,31 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         )}
         <div className="prose prose-slate dark:prose-invert max-w-none mb-10">
-          {restParas.map((para: string, i: number) => (
-            <p key={i} className="text-base leading-relaxed mb-5 text-slate-700 dark:text-slate-300">
-              {para}
-            </p>
-          ))}
+          {restParas.map((para: string, i: number) => {
+            if (para.startsWith("## ")) {
+              return (
+                <h2 key={i} className="text-xl font-bold mt-8 mb-3 text-slate-900 dark:text-slate-100">
+                  {para.replace("## ", "")}
+                </h2>
+              );
+            }
+            if (para.startsWith("# ")) {
+              return (
+                <h1 key={i} className="text-2xl font-bold mt-8 mb-3 text-slate-900 dark:text-slate-100">
+                  {para.replace("# ", "")}
+                </h1>
+              );
+            }
+            return (
+              <p key={i} className="text-base leading-relaxed mb-5 text-slate-700 dark:text-slate-300"
+                dangerouslySetInnerHTML={{
+                  __html: para
+                    .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-teal-600 dark:text-teal-400 underline hover:no-underline">$1</a>')
+                    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                }}
+              />
+            );
+          })}
         </div>
         <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden mb-10">
           <div className="px-5 py-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
