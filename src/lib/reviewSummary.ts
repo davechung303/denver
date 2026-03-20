@@ -70,7 +70,13 @@ ${reviewText}`,
     const content = message.content[0];
     if (content.type !== "text") return null;
 
-    const parsed = JSON.parse(content.text) as ReviewSummary;
+    // Strip markdown code fences if Claude wraps the JSON
+    let raw = content.text.trim();
+    if (raw.startsWith("```")) {
+      raw = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+    }
+
+    const parsed = JSON.parse(raw) as ReviewSummary;
     // Validate shape
     if (
       typeof parsed.consensus !== "string" ||
