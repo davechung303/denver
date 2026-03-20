@@ -1,7 +1,6 @@
 import { supabase } from "./supabase";
 import { getNeighborhood, getCategory } from "./neighborhoods";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
-import { lookupHotelId, getHotelMinPrice } from "./hotelPricing";
 
 // Use server-side key (no referrer restrictions) for API calls
 // NEXT_PUBLIC_ key is for client-side map embeds only
@@ -28,9 +27,6 @@ export interface Place {
   types: string[] | null;
   reviews: GoogleReview[] | null;
   review_summary: ReviewSummary | null;
-  hotel_id: string | null;
-  hotel_min_price: number | null;
-  hotel_price_cached_at: string | null;
   cached_at: string;
 }
 
@@ -185,41 +181,6 @@ async function fetchFromGooglePlaces(
 
 const FOOD_CATEGORIES = new Set(["restaurants", "bars", "coffee"]);
 
-async function maybeFetchHotelPrice(place: Place): Promise<Place> {
-  if (place.category_slug !== "hotels") return place;
-
-  const priceTtl = 24 * 60 * 60 * 1000;
-  const priceStale =
-    !place.hotel_price_cached_at ||
-    Date.now() - new Date(place.hotel_price_cached_at).getTime() > priceTtl;
-
-  // Look up hotel ID if we don't have one yet
-  let hotelId = place.hotel_id;
-  if (!hotelId) {
-    hotelId = await lookupHotelId(place.name);
-    if (hotelId) {
-      await supabase
-        .from("places")
-        .update({ hotel_id: hotelId })
-        .eq("place_id", place.place_id);
-    }
-  }
-
-  if (!hotelId) return place;
-
-  // Refresh price if stale
-  if (priceStale) {
-    const price = await getHotelMinPrice(hotelId);
-    const now = new Date().toISOString();
-    await supabase
-      .from("places")
-      .update({ hotel_min_price: price, hotel_price_cached_at: now })
-      .eq("place_id", place.place_id);
-    return { ...place, hotel_id: hotelId, hotel_min_price: price ?? null, hotel_price_cached_at: now };
-  }
-
-  return { ...place, hotel_id: hotelId };
-}
 
 async function maybeGenerateSummary(place: Place): Promise<Place> {
   if (!place.reviews || place.reviews.length === 0) return place;
@@ -260,18 +221,12 @@ export async function getPlace(
     .eq("slug", slug)
     .single();
 
-  if (data) {
-    const withSummary = await maybeGenerateSummary(data as Place);
-    return maybeFetchHotelPrice(withSummary);
-  }
+  if (data) return maybeGenerateSummary(data as Place);
 
   // Not in Supabase cache — fetch the full category from Google and find the match
   const places = await fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
   const found = places.find((p) => p.slug === slug) ?? null;
-  if (found) {
-    const withSummary = await maybeGenerateSummary(found);
-    return maybeFetchHotelPrice(withSummary);
-  }
+  if (found) return maybeGenerateSummary(found);
   return null;
 }
 
