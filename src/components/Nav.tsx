@@ -71,6 +71,13 @@ export default function Nav() {
             </div>
 
             <Link
+              href="/articles"
+              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+            >
+              Articles
+            </Link>
+
+            <Link
               href="/videos"
               className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
             >
@@ -121,6 +128,13 @@ export default function Nav() {
               </Link>
             ))}
             <div className="border-t border-white/10 pt-3 mt-3 space-y-1">
+              <Link
+                href="/articles"
+                onClick={closeAll}
+                className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              >
+                Articles
+              </Link>
               <Link
                 href="/videos"
                 onClick={closeAll}
