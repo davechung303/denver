@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import Script from "next/script";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -32,6 +33,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <Script
+          id="travelpayouts-verification"
+          data-noptimize="1"
+          data-cfasync="false"
+          data-wpfc-render="false"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var script=document.createElement("script");script.async=1;script.src='https://emrldtp.cc/NTA5NzE3.js?t=509717';document.head.appendChild(script);})();`,
+          }}
+        />
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />
