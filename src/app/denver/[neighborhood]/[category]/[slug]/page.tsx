@@ -81,13 +81,6 @@ export default async function BusinessPage({ params }: Props) {
 
   if (!place || !n || !c) notFound();
 
-  const HOTEL_PRICE_RANGES: Record<number, string> = {
-    1: "$75–$150 / night",
-    2: "$150–$250 / night",
-    3: "$250–$400 / night",
-    4: "$400+ / night",
-  };
-
   const [relatedPlaces, videos] = await Promise.all([
     getPlaces(nSlug, cSlug),
     getVideosForPage(nSlug, cSlug, 3),
@@ -310,24 +303,14 @@ export default async function BusinessPage({ params }: Props) {
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 sticky top-20">
               {/* Hotel booking CTA */}
               {isHotel && bookingUrl && (
-                <>
-                  {place.price_level != null && place.price_level > 0 && HOTEL_PRICE_RANGES[place.price_level] && (
-                    <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                      <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Typically {HOTEL_PRICE_RANGES[place.price_level]}
-                    </div>
-                  )}
-                  <a
-                    href={bookingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
-                  >
-                    Check Availability &rarr;
-                  </a>
-                </>
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
+                >
+                  Check Availability &rarr;
+                </a>
               )}
 
               {place.phone && (
