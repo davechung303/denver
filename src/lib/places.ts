@@ -221,9 +221,10 @@ export async function getPlace(
     .eq("slug", slug)
     .single();
 
-  if (data) return maybeGenerateSummary(data as Place);
+  // If cached but missing reviews, re-fetch from Google to get them
+  if (data && data.reviews) return maybeGenerateSummary(data as Place);
 
-  // Not in Supabase cache — fetch the full category from Google and find the match
+  // No row or missing reviews — fetch the full category from Google and find the match
   const places = await fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
   const found = places.find((p) => p.slug === slug) ?? null;
   if (found) return maybeGenerateSummary(found);
