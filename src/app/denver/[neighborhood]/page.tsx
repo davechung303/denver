@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
+import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
@@ -47,6 +48,20 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   return (
     <>
+      <SchemaMarkup
+        breadcrumbs={[
+          { name: "Home", url: "https://davelovesdenver.com" },
+          { name: n.name, url: `https://davelovesdenver.com/denver/${slug}` },
+        ]}
+        videos={videos.map((v) => ({
+          name: v.title,
+          description: v.description,
+          thumbnailUrl: v.thumbnail_url,
+          uploadDate: v.published_at,
+          videoId: v.video_id,
+        }))}
+      />
+
       {/* Breadcrumb */}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <ol className="flex items-center gap-2 text-sm text-slate-500">

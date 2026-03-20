@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
+import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const metadata: Metadata = {
   title: "Dave Loves Denver — Hyperlocal Denver Neighborhood Guide",
@@ -20,6 +21,16 @@ export default async function HomePage() {
   const videos = await getVideosForPage(null, null, 6);
   return (
     <>
+      <SchemaMarkup
+        websiteSearch
+        videos={videos.map((v) => ({
+          name: v.title,
+          description: v.description,
+          thumbnailUrl: v.thumbnail_url,
+          uploadDate: v.published_at,
+          videoId: v.video_id,
+        }))}
+      />
       {/* Hero */}
       <section className="bg-denver-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
