@@ -3,8 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlace, getPlaces, getPlacesForSubcategory, photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
-import { hotelSearchUrl } from "@/lib/travelpayouts";
-import { getNeighborhood, getCategory, getPlaceTag } from "@/lib/neighborhoods";
+import { hotelSearchUrl, expediaHotelUrl } from "@/lib/travelpayouts";
+import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
 import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
@@ -101,6 +101,8 @@ export default async function BusinessPage({ params }: Props) {
       getVideosForPage(nSlug, cSlug, 3),
     ]);
     const otherSubs = getSubcategories(cSlug).filter((s) => s.slug !== slug);
+    const localPlaces = places.filter((p) => isInNeighborhood(p.lat, p.lng, nSlug));
+    const nearbyPlaces = places.filter((p) => !isInNeighborhood(p.lat, p.lng, nSlug));
 
     return (
       <>
@@ -144,14 +146,30 @@ export default async function BusinessPage({ params }: Props) {
         </div>
 
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {places.length === 0 ? (
+          {localPlaces.length === 0 && nearbyPlaces.length === 0 ? (
             <p className="text-center text-slate-400 py-16">No listings found yet — check back soon.</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {places.map((place) => (
-                <PlaceCard key={place.place_id} place={place} neighborhoodSlug={nSlug} categorySlug={cSlug} tag={getPlaceTag(place.types)} />
-              ))}
-            </div>
+            <>
+              {localPlaces.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {localPlaces.map((place) => (
+                    <PlaceCard key={place.place_id} place={place} neighborhoodSlug={nSlug} categorySlug={cSlug} tag={getPlaceTag(place.types)} />
+                  ))}
+                </div>
+              )}
+              {nearbyPlaces.length > 0 && (
+                <div className="mt-14">
+                  <h2 className="text-xl font-bold mb-6 text-slate-500 dark:text-slate-400">
+                    More {subcategory.name} Spots in Denver
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {nearbyPlaces.map((place) => (
+                      <PlaceCard key={place.place_id} place={place} neighborhoodSlug={nSlug} categorySlug={cSlug} tag={getPlaceTag(place.types)} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </section>
 
@@ -187,6 +205,7 @@ export default async function BusinessPage({ params }: Props) {
   const nearby = relatedPlaces.filter((p) => p.slug !== slug).slice(0, 3);
   const isHotel = cSlug === "hotels";
   const bookingUrl = isHotel ? hotelSearchUrl(place.name) : null;
+  const expediaUrl = isHotel ? expediaHotelUrl(place.name) : null;
 
   // LocalBusiness schema
   const localBusinessSchema = {
@@ -417,15 +436,25 @@ export default async function BusinessPage({ params }: Props) {
           {/* Right: contact card */}
           <div className="space-y-4">
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 sticky top-20">
-              {/* Hotel booking CTA */}
+              {/* Hotel booking CTAs */}
+              {isHotel && expediaUrl && (
+                <a
+                  href={expediaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
+                >
+                  Check Availability on Expedia &rarr;
+                </a>
+              )}
               {isHotel && bookingUrl && (
                 <a
                   href={bookingUrl}
                   target="_blank"
                   rel="noopener noreferrer sponsored"
-                  className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
+                  className="flex items-center justify-center w-full border border-slate-200 dark:border-slate-700 text-sm font-semibold py-2.5 px-4 rounded-xl hover:border-denver-amber hover:text-denver-amber transition-colors"
                 >
-                  Check Availability &rarr;
+                  Search on Booking.com
                 </a>
               )}
 

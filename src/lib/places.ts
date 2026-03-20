@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 import { getNeighborhood, getCategory } from "./neighborhoods";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
 import { getFoursquareData, type FoursquareTip } from "./foursquare";
@@ -100,6 +100,16 @@ async function searchPlaces(body: Record<string, unknown>): Promise<{ places: an
   return { places: data.places ?? [], nextPageToken: data.nextPageToken };
 }
 
+async function fetchAllPagesForQuery(body: Record<string, unknown>): Promise<any[]> {
+  const page1 = await searchPlaces({ ...body, maxResultCount: 20, languageCode: "en" });
+  let results = page1.places;
+  if (page1.nextPageToken) {
+    const page2 = await searchPlaces({ pageToken: page1.nextPageToken, maxResultCount: 20, languageCode: "en" });
+    results = [...results, ...page2.places];
+  }
+  return results;
+}
+
 async function fetchFromGooglePlaces(
   neighborhoodSlug: string,
   categorySlug: string,
@@ -109,15 +119,35 @@ async function fetchFromGooglePlaces(
   const category = getCategory(categorySlug);
   if (!neighborhood || (!category && !overrideQuery)) return [];
 
-  const textQuery = overrideQuery ?? `${category!.searchQuery} in ${neighborhood.searchName}`;
+  // Bias results to within ~1.5km of the neighborhood center
+  const locationBias = {
+    circle: {
+      center: { latitude: neighborhood.lat, longitude: neighborhood.lng },
+      radius: 1500.0,
+    },
+  };
 
-  // Fetch up to 2 pages (40 results)
-  const page1 = await searchPlaces({ textQuery, maxResultCount: 20, languageCode: "en" });
-  let rawPlaces = page1.places;
+  const primaryQuery = overrideQuery ?? `${category!.searchQuery} in ${neighborhood.searchName}`;
 
-  if (page1.nextPageToken) {
-    const page2 = await searchPlaces({ pageToken: page1.nextPageToken, maxResultCount: 20, languageCode: "en" });
-    rawPlaces = [...rawPlaces, ...page2.places];
+  // Run primary + any extra queries in parallel, then deduplicate
+  const extraQueries = (!overrideQuery && category?.extraQueries)
+    ? category.extraQueries.map((q) => `${q} in ${neighborhood.searchName}`)
+    : [];
+
+  const allResults = await Promise.all([
+    fetchAllPagesForQuery({ textQuery: primaryQuery, locationBias }),
+    ...extraQueries.map((q) => fetchAllPagesForQuery({ textQuery: q, locationBias })),
+  ]);
+
+  const seen = new Set<string>();
+  const rawPlaces: any[] = [];
+  for (const batch of allResults) {
+    for (const p of batch) {
+      if (!seen.has(p.id)) {
+        seen.add(p.id);
+        rawPlaces.push(p);
+      }
+    }
   }
 
   const places: Place[] = rawPlaces
@@ -177,7 +207,7 @@ async function fetchFromGooglePlaces(
       // reviews and review_summary intentionally omitted — managed separately by maybeGenerateSummary
       cached_at: p.cached_at,
     }));
-    await supabase.from("places").upsert(rows, { onConflict: "place_id" });
+    await supabaseAdmin.from("places").upsert(rows, { onConflict: "place_id" });
   }
 
   return places;
@@ -194,7 +224,11 @@ async function fetchReviewsForPlace(placeId: string): Promise<GoogleReview[] | n
         },
       }
     );
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error(`[reviews] fetch failed for ${placeId}: ${res.status}`, errText.slice(0, 200));
+      return null;
+    }
     const data = await res.json();
     if (!data.reviews) return null;
     return data.reviews.slice(0, 5).map((r: any) => ({
@@ -225,8 +259,9 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
   let reviews = place.reviews;
   if (!reviews || reviews.length === 0) {
     reviews = await fetchReviewsForPlace(place.place_id);
+    console.log(`[summary] fetchReviews for ${place.name}: ${reviews?.length ?? 0} reviews`);
     if (reviews && reviews.length > 0) {
-      await supabase
+      await supabaseAdmin
         .from("places")
         .update({ reviews: reviews as any })
         .eq("place_id", place.place_id);
@@ -234,15 +269,19 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
     }
   }
 
-  if (!reviews || reviews.length === 0) return place;
+  if (!reviews || reviews.length === 0) {
+    console.log(`[summary] no reviews for ${place.name}, skipping summary`);
+    return place;
+  }
 
   const summary = await generateReviewSummary(
     place.name,
     reviews,
     place.category_slug
   );
+  console.log(`[summary] generated for ${place.name}: ${summary ? "ok" : "null"}`);
   if (summary) {
-    await supabase
+    await supabaseAdmin
       .from("places")
       .update({ review_summary: summary as any })
       .eq("place_id", place.place_id);
@@ -260,7 +299,7 @@ async function maybeFetchFoursquare(place: Place): Promise<Place> {
   const data = await getFoursquareData(place.name, place.lat, place.lng, place.fsq_id);
   if (!data) return place;
   const update = { fsq_id: data.fsq_id, fsq_tips: data.tips as any, fsq_cached_at: new Date().toISOString() };
-  await supabase.from("places").update(update).eq("place_id", place.place_id);
+  await supabaseAdmin.from("places").update(update).eq("place_id", place.place_id);
   return { ...place, ...update };
 }
 
@@ -280,6 +319,19 @@ export async function getPlace(
   // Row exists — generate summary if needed (fetches reviews lazily if missing)
   if (data) {
     const withSummary = await maybeGenerateSummary(data as Place);
+    return maybeFetchFoursquare(withSummary);
+  }
+
+  // Try any category (handles places cached under a compound subcategory slug)
+  const { data: anyCategory } = await supabase
+    .from("places")
+    .select("*")
+    .eq("neighborhood_slug", neighborhoodSlug)
+    .eq("slug", slug)
+    .single();
+
+  if (anyCategory) {
+    const withSummary = await maybeGenerateSummary(anyCategory as Place);
     return maybeFetchFoursquare(withSummary);
   }
 

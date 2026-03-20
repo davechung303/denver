@@ -2,6 +2,7 @@ export interface Category {
   slug: string;
   name: string;
   searchQuery: string; // appended to neighborhood name in Places API search
+  extraQueries?: string[]; // additional parallel searches to supplement sparse results
 }
 
 export interface Neighborhood {
@@ -19,8 +20,18 @@ export const CATEGORIES: Category[] = [
   { slug: "restaurants", name: "Restaurants", searchQuery: "best restaurants" },
   { slug: "hotels", name: "Hotels", searchQuery: "hotels" },
   { slug: "bars", name: "Bars & Drinks", searchQuery: "bars and nightlife" },
-  { slug: "things-to-do", name: "Things To Do", searchQuery: "things to do attractions" },
-  { slug: "coffee", name: "Coffee", searchQuery: "coffee shops cafes" },
+  {
+    slug: "things-to-do",
+    name: "Things To Do",
+    searchQuery: "things to do attractions",
+    extraQueries: ["art galleries and museums", "live music venues entertainment", "parks recreation outdoor activities"],
+  },
+  {
+    slug: "coffee",
+    name: "Coffee",
+    searchQuery: "coffee shops cafes",
+    extraQueries: ["tea shops juice bars", "bakeries pastry shops"],
+  },
 ];
 
 export const NEIGHBORHOODS: Neighborhood[] = [
@@ -225,6 +236,26 @@ export function getPlaceTag(types: string[] | null): string | null {
     if (TYPE_TAG_MAP[type]) return TYPE_TAG_MAP[type];
   }
   return null;
+}
+
+// [minLat, maxLat, minLng, maxLng]
+export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number]> = {
+  rino:             [39.755, 39.780, -104.998, -104.970],
+  lodo:             [39.745, 39.760, -105.005, -104.988],
+  "capitol-hill":   [39.727, 39.745, -104.985, -104.965],
+  highlands:        [39.753, 39.775, -105.025, -105.000],
+  "cherry-creek":   [39.708, 39.725, -104.960, -104.940],
+  "five-points":    [39.747, 39.762, -104.980, -104.960],
+  cole:             [39.758, 39.775, -104.970, -104.950],
+  "washington-park":[39.700, 39.722, -104.975, -104.950],
+};
+
+export function isInNeighborhood(lat: number | null, lng: number | null, slug: string): boolean {
+  if (!lat || !lng) return false;
+  const bounds = NEIGHBORHOOD_BOUNDS[slug];
+  if (!bounds) return false;
+  const [minLat, maxLat, minLng, maxLng] = bounds;
+  return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng;
 }
 
 export function getNeighborhood(slug: string): Neighborhood | undefined {

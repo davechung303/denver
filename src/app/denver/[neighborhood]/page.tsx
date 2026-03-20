@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
-import { getEventsForNeighborhood } from "@/lib/eventbrite";
+import { getEventsForNeighborhood } from "@/lib/ticketmaster";
 import { getDenverWeather } from "@/lib/weather";
 import { getPlaces } from "@/lib/places";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
 import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
-
-const NeighborhoodMap = dynamic(() => import("@/components/NeighborhoodMap"), { ssr: false });
+import MapWrapper from "@/components/MapWrapper";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
@@ -130,7 +128,7 @@ export default async function NeighborhoodPage({ params }: Props) {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <h2 className="text-2xl font-bold mb-4">Restaurants Map</h2>
           <div className="h-96 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
-            <NeighborhoodMap
+            <MapWrapper
               centerLat={n!.lat}
               centerLng={n!.lng}
               neighborhoodSlug={slug}

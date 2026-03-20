@@ -100,3 +100,44 @@ create policy "Service write" on places for insert with check (true);
 create policy "Service write" on youtube_videos for insert with check (true);
 create policy "Service write" on video_page_associations for insert with check (true);
 create policy "Service write" on user_reviews for insert with check (true);
+-- -------------------------------------------------------
+-- ARTICLES (AI-generated from YouTube transcripts)
+-- -------------------------------------------------------
+create table if not exists articles (
+  id uuid primary key default gen_random_uuid(),
+  video_id text references youtube_videos(video_id) on delete cascade,
+  slug text not null unique,
+  title text not null,
+  intro text,
+  content text not null,
+  content_type text not null default 'review', -- 'review' or 'guide'
+  places_mentioned jsonb default '[]',
+  neighborhood_slug text,
+  category_slug text,
+  expedia_url text,
+  generated_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists articles_slug on articles (slug);
+create index if not exists articles_neighborhood on articles (neighborhood_slug);
+create index if not exists articles_video on articles (video_id);
+
+alter table articles enable row level security;
+create policy "Public read" on articles for select using (true);
+create policy "Service write" on articles for insert with check (true);
+create policy "Service write articles update" on articles for update with check (true);
+
+-- -------------------------------------------------------
+-- TRANSCRIPTS (cached YouTube transcripts)
+-- -------------------------------------------------------
+create table if not exists transcripts (
+  id uuid primary key default gen_random_uuid(),
+  video_id text not null unique references youtube_videos(video_id) on delete cascade,
+  transcript text not null,
+  fetched_at timestamptz not null default now()
+);
+
+alter table transcripts enable row level security;
+create policy "Public read" on transcripts for select using (true);
+create policy "Service write" on transcripts for insert with check (true);

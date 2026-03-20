@@ -1,5 +1,5 @@
-import { supabase } from "./supabase";
-import { NEIGHBORHOODS } from "./neighborhoods";
+import { supabase, supabaseAdmin } from "./supabase";
+import { NEIGHBORHOODS, NEIGHBORHOOD_BOUNDS } from "./neighborhoods";
 
 export interface DenverEvent {
   id: string;
@@ -23,20 +23,7 @@ const API_KEY = process.env.EVENTBRITE_API_KEY;
 
 // Assign a neighborhood based on venue coordinates
 function assignNeighborhood(lat: number, lng: number): string | null {
-  // Simple bounding boxes for each neighborhood
-  const bounds: Record<string, [number, number, number, number]> = {
-    // [minLat, maxLat, minLng, maxLng]
-    rino:             [39.755, 39.780, -104.998, -104.970],
-    lodo:             [39.745, 39.760, -105.005, -104.988],
-    "capitol-hill":   [39.727, 39.745, -104.985, -104.965],
-    highlands:        [39.753, 39.775, -105.025, -105.000],
-    "cherry-creek":   [39.708, 39.725, -104.960, -104.940],
-    "five-points":    [39.747, 39.762, -104.980, -104.960],
-    cole:             [39.758, 39.775, -104.970, -104.950],
-    "washington-park":[39.700, 39.722, -104.975, -104.950],
-  };
-
-  for (const [slug, [minLat, maxLat, minLng, maxLng]] of Object.entries(bounds)) {
+  for (const [slug, [minLat, maxLat, minLng, maxLng]] of Object.entries(NEIGHBORHOOD_BOUNDS)) {
     if (lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng) {
       return slug;
     }
@@ -74,7 +61,8 @@ export async function syncDenverEvents(): Promise<number> {
 
   while (hasMore && pageNumber <= 5) {
     const params = new URLSearchParams({
-      "location.address": "Denver, CO",
+      "location.latitude": "39.7392",
+      "location.longitude": "-104.9903",
       "location.within": "10mi",
       "start_date.range_start": now,
       "expand": "venue",
@@ -88,7 +76,11 @@ export async function syncDenverEvents(): Promise<number> {
       { headers: { Authorization: `Bearer ${API_KEY}` } }
     );
 
-    if (!res.ok) break;
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error("Eventbrite API error:", res.status, errText);
+      break;
+    }
     const data = await res.json();
     allEvents.push(...(data.events ?? []));
     hasMore = data.pagination?.has_more_items ?? false;
@@ -120,8 +112,8 @@ export async function syncDenverEvents(): Promise<number> {
 
   if (rows.length > 0) {
     // Delete stale events and insert fresh batch
-    await supabase.from("events").delete().lt("start_time", now);
-    await supabase.from("events").upsert(rows, { onConflict: "event_id" });
+    await supabaseAdmin.from("events").delete().lt("start_time", now);
+    await supabaseAdmin.from("events").upsert(rows, { onConflict: "event_id" });
   }
 
   return rows.length;

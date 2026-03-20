@@ -2,6 +2,7 @@
   "framework": "nextjs",
   "crons": [
     { "path": "/api/sync-videos", "schedule": "0 6 * * *" },
-    { "path": "/api/sync-events", "schedule": "0 */6 * * *" }
+    { "path": "/api/sync-events", "schedule": "0 7 * * *" },
+    { "path": "/api/generate-articles", "schedule": "0 8 * * *" }
   ]
 }
