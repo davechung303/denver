@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
+import { getVideosForPage } from "@/lib/youtube";
+import VideoCard from "@/components/VideoCard";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
@@ -41,6 +43,7 @@ export default async function NeighborhoodPage({ params }: Props) {
   if (!n) notFound();
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
+  const videos = await getVideosForPage(slug, null, 3);
 
   return (
     <>
@@ -82,7 +85,7 @@ export default async function NeighborhoodPage({ params }: Props) {
         </div>
       </section>
 
-      {/* YouTube Section (placeholder) */}
+      {/* YouTube Section */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-8">
@@ -96,26 +99,9 @@ export default async function NeighborhoodPage({ params }: Props) {
               See all &rarr;
             </a>
           </div>
-          {/* Placeholder — replaced by YouTube API data */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <a
-                key={i}
-                href="https://youtube.com/davechung"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
-              >
-                <div className="aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                  <svg className="w-12 h-12 text-slate-300 dark:text-slate-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-                <div className="p-4">
-                  <p className="text-xs font-medium text-denver-amber mb-1">{n.name}</p>
-                  <p className="text-sm font-semibold text-slate-400">Loading videos&hellip;</p>
-                </div>
-              </a>
+            {videos.map((video) => (
+              <VideoCard key={video.video_id} video={video} neighborhood={n.name} />
             ))}
           </div>
         </div>

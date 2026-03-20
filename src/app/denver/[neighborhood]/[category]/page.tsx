@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory } from "@/lib/neighborhoods";
 import { getPlaces } from "@/lib/places";
+import { getVideosForPage } from "@/lib/youtube";
 import PlaceCard from "@/components/PlaceCard";
+import VideoCard from "@/components/VideoCard";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
@@ -47,7 +49,10 @@ export default async function CategoryPage({ params }: Props) {
   if (!n || !c) notFound();
 
   const otherCategories = CATEGORIES.filter((cat) => cat.slug !== cSlug);
-  const places = await getPlaces(nSlug, cSlug);
+  const [places, videos] = await Promise.all([
+    getPlaces(nSlug, cSlug),
+    getVideosForPage(nSlug, cSlug, 3),
+  ]);
 
   return (
     <>
@@ -131,24 +136,8 @@ export default async function CategoryPage({ params }: Props) {
             </a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <a
-                key={i}
-                href="https://youtube.com/davechung"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
-              >
-                <div className="aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                  <svg className="w-12 h-12 text-slate-300 dark:text-slate-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-                <div className="p-4">
-                  <p className="text-xs font-medium text-denver-amber mb-1">{n.name} &middot; {c.name}</p>
-                  <p className="text-sm font-semibold text-slate-400">Loading videos&hellip;</p>
-                </div>
-              </a>
+            {videos.map((video) => (
+              <VideoCard key={video.video_id} video={video} neighborhood={n.name} category={c.name} />
             ))}
           </div>
         </div>
