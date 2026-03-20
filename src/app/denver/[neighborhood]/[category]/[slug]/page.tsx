@@ -383,6 +383,24 @@ export default async function BusinessPage({ params }: Props) {
               </div>
             )}
 
+            {/* Foursquare local tips */}
+            {place.fsq_tips && place.fsq_tips.length > 0 && (
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Local Tips</h2>
+                <div className="space-y-3">
+                  {place.fsq_tips.filter((t) => t.text).slice(0, 4).map((tip, i) => (
+                    <div key={i} className="flex gap-3 bg-slate-50 dark:bg-slate-900 rounded-xl p-4">
+                      <span className="text-denver-amber text-lg shrink-0">💬</span>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {tip.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-400 mt-2">Tips from Foursquare</p>
+              </div>
+            )}
+
             {/* Videos */}
             {videos.length > 0 && (
               <div>

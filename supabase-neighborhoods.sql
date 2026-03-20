@@ -1,7 +1,7 @@
 -- Dave Loves Denver — All Denver Neighborhoods
--- Run this in the Supabase SQL Editor after running supabase-schema.sql
+-- Run this in the Supabase SQL Editor
 
--- First, create the neighborhoods table
+-- Create the neighborhoods table
 create table if not exists neighborhoods (
   id uuid primary key default gen_random_uuid(),
   slug text not null unique,
@@ -14,8 +14,9 @@ create table if not exists neighborhoods (
 );
 
 alter table neighborhoods enable row level security;
-create policy "Public read" on neighborhoods for select using (true);
-create policy "Service write" on neighborhoods for insert with check (true);
+
+create policy if not exists "Public read" on neighborhoods for select using (true);
+create policy if not exists "Service write" on neighborhoods for insert with check (true);
 
 -- Insert all neighborhoods
 insert into neighborhoods (slug, name, lat, lng, description, is_featured) values

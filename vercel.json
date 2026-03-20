@@ -1,9 +1,7 @@
 {
   "framework": "nextjs",
   "crons": [
-    {
-      "path": "/api/sync-videos",
-      "schedule": "0 6 * * *"
-    }
+    { "path": "/api/sync-videos", "schedule": "0 6 * * *" },
+    { "path": "/api/sync-events", "schedule": "0 */6 * * *" }
   ]
 }

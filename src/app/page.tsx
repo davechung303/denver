@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
+import { getDenverWeather } from "@/lib/weather";
 import VideoCard from "@/components/VideoCard";
+import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const metadata: Metadata = {
@@ -18,7 +20,10 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const videos = await getVideosForPage(null, null, 6);
+  const [videos, weather] = await Promise.all([
+    getVideosForPage(null, null, 6),
+    getDenverWeather(),
+  ]);
   return (
     <>
       <SchemaMarkup
@@ -34,6 +39,11 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="bg-denver-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
+          {weather && (
+            <div className="mb-8">
+              <WeatherWidget weather={weather} compact />
+            </div>
+          )}
           <div className="max-w-3xl">
             <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-4">
               Denver, Colorado

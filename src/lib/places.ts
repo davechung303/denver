@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 import { getNeighborhood, getCategory } from "./neighborhoods";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
+import { getFoursquareData, type FoursquareTip } from "./foursquare";
 
 // Use server-side key (no referrer restrictions) for API calls
 // NEXT_PUBLIC_ key is for client-side map embeds only
@@ -27,6 +28,9 @@ export interface Place {
   types: string[] | null;
   reviews: GoogleReview[] | null;
   review_summary: ReviewSummary | null;
+  fsq_id: string | null;
+  fsq_tips: FoursquareTip[] | null;
+  fsq_cached_at: string | null;
   cached_at: string;
 }
 
@@ -145,6 +149,9 @@ async function fetchFromGooglePlaces(
       types: p.types ?? null,
       reviews: null,
       review_summary: null,
+      fsq_id: null,
+      fsq_tips: null,
+      fsq_cached_at: null,
       cached_at: new Date().toISOString(),
     }));
 
@@ -244,6 +251,19 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
   return place;
 }
 
+async function maybeFetchFoursquare(place: Place): Promise<Place> {
+  if (!process.env.FOURSQUARE_API_KEY) return place;
+  const TTL = 24 * 60 * 60 * 1000;
+  if (place.fsq_cached_at && Date.now() - new Date(place.fsq_cached_at).getTime() < TTL) {
+    return place;
+  }
+  const data = await getFoursquareData(place.name, place.lat, place.lng, place.fsq_id);
+  if (!data) return place;
+  const update = { fsq_id: data.fsq_id, fsq_tips: data.tips as any, fsq_cached_at: new Date().toISOString() };
+  await supabase.from("places").update(update).eq("place_id", place.place_id);
+  return { ...place, ...update };
+}
+
 export async function getPlace(
   neighborhoodSlug: string,
   categorySlug: string,
@@ -258,12 +278,18 @@ export async function getPlace(
     .single();
 
   // Row exists — generate summary if needed (fetches reviews lazily if missing)
-  if (data) return maybeGenerateSummary(data as Place);
+  if (data) {
+    const withSummary = await maybeGenerateSummary(data as Place);
+    return maybeFetchFoursquare(withSummary);
+  }
 
   // No row — fetch the full category from Google and find the match
   const places = await fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
   const found = places.find((p) => p.slug === slug) ?? null;
-  if (found) return maybeGenerateSummary(found);
+  if (found) {
+    const withSummary = await maybeGenerateSummary(found);
+    return maybeFetchFoursquare(withSummary);
+  }
   return null;
 }
 

@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
+import { getEventsForNeighborhood } from "@/lib/eventbrite";
+import { getDenverWeather } from "@/lib/weather";
+import { getPlaces } from "@/lib/places";
 import VideoCard from "@/components/VideoCard";
+import EventCard from "@/components/EventCard";
+import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
+
+const NeighborhoodMap = dynamic(() => import("@/components/NeighborhoodMap"), { ssr: false });
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
 
@@ -44,7 +52,17 @@ export default async function NeighborhoodPage({ params }: Props) {
   if (!n) notFound();
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
-  const videos = await getVideosForPage(slug, null, 3);
+  const [videos, events, weather, restaurantPlaces] = await Promise.all([
+    getVideosForPage(slug, null, 3),
+    getEventsForNeighborhood(slug, 4),
+    getDenverWeather(),
+    getPlaces(slug, "restaurants"),
+  ]);
+
+  const mapPins = restaurantPlaces
+    .filter((p) => p.lat && p.lng)
+    .slice(0, 20)
+    .map((p) => ({ name: p.name, lat: p.lat!, lng: p.lng!, slug: p.slug, rating: p.rating }));
 
   return (
     <>
@@ -82,6 +100,13 @@ export default async function NeighborhoodPage({ params }: Props) {
         </div>
       </section>
 
+      {/* Weather */}
+      {weather && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <WeatherWidget weather={weather} />
+        </div>
+      )}
+
       {/* Categories */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 className="text-2xl font-bold mb-8">Explore {n.name}</h2>
@@ -99,6 +124,34 @@ export default async function NeighborhoodPage({ params }: Props) {
           ))}
         </div>
       </section>
+
+      {/* Interactive Map */}
+      {mapPins.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <h2 className="text-2xl font-bold mb-4">Restaurants Map</h2>
+          <div className="h-96 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+            <NeighborhoodMap
+              centerLat={n!.lat}
+              centerLng={n!.lng}
+              neighborhoodSlug={slug}
+              categorySlug="restaurants"
+              places={mapPins}
+            />
+          </div>
+        </section>
+      )}
+
+      {/* Upcoming Events */}
+      {events.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <h2 className="text-2xl font-bold mb-6">Upcoming Events in {n!.name}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {events.map((event) => (
+              <EventCard key={event.event_id} event={event} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* YouTube Section */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
