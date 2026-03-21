@@ -155,56 +155,83 @@ export async function generateArticle(videoId: string): Promise<{ success: boole
   }
 
   // Build the prompt
-  const prompt = `You are writing a local Denver travel article for DaveLovesDenver.com, a hyperlocal Denver guide run by Dave Chung — a Denver local, YouTube creator with over 2 million views, and genuine expert on the city's neighborhoods, restaurants, hotels, and things to do.
+  const prompt = `You are writing a local Denver article for DaveLovesDenver.com, written in the first person as Dave Chung — a Denver local and YouTube creator with over 2 million views.
 
-DAVE'S VOICE AND STYLE:
-- Casual, entertaining, and warm — like a knowledgeable local friend giving honest advice
-- First person, conversational, never stuffy or formal
-- Grounds everything in real social context — who should go, who it's best for, what kind of occasion it fits
-- Uses phrases like: "This is a place you're gonna want to go with your friends", "This place is better for small groups", "They're great with families", "This is a really casual spot", "This is the kind of place where..."
-- When referencing other videos says "I'll catch you over there" not "check out my other video"
-- Enthusiastic but honest — if something has a downside, mentions it naturally without being negative
-- Never uses travel brochure language like "nestled", "boasts", "culinary journey", "gastronomic experience"
-- Specific and practical — gives people the details they actually need to decide whether to go
+=== DAVE'S VOICE (read this carefully before writing anything) ===
+
+TONE: Conversational and direct. Like texting a knowledgeable friend. Measured enthusiasm — "pretty cool", "worth the drive", "legitimately good". Never "absolutely incredible" or "must-visit". If something has a downside, Dave mentions it naturally in the flow — not as a disclaimer, just as part of the description. Specific — real streets, real dishes, real context.
+
+WHAT DAVE SOUNDS LIKE:
+- "I wasn't expecting much, and it surprised me."
+- "This one's worth the drive if you're already heading south."
+- "My wife and I went on a weeknight and had no trouble getting a table."
+- "Most people skip this neighborhood, and that's a mistake."
+- "The parking situation is a little annoying but it's not a dealbreaker."
+- He occasionally uses dry humor: "which was completely wrong, but we do have good pizza here"
+- He states opinions plainly without flagging them as opinions: "The burger is better than it has any right to be at that price."
+
+BANNED PHRASES — DO NOT USE ANY OF THESE:
+- "Look, I..." as a paragraph opener
+- "I'll be honest" / "my honest take" / "honest note" — sounds performed, not natural
+- "though" as a qualifier ("good, though", "worth it, though") — too formal
+- "calibrated", "elevated", "thoughtful", "curated", "intentional" — not Dave's words
+- "offerings", "fare" — too food-critic
+- "This is the kind of place where..."
+- "you're gonna want to"
+- "Whether you're X or Y or Z" audience framing
+- "This is perfect for families, couples, groups, and solo visitors"
+- "Let me tell you", "Believe it or not"
+- "nestled", "boasts", "vibrant", "culinary journey", "gastronomic", "bustling", "gem"
+- "all" or "every" as superlatives: "all the flavors", "every detail"
+- "truly", "absolutely" as generic intensifiers
+- "I'll catch you over there"
+- Starting consecutive paragraphs with the same word
+
+BEFORE FINALIZING — scan the draft for these words and rewrite any sentence containing them:
+"though", "honest", "calibrated", "elevated", "curated", "intentional", "offerings", "fare"
+
+SOCIAL FRAMING: Dave mentions who a place is good for, but ONCE per article at most, only when specific and genuinely useful. "Great for a group — the menu is designed for sharing." NOT a list of every demographic in every paragraph.
+
+STRUCTURE:
+1. Open with Dave's honest, specific reaction — his direct take on what makes this worth writing about. No generic setup.
+2. Describe what he actually experienced — atmosphere, specific dishes or moments, what stood out. Concrete details only.
+3. The honest part — what works, what doesn't, what surprised him.
+4. Practical context woven naturally into the writing — parking, best time to go, what to order, whether to book. No "PRACTICAL DETAILS" header.
+5. Close with 1-2 sentences of direct recommendation. No flowery wrap-up. No "DAVE'S VERDICT" header.
+
+=== CONTENT TO WORK FROM ===
 
 VIDEO TITLE: ${video.title}
 VIDEO DESCRIPTION: ${video.description ?? "Not available"}
-${transcript ? `TRANSCRIPT: ${transcript.slice(0, 4000)}` : "No transcript available — use the title and description to write the article."}
-CONTENT TYPE: ${contentType} (${contentType === "guide" ? "covers multiple places" : "focuses on one business"})
+${transcript ? `TRANSCRIPT: ${transcript.slice(0, 4000)}` : "No transcript available — write from the title and description only."}
+CONTENT TYPE: ${contentType} (${contentType === "guide" ? "roundup covering multiple places" : "single place review"})
 ${neighborhood ? `NEIGHBORHOOD: ${neighborhood}` : ""}
 ${category ? `CATEGORY: ${category}` : ""}
-${realPlaces ? `REAL BUSINESSES FROM OUR DATABASE (ONLY mention businesses from this list — do not invent or hallucinate business names):\n${realPlaces}` : ""}
-${pressMentions ? `LOCAL PRESS COVERAGE (weave in naturally where relevant, do not quote directly):\n${pressMentions}` : ""}
+${realPlaces ? `REAL BUSINESSES (ONLY mention businesses from this list — never invent names):\n${realPlaces}` : ""}
+${pressMentions ? `LOCAL PRESS (weave in naturally if relevant, do not quote directly):\n${pressMentions}` : ""}
 
-Write a ${contentType === "guide" ? "1,200-1,500" : "700-900"} word article following this exact structure:
+=== WRITING INSTRUCTIONS ===
 
-1. INTRO (2-3 paragraphs): Hook the reader with Dave's personal take. Why does this place or experience matter? What makes it worth visiting? Be specific about who it's best for right from the start.
+Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article.
 
-2. ${contentType === "guide" ? "THE PLACES (one section per place mentioned, 2-3 sentences each): For each place describe what makes it worth visiting, what to order or do, and crucially — who it is best for. A family? A date night? A group of friends? Solo? Be specific." : "THE EXPERIENCE (3-4 paragraphs): What to expect, atmosphere, what Dave tried, honest pros and cons. Include who the place is best suited for — families, couples, groups, solo visitors. Be specific about what makes it worth going."}
+${contentType === "guide"
+  ? "For each place: give it a ## header with the business name. Write 2-4 sentences that describe what makes it worth going, what to get, and one specific detail that sets it apart. Vary the sentence structure between entries — they should not all sound the same."
+  : "Write 4-6 paragraphs covering: what drew him there, what the experience was actually like, specific things he tried, what works and what doesn't, and a closing take."}
 
-3. PRACTICAL DETAILS (1 paragraph): Things that help people actually plan the visit. Parking situation, best time to go, how busy it gets, whether to book ahead, what to wear, anything a local would tell a friend.
+CRITICAL RULES:
+- First person as Dave throughout
+- Only mention businesses from the REAL BUSINESSES list above — never hallucinate names
+- Do not invent prices, hours, or addresses
+- Use ## headers for section breaks
+- No bullet points
+- No mention of affiliate links or hotel booking in the article body
+- Return ONLY the article text — no preamble, no explanation
 
-4. DAVE'S VERDICT (2-3 sentences): Clear, direct recommendation. Who should go, when, and why. End with "Check out the video above for the full experience" or "I'll catch you over there" if referencing another video.
-
-IMPORTANT RULES:
-- Write in first person as Dave throughout
-- Ground every recommendation in who it is best for socially — this is Dave's signature angle
-- Be specific and local — mention real Denver context, streets, landmarks where natural
-- If local press coverage is provided above, weave in a natural reference without quoting directly — e.g. "Westword has called this one of Denver's best kept secrets" or "The Denver Post picked this up when it first opened"
-- CRITICAL: Only mention businesses that appear in the REAL BUSINESSES list above — never invent or hallucinate business names
-- Do not invent specific prices, hours, or addresses — those come from our database
-- Use ## for section headers to break up the content — each restaurant or major section should have a ## header
-- Use clean paragraphs under each header
-- Do not use bullet points
-- Do not mention affiliate links or hotel booking in the article body
-- Never use words like: nestled, boasts, culinary journey, gastronomic, vibrant, bustling, gem
-- Return ONLY the article text — no introduction, no explanation, just the article
-
-Return ONLY the article text. No introduction, no explanation, just the article.`;
+Return ONLY the article text.`;
 
   try {
     const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-4-6",
       max_tokens: 2000,
       messages: [{ role: "user", content: prompt }],
     });
@@ -244,7 +271,7 @@ Return ONLY the article text. No introduction, no explanation, just the article.
 
 // Batch generate articles for all videos that don't have one yet
 export async function generateMissingArticles(limit = 10): Promise<{ generated: number; errors: number }> {
-// Find videos that have Denver associations but no article yet
+  // Find videos that have Denver associations
   const { data: associated } = await supabase
     .from("video_page_associations")
     .select("video_id")
@@ -253,22 +280,27 @@ export async function generateMissingArticles(limit = 10): Promise<{ generated: 
   const associatedIds = [...new Set(associated?.map((a) => a.video_id) ?? [])];
   if (associatedIds.length === 0) return { generated: 0, errors: 0 };
 
-  const { data: videos } = await supabase
-    .from("youtube_videos")
-    .select("video_id, title")
-    .in("video_id", associatedIds)
-    .order("published_at", { ascending: false })
-    .limit(limit);
-
-  if (!videos || videos.length === 0) return { generated: 0, errors: 0 };
-
-  // Filter out ones that already have articles
+  // Filter out ones that already have articles before applying limit
   const { data: existing } = await supabase
     .from("articles")
     .select("video_id");
 
   const existingIds = new Set(existing?.map((a) => a.video_id) ?? []);
-  const missing = videos.filter((v) => !existingIds.has(v.video_id));
+  const missingIds = associatedIds.filter((id) => !existingIds.has(id));
+
+  if (missingIds.length === 0) return { generated: 0, errors: 0 };
+
+  const { data: videos } = await supabase
+    .from("youtube_videos")
+    .select("video_id, title")
+    .in("video_id", missingIds)
+    .or("duration_seconds.is.null,duration_seconds.gt.180")
+    .order("published_at", { ascending: false })
+    .limit(limit);
+
+  if (!videos || videos.length === 0) return { generated: 0, errors: 0 };
+
+  const missing = videos;
 
   let generated = 0;
   let errors = 0;

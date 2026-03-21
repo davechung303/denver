@@ -115,6 +115,116 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     searchName: "Washington Park Denver Colorado",
     lat: 39.7112, lng: -104.9638,
   },
+  {
+    slug: "baker",
+    name: "Baker",
+    tagline: "South Broadway's Best",
+    description:
+      "South Broadway runs through Baker and brings with it some of Denver's best dive bars, vintage shops, and no-frills restaurants. This is the neighborhood that doesn't care what's trendy.",
+    gradient: "from-red-700 to-rose-500",
+    searchName: "Baker neighborhood South Broadway Denver Colorado",
+    lat: 39.7135, lng: -104.9862,
+  },
+  {
+    slug: "golden-triangle",
+    name: "Golden Triangle",
+    tagline: "Art & Architecture",
+    description:
+      "Home to the Denver Art Museum, Clyfford Still Museum, and the History Colorado Center. The Golden Triangle is where culture actually lives in this city.",
+    gradient: "from-fuchsia-700 to-pink-500",
+    searchName: "Golden Triangle Denver Colorado Santa Fe Arts District",
+    lat: 39.7356, lng: -104.9908,
+  },
+  {
+    slug: "uptown",
+    name: "Uptown",
+    tagline: "Restaurant Row",
+    description:
+      "17th Avenue between downtown and City Park is one of the most underrated dining corridors in Denver. Uptown has been quietly great for years without making a big deal about it.",
+    gradient: "from-cyan-700 to-teal-500",
+    searchName: "Uptown Denver Colorado 17th Avenue restaurant row",
+    lat: 39.7432, lng: -104.9702,
+  },
+  {
+    slug: "sloan-lake",
+    name: "Sloan Lake",
+    tagline: "Lakeside Living",
+    description:
+      "Centered around one of Denver's largest lakes, Sloan Lake has a neighborhood feel that's hard to find this close to downtown. The food scene has quietly gotten really good.",
+    gradient: "from-blue-700 to-cyan-500",
+    searchName: "Sloan Lake Denver Colorado Edgewater",
+    lat: 39.7589, lng: -105.0356,
+  },
+  {
+    slug: "berkeley",
+    name: "Berkeley",
+    tagline: "Tennyson Street",
+    description:
+      "Tennyson Street is one of the most walkable strips in Denver — independent coffee shops, galleries, and restaurants that have been here for years alongside genuinely good newcomers.",
+    gradient: "from-lime-600 to-green-400",
+    searchName: "Berkeley Denver Colorado Tennyson Street",
+    lat: 39.7784, lng: -105.0388,
+  },
+  {
+    slug: "platt-park",
+    name: "Platt Park",
+    tagline: "South Pearl Street",
+    description:
+      "South Pearl Street is the kind of walkable neighborhood strip that most cities wish they had. Platt Park feels residential in the best way — like the locals actually chose it.",
+    gradient: "from-pink-700 to-rose-400",
+    searchName: "Platt Park Denver Colorado South Pearl Street",
+    lat: 39.6962, lng: -104.9762,
+  },
+  {
+    slug: "jefferson-park",
+    name: "Jefferson Park",
+    tagline: "Downtown Views",
+    description:
+      "Jefferson Park sits just west of downtown with some of the best skyline views in the city. The bar and restaurant scene has grown fast — and most people still haven't found it.",
+    gradient: "from-indigo-700 to-violet-500",
+    searchName: "Jefferson Park Denver Colorado Jeff Park",
+    lat: 39.7535, lng: -105.0168,
+  },
+  {
+    slug: "curtis-park",
+    name: "Curtis Park",
+    tagline: "Historic & Happening",
+    description:
+      "One of Denver's oldest neighborhoods, Curtis Park sits between Five Points and RiNo with the quiet confidence of a place that was here before either of those neighborhoods got cool.",
+    gradient: "from-orange-600 to-red-500",
+    searchName: "Curtis Park Denver Colorado",
+    lat: 39.7562, lng: -104.9672,
+  },
+  {
+    slug: "downtown",
+    name: "Downtown",
+    tagline: "The Center of It All",
+    description:
+      "The 16th Street Mall, Larimer Square, Civic Center Park — downtown Denver is more walkable than most people give it credit for, and the food scene has gotten significantly better.",
+    gradient: "from-zinc-700 to-slate-500",
+    searchName: "Downtown Denver Colorado 16th Street Mall",
+    lat: 39.7420, lng: -104.9876,
+  },
+  {
+    slug: "denver-suburbs",
+    name: "Denver Suburbs",
+    tagline: "Aurora, Lakewood & Beyond",
+    description:
+      "Aurora, Lakewood, Littleton, Englewood — the suburbs have gotten genuinely interesting. Some of the best ethnic food in the entire metro is out here, and most Denverites haven't found it yet.",
+    gradient: "from-stone-600 to-neutral-500",
+    searchName: "Aurora Lakewood Littleton Englewood Denver suburbs Colorado",
+    lat: 39.7294, lng: -104.8319,
+  },
+  {
+    slug: "airport",
+    name: "Denver Airport",
+    tagline: "DIA & Gaylord Rockies",
+    description:
+      "DEN is one of the biggest airports in the world — confusing if you don't know it, genuinely great if you do. Plus the Gaylord Rockies is worth a visit even if you're not flying anywhere.",
+    gradient: "from-blue-800 to-indigo-600",
+    searchName: "Denver International Airport DIA Gaylord Rockies Colorado",
+    lat: 39.8561, lng: -104.6737,
+  },
 ];
 
 // Unique descriptions per neighborhood × category combination
@@ -174,6 +284,83 @@ export const CATEGORY_DESCRIPTIONS: Record<string, Record<string, string>> = {
     coffee: "Washington Park is Denver's best neighborhood for a morning coffee before a walk around the lake. The cafes here are built around the outdoor lifestyle.",
     hotels: "Wash Park is mostly residential — not many hotels, but it's a peaceful base away from downtown with great walkability and the park right there.",
     "things-to-do": "Washington Park is one of the best urban parks in Colorado. Running paths, paddleboating, volleyball, and some of the best people-watching in the city on any warm day.",
+  },
+  baker: {
+    restaurants: "South Broadway is one of the better stretches for food in Denver — unpretentious spots that have been around long enough to actually be good, plus a few newer places that fit right in.",
+    bars: "Baker's dive bar scene on South Broadway is the real deal. These are the bars that have no interest in being trendy, and that's exactly why people keep coming back.",
+    coffee: "Neighborhood coffee shops that match Baker's vibe — nothing precious, just good coffee in spots that feel like they belong to the people who actually live here.",
+    hotels: "Baker doesn't have many hotels, but South Broadway puts you within striking distance of both downtown and the South Denver neighborhoods worth exploring.",
+    "things-to-do": "The antique shops and vintage stores along South Broadway are legitimately worth browsing. Baker also has easy access to the Santa Fe Arts District for gallery walks.",
+  },
+  "golden-triangle": {
+    restaurants: "The Golden Triangle has a quieter restaurant scene than RiNo, but what's here is worth knowing — good spots that don't rely on foot traffic from the museum crowd.",
+    bars: "A handful of low-key bars that serve the after-museum crowd and the neighborhood regulars equally. Not the biggest scene, but a real one.",
+    coffee: "Coffee shops near the museums that are good enough to actually go out of your way for, not just because they're convenient.",
+    hotels: "Staying in the Golden Triangle puts you steps from the Denver Art Museum and a short walk from everything in downtown and Capitol Hill.",
+    "things-to-do": "The Denver Art Museum, Clyfford Still Museum, and History Colorado Center are all here. This is the highest concentration of serious cultural institutions in the city.",
+  },
+  uptown: {
+    restaurants: "17th Avenue is one of the most underrated dining streets in Denver. The block between downtown and City Park has been quietly great for years — longer than most people realize.",
+    bars: "Uptown's bar scene is more neighborhood than nightlife — the kind of spots where you can actually have a conversation and the bartender remembers what you drink.",
+    coffee: "Good independent cafes that serve the working professionals and young residents who make up most of Uptown's daytime crowd.",
+    hotels: "Uptown sits between downtown and City Park, making it one of the better-located neighborhoods in Denver for visitors who want to explore both.",
+    "things-to-do": "City Park is a short walk away, with the Denver Zoo and Denver Museum of Nature and Science. Uptown is also a good base for walking to both downtown and the Cap Hill music scene.",
+  },
+  "sloan-lake": {
+    restaurants: "The food scene around Sloan Lake and into Edgewater has gotten genuinely good. There's a stretch of restaurants on Sheridan that's worth the drive even from across town.",
+    bars: "The bars around Sloan Lake are the kind of neighborhood spots that don't show up on anyone's best-of list, but the locals aren't complaining.",
+    coffee: "Laid-back coffee shops that match the pace of a neighborhood built around a lake. Good for a slow morning before a walk around the water.",
+    hotels: "Sloan Lake is close to Highlands and Jefferson Park — a residential feel with fast access to some of Denver's best restaurants and bars.",
+    "things-to-do": "The 2.6-mile loop around Sloan Lake is one of the better urban walks in Denver. The park hosts events in summer, and the skyline views from the west side of the lake are worth the trip.",
+  },
+  berkeley: {
+    restaurants: "Tennyson Street has a concentration of good independent restaurants that would be notable in any neighborhood. The fact that most people outside northwest Denver haven't found it yet is their loss.",
+    bars: "The bars on Tennyson are the kind that make you want to move to the neighborhood — good drinks, no attitude, and a crowd that's actually from here.",
+    coffee: "Some of Denver's best independent coffee is on Tennyson Street. Berkeley takes its coffee seriously without making it a whole thing.",
+    hotels: "Berkeley doesn't have much in the way of hotels, but it's close enough to the highway to work as a base if you have a car and want a quieter neighborhood feel.",
+    "things-to-do": "Walking Tennyson Street is genuinely enjoyable — galleries, vintage shops, and independent stores mixed in with the restaurants and cafes. Berkeley Regis Park is nearby for outdoor space.",
+  },
+  "platt-park": {
+    restaurants: "South Pearl Street is one of Denver's best walkable dining strips. The restaurants here tend to be owner-operated and have been around long enough to actually know what they're doing.",
+    bars: "Platt Park's bars are neighborhood institutions — places where the staff knows the regulars and the vibe is more backyard hang than bar scene.",
+    coffee: "South Pearl has excellent coffee options, and the proximity to Washington Park means the morning crowd actually shows up. Good spots for a sit-down morning.",
+    hotels: "Platt Park is mostly residential and short on hotels, but it's a great base for exploring South Denver — close to Washington Park and an easy drive to Cherry Creek.",
+    "things-to-do": "The Platt Park Farmers Market on South Pearl is one of Denver's best. The neighborhood is also walking distance from Washington Park for the full south Denver experience.",
+  },
+  "jefferson-park": {
+    restaurants: "Jeff Park's restaurant scene has grown fast, and most of it is legitimately good. The fact that it's less crowded than RiNo or Highlands is a feature, not a bug.",
+    bars: "The bars in Jefferson Park have some of the best views of the downtown skyline in Denver. Come for the drinks, stay for the backdrop.",
+    coffee: "Smaller coffee spots with a neighborhood feel that hasn't been crowded out yet. Jefferson Park is still at the right stage — discovered enough to be good, not so discovered it's annoying.",
+    hotels: "Jefferson Park sits just west of downtown with easy access to Coors Field and Ball Arena. A smart base for visitors who want to be close to the action without the full downtown premium.",
+    "things-to-do": "Jefferson Park itself has one of the better views of the city. The neighborhood is also a short walk from the stadiums and an easy Uber to anything else in Denver.",
+  },
+  "curtis-park": {
+    restaurants: "Curtis Park sits between Five Points and RiNo, which means it has access to good food without the full weekend crowds. A few spots here are worth specifically seeking out.",
+    bars: "Low-key bars in a neighborhood that's been around long enough to not care about being on trend. The Curtis Park bar scene is for people who live here.",
+    coffee: "Quiet neighborhood cafes in one of Denver's oldest residential areas. Not a destination coffee scene, but good enough that you won't feel like you missed out.",
+    hotels: "Curtis Park doesn't have hotels, but it's central — close to RiNo, Five Points, and downtown, with a residential feel that's hard to find that close to the middle of the city.",
+    "things-to-do": "Curtis Park is one of Denver's most historically significant neighborhoods. The Victorian-era architecture and the park itself are worth a walk, especially before the RiNo weekend crowds show up.",
+  },
+  downtown: {
+    restaurants: "Downtown Denver's restaurant scene has improved significantly. Larimer Square alone has enough good options to fill a full weekend, and the 16th Street Mall corridor has gotten better than its reputation.",
+    bars: "From rooftop bars with mountain views to historic cocktail lounges in old bank buildings, downtown Denver has more range than people give it credit for.",
+    coffee: "Coffee shops built for the commuter and the laptop crowd — fast, good, and spread out enough that you can almost always find a seat on a weekday morning.",
+    hotels: "Downtown Denver has the widest range of hotel options in the city. You're walking distance to Union Station, Coors Field, and the best of LoDo.",
+    "things-to-do": "The 16th Street Mall, Larimer Square, Civic Center Park, and the Convention Center are all here. Downtown is the most walkable part of Denver and a good anchor for any trip.",
+  },
+  "denver-suburbs": {
+    restaurants: "Aurora and Lakewood have some of the best ethnic food in the entire Denver metro — Vietnamese, Korean, Ethiopian, Salvadoran. Most Denverites don't know what they're missing.",
+    bars: "The suburban bar scene is more neighborhood than nightlife, but there are gems if you know where to look. Some of the best dive bars in the metro are out here.",
+    coffee: "The suburbs have a growing independent coffee scene that's worth paying attention to — especially in Lakewood and along the Colfax corridor east of downtown.",
+    hotels: "Suburban hotels offer some of the best value in the metro, especially along I-25 and near the light rail lines that connect quickly to downtown.",
+    "things-to-do": "Red Rocks Amphitheatre, Belmar in Lakewood, the Stanley Marketplace in Aurora, and the Cherry Creek State Park are all out here. The suburbs have more going on than the Denver food press bothers to cover.",
+  },
+  airport: {
+    restaurants: "DEN has more than the usual airport food — there are legitimately good options past security if you know which terminal to head to. The Gaylord Rockies has a full dining scene worth knowing about.",
+    bars: "Airport bars get a bad reputation they don't always deserve. DEN has solid options in the main terminal and both concourses, and the Gaylord Rockies has a bar scene that stands on its own.",
+    coffee: "Coffee options at DEN are better than most airports, with a few local Denver brands represented. Know where to go before you get there and you won't end up at a chain.",
+    hotels: "The Westin at DEN is connected directly to the terminal — genuinely convenient if you have an early flight or a long layover. The Gaylord Rockies is worth it as a destination in itself.",
+    "things-to-do": "The Gaylord Rockies Resort is a legitimate destination even if you're not flying — ice skating, water park, and mountain views that most people in Denver have never taken advantage of.",
   },
 };
 
@@ -248,6 +435,17 @@ export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number
   "five-points":    [39.747, 39.762, -104.980, -104.960],
   cole:             [39.758, 39.775, -104.970, -104.950],
   "washington-park":[39.700, 39.722, -104.975, -104.950],
+  baker:             [39.704, 39.723, -104.998, -104.973],
+  "golden-triangle": [39.727, 39.742, -105.002, -104.980],
+  uptown:            [39.737, 39.751, -104.978, -104.960],
+  "sloan-lake":      [39.750, 39.770, -105.052, -105.020],
+  berkeley:          [39.769, 39.790, -105.056, -105.025],
+  "platt-park":      [39.687, 39.706, -104.986, -104.965],
+  "jefferson-park":  [39.746, 39.762, -105.030, -105.007],
+  "curtis-park":     [39.748, 39.764, -104.978, -104.956],
+  downtown:          [39.735, 39.752, -105.002, -104.975],
+  "denver-suburbs":  [39.600, 39.820, -105.180, -104.720],
+  airport:           [39.828, 39.882, -104.725, -104.630],
 };
 
 export function isInNeighborhood(lat: number | null, lng: number | null, slug: string): boolean {
