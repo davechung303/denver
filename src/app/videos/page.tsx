@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getVideosForPage } from "@/lib/youtube";
-import VideoCard from "@/components/VideoCard";
+import { getAllVideos, isShort } from "@/lib/youtube";
+import VideosClient from "./VideosClient";
 
 export const revalidate = 86400;
 
@@ -11,7 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default async function VideosPage() {
-  const videos = await getVideosForPage(null, null, 50);
+  const allVideos = await getAllVideos();
+  const videos = allVideos.filter((v) => !isShort(v));
+  const shorts = allVideos.filter((v) => isShort(v));
 
   return (
     <>
@@ -27,31 +29,7 @@ export default async function VideosPage() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {videos.length > 0 ? (
-          <>
-            <p className="text-sm text-slate-400 mb-8">{videos.length} videos</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {videos.map((video) => (
-                <VideoCard key={video.video_id} video={video} />
-              ))}
-            </div>
-          </>
-        ) : (
-          <p className="text-center text-slate-400 py-16">Videos loading — check back soon.</p>
-        )}
-
-        <div className="mt-12 text-center">
-          <a
-            href="https://youtube.com/davechung"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-denver-amber text-slate-900 font-semibold px-6 py-3 rounded-full hover:bg-amber-400 transition-colors"
-          >
-            Subscribe on YouTube &rarr;
-          </a>
-        </div>
-      </section>
+      <VideosClient videos={videos} shorts={shorts} />
     </>
   );
 }

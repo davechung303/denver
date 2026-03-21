@@ -9,6 +9,9 @@ export async function GET(req: Request) {
   }
 
   revalidatePath("/");
+  revalidatePath("/articles");
+  revalidatePath("/videos");
+  revalidatePath("/events");
   for (const n of NEIGHBORHOODS) {
     revalidatePath(`/denver/${n.slug}`);
     for (const c of CATEGORIES) {

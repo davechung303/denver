@@ -5,6 +5,7 @@ interface Props {
   video: Video;
   neighborhood?: string;
   category?: string;
+  short?: boolean;
 }
 
 function formatViews(count: number): string {
@@ -17,7 +18,7 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-US", { year: "numeric", month: "short" });
 }
 
-export default function VideoCard({ video, neighborhood, category }: Props) {
+export default function VideoCard({ video, neighborhood, category, short }: Props) {
   return (
     <a
       href={watchUrl(video.video_id)}
@@ -26,7 +27,7 @@ export default function VideoCard({ video, neighborhood, category }: Props) {
       className="group flex flex-col rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors bg-white dark:bg-slate-900"
     >
       {/* Thumbnail */}
-      <div className="relative aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden">
+      <div className={`relative bg-slate-100 dark:bg-slate-800 overflow-hidden ${short ? "aspect-[9/16]" : "aspect-video"}`}>
         {video.thumbnail_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img

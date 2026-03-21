@@ -42,7 +42,7 @@ export async function syncDenverEvents(): Promise<number> {
       apikey: API_KEY,
       city: "Denver",
       stateCode: "CO",
-      radius: "15",
+      radius: "20",
       unit: "miles",
       size: "200",
       page: String(page),

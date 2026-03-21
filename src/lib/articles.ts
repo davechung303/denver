@@ -294,7 +294,6 @@ export async function generateMissingArticles(limit = 10): Promise<{ generated: 
     .from("youtube_videos")
     .select("video_id, title")
     .in("video_id", missingIds)
-    .or("duration_seconds.is.null,duration_seconds.gt.180")
     .order("published_at", { ascending: false })
     .limit(limit);
 

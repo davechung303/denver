@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
-import { getVideosForPage } from "@/lib/youtube";
+import { getPopularDenverVideos } from "@/lib/youtube";
 import { getDenverWeather } from "@/lib/weather";
 import { supabase } from "@/lib/supabase";
 import VideoCard from "@/components/VideoCard";
@@ -9,28 +9,34 @@ import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const metadata: Metadata = {
-  title: "Dave Loves Denver — Hyperlocal Denver Neighborhood Guide",
+  title: "Dave Loves Denver — Local Denver Guides, Videos & Restaurant Reviews",
   description:
-    "A hyperlocal guide to Denver's best neighborhoods, restaurants, hotels, bars, and things to do. Written by a local who actually lives it.",
+    "Hyperlocal Denver guides, restaurant reviews, hotel picks, and neighborhood videos — written and filmed by a Denver local with over 2 million YouTube views.",
   openGraph: {
     title: "Dave Loves Denver",
     description:
-      "A hyperlocal guide to Denver's best neighborhoods, restaurants, hotels, bars, and things to do.",
+      "Hyperlocal Denver guides, restaurant reviews, hotel picks, and neighborhood videos — written and filmed by a Denver local.",
     url: "https://davelovesdenver.com",
   },
 };
 
 export default async function HomePage() {
   const [videos, weather, articlesResult] = await Promise.all([
-    getVideosForPage(null, null, 6),
+    getPopularDenverVideos(6),
     getDenverWeather(),
     supabase
       .from("articles")
-      .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count)")
+      .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count, published_at)")
       .order("generated_at", { ascending: false })
-      .limit(4),
+      .limit(20),
   ]);
-  const articles = articlesResult.data ?? [];
+  const articles = (articlesResult.data ?? [])
+    .sort((a: any, b: any) => {
+      const aDate = a.youtube_videos?.published_at ?? a.generated_at ?? "";
+      const bDate = b.youtube_videos?.published_at ?? b.generated_at ?? "";
+      return bDate.localeCompare(aDate);
+    })
+    .slice(0, 7);
   return (
     <>
       <SchemaMarkup
@@ -45,39 +51,209 @@ export default async function HomePage() {
       />
       {/* Hero */}
       <section className="bg-denver-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
-          {weather && (
-            <div className="mb-8">
-              <WeatherWidget weather={weather} compact />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* Left: text */}
+            <div>
+              {weather && (
+                <div className="mb-6">
+                  <WeatherWidget weather={weather} compact />
+                </div>
+              )}
+              <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-4">
+                Denver, Colorado
+              </p>
+              <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight">
+                Denver guides & videos from someone who actually lives here.
+              </h1>
+              <p className="mt-5 text-base text-white/70 leading-relaxed">
+                I&apos;m Dave. I eat here, drink here, stay here, and film everything. Over 2 million YouTube
+                views and counting — this is the real Denver.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-4">
+                <Link
+                  href="/articles"
+                  className="inline-flex items-center gap-2 bg-denver-amber text-slate-900 font-semibold px-6 py-3 rounded-full hover:bg-amber-400 transition-colors"
+                >
+                  Read the Guides
+                </Link>
+                <Link
+                  href="/videos"
+                  className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded-full hover:bg-white/10 transition-colors"
+                >
+                  Watch the Videos
+                </Link>
+              </div>
+              <div className="mt-8 flex gap-8">
+                <div>
+                  <p className="text-2xl font-bold text-denver-amber">2M+</p>
+                  <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">YouTube Views</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-denver-amber">100+</p>
+                  <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">Guides & Reviews</p>
+                </div>
+              </div>
+            </div>
+            {/* Right: featured video */}
+            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+              <div className="aspect-video">
+                <iframe
+                  src="https://www.youtube.com/embed/ny7PDhZ9FOQ"
+                  title="Denver Noodle Shops You Should Try In 2026"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+              <div className="px-4 py-3 bg-white/5">
+                <p className="text-sm text-white/70">Denver Noodle Shops You Should Try In 2026</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Articles */}
+      {articles.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold">Latest Guides & Reviews</h2>
+              <p className="mt-2 text-slate-500 dark:text-slate-400">
+                Denver restaurants, hotels, bars, and neighborhoods — written by a local.
+              </p>
+            </div>
+            <Link
+              href="/articles"
+              className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
+            >
+              See all guides &rarr;
+            </Link>
+          </div>
+
+          {/* Top 2 featured cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {articles.slice(0, 2).map((article: any) => {
+              const thumb = article.youtube_videos?.thumbnail_url;
+              const photoUrl = article.places_mentioned?.[0]?.photo_url;
+              const src = thumb || (photoUrl?.startsWith("places/")
+                ? `/api/places-photo?name=${encodeURIComponent(photoUrl)}`
+                : photoUrl);
+              return (
+                <Link
+                  key={article.slug}
+                  href={`/articles/${article.slug}`}
+                  className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
+                >
+                  {src && (
+                    <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
+                      <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    </div>
+                  )}
+                  <div className="p-5 flex flex-col gap-2 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {article.neighborhood_slug && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 capitalize">
+                          {article.neighborhood_slug.replace("-", " ")}
+                        </span>
+                      )}
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
+                        {article.content_type}
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-lg leading-snug group-hover:text-denver-amber transition-colors">
+                      {article.title}
+                    </h3>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Bottom row: remaining articles */}
+          {articles.length > 2 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+              {articles.slice(2).map((article: any) => {
+                const thumb = article.youtube_videos?.thumbnail_url;
+                const photoUrl = article.places_mentioned?.[0]?.photo_url;
+                const src = thumb || (photoUrl?.startsWith("places/")
+                  ? `/api/places-photo?name=${encodeURIComponent(photoUrl)}`
+                  : photoUrl);
+                return (
+                  <Link
+                    key={article.slug}
+                    href={`/articles/${article.slug}`}
+                    className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
+                  >
+                    {src && (
+                      <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                      </div>
+                    )}
+                    <div className="p-4 flex flex-col gap-2 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {article.neighborhood_slug && (
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 capitalize">
+                            {article.neighborhood_slug.replace("-", " ")}
+                          </span>
+                        )}
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
+                          {article.content_type}
+                        </span>
+                      </div>
+                      <h3 className="font-semibold text-sm leading-tight group-hover:text-denver-amber transition-colors line-clamp-2">
+                        {article.title}
+                      </h3>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
-          <div className="max-w-3xl">
-            <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-4">
-              Denver, Colorado
-            </p>
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight">
-              The Denver guide that actually feels like Denver.
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl">
-              I&apos;m Dave. I live here, eat here, drink here, and film it all. This is my guide to the
-              neighborhoods, restaurants, hotels, and hidden spots that make this city worth loving.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="#neighborhoods"
-                className="inline-flex items-center gap-2 bg-denver-amber text-slate-900 font-semibold px-6 py-3 rounded-full hover:bg-amber-400 transition-colors"
-              >
-                Explore Neighborhoods
-              </Link>
-              <a
-                href="https://youtube.com/davechung"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded-full hover:bg-white/10 transition-colors"
-              >
-                Watch on YouTube
-              </a>
+
+          <div className="mt-10 text-center">
+            <Link
+              href="/articles"
+              className="inline-flex items-center gap-2 border border-slate-300 dark:border-slate-700 px-6 py-3 rounded-full text-sm font-semibold hover:border-denver-amber hover:text-denver-amber transition-colors"
+            >
+              See all guides &rarr;
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* YouTube Section */}
+      <section className="bg-slate-50 dark:bg-slate-900/50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold">Popular Denver Videos</h2>
+              <p className="mt-2 text-slate-500 dark:text-slate-400">
+                The most-watched Denver neighborhood, restaurant, and hotel videos from my channel.
+              </p>
             </div>
+            <Link
+              href="/videos"
+              className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
+            >
+              See all videos &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {videos.map((video) => (
+              <VideoCard key={video.video_id} video={video} />
+            ))}
+          </div>
+
+          <div className="mt-8 text-center sm:hidden">
+            <Link
+              href="/videos"
+              className="text-sm font-semibold text-denver-amber hover:underline"
+            >
+              See all videos &rarr;
+            </Link>
           </div>
         </div>
       </section>
@@ -86,7 +262,7 @@ export default async function HomePage() {
       <section id="neighborhoods" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            The Neighborhoods
+            Explore by Neighborhood
           </h2>
           <p className="mt-3 text-slate-500 dark:text-slate-400 text-lg">
             Every corner of Denver has its own personality. Here&apos;s where I spend my time.
@@ -132,106 +308,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* YouTube Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold">From My Channel</h2>
-            <p className="mt-2 text-slate-500 dark:text-slate-400">
-              I film everything. Here&apos;s what I&apos;ve been exploring lately.
-            </p>
-          </div>
-          <a
-            href="https://youtube.com/davechung"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
-          >
-            See all videos &rarr;
-          </a>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <VideoCard key={video.video_id} video={video} />
-          ))}
-        </div>
-
-        <div className="mt-8 text-center sm:hidden">
-          <a
-            href="https://youtube.com/davechung"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold text-denver-amber hover:underline"
-          >
-            See all videos &rarr;
-          </a>
-        </div>
-      </section>
-
-      {/* Latest Articles */}
-      {articles.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold">Latest Guides & Articles</h2>
-              <p className="mt-2 text-slate-500 dark:text-slate-400">
-                Denver restaurants, hotels, neighborhoods — written by a local.
-              </p>
-            </div>
-            <Link
-              href="/articles"
-              className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
-            >
-              See all articles &rarr;
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {articles.map((article: any) => (
-              <Link
-                key={article.slug}
-                href={`/articles/${article.slug}`}
-                className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
-              >
-                {(() => {
-                  const thumb = article.youtube_videos?.thumbnail_url;
-                  const photoUrl = (article as any).places_mentioned?.[0]?.photo_url;
-                  const src = thumb || (photoUrl?.startsWith("places/")
-                    ? `/api/places-photo?name=${encodeURIComponent(photoUrl)}`
-                    : photoUrl);
-                  if (!src) return null;
-                  return (
-                    <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
-                      <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-                    </div>
-                  );
-                })()}
-                <div className="p-4 flex flex-col gap-2 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {article.neighborhood_slug && (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 capitalize">
-                        {article.neighborhood_slug.replace("-", " ")}
-                      </span>
-                    )}
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
-                      {article.content_type}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-sm leading-tight group-hover:text-denver-amber transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="mt-8 text-center sm:hidden">
-            <Link href="/articles" className="text-sm font-semibold text-denver-amber hover:underline">
-              See all articles &rarr;
-            </Link>
-          </div>
-        </section>
-      )}
 
       {/* About */}
       <section className="bg-denver-navy text-white">
