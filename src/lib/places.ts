@@ -383,13 +383,15 @@ export async function getPlacesForSubcategory(
   return merged;
 }
 
+const MIN_PLACES = 10;
+
 export async function getPlaces(
   neighborhoodSlug: string,
   categorySlug: string
 ): Promise<Place[]> {
   const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
 
-  // Try Supabase cache first
+  // Try Supabase cache first — only trust it if we have enough results
   const { data: cached } = await supabase
     .from("places")
     .select("*")
@@ -398,10 +400,10 @@ export async function getPlaces(
     .gt("cached_at", cutoff)
     .order("rating", { ascending: false });
 
-  if (cached && cached.length > 0) {
+  if (cached && cached.length >= MIN_PLACES) {
     return cached as Place[];
   }
 
-  // Cache miss — fetch from Google
+  // Cache miss or too sparse — fetch from Google
   return fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
 }
