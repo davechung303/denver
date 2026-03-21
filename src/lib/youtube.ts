@@ -12,6 +12,7 @@ export interface Video {
   thumbnail_url: string | null;
   view_count: number | null;
   published_at: string | null;
+  duration_seconds: number | null;
   tags: string[] | null;
   cached_at: string;
 }
@@ -56,7 +57,7 @@ const NEIGHBORHOOD_KEYWORDS: Record<string, string[]> = {
   "jefferson-park": ["jefferson park", "jeff park", "29th avenue"],
   airport: ["denver airport", "dia", "denver international", "blucifer", "airport horse", "united club", "concourse"],
   downtown: ["downtown denver", "16th street", "civic center", "convention center", "union station"],
-  suburbs: ["aurora", "lakewood", "littleton", "englewood", "arvada", "westminster", "thornton", "centennial", "parker", "castle rock", "gaylord rockies", "broomfield"],
+  "denver-suburbs": ["aurora", "lakewood", "littleton", "englewood", "arvada", "westminster", "thornton", "centennial", "parker", "castle rock", "gaylord rockies", "broomfield"],
 };
 
 const CATEGORY_KEYWORDS: Record<string, string[]> = {
@@ -141,22 +142,16 @@ function mapVideoToPages(video: { title: string; description: string | null; tag
     for (const n of neighborhoodMatches) {
       associations.push({ neighborhood_slug: n.slug, category_slug: null, relevance_score: n.score });
     }
-  } else if (categoryMatches.length > 0) {
+  } else if (categoryMatches.length > 0 && isDenver) {
+    // Denver content with a category but no specific neighborhood — leave neighborhood_slug null
+    // so the Claude classifier can assign the right neighborhood later
     for (const c of categoryMatches) {
-      // Use "downtown" as default neighborhood for Denver content without a specific neighborhood
       associations.push({
-        neighborhood_slug: isDenver ? "downtown" : null,
+        neighborhood_slug: null,
         category_slug: c.slug,
         relevance_score: c.score,
       });
     }
-  } else if (isDenver) {
-    // Denver content that did not match any specific category — still include it
-    associations.push({
-      neighborhood_slug: "downtown",
-      category_slug: "things-to-do",
-      relevance_score: 0.5,
-    });
   }
 
   return associations;
@@ -203,7 +198,7 @@ export async function syncVideos(): Promise<{ synced: number; error?: string }> 
   for (let i = 0; i < videoIds.length; i += 50) {
     const batch = videoIds.slice(i, i + 50);
     const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?id=${batch.join(",")}&part=statistics,snippet&key=${API_KEY}`
+      `https://www.googleapis.com/youtube/v3/videos?id=${batch.join(",")}&part=statistics,snippet,contentDetails&key=${API_KEY}`
     );
     if (!res.ok) continue;
     const data = await res.json();
@@ -223,13 +218,21 @@ export async function syncVideos(): Promise<{ synced: number; error?: string }> 
       thumbnail_url: item.snippet.thumbnails?.high?.url ?? item.snippet.thumbnails?.default?.url ?? null,
       view_count: stats ? parseInt(stats.statistics.viewCount ?? "0") : null,
       published_at: item.snippet.publishedAt ?? null,
+      duration_seconds: stats?.contentDetails?.duration ? parseDuration(stats.contentDetails.duration) : null,
       tags: stats?.snippet?.tags ?? null,
       cached_at: new Date().toISOString(),
     };
   });
 
-  // Upsert videos into Supabase
-  await supabase.from("youtube_videos").upsert(videos, { onConflict: "video_id" });
+  // Upsert videos into Supabase (without duration_seconds to avoid overwriting with null)
+  const videosWithoutDuration = videos.map(({ duration_seconds, ...rest }) => rest);
+  await supabase.from("youtube_videos").upsert(videosWithoutDuration, { onConflict: "video_id" });
+
+  // Update duration_seconds separately — only for videos where we have a valid value
+  const durationUpdates = videos
+    .filter((v) => v.duration_seconds !== null)
+    .map((v) => supabase.from("youtube_videos").update({ duration_seconds: v.duration_seconds }).eq("video_id", v.video_id));
+  await Promise.all(durationUpdates);
 
   // Build and upsert page associations
   const associations = videos.flatMap((v) =>
@@ -289,6 +292,60 @@ export async function getVideosForPage(
     .limit(limit);
 
   return (latest ?? []) as Video[];
+}
+
+// Parse ISO 8601 duration (e.g. "PT3M15S") to total seconds
+function parseDuration(iso: string): number {
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!match) return 0;
+  const h = parseInt(match[1] ?? "0");
+  const m = parseInt(match[2] ?? "0");
+  const s = parseInt(match[3] ?? "0");
+  return h * 3600 + m * 60 + s;
+}
+
+export function isShort(video: Pick<Video, "title" | "tags" | "duration_seconds">): boolean {
+  // Duration-based detection: Shorts are 3 minutes or under
+  if (video.duration_seconds !== null && video.duration_seconds !== undefined) {
+    return video.duration_seconds <= 180;
+  }
+  // Fallback: tag/title signals for older cached videos without duration
+  if (video.title?.toLowerCase().includes("#short")) return true;
+  if (video.tags?.some((t) => t.toLowerCase() === "shorts" || t.toLowerCase() === "short")) return true;
+  return false;
+}
+
+export async function getAllVideos(): Promise<Video[]> {
+  const { data } = await supabase
+    .from("youtube_videos")
+    .select("*")
+    .order("published_at", { ascending: false });
+  return (data ?? []) as Video[];
+}
+
+export async function getPopularDenverVideos(limit = 6): Promise<Video[]> {
+  const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
+
+  // Get video IDs that have Denver associations
+  const { data: assocData } = await supabase
+    .from("video_page_associations")
+    .select("video_id")
+    .not("neighborhood_slug", "is", null);
+
+  const denverIds = [...new Set(assocData?.map((r) => r.video_id) ?? [])];
+  if (denverIds.length === 0) return [];
+
+  // Fetch most-viewed non-Short Denver videos from the past year
+  const { data } = await supabase
+    .from("youtube_videos")
+    .select("*")
+    .in("video_id", denverIds)
+    .gte("published_at", oneYearAgo)
+    .or("duration_seconds.is.null,duration_seconds.gt.180")
+    .order("view_count", { ascending: false })
+    .limit(limit);
+
+  return (data ?? []) as Video[];
 }
 
 export function embedUrl(videoId: string): string {
