@@ -189,7 +189,7 @@ export default async function ArticlePage({ params }: Props) {
         {(() => {
           const a = article as any;
           const photo = a.places_mentioned?.[0];
-          if (a.content_type !== "roundup" || !photo?.photo_url) return null;
+          if (!["roundup", "weekly-guide"].includes(a.content_type) || !photo?.photo_url) return null;
           const imgSrc = photo.photo_url.startsWith("places/")
             ? `/api/places-photo?name=${encodeURIComponent(photo.photo_url)}`
             : photo.photo_url;

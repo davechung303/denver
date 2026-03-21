@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { generateWeeklyOpenings } from "@/lib/weeklyContent";
+import { generateWeeklyGuide } from "@/lib/weeklyGuide";
+
+export const maxDuration = 300;
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get("authorization");
@@ -7,6 +9,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const result = await generateWeeklyOpenings();
+  const result = await generateWeeklyGuide();
   return NextResponse.json(result);
 }
