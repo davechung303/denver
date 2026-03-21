@@ -159,7 +159,13 @@ export async function generateWeeklyGuide(): Promise<{ success: boolean; slug?: 
   const imageCredit = "Nils Huenerfuerst / Unsplash";
   const imageCreditUrl = "https://unsplash.com/photos/the-sun-is-setting-over-a-large-city-OVE2SA0TVJE";
 
+  const saturday = new Date(friday);
+  saturday.setDate(friday.getDate() + 1);
+
   const weekendStr = `${formatShortDate(friday)}–${formatDate(sunday)}`;
+  const fridayLabel = `Friday, ${formatShortDate(friday)}`;
+  const saturdayLabel = `Saturday, ${formatShortDate(saturday)}`;
+  const sundayLabel = `Sunday, ${formatShortDate(sunday)}`;
 
   const prompt = `You are writing a weekly Denver weekend guide for DaveLovesDenver.com, published every Friday. Write it in the first person as Dave Chung — a Denver local.
 
@@ -174,7 +180,12 @@ ADDITIONAL TONE FOR WEEKLY GUIDES:
 - Mix big events (major concerts, sports, festivals) with local stuff (gallery openings, neighborhood events, farmers markets)
 - A "Dave's Pick" moment once in the guide — one thing Dave would personally go to
 
-WEEKEND: ${weekendStr}
+THIS WEEKEND'S EXACT DATES:
+- ${fridayLabel}
+- ${saturdayLabel}
+- ${sundayLabel}
+
+CRITICAL DATE RULE: Only include events that occur on one of the three dates above. If you cannot confirm from the source material that an event occurs on Friday ${formatShortDate(friday)}, Saturday ${formatShortDate(saturday)}, or Sunday ${formatShortDate(sunday)}, do not include it. Never assign an event to a day if the source says it's a different day.
 
 === SOURCE MATERIAL ===
 
@@ -201,12 +212,16 @@ Write a 900–1,200 word weekend guide. Use these section headers (## and ###):
 (2-3 sentence personal opener — what stands out about this specific weekend)
 
 ## Big Shows & Sports
-Group events under day subheaders (### Friday, March X / ### Saturday, March X / ### Sunday, March X).
+Group events under day subheaders using EXACTLY these labels:
+### ${fridayLabel}
+### ${saturdayLabel}
+### ${sundayLabel}
 Under each day, list events as bullets:
 - **[Event Name](url)** | Time | Venue | Price or "tickets available"
+Only include a day subheader if there are actual events on that day.
 
 ## Arts & Culture
-Same day-grouped format with bullets:
+Same day-grouped format (use the same day labels as above):
 - **[Event Name](url)** | Time | Venue | brief note if relevant
 
 ## Get Outside
