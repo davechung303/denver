@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { embedUrl } from "@/lib/youtube";
+import { embedUrl, getVideosForPage } from "@/lib/youtube";
 import { expediaHotelUrl, hotelSearchUrl } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import VideoCard from "@/components/VideoCard";
 
 export const revalidate = 86400;
 
@@ -90,7 +91,14 @@ export default async function ArticlePage({ params }: Props) {
   const neighborhood = article.neighborhood_slug
     ? getNeighborhood(article.neighborhood_slug)
     : null;
-  const related = await getRelatedArticles(slug, article.neighborhood_slug);
+  const isWeeklyGuide = article.content_type === "weekly-guide";
+
+  const [related, weeklyVideos] = await Promise.all([
+    getRelatedArticles(slug, article.neighborhood_slug),
+    isWeeklyGuide
+      ? getVideosForPage(null, article.category_slug ?? "things-to-do", 3)
+      : Promise.resolve([]),
+  ]);
 
   const expediaUrl = article.expedia_url ??
     expediaHotelUrl(neighborhood ? `${neighborhood.name} Denver` : "Denver Colorado");
@@ -125,6 +133,14 @@ export default async function ArticlePage({ params }: Props) {
           { name: "Articles", url: "https://davelovesdenver.com/articles" },
           { name: article.title, url: `https://davelovesdenver.com/articles/${slug}` },
         ]}
+        article={{
+          title: article.title,
+          slug,
+          publishedAt: (video as any)?.published_at ?? article.generated_at,
+          updatedAt: article.updated_at,
+          imageUrl: (video as any)?.thumbnail_url ?? (article as any).places_mentioned?.[0]?.photo_url ?? null,
+          description: article.content.slice(0, 200).replace(/\n/g, " "),
+        }}
         videos={video ? [{
           name: video.title,
           description: video.description ?? "",
@@ -265,6 +281,22 @@ export default async function ArticlePage({ params }: Props) {
             );
           })}
         </div>
+
+        {/* Related videos for weekly guides */}
+        {isWeeklyGuide && weeklyVideos.length > 0 && (
+          <div className="mb-10">
+            <h2 className="text-xl font-bold mb-2">Watch Dave's Denver Videos</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-5">
+              First-hand looks at the places and neighborhoods mentioned above.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {weeklyVideos.map((v) => (
+                <VideoCard key={v.video_id} video={v} />
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden mb-10">
           <div className="px-5 py-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
             <p className="text-sm font-semibold">

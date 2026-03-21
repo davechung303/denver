@@ -11,13 +11,33 @@ interface VideoItem {
   videoId: string;
 }
 
+interface ArticleItem {
+  title: string;
+  slug: string;
+  publishedAt: string | null;
+  updatedAt: string;
+  imageUrl?: string | null;
+  description?: string;
+}
+
 interface Props {
   breadcrumbs?: BreadcrumbItem[];
   videos?: VideoItem[];
   websiteSearch?: boolean;
+  article?: ArticleItem;
 }
 
-export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch }: Props) {
+const DAVE_PERSON = {
+  "@type": "Person",
+  name: "Dave Chung",
+  url: "https://davelovesdenver.com/about",
+  sameAs: [
+    "https://www.youtube.com/@davechung",
+    "https://davelovesdenver.com/about",
+  ],
+};
+
+export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, article }: Props) {
   const schemas: object[] = [];
 
   // WebSite schema with sitelinks searchbox
@@ -42,6 +62,30 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch }: Pro
         name: item.name,
         item: item.url,
       })),
+    });
+  }
+
+  // Article + Person schema
+  if (article) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: article.title,
+      url: `https://davelovesdenver.com/articles/${article.slug}`,
+      datePublished: article.publishedAt ?? article.updatedAt,
+      dateModified: article.updatedAt,
+      author: DAVE_PERSON,
+      publisher: {
+        "@type": "Organization",
+        name: "Dave Loves Denver",
+        url: "https://davelovesdenver.com",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://davelovesdenver.com/icon.png",
+        },
+      },
+      ...(article.imageUrl ? { image: article.imageUrl } : {}),
+      ...(article.description ? { description: article.description } : {}),
     });
   }
 
