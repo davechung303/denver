@@ -13,6 +13,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import MapWrapper from "@/components/MapWrapper";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const dynamicParams = true; // render new neighborhoods on-demand, don't pre-build all
 
 interface Props {
   params: Promise<{ neighborhood: string }>;

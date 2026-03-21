@@ -11,6 +11,7 @@ import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const dynamicParams = true; // render unknown params on-demand, don't pre-build all combinations
 
 interface Props {
   params: Promise<{ neighborhood: string; category: string }>;
