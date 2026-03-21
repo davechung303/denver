@@ -287,7 +287,7 @@ export default async function ArticlePage({ params }: Props) {
           <div className="mb-10">
             <h2 className="text-xl font-bold mb-2">Watch Dave's Denver Videos</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-5">
-              First-hand looks at the places and neighborhoods mentioned above.
+              More from Dave's Denver series.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {weeklyVideos.map((v) => (
