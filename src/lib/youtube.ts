@@ -268,12 +268,13 @@ export async function getVideosForPage(
     await syncVideos();
   }
 
-  // Query via associations
+  // Query via associations — fetch more than needed to account for duplicate video_ids
+  // (a video can have multiple associations for the same neighborhood with different categories)
   let query = supabase
     .from("video_page_associations")
     .select("video_id, relevance_score, youtube_videos(video_id, title, description, thumbnail_url, view_count, published_at, tags, cached_at)")
     .order("relevance_score", { ascending: false })
-    .limit(limit);
+    .limit(limit * 5);
 
   if (neighborhoodSlug) query = query.eq("neighborhood_slug", neighborhoodSlug);
   if (categorySlug) query = query.eq("category_slug", categorySlug);
@@ -281,7 +282,16 @@ export async function getVideosForPage(
   const { data } = await query;
 
   if (data && data.length > 0) {
-    return data.map((row: any) => row.youtube_videos).filter(Boolean) as Video[];
+    const seen = new Set<string>();
+    const unique = data
+      .map((row: any) => row.youtube_videos)
+      .filter(Boolean)
+      .filter((v: any) => {
+        if (seen.has(v.video_id)) return false;
+        seen.add(v.video_id);
+        return true;
+      });
+    return unique.slice(0, limit) as Video[];
   }
 
   // Fallback: return latest videos if no associations match
