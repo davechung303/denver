@@ -42,20 +42,100 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// Compact inline place list for the at-a-glance sections
+function PlaceRow({ place, rank, neighborhoodSlug, categorySlug }: {
+  place: any;
+  rank: number;
+  neighborhoodSlug: string;
+  categorySlug: string;
+}) {
+  return (
+    <Link
+      href={`/denver/${neighborhoodSlug}/${categorySlug}/${place.slug}`}
+      className="flex items-center gap-3 py-3 border-b border-slate-100 dark:border-slate-800 last:border-0 hover:bg-slate-50 dark:hover:bg-slate-800/50 -mx-4 px-4 transition-colors group"
+    >
+      <span className="text-sm text-slate-300 dark:text-slate-600 w-5 shrink-0 text-right">{rank}</span>
+      <span className="flex-1 font-medium text-sm group-hover:text-denver-amber transition-colors leading-tight">
+        {place.name}
+      </span>
+      <span className="flex items-center gap-1.5 text-xs shrink-0">
+        {place.rating && (
+          <>
+            <span className="text-amber-400">★</span>
+            <span className="font-medium text-slate-700 dark:text-slate-300">{place.rating.toFixed(1)}</span>
+            {place.review_count && (
+              <span className="text-slate-400 hidden sm:inline">({place.review_count.toLocaleString()})</span>
+            )}
+          </>
+        )}
+        {place.price_level > 0 && (
+          <span className="text-slate-400 ml-1">{"$".repeat(place.price_level)}</span>
+        )}
+      </span>
+    </Link>
+  );
+}
+
+function CategorySection({ title, slug, categorySlug, places, limit }: {
+  title: string;
+  slug: string;
+  categorySlug: string;
+  places: any[];
+  limit: number;
+}) {
+  if (places.length === 0) return null;
+  const shown = places.slice(0, limit);
+
+  return (
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-4 border-b border-slate-100 dark:border-slate-800">
+        <Link
+          href={`/denver/${slug}/${categorySlug}`}
+          className="text-lg font-bold hover:text-denver-amber transition-colors"
+        >
+          {title}
+        </Link>
+        <Link
+          href={`/denver/${slug}/${categorySlug}`}
+          className="text-sm font-semibold text-denver-amber hover:underline shrink-0"
+        >
+          See all &rarr;
+        </Link>
+      </div>
+      <div className="px-4">
+        {shown.map((place, i) => (
+          <PlaceRow
+            key={place.slug}
+            place={place}
+            rank={i + 1}
+            neighborhoodSlug={slug}
+            categorySlug={categorySlug}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default async function NeighborhoodPage({ params }: Props) {
   const { neighborhood: slug } = await params;
   const n = getNeighborhood(slug);
   if (!n) notFound();
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
-  const [videos, events, weather, restaurantPlaces] = await Promise.all([
+
+  const [videos, events, weather, restaurants, hotels, bars, thingsToDo, coffee] = await Promise.all([
     getVideosForPage(slug, null, 3),
     getEventsForNeighborhood(slug, 4),
     getDenverWeather(),
     getPlaces(slug, "restaurants"),
+    getPlaces(slug, "hotels"),
+    getPlaces(slug, "bars"),
+    getPlaces(slug, "things-to-do"),
+    getPlaces(slug, "coffee"),
   ]);
 
-  const mapPins = restaurantPlaces
+  const mapPins = restaurants
     .filter((p) => p.lat && p.lng)
     .slice(0, 20)
     .map((p) => ({ name: p.name, lat: p.lat!, lng: p.lng!, slug: p.slug, rating: p.rating }));
@@ -103,21 +183,26 @@ export default async function NeighborhoodPage({ params }: Props) {
         </div>
       )}
 
-      {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold mb-8">Explore {n.name}</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {CATEGORIES.map((c) => (
-            <Link
-              key={c.slug}
-              href={`/denver/${n.slug}/${c.slug}`}
-              className="group flex flex-col items-center justify-center gap-3 p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-denver-amber hover:shadow-md transition-all"
-            >
-              <span className="text-sm font-semibold group-hover:text-denver-amber transition-colors">
-                {c.name}
-              </span>
-            </Link>
-          ))}
+      {/* At-a-glance place sections */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Restaurants — spans full width, shows 10 */}
+          {restaurants.length > 0 && (
+            <div className="lg:col-span-2">
+              <CategorySection
+                title={`Restaurants in ${n.name}`}
+                slug={slug}
+                categorySlug="restaurants"
+                places={restaurants}
+                limit={10}
+              />
+            </div>
+          )}
+          {/* Other categories — 2-col grid, 5 each */}
+          <CategorySection title={`Hotels near ${n.name}`} slug={slug} categorySlug="hotels" places={hotels} limit={5} />
+          <CategorySection title={`Bars & Drinks in ${n.name}`} slug={slug} categorySlug="bars" places={bars} limit={5} />
+          <CategorySection title={`Things To Do in ${n.name}`} slug={slug} categorySlug="things-to-do" places={thingsToDo} limit={5} />
+          <CategorySection title={`Coffee in ${n.name}`} slug={slug} categorySlug="coffee" places={coffee} limit={5} />
         </div>
       </section>
 
