@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { supabase } from "./supabase";
 import { VOICE_GUIDE } from "./voiceGuide";
 import { expediaHotelUrl } from "./travelpayouts";
+import { injectInternalLinks } from "./internalLinks";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
@@ -243,7 +244,7 @@ RULES:
     const content = message.content[0];
     if (content.type !== "text") return { success: false, error: "Unexpected response type" };
 
-    const articleText = content.text.trim();
+    const articleText = await injectInternalLinks(content.text.trim());
 
     const placesData = imageUrl
       ? [{ photo_url: imageUrl, photo_credit: imageCredit, photo_credit_url: imageCreditUrl }]
