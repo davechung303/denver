@@ -43,7 +43,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Murals around every corner, world-class breweries, and some of the city's best restaurants. RiNo is where Denver's art scene lives.",
     gradient: "from-rose-600 to-orange-500",
-    image: "https://images.unsplash.com/photo-r6BdUpN_iSk?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1573297627466-6bed413a43f1?auto=format&fit=crop&w=1200&q=80",
     searchName: "River North Art District RiNo Denver Colorado",
     lat: 39.7656, lng: -104.9869,
   },
@@ -54,7 +54,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Historic cobblestone streets, Union Station, rooftop bars, and Coors Field. The beating heart of downtown Denver.",
     gradient: "from-slate-700 to-slate-500",
-    image: "https://images.unsplash.com/photo-DZ7ZgGDsDrc?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1566036604088-319bcef67086?auto=format&fit=crop&w=1200&q=80",
     searchName: "LoDo Lower Downtown Denver Colorado",
     lat: 39.7527, lng: -104.9987,
   },
@@ -65,7 +65,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Dive bars, live music venues, vintage shops, and incredible street art. Cap Hill has a personality unlike anywhere else in the city.",
     gradient: "from-violet-700 to-purple-500",
-    image: "https://images.unsplash.com/photo-pDQRQ7lJxZ4?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1586193771953-929042f3a381?auto=format&fit=crop&w=1200&q=80",
     searchName: "Capitol Hill Denver Colorado",
     lat: 39.7348, lng: -104.9782,
   },
@@ -76,7 +76,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Stunning views of the skyline, the best brunch spots in Denver, and a neighborhood that somehow stays cool without trying.",
     gradient: "from-emerald-700 to-teal-500",
-    image: "https://images.unsplash.com/photo-tjoxkIODoCE?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?auto=format&fit=crop&w=1200&q=80",
     searchName: "Highlands LoHi Denver Colorado",
     lat: 39.7604, lng: -105.0153,
   },
@@ -87,7 +87,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Denver's upscale shopping and dining district. Local boutiques, excellent restaurants, and a farmers market worth the trip.",
     gradient: "from-amber-600 to-yellow-500",
-    image: "https://images.unsplash.com/photo-LwC5Lpn9O-I?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1548966595-d87fccfc8a7f?auto=format&fit=crop&w=1200&q=80",
     searchName: "Cherry Creek Denver Colorado",
     lat: 39.7155, lng: -104.9522,
   },
@@ -98,7 +98,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Once called the Harlem of the West, Five Points is rich with jazz history, soul food, and a creative energy that's coming back strong.",
     gradient: "from-orange-700 to-amber-500",
-    image: "https://images.unsplash.com/photo-hoUDqHwhhfw?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1677051949386-d999c9076424?auto=format&fit=crop&w=1200&q=80",
     searchName: "Five Points Denver Colorado",
     lat: 39.7544, lng: -104.9742,
   },
@@ -109,7 +109,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "One of Denver's most underrated neighborhoods. Cole is quietly becoming one of the most interesting places to eat and drink in the city.",
     gradient: "from-lime-700 to-green-500",
-    image: "https://images.unsplash.com/photo-eHreQ785wQU?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1664736608475-0460bbe37bc2?auto=format&fit=crop&w=1200&q=80",
     searchName: "Cole neighborhood Denver Colorado",
     lat: 39.7665, lng: -104.9588,
   },
@@ -120,7 +120,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Built around one of Denver's most beautiful parks. Wash Park is the go-to for morning runs, coffee hangs, and underrated brunch spots.",
     gradient: "from-sky-700 to-blue-500",
-    image: "https://images.unsplash.com/photo-wGhmJYwXfU4?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1632714393265-9adbc6ab8a91?auto=format&fit=crop&w=1200&q=80",
     searchName: "Washington Park Denver Colorado",
     lat: 39.7112, lng: -104.9638,
   },
@@ -131,7 +131,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "South Broadway runs through Baker and brings with it some of Denver's best dive bars, vintage shops, and no-frills restaurants. This is the neighborhood that doesn't care what's trendy.",
     gradient: "from-red-700 to-rose-500",
-    image: "https://images.unsplash.com/photo-ZYmk2tZ1fck?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1548966595-d87fccfc8a7f?auto=format&fit=crop&w=1200&q=80",
     searchName: "Baker neighborhood South Broadway Denver Colorado",
     lat: 39.7135, lng: -104.9862,
   },
@@ -142,7 +142,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Home to the Denver Art Museum, Clyfford Still Museum, and the History Colorado Center. The Golden Triangle is where culture actually lives in this city.",
     gradient: "from-fuchsia-700 to-pink-500",
-    image: "https://images.unsplash.com/photo-6_YdSgDDueA?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1586193771953-929042f3a381?auto=format&fit=crop&w=1200&q=80",
     searchName: "Golden Triangle Denver Colorado Santa Fe Arts District",
     lat: 39.7356, lng: -104.9908,
   },
@@ -153,7 +153,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "17th Avenue between downtown and City Park is one of the most underrated dining corridors in Denver. Uptown has been quietly great for years without making a big deal about it.",
     gradient: "from-cyan-700 to-teal-500",
-    image: "https://images.unsplash.com/photo-lNROJU3a4Ys?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1702568681326-7aff5eb7e80b?auto=format&fit=crop&w=1200&q=80",
     searchName: "Uptown Denver Colorado 17th Avenue restaurant row",
     lat: 39.7432, lng: -104.9702,
   },
@@ -164,7 +164,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Centered around one of Denver's largest lakes, Sloan Lake has a neighborhood feel that's hard to find this close to downtown. The food scene has quietly gotten really good.",
     gradient: "from-blue-700 to-cyan-500",
-    image: "https://images.unsplash.com/photo-O_QJLYPvqa4?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1712403235961-3d0a14d8e33b?auto=format&fit=crop&w=1200&q=80",
     searchName: "Sloan Lake Denver Colorado Edgewater",
     lat: 39.7589, lng: -105.0356,
   },
@@ -175,7 +175,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Tennyson Street is one of the most walkable strips in Denver — independent coffee shops, galleries, and restaurants that have been here for years alongside genuinely good newcomers.",
     gradient: "from-lime-600 to-green-400",
-    image: "https://images.unsplash.com/photo-rDp8-oeASOs?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?auto=format&fit=crop&w=1200&q=80",
     searchName: "Berkeley Denver Colorado Tennyson Street",
     lat: 39.7784, lng: -105.0388,
   },
@@ -186,7 +186,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "South Pearl Street is the kind of walkable neighborhood strip that most cities wish they had. Platt Park feels residential in the best way — like the locals actually chose it.",
     gradient: "from-pink-700 to-rose-400",
-    image: "https://images.unsplash.com/photo-OVE2SA0TVJE?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1200&q=80",
     searchName: "Platt Park Denver Colorado South Pearl Street",
     lat: 39.6962, lng: -104.9762,
   },
@@ -197,7 +197,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Jefferson Park sits just west of downtown with some of the best skyline views in the city. The bar and restaurant scene has grown fast — and most people still haven't found it.",
     gradient: "from-indigo-700 to-violet-500",
-    image: "https://images.unsplash.com/photo-A4RpHR83luM?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1619856699906-09e1f58c98b1?auto=format&fit=crop&w=1200&q=80",
     searchName: "Jefferson Park Denver Colorado Jeff Park",
     lat: 39.7535, lng: -105.0168,
   },
@@ -208,7 +208,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "One of Denver's oldest neighborhoods, Curtis Park sits between Five Points and RiNo with the quiet confidence of a place that was here before either of those neighborhoods got cool.",
     gradient: "from-orange-600 to-red-500",
-    image: "https://images.unsplash.com/photo-zrhXd14ICRo?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1483937107025-27d8bebc7074?auto=format&fit=crop&w=1200&q=80",
     searchName: "Curtis Park Denver Colorado",
     lat: 39.7562, lng: -104.9672,
   },
@@ -219,7 +219,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "The 16th Street Mall, Larimer Square, Civic Center Park — downtown Denver is more walkable than most people give it credit for, and the food scene has gotten significantly better.",
     gradient: "from-zinc-700 to-slate-500",
-    image: "https://images.unsplash.com/photo-hoUDqHwhhfw?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1677051949386-d999c9076424?auto=format&fit=crop&w=1200&q=80",
     searchName: "Downtown Denver Colorado 16th Street Mall",
     lat: 39.7420, lng: -104.9876,
   },
@@ -230,7 +230,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Aurora, Lakewood, Littleton, Englewood — the suburbs have gotten genuinely interesting. Some of the best ethnic food in the entire metro is out here, and most Denverites haven't found it yet.",
     gradient: "from-stone-600 to-neutral-500",
-    image: "https://images.unsplash.com/photo-h_3LSVgAxRo?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1613003492754-a022330915ac?auto=format&fit=crop&w=1200&q=80",
     searchName: "Aurora Lakewood Littleton Englewood Denver suburbs Colorado",
     lat: 39.7294, lng: -104.8319,
   },
@@ -241,7 +241,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "DEN is one of the biggest airports in the world — confusing if you don't know it, genuinely great if you do. Plus the Gaylord Rockies is worth a visit even if you're not flying anywhere.",
     gradient: "from-blue-800 to-indigo-600",
-    image: "https://images.unsplash.com/photo-rBKkZiQc4rE?auto=format&fit=crop&w=1600&q=80",
+    image: "https://images.unsplash.com/photo-1698760000085-1b0af6df057e?auto=format&fit=crop&w=1200&q=80",
     searchName: "Denver International Airport DIA Gaylord Rockies Colorado",
     lat: 39.8561, lng: -104.6737,
   },
