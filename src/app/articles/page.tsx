@@ -70,7 +70,8 @@ export default async function ArticlesPage() {
                   className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
                 >
                   {(() => {
-                    const thumb = article.youtube_videos?.thumbnail_url;
+                    const rawThumb = article.youtube_videos?.thumbnail_url;
+                    const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
                     const pUrl = article.places_mentioned?.[0]?.photo_url;
                     const src = thumb || (pUrl?.startsWith("places/")
                       ? `/api/places-photo?name=${encodeURIComponent(pUrl)}`
@@ -78,7 +79,17 @@ export default async function ArticlesPage() {
                     if (!src) return null;
                     return (
                       <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                        <img
+                          src={src}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                          onError={(e) => {
+                            if (rawThumb && (e.target as HTMLImageElement).src !== rawThumb) {
+                              (e.target as HTMLImageElement).src = rawThumb;
+                            }
+                          }}
+                        />
                       </div>
                     );
                   })()}
