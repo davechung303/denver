@@ -19,9 +19,6 @@ interface Props {
   params: Promise<{ neighborhood: string }>;
 }
 
-export async function generateStaticParams() {
-  return NEIGHBORHOODS.map((n) => ({ neighborhood: n.slug }));
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { neighborhood: slug } = await params;

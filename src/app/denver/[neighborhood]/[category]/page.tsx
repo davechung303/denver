@@ -17,11 +17,6 @@ interface Props {
   params: Promise<{ neighborhood: string; category: string }>;
 }
 
-export async function generateStaticParams() {
-  return NEIGHBORHOODS.flatMap((n) =>
-    CATEGORIES.map((c) => ({ neighborhood: n.slug, category: c.slug }))
-  );
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { neighborhood: nSlug, category: cSlug } = await params;
