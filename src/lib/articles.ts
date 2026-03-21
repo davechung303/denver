@@ -91,7 +91,7 @@ export async function generateArticle(videoId: string): Promise<{ success: boole
   // Fetch video data
   const { data: video } = await supabase
     .from("youtube_videos")
-    .select("*")
+    .select("*, published_at")
     .eq("video_id", videoId)
     .single();
 
@@ -258,7 +258,7 @@ Return ONLY the article text.`;
       category_slug: category,
       expedia_url: expediaUrl,
       places_mentioned: [],
-      generated_at: new Date().toISOString(),
+      generated_at: video.published_at ?? new Date().toISOString(),
       updated_at: new Date().toISOString(),
     }, { onConflict: "slug" });
 
