@@ -80,29 +80,32 @@ async function fetchReddit(): Promise<string> {
   }
 }
 
-// Use Brave Search for JS-rendered or paywalled sources
-async function braveSearch(query: string, count = 5): Promise<string> {
-  try {
-    const encoded = encodeURIComponent(query);
-    const res = await fetch(
-      `https://api.search.brave.com/res/v1/web/search?q=${encoded}&count=${count}&freshness=pw`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Accept-Encoding": "gzip",
-          "X-Subscription-Token": process.env.BRAVE_SEARCH_API_KEY ?? "",
-        },
-        signal: AbortSignal.timeout(8000),
-      }
-    );
-    if (!res.ok) return "";
-    const data = await res.json();
-    return (data.web?.results ?? [])
-      .map((r: any) => `${r.title}: ${r.description} — ${r.url}`)
-      .join("\n");
-  } catch {
-    return "";
-  }
+// Fetch this weekend's ticketed events from Supabase (already synced from Ticketmaster)
+async function fetchWeekendEvents(friday: Date, sunday: Date): Promise<string> {
+  const start = new Date(friday);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(sunday);
+  end.setHours(23, 59, 59, 999);
+
+  const { data } = await supabase
+    .from("events")
+    .select("name, start_time, venue_name, venue_address, url, is_free, description")
+    .gte("start_time", start.toISOString())
+    .lte("start_time", end.toISOString())
+    .order("start_time", { ascending: true })
+    .limit(40);
+
+  if (!data || data.length === 0) return "";
+
+  return data
+    .map((e: any) => {
+      const date = new Date(e.start_time).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      const time = new Date(e.start_time).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+      const free = e.is_free ? " (Free)" : "";
+      const venue = e.venue_name ? ` @ ${e.venue_name}` : "";
+      return `${e.name}${venue} — ${date} ${time}${free} — ${e.url}`;
+    })
+    .join("\n");
 }
 
 // Returns this Friday's date (or today if today is Friday)
@@ -142,12 +145,12 @@ export async function generateWeeklyGuide(): Promise<{ success: boolean; slug?: 
   if (existing) return { success: true, slug };
 
   // Fetch all sources in parallel
-  const [westword, denverite, kidsOut, reddit, seatgeekResults] = await Promise.all([
+  const [westword, denverite, kidsOut, reddit, ticketmasterEvents] = await Promise.all([
     fetchSource("https://www.westword.com/things-to-do/", 4000),
     fetchSource("https://denverite.com/category/entertainment/things-to-do-in-denver/", 3000),
     fetchSource("https://denver.kidsoutandabout.com/content/things-do-weekend-and-around-denver", 3000),
     fetchReddit(),
-    braveSearch(`Denver events this weekend ${formatShortDate(friday)} site:seatgeek.com OR site:axs.com OR site:ticketmaster.com`, 8),
+    fetchWeekendEvents(friday, sunday),
   ]);
 
   // Pick best image source (prefer Westword, then Denverite)
@@ -196,8 +199,8 @@ ${kidsOut.text || "Not available"}
 REDDIT (Denver events community posts):
 ${reddit || "Not available"}
 
-CONCERTS & TICKETED EVENTS (from SeatGeek/Ticketmaster/AXS):
-${seatgeekResults || "Not available"}
+CONCERTS & TICKETED EVENTS (from Ticketmaster — includes venue, date/time, ticket URL):
+${ticketmasterEvents || "Not available"}
 
 === ARTICLE STRUCTURE ===
 
