@@ -63,8 +63,8 @@ export default async function CategoryPage({ params }: Props) {
       (b.rating ?? 0) * Math.log10((b.review_count ?? 0) + 10) -
       (a.rating ?? 0) * Math.log10((a.review_count ?? 0) + 10)
   );
-  const topPicks = scored.slice(0, 3);
-  const rest = scored.slice(3);
+  const topPicks = scored.slice(0, 5);
+  const rest = scored.slice(5);
 
   return (
     <>
@@ -149,7 +149,7 @@ export default async function CategoryPage({ params }: Props) {
             {topPicks.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-6">Top Local Picks</h2>
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {topPicks.map((place, i) => {
                     const tag = getPlaceTag(place.types);
                     const photo = place.photos?.[0];
@@ -157,26 +157,26 @@ export default async function CategoryPage({ params }: Props) {
                       <a
                         key={place.place_id}
                         href={`/denver/${nSlug}/${cSlug}/${place.slug}`}
-                        className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
+                        className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200 flex flex-col"
                       >
                         {/* Photo */}
-                        <div className="w-36 sm:w-48 shrink-0 relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
                           {photo ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
-                              src={photoUrl(photo.name, 400, 300)}
+                              src={photoUrl(photo.name, 600, 400)}
                               alt={place.name}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                           ) : (
-                            <div className="w-full h-full min-h-[120px]" />
+                            <div className="w-full h-full" />
                           )}
                           <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">
                             #{i + 1}
                           </span>
                         </div>
                         {/* Info */}
-                        <div className="flex flex-col justify-center py-4 pr-4 gap-1.5">
+                        <div className="flex flex-col p-4 gap-1.5 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             {tag && (
                               <span className="text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">
@@ -189,7 +189,7 @@ export default async function CategoryPage({ params }: Props) {
                               </span>
                             )}
                           </div>
-                          <h3 className="font-bold text-lg leading-tight group-hover:text-denver-amber transition-colors">
+                          <h3 className="font-bold text-base leading-tight group-hover:text-denver-amber transition-colors">
                             {place.name}
                           </h3>
                           {place.rating && (
@@ -197,7 +197,7 @@ export default async function CategoryPage({ params }: Props) {
                               <span className="font-semibold text-amber-500">{place.rating.toFixed(1)}</span>
                               <span className="text-amber-400">★</span>
                               {place.review_count && (
-                                <span className="text-slate-400">({place.review_count.toLocaleString()} reviews)</span>
+                                <span className="text-slate-400">({place.review_count.toLocaleString()})</span>
                               )}
                               {place.price_level != null && place.price_level > 0 && (
                                 <span className="text-slate-400">· {"$".repeat(place.price_level)}</span>
@@ -218,7 +218,11 @@ export default async function CategoryPage({ params }: Props) {
             {/* All listings grid */}
             {rest.length > 0 && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">All {c!.name} in {n!.name}</h2>
+                <h2 className="text-2xl font-bold mb-6">
+                  {cSlug === "things-to-do"
+                    ? `More things to do in ${n!.name}`
+                    : `More ${n!.name} ${c!.name.toLowerCase()}`}
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {rest.map((place) => (
                     <PlaceCard
