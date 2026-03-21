@@ -139,7 +139,9 @@ export default async function NeighborhoodPage({ params }: Props) {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className={`absolute inset-0 bg-gradient-to-br ${n.gradient} opacity-95`} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/30" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-white">
           <p className="text-white/70 text-sm font-medium uppercase tracking-widest mb-3">Denver Neighborhood</p>
           <h1 className="text-5xl md:text-6xl font-bold">{n.name}</h1>
@@ -237,7 +239,9 @@ export default async function NeighborhoodPage({ params }: Props) {
               href={`/denver/${nb.slug}`}
               className="group relative overflow-hidden rounded-2xl aspect-video flex flex-col justify-end p-4 hover:scale-[1.02] transition-transform duration-200"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${nb.gradient} opacity-90 group-hover:opacity-100 transition-opacity`} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={nb.image} alt={nb.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-all" />
               <div className="relative z-10 text-white">
                 <p className="text-xs text-white/70">{nb.tagline}</p>
                 <h3 className="font-bold">{nb.name}</h3>

@@ -248,7 +248,9 @@ export default async function HomePage() {
               className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col justify-end p-6 bg-gradient-to-br text-white hover:scale-[1.02] transition-transform duration-200"
               style={{ background: undefined }}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${n.gradient} opacity-90 group-hover:opacity-100 transition-opacity`} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-all" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white/70 mb-1">{n.tagline}</p>
                 <h3 className="text-2xl font-bold">{n.name}</h3>

@@ -82,7 +82,9 @@ export default function AboutPage() {
                 href={`/denver/${n.slug}`}
                 className="group relative overflow-hidden rounded-xl aspect-video flex items-end p-3 hover:scale-[1.02] transition-transform"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${n.gradient} opacity-90`} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
                 <span className="relative z-10 text-white text-sm font-bold">{n.name}</span>
               </Link>
             ))}
