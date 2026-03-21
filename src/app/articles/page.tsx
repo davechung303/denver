@@ -96,11 +96,6 @@ export default async function ArticlesPage() {
                   })()}
                   <div className="p-4 flex flex-col gap-2 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      {article.neighborhood_slug && (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 capitalize">
-                          {article.neighborhood_slug.replace("-", " ")}
-                        </span>
-                      )}
                       <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
                         {article.content_type}
                       </span>

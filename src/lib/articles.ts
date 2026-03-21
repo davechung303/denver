@@ -195,7 +195,7 @@ SOCIAL FRAMING: Dave mentions who a place is good for, but ONCE per article at m
 STRUCTURE:
 1. Open with Dave's honest, specific reaction — his direct take on what makes this worth writing about. No generic setup.
 2. Describe what he actually experienced — atmosphere, specific dishes or moments, what stood out. Concrete details only.
-3. The honest part — what works, what doesn't, what surprised him.
+3. What works, what doesn't, what surprised him.
 4. Practical context woven naturally into the writing — parking, best time to go, what to order, whether to book. No "PRACTICAL DETAILS" header.
 5. Close with 1-2 sentences of direct recommendation. No flowery wrap-up. No "DAVE'S VERDICT" header.
 
@@ -207,20 +207,20 @@ ${transcript ? `TRANSCRIPT: ${transcript.slice(0, 4000)}` : "No transcript avail
 CONTENT TYPE: ${contentType} (${contentType === "guide" ? "roundup covering multiple places" : "single place review"})
 ${neighborhood ? `NEIGHBORHOOD: ${neighborhood}` : ""}
 ${category ? `CATEGORY: ${category}` : ""}
-${realPlaces ? `REAL BUSINESSES (ONLY mention businesses from this list — never invent names):\n${realPlaces}` : ""}
+${realPlaces ? `NEARBY PLACES (supplementary reference — prioritize names from the transcript and description above all else):\n${realPlaces}` : ""}
 ${pressMentions ? `LOCAL PRESS (weave in naturally if relevant, do not quote directly):\n${pressMentions}` : ""}
 
 === WRITING INSTRUCTIONS ===
 
-Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article.
+Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article. Stay tightly focused on what's in the video — the transcript and description are your primary source.
 
 ${contentType === "guide"
-  ? "For each place: give it a ## header with the business name. Write 2-4 sentences that describe what makes it worth going, what to get, and one specific detail that sets it apart. Vary the sentence structure between entries — they should not all sound the same."
-  : "Write 4-6 paragraphs covering: what drew him there, what the experience was actually like, specific things he tried, what works and what doesn't, and a closing take."}
+  ? "For each place covered in the video: give it a ## header with the business name. Write 2-4 sentences that describe what makes it worth going, what to get, and one specific detail that sets it apart. Vary the sentence structure between entries — they should not all sound the same."
+  : "Write 4-6 paragraphs covering: what drew him there, what the experience was actually like, specific things he tried, what worked and what didn't, and a closing take."}
 
 CRITICAL RULES:
 - First person as Dave throughout
-- Only mention businesses from the REAL BUSINESSES list above — never hallucinate names
+- Use business names exactly as they appear in the transcript or description — do not invent names not mentioned in the video
 - Do not invent prices, hours, or addresses
 - Use ## headers for section breaks
 - No bullet points
