@@ -5,6 +5,7 @@ import { getPopularDenverVideos } from "@/lib/youtube";
 import { getDenverWeather } from "@/lib/weather";
 import { supabase } from "@/lib/supabase";
 import VideoCard from "@/components/VideoCard";
+import ArticleThumb from "@/components/ArticleThumb";
 import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
@@ -135,7 +136,6 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article: any) => {
               const rawThumb = article.youtube_videos?.thumbnail_url;
-              // Upgrade hqdefault (480×360) → maxresdefault (1280×720) for crisp display
               const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
               const photoUrl = article.places_mentioned?.[0]?.photo_url;
               const src = thumb || (photoUrl?.startsWith("places/")
@@ -149,18 +149,17 @@ export default async function HomePage() {
                 >
                   {src && (
                     <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
-                      <img
-                        src={src}
-                        alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                        onError={(e) => {
-                          // maxresdefault may not exist for older videos — fall back to hqdefault
-                          if (rawThumb && (e.target as HTMLImageElement).src !== rawThumb) {
-                            (e.target as HTMLImageElement).src = rawThumb;
-                          }
-                        }}
-                      />
+                      {rawThumb ? (
+                        <ArticleThumb
+                          src={src}
+                          rawSrc={rawThumb}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                      )}
                     </div>
                   )}
                   <div className="p-4 flex flex-col gap-2 flex-1">

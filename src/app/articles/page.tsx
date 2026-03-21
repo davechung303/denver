@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import ArticleThumb from "@/components/ArticleThumb";
 
 export const revalidate = 86400;
 
@@ -79,17 +80,17 @@ export default async function ArticlesPage() {
                     if (!src) return null;
                     return (
                       <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        <img
-                          src={src}
-                          alt={article.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                          onError={(e) => {
-                            if (rawThumb && (e.target as HTMLImageElement).src !== rawThumb) {
-                              (e.target as HTMLImageElement).src = rawThumb;
-                            }
-                          }}
-                        />
+                        {rawThumb ? (
+                          <ArticleThumb
+                            src={src}
+                            rawSrc={rawThumb}
+                            alt={article.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                        )}
                       </div>
                     );
                   })()}
