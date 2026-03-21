@@ -55,6 +55,40 @@ async function fetchSource(url: string, maxChars = 4000): Promise<{ text: string
   }
 }
 
+// Brave Search for date-specific Denver events
+async function searchDenverEvents(friday: Date, saturday: Date, sunday: Date): Promise<string> {
+  const key = process.env.BRAVE_SEARCH_API_KEY ?? "";
+  if (!key) return "";
+
+  const dates = [
+    friday.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+    saturday.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+    sunday.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+  ];
+  const query = `Denver events things to do ${dates[0]} OR ${dates[1]} OR ${dates[2]}`;
+
+  try {
+    const res = await fetch(
+      `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(query)}&count=8`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Accept-Encoding": "gzip",
+          "X-Subscription-Token": key,
+        },
+        signal: AbortSignal.timeout(8000),
+      }
+    );
+    if (!res.ok) return "";
+    const data = await res.json();
+    return (data.web?.results ?? [])
+      .map((r: any) => `${r.title}: ${r.description} — ${r.url}`)
+      .join("\n");
+  } catch {
+    return "";
+  }
+}
+
 // Fetch Reddit user posts as plain text
 async function fetchReddit(): Promise<string> {
   try {
@@ -145,22 +179,23 @@ export async function generateWeeklyGuide(): Promise<{ success: boolean; slug?: 
 
   if (existing) return { success: true, slug };
 
+  const saturday = new Date(friday);
+  saturday.setDate(friday.getDate() + 1);
+
   // Fetch all sources in parallel
-  const [westword, denverite, kidsOut, reddit, ticketmasterEvents] = await Promise.all([
+  const [westword, denverite, kidsOut, reddit, ticketmasterEvents, braveResults] = await Promise.all([
     fetchSource("https://www.westword.com/things-to-do/", 4000),
     fetchSource("https://denverite.com/category/entertainment/things-to-do-in-denver/", 3000),
     fetchSource("https://denver.kidsoutandabout.com/content/things-do-weekend-and-around-denver", 3000),
     fetchReddit(),
     fetchWeekendEvents(friday, sunday),
+    searchDenverEvents(friday, saturday, sunday),
   ]);
 
   // Use a consistent Denver hero image — news site og:images are logos, not photos
-  const imageUrl = "https://images.unsplash.com/photo-OVE2SA0TVJE?auto=format&fit=crop&w=1600&q=80";
+  const imageUrl = "https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1600&q=80";
   const imageCredit = "Nils Huenerfuerst / Unsplash";
   const imageCreditUrl = "https://unsplash.com/photos/the-sun-is-setting-over-a-large-city-OVE2SA0TVJE";
-
-  const saturday = new Date(friday);
-  saturday.setDate(friday.getDate() + 1);
 
   const weekendStr = `${formatShortDate(friday)}–${formatDate(sunday)}`;
   const fridayLabel = `Friday, ${formatShortDate(friday)}`;
@@ -169,78 +204,86 @@ export async function generateWeeklyGuide(): Promise<{ success: boolean; slug?: 
 
   const prompt = `You are writing a weekly Denver weekend guide for DaveLovesDenver.com, published every Friday. Write it in the first person as Dave Chung — a Denver local.
 
-${VOICE_GUIDE}
-
-ADDITIONAL TONE FOR WEEKLY GUIDES:
-- Open with a short, personal take on the weekend — what Dave is actually excited about or paying attention to
-- The guide should feel like a text from a well-connected local friend who actually checks what's going on
-- Be selective: don't list everything. Highlight what's genuinely worth your time
-- Include specific dates, prices where known, and links using [event name](url) format
-- For bigger concerts/sports, mention ticket prices or that tickets are available
-- Mix big events (major concerts, sports, festivals) with local stuff (gallery openings, neighborhood events, farmers markets)
-- A "Dave's Pick" moment once in the guide — one thing Dave would personally go to
-
-THIS WEEKEND'S EXACT DATES:
+THIS WEEKEND'S EXACT DATES (these are the ONLY valid dates):
 - ${fridayLabel}
 - ${saturdayLabel}
 - ${sundayLabel}
 
-CRITICAL DATE RULE: Only include events that occur on one of the three dates above. If you cannot confirm from the source material that an event occurs on Friday ${formatShortDate(friday)}, Saturday ${formatShortDate(saturday)}, or Sunday ${formatShortDate(sunday)}, do not include it. Never assign an event to a day if the source says it's a different day.
+=== STEP 1: EXTRACT CONFIRMED EVENTS (do this silently before writing) ===
+
+Read all source material below. For each event, ask:
+1. Is there a specific date mentioned? Does it match one of the three dates above?
+2. Is there a specific time mentioned? What is it exactly?
+3. Is there a specific venue/location mentioned? What is it?
+
+ONLY keep events that pass all three tests: confirmed date matching this weekend, a time, and a named venue.
+The Ticketmaster section has fully structured date/time/venue data — trust it completely.
+For Westword/Denverite/other text sources: only include an event if its date is explicitly stated and matches. If the date is vague ("this weekend", "ongoing") or missing, skip it unless it's a recurring known event (like a farmers market) with a confirmed weekend schedule.
 
 === SOURCE MATERIAL ===
 
-WESTWORD (things to do):
+CONCERTS & TICKETED EVENTS — fully structured, trust these dates/times completely:
+${ticketmasterEvents || "None available"}
+
+WESTWORD (things to do — extract only events with explicit dates matching this weekend):
 ${westword.text || "Not available"}
 
-DENVERITE (things to do):
+DENVERITE (things to do — same rule):
 ${denverite.text || "Not available"}
 
-KIDS OUT & ABOUT (family events):
+KIDS OUT & ABOUT (family/kid events):
 ${kidsOut.text || "Not available"}
 
-REDDIT (Denver events community posts):
+BRAVE SEARCH (date-specific event results):
+${braveResults || "Not available"}
+
+REDDIT (Denver community posts):
 ${reddit || "Not available"}
 
-CONCERTS & TICKETED EVENTS (from Ticketmaster — includes venue, date/time, ticket URL):
-${ticketmasterEvents || "Not available"}
+=== STEP 2: WRITE THE ARTICLE ===
 
-=== ARTICLE STRUCTURE ===
+Now write the weekend guide using ONLY the confirmed events from Step 1.
 
-Write a 900–1,200 word weekend guide. Use these section headers (## and ###):
+${VOICE_GUIDE}
+
+TONE FOR WEEKLY GUIDES:
+- Open with a short, personal take on what stands out about this specific weekend
+- Feel like a text from a well-connected local friend who actually checks what's going on
+- Be selective — highlight what's genuinely worth your time
+- Mix big events (concerts, sports) with local stuff (gallery openings, markets, neighborhood events)
+- One "Dave's Pick" — a single thing Dave would personally go to, written as prose
+
+STRUCTURE (use these exact headers and day labels):
 
 ## The Weekend Ahead — ${formatShortDate(friday)}–${formatShortDate(sunday)}
-(2-3 sentence personal opener — what stands out about this specific weekend)
+(2-3 sentence personal opener)
 
 ## Big Shows & Sports
-Group events under day subheaders using EXACTLY these labels:
 ### ${fridayLabel}
 ### ${saturdayLabel}
 ### ${sundayLabel}
-Under each day, list events as bullets:
-- **[Event Name](url)** | Time | Venue | Price or "tickets available"
-Only include a day subheader if there are actual events on that day.
+(bullets under each day: - **[Event Name](url)** | Time | Venue | Price or "tickets available")
+(omit a day subheader entirely if no confirmed events fall on that day)
 
 ## Arts & Culture
-Same day-grouped format (use the same day labels as above):
-- **[Event Name](url)** | Time | Venue | brief note if relevant
+(same day-grouped bullet format)
 
 ## Get Outside
-Same format — outdoor events, markets, walks, seasonal stuff (2-3 picks total, day-grouped)
+(same format — 2-3 picks)
 
 ## For Families
-Same format — kid-friendly picks (2-3 total, day-grouped)
+(same format — 2-3 picks)
 
 ## Dave's Pick
-(1 specific thing Dave would personally go to this weekend, and why — write this as prose, be specific and honest)
+(prose — one specific thing Dave would go to and why)
 
 RULES:
-- Use [Event Name](url) markdown links whenever you have a real URL from the sources
-- Always include day + date + time for each event
-- Always include venue name
-- If something costs money, include the price or "tickets available" briefly
-- Group events under the day they occur — do not mix days in one bullet list
-- Do not invent events or URLs — only use information from the source material
-- First person as Dave throughout (except in the bullet lists, which are factual)
+- Only include events confirmed from source material with a specific date, time, and venue
+- If time is unknown, write "time TBD" — never invent a time
+- If venue is unknown, omit the event rather than guess
+- Use [Event Name](url) links when a real URL exists in the sources
+- Do not invent events, times, venues, or URLs
+- First person as Dave throughout
 - Return ONLY the article text, no preamble`;
 
   try {
