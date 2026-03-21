@@ -24,12 +24,21 @@ async function getArticles() {
       youtube_videos (
         video_id,
         thumbnail_url,
-        view_count
+        view_count,
+        published_at
       )
     `)
     .order("generated_at", { ascending: false })
     .limit(50);
-  return data ?? [];
+
+  // Sort by video publish date so newest videos surface first
+  return (data ?? []).sort((a: any, b: any) => {
+    const yva = Array.isArray(a.youtube_videos) ? a.youtube_videos[0] : a.youtube_videos;
+    const yvb = Array.isArray(b.youtube_videos) ? b.youtube_videos[0] : b.youtube_videos;
+    const aDate = yva?.published_at ?? a.generated_at ?? "";
+    const bDate = yvb?.published_at ?? b.generated_at ?? "";
+    return new Date(bDate).getTime() - new Date(aDate).getTime();
+  });
 }
 
 export default async function ArticlesPage() {
