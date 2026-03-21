@@ -154,20 +154,10 @@ export async function generateWeeklyGuide(): Promise<{ success: boolean; slug?: 
     fetchWeekendEvents(friday, sunday),
   ]);
 
-  // Pick best image source (prefer Westword, then Denverite)
-  let imageUrl: string | null = null;
-  let imageCredit = "";
-  let imageCreditUrl = "";
-
-  if (westword.imageUrl) {
-    imageUrl = westword.imageUrl;
-    imageCredit = "Westword";
-    imageCreditUrl = "https://www.westword.com/things-to-do/";
-  } else if (denverite.imageUrl) {
-    imageUrl = denverite.imageUrl;
-    imageCredit = "Denverite";
-    imageCreditUrl = "https://denverite.com/category/entertainment/things-to-do-in-denver/";
-  }
+  // Use a consistent Denver hero image — news site og:images are logos, not photos
+  const imageUrl = "https://images.unsplash.com/photo-OVE2SA0TVJE?auto=format&fit=crop&w=1600&q=80";
+  const imageCredit = "Nils Huenerfuerst / Unsplash";
+  const imageCreditUrl = "https://unsplash.com/photos/the-sun-is-setting-over-a-large-city-OVE2SA0TVJE";
 
   const weekendStr = `${formatShortDate(friday)}–${formatDate(sunday)}`;
 
@@ -205,33 +195,37 @@ ${ticketmasterEvents || "Not available"}
 
 === ARTICLE STRUCTURE ===
 
-Write a 900–1,200 word weekend guide. Use these section headers (## ):
+Write a 900–1,200 word weekend guide. Use these section headers (## and ###):
 
-## The Weekend Ahead
+## The Weekend Ahead — ${formatShortDate(friday)}–${formatShortDate(sunday)}
 (2-3 sentence personal opener — what stands out about this specific weekend)
 
 ## Big Shows & Sports
-(major concerts, games, ticketed events — 3-5 picks with dates, venues, ticket links where available)
+Group events under day subheaders (### Friday, March X / ### Saturday, March X / ### Sunday, March X).
+Under each day, list events as bullets:
+- **[Event Name](url)** | Time | Venue | Price or "tickets available"
 
 ## Arts & Culture
-(gallery openings, theater, film, cultural events — 2-4 picks)
+Same day-grouped format with bullets:
+- **[Event Name](url)** | Time | Venue | brief note if relevant
 
 ## Get Outside
-(outdoor events, markets, walks, seasonal stuff — 2-3 picks)
+Same format — outdoor events, markets, walks, seasonal stuff (2-3 picks total, day-grouped)
 
 ## For Families
-(kid-friendly events from the kids source — 2-3 picks)
+Same format — kid-friendly picks (2-3 total, day-grouped)
 
 ## Dave's Pick
-(1 specific thing Dave would personally go to this weekend, and why — be specific and honest)
+(1 specific thing Dave would personally go to this weekend, and why — write this as prose, be specific and honest)
 
 RULES:
-- Use [event name](url) for links whenever you have a real URL from the sources
-- Include dates (Friday, Saturday, Sunday) for each event
-- Mention specific venues and neighborhoods
-- If something costs money, mention it briefly
+- Use [Event Name](url) markdown links whenever you have a real URL from the sources
+- Always include day + date + time for each event
+- Always include venue name
+- If something costs money, include the price or "tickets available" briefly
+- Group events under the day they occur — do not mix days in one bullet list
 - Do not invent events or URLs — only use information from the source material
-- First person as Dave throughout
+- First person as Dave throughout (except in the bullet lists, which are factual)
 - Return ONLY the article text, no preamble`;
 
   try {

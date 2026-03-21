@@ -171,12 +171,10 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
     ),
   ]);
 
-  // Pick best image from the category pages
-  const imageUrl = extractOgImage(westwordHtml) ?? extractOgImage(denverPostHtml) ?? null;
-  const imageCredit = extractOgImage(westwordHtml) ? "Westword" : "Denver Post";
-  const imageCreditUrl = extractOgImage(westwordHtml)
-    ? "https://www.westword.com/category/food-drink/restaurants/"
-    : "https://www.denverpost.com/things-to-do/restaurants-food-drink/";
+  // Use a consistent Denver food/restaurant Unsplash hero — news og:images are logos
+  const imageUrl = "https://images.unsplash.com/photo-r6BdUpN_iSk?auto=format&fit=crop&w=1600&q=80";
+  const imageCredit = "Pieter van de Sande / Unsplash";
+  const imageCreditUrl = "https://unsplash.com/photos/denver-street-artowrk-r6BdUpN_iSk";
 
   const prompt = `You are writing a weekly Denver restaurant preview column for DaveLovesDenver.com, published every Wednesday. Write it in the first person as Dave Chung — a Denver local.
 
@@ -216,10 +214,10 @@ Closing: 1-2 sentences — Dave's honest take on what he's most curious to try, 
 
 RULES:
 - Only include restaurants that are not yet open
-- If you cannot find at least 2 clearly upcoming restaurants in the source material, write an honest short note that it's a quiet week for previews rather than inventing content
+- If you cannot find at least 2 clearly upcoming restaurants in the source material, respond with exactly: NO_CONTENT
 - Never invent restaurant names, neighborhoods, or opening dates
 - First person as Dave throughout
-- Return ONLY the article text`;
+- Return ONLY the article text (or NO_CONTENT)`;
 
   try {
     const message = await anthropic.messages.create({
@@ -231,7 +229,12 @@ RULES:
     const content = message.content[0];
     if (content.type !== "text") return { success: false, error: "Unexpected response type" };
 
-    const articleText = await injectInternalLinks(content.text.trim());
+    const raw = content.text.trim();
+    if (raw === "NO_CONTENT" || raw.startsWith("NO_CONTENT")) {
+      return { success: true, slug: undefined, skipped: true } as any;
+    }
+
+    const articleText = await injectInternalLinks(raw);
 
     const placesData = imageUrl
       ? [{ photo_url: imageUrl, photo_credit: imageCredit, photo_credit_url: imageCreditUrl }]
