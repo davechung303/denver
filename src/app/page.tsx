@@ -158,9 +158,11 @@ export default async function HomePage() {
 
             const renderCard = (article: any, idx: number, featured = false) => {
               const { src: rawSrcFromThumb, rawThumb } = getThumb(article);
-              // For featured editorial articles (no YouTube video), use the high-res
-              // Unsplash fallback directly — Places API photos are too low-res at large sizes
-              const src = (featured && !article.video_id) ? DENVER_FALLBACK : rawSrcFromThumb;
+              // Use article's own image if available; fall back to Denver Unsplash only when
+              // featured with no image at all. (Previously forced Denver fallback for all
+              // no-video featured cards, but editorial articles like restaurant openings
+              // have their own Unsplash image that should be used instead.)
+              const src = rawSrcFromThumb ?? (featured ? DENVER_FALLBACK : null);
               return (
                 <Link
                   key={article.slug}
