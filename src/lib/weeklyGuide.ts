@@ -177,11 +177,9 @@ export async function generateWeeklyGuide(overrideFriday?: Date): Promise<{ succ
   const title = `Denver Weekend Guide: ${formatShortDate(friday)}–${formatShortDate(sunday)}`;
 
   // Check if already generated this week
-  const { data: existing } = await supabase
-    .from("articles")
-    .select("slug")
-    .eq("slug", slug)
-    .single();
+  const existingCheck = supabase.from("articles").select("slug").eq("slug", slug).single();
+  const existingTimeout = new Promise<{ data: null }>((resolve) => setTimeout(() => resolve({ data: null }), 8000));
+  const { data: existing } = await Promise.race([existingCheck, existingTimeout]);
 
   if (existing) return { success: true, slug };
 

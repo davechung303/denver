@@ -40,18 +40,10 @@ async function findMatches(keywords: string[]): Promise<InternalLink[]> {
 
   await Promise.all(
     keywords.slice(0, 8).map(async (kw) => {
+      const t = <T,>(p: Promise<T>) => Promise.race([p, new Promise<{ data: null }>((r) => setTimeout(() => r({ data: null }), 5000))]);
       const [articles, videos] = await Promise.all([
-        supabase
-          .from("articles")
-          .select("slug, title")
-          .ilike("title", `%${kw}%`)
-          .not("video_id", "is", null) // prefer video-backed articles (real experience)
-          .limit(2),
-        supabase
-          .from("youtube_videos")
-          .select("video_id, title")
-          .ilike("title", `%${kw}%`)
-          .limit(2),
+        t(supabase.from("articles").select("slug, title").ilike("title", `%${kw}%`).not("video_id", "is", null).limit(2)),
+        t(supabase.from("youtube_videos").select("video_id, title").ilike("title", `%${kw}%`).limit(2)),
       ]);
 
       for (const a of articles.data ?? []) {
