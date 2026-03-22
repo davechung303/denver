@@ -31,13 +31,7 @@ export default async function HomePage() {
       .order("generated_at", { ascending: false })
       .limit(20),
   ]);
-  const articles = (articlesResult.data ?? [])
-    .sort((a: any, b: any) => {
-      const aDate = a.youtube_videos?.published_at ?? a.generated_at ?? "";
-      const bDate = b.youtube_videos?.published_at ?? b.generated_at ?? "";
-      return bDate.localeCompare(aDate);
-    })
-    .slice(0, 7);
+  const articles = (articlesResult.data ?? []).slice(0, 7);
   return (
     <>
       <SchemaMarkup
