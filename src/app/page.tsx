@@ -155,7 +155,10 @@ export default async function HomePage() {
             const shortArticles = sorted.filter((a: any) => isShort(a));
 
             const renderCard = (article: any, idx: number, featured = false) => {
-              const { src, rawThumb } = getThumb(article);
+              const { src: rawSrcFromThumb, rawThumb } = getThumb(article);
+              // For featured editorial articles (no YouTube video), use the high-res
+              // Unsplash fallback directly — Places API photos are too low-res at large sizes
+              const src = (featured && !article.video_id) ? DENVER_FALLBACK : rawSrcFromThumb;
               return (
                 <Link
                   key={article.slug}
