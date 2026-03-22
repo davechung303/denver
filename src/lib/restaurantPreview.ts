@@ -42,9 +42,9 @@ async function fetchHtml(url: string): Promise<string> {
 // Use Brave Search to find recent restaurant opening articles from a specific domain
 async function braveSearchDomain(domain: string, count = 6): Promise<{ title: string; description: string; url: string }[]> {
   try {
-    const query = encodeURIComponent(`restaurant opening Denver site:${domain}`);
+    const query = encodeURIComponent(`new restaurant opening Denver site:${domain}`);
     const res = await fetch(
-      `https://api.search.brave.com/res/v1/web/search?q=${query}&count=${count}&freshness=pw`,
+      `https://api.search.brave.com/res/v1/web/search?q=${query}&count=${count}&freshness=pm`,
       {
         headers: {
           Accept: "application/json",
@@ -203,7 +203,7 @@ RULES:
   try {
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 1500,
+      max_tokens: 2500,
       messages: [{ role: "user", content: prompt }],
     });
 
