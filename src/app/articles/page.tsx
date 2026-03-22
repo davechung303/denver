@@ -12,27 +12,33 @@ export const metadata: Metadata = {
 };
 
 async function getArticles() {
-  const { data } = await supabase
-    .from("articles")
-    .select(`
-      slug,
-      title,
-      content_type,
-      neighborhood_slug,
-      category_slug,
-      generated_at,
-      places_mentioned,
-      youtube_videos (
-        video_id,
-        thumbnail_url,
-        view_count,
-        published_at
-      )
-    `)
-    .order("generated_at", { ascending: false })
-    .limit(50);
-
-  return data ?? [];
+  try {
+    const { data } = await Promise.race([
+      supabase
+        .from("articles")
+        .select(`
+          slug,
+          title,
+          content_type,
+          neighborhood_slug,
+          category_slug,
+          generated_at,
+          places_mentioned,
+          youtube_videos (
+            video_id,
+            thumbnail_url,
+            view_count,
+            published_at
+          )
+        `)
+        .order("generated_at", { ascending: false })
+        .limit(50),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
+    ]);
+    return data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export default async function ArticlesPage() {

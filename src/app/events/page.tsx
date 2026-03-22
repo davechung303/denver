@@ -12,14 +12,21 @@ export const metadata: Metadata = {
 };
 
 async function getEvents(): Promise<DenverEvent[]> {
-  const now = new Date().toISOString();
-  const { data } = await supabase
-    .from("events")
-    .select("*")
-    .gte("start_time", now)
-    .order("start_time", { ascending: true })
-    .limit(500);
-  return (data ?? []) as DenverEvent[];
+  try {
+    const now = new Date().toISOString();
+    const { data } = await Promise.race([
+      supabase
+        .from("events")
+        .select("*")
+        .gte("start_time", now)
+        .order("start_time", { ascending: true })
+        .limit(500),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
+    ]);
+    return (data ?? []) as DenverEvent[];
+  } catch {
+    return [];
+  }
 }
 
 export default async function EventsPage() {

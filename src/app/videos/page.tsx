@@ -11,7 +11,15 @@ export const metadata: Metadata = {
 };
 
 export default async function VideosPage() {
-  const allVideos = await getAllVideos();
+  let allVideos: Awaited<ReturnType<typeof getAllVideos>> = [];
+  try {
+    allVideos = await Promise.race([
+      getAllVideos(),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
+    ]);
+  } catch {
+    // db timeout — render empty
+  }
   const videos = allVideos.filter((v) => !isShort(v));
   const shorts = allVideos.filter((v) => isShort(v));
 
