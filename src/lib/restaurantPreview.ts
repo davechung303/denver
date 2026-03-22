@@ -108,7 +108,7 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
   const dateStr = saturday.toISOString().split("T")[0];
   const formattedSlugDate = saturday.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toLowerCase().replace(/,/g, "").replace(/\s+/g, "-");
   const slug = `new-denver-restaurant-openings-${formattedSlugDate}-${dateStr}`;
-  const title = `New Denver Restaurant Openings — ${formatDate(saturday)}`;
+  const title = `New Restaurants Opening in Denver This Week — ${formatDate(saturday)}`;
 
   const { data: existing } = await supabase
     .from("articles")
