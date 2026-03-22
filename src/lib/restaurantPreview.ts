@@ -39,25 +39,31 @@ async function fetchHtml(url: string): Promise<string> {
   }
 }
 
-// Extract article links from a tag page
-function extractArticleLinks(html: string, domain: string, maxLinks = 8): string[] {
-  const links: Set<string> = new Set();
-  const hrefRegex = /href=["']([^"']+)["']/gi;
-  let match;
-  while ((match = hrefRegex.exec(html)) !== null) {
-    const url = match[1];
-    if (!url.includes(domain)) continue;
-    try {
-      const parsed = new URL(url.startsWith("http") ? url : `https://${domain}${url}`);
-      const parts = parsed.pathname.split("/").filter(Boolean);
-      if (parts.length < 2) continue;
-      if (["tag", "category", "author", "page", "search"].some(s => parts[0] === s)) continue;
-      links.add(parsed.href);
-    } catch {
-      continue;
-    }
+// Use Brave Search to find recent restaurant opening articles from a specific domain
+async function braveSearchDomain(domain: string, count = 6): Promise<{ title: string; description: string; url: string }[]> {
+  try {
+    const query = encodeURIComponent(`restaurant opening Denver site:${domain}`);
+    const res = await fetch(
+      `https://api.search.brave.com/res/v1/web/search?q=${query}&count=${count}&freshness=pw`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Accept-Encoding": "gzip",
+          "X-Subscription-Token": process.env.BRAVE_SEARCH_API_KEY ?? "",
+        },
+        signal: AbortSignal.timeout(8000),
+      }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.web?.results ?? []).map((r: any) => ({
+      title: r.title ?? "",
+      description: r.description ?? "",
+      url: r.url ?? "",
+    }));
+  } catch {
+    return [];
   }
-  return [...links].slice(0, maxLinks);
 }
 
 // Fetch full text from a list of article URLs in parallel
@@ -71,6 +77,11 @@ async function fetchArticleTexts(urls: string[]): Promise<string> {
     })
   );
   return results.filter(Boolean).join("\n\n---\n\n");
+}
+
+// Format Brave Search results as readable text with source URLs
+function formatBraveResults(results: { title: string; description: string; url: string }[]): string {
+  return results.map(r => `SOURCE: ${r.url}\n${r.title}\n${r.description}`).join("\n\n---\n\n");
 }
 
 // Fetch Dave's videos that are relevant to food or neighborhoods — for natural in-article linking
@@ -89,14 +100,10 @@ async function fetchRelevantVideos(): Promise<string> {
     .join("\n");
 }
 
-// Returns this Saturday's date (or today if today is Saturday)
+// Returns today's date — cron runs on Saturdays so it's always Saturday in production;
+// when triggered manually we just use the current date
 export function getThisSaturday(): Date {
-  const now = new Date();
-  const day = now.getDay(); // 0=Sun, 6=Sat
-  const diff = 6 - day;
-  const saturday = new Date(now);
-  saturday.setDate(now.getDate() + (diff < 0 ? 7 + diff : diff));
-  return saturday;
+  return new Date();
 }
 
 function formatDate(date: Date): string {
@@ -118,21 +125,23 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
 
   if (existing) return { success: true, slug };
 
-  // Fetch tag pages to get article links, and Dave's videos, in parallel
-  const [denverPostHtml, westwordHtml, videosText] = await Promise.all([
-    fetchHtml("https://www.denverpost.com/tag/restaurant-opening-and-closing/"),
-    fetchHtml("https://www.westword.com/tag/openings-closings/"),
+  // Use Brave Search to discover recent articles (bypasses JS rendering on tag pages)
+  // then attempt to fetch full article text from the URLs returned
+  const [denverPostResults, westwordResults, videosText] = await Promise.all([
+    braveSearchDomain("denverpost.com", 6),
+    braveSearchDomain("westword.com", 6),
     fetchRelevantVideos(),
   ]);
 
-  const denverPostLinks = extractArticleLinks(denverPostHtml, "denverpost.com", 6);
-  const westwordLinks = extractArticleLinks(westwordHtml, "westword.com", 6);
-
-  // Fetch full article content from both sources in parallel
-  const [denverPostContent, westwordContent] = await Promise.all([
-    denverPostLinks.length > 0 ? fetchArticleTexts(denverPostLinks) : Promise.resolve(""),
-    westwordLinks.length > 0 ? fetchArticleTexts(westwordLinks) : Promise.resolve(""),
+  // Try to fetch full article text; fall back to Brave snippet if fetch fails
+  const [denverPostFull, westwordFull] = await Promise.all([
+    fetchArticleTexts(denverPostResults.map(r => r.url)),
+    fetchArticleTexts(westwordResults.map(r => r.url)),
   ]);
+
+  // Use full text if we got real content, otherwise use Brave snippets
+  const denverPostContent = denverPostFull.length > 500 ? denverPostFull : formatBraveResults(denverPostResults);
+  const westwordContent = westwordFull.length > 500 ? westwordFull : formatBraveResults(westwordResults);
 
   const imageUrl = "https://images.unsplash.com/photo-1573297627466-6bed413a43f1?auto=format&fit=crop&w=1600&q=80";
 
