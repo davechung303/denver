@@ -4,11 +4,9 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getDenverWeather } from "@/lib/weather";
 import { getPlaces } from "@/lib/places";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
-import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import MapWrapper from "@/components/MapWrapper";
 import PlaceCard from "@/components/PlaceCard";
@@ -96,10 +94,9 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
 
-  const [videos, events, weather, restaurants, hotels, bars, thingsToDo, coffee] = await Promise.all([
+  const [videos, events, restaurants, hotels, bars, thingsToDo, coffee] = await Promise.all([
     getVideosForPage(slug, null, 3),
     getEventsForNeighborhood(slug, 4),
-    getDenverWeather(),
     getPlaces(slug, "restaurants"),
     getPlaces(slug, "hotels"),
     getPlaces(slug, "bars"),
@@ -149,13 +146,6 @@ export default async function NeighborhoodPage({ params }: Props) {
           <p className="mt-5 text-lg text-white/70 max-w-2xl leading-relaxed">{n.description}</p>
         </div>
       </section>
-
-      {/* Weather */}
-      {weather && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <WeatherWidget weather={weather} />
-        </div>
-      )}
 
       {/* At-a-glance place sections */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">

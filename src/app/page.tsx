@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { getPopularDenverVideos } from "@/lib/youtube";
-import { getDenverWeather } from "@/lib/weather";
 import { supabase } from "@/lib/supabase";
 import VideoCard from "@/components/VideoCard";
 import ArticleThumb from "@/components/ArticleThumb";
-import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 3600; // ISR: revalidate every hour
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Dave Loves Denver — Local Denver Guides, Videos & Restaurant Reviews",
@@ -24,9 +22,8 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [videos, weather, articlesResult] = await Promise.all([
+  const [videos, articlesResult] = await Promise.all([
     getPopularDenverVideos(6),
-    getDenverWeather(),
     supabase
       .from("articles")
       .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count, published_at, duration_seconds)")
@@ -52,11 +49,6 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Left: text */}
             <div>
-              {weather && (
-                <div className="mb-6">
-                  <WeatherWidget weather={weather} compact />
-                </div>
-              )}
               <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-4">
                 Denver, Colorado
               </p>
