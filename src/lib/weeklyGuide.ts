@@ -122,13 +122,19 @@ async function fetchWeekendEvents(friday: Date, sunday: Date): Promise<string> {
   const end = new Date(sunday);
   end.setHours(23, 59, 59, 999);
 
-  const { data } = await supabase
+  const timeout = new Promise<{ data: null }>((resolve) =>
+    setTimeout(() => resolve({ data: null }), 10000)
+  );
+
+  const query = supabase
     .from("events")
     .select("name, start_time, venue_name, venue_address, url, is_free, description")
     .gte("start_time", start.toISOString())
     .lte("start_time", end.toISOString())
     .order("start_time", { ascending: true })
     .limit(40);
+
+  const { data } = await Promise.race([query, timeout]);
 
   if (!data || data.length === 0) return "";
 
