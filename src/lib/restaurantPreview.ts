@@ -245,7 +245,7 @@ RULES:
 
     const raw = content.text.trim();
     if (raw === "NO_CONTENT" || raw.startsWith("NO_CONTENT")) {
-      return { success: true, slug: undefined, skipped: true } as any;
+      return { success: true, slug: undefined, skipped: true, debug: { westwordListLen: westwordOpeningsList.length, dpContentLen: denverPostContent.length, westwordUrl: westwordRoundupUrl } } as any;
     }
 
     const articleText = await injectInternalLinks(raw);
