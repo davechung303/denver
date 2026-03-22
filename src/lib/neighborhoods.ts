@@ -15,6 +15,7 @@ export interface Neighborhood {
   searchName: string; // human-readable name used in Places API searches
   lat: number; // center coordinates for maps
   lng: number;
+  searchRadius?: number; // Places API search radius in meters (default 1500)
 }
 
 export const CATEGORIES: Category[] = [
@@ -236,14 +237,15 @@ export const NEIGHBORHOODS: Neighborhood[] = [
   },
   {
     slug: "airport",
-    name: "Denver Airport",
+    name: "DEN Airport Area",
     tagline: "DIA & Gaylord Rockies",
     description:
       "DEN is one of the biggest airports in the world — confusing if you don't know it, genuinely great if you do. Plus the Gaylord Rockies is worth a visit even if you're not flying anywhere.",
     gradient: "from-blue-800 to-indigo-600",
     image: "https://images.unsplash.com/photo-1698760000085-1b0af6df057e?auto=format&fit=crop&w=1200&q=80",
     searchName: "Denver International Airport DIA Gaylord Rockies Colorado",
-    lat: 39.8561, lng: -104.6737,
+    lat: 39.880, lng: -104.677,
+    searchRadius: 5000,
   },
 ];
 

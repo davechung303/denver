@@ -119,11 +119,11 @@ async function fetchFromGooglePlaces(
   const category = getCategory(categorySlug);
   if (!neighborhood || (!category && !overrideQuery)) return [];
 
-  // Bias results to within ~1.5km of the neighborhood center
+  // Bias results to within the neighborhood search radius (default 1.5km)
   const locationBias = {
     circle: {
       center: { latitude: neighborhood.lat, longitude: neighborhood.lng },
-      radius: 1500.0,
+      radius: neighborhood.searchRadius ?? 1500.0,
     },
   };
 
