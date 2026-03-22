@@ -143,6 +143,9 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
   const denverPostContent = denverPostFull.length > 500 ? denverPostFull : formatBraveResults(denverPostResults);
   const westwordContent = westwordFull.length > 500 ? westwordFull : formatBraveResults(westwordResults);
 
+  console.log(`[restaurantPreview] DP results: ${denverPostResults.length}, DP content: ${denverPostContent.length} chars`);
+  console.log(`[restaurantPreview] WW results: ${westwordResults.length}, WW content: ${westwordContent.length} chars`);
+
   const imageUrl = "https://images.unsplash.com/photo-1573297627466-6bed413a43f1?auto=format&fit=crop&w=1600&q=80";
 
   const prompt = `You are writing a weekly Denver restaurant openings column for DaveLovesDenver.com, published every Saturday. Write it in the first person as Dave Chung — a Denver local and YouTube creator with over 2 million views.
@@ -196,7 +199,7 @@ RULES:
 - Use restaurant names and addresses exactly as written in the sources — never guess or invent
 - If address is not in the source, omit the Address line entirely
 - Do not invent any details not in the source material
-- If fewer than 2 confirmed openings exist across both sources, respond with exactly: NO_CONTENT
+- If fewer than 2 restaurant openings can be identified anywhere in the source material, respond with exactly: NO_CONTENT
 - First person as Dave throughout
 - Return ONLY the article text (or NO_CONTENT)`;
 
