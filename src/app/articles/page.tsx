@@ -3,7 +3,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import ArticleThumb from "@/components/ArticleThumb";
 
-export const revalidate = 86400;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Denver Guides & Articles | Dave Loves Denver",

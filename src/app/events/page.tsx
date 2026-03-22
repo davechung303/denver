@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import type { DenverEvent } from "@/lib/ticketmaster";
 import EventsClient from "./EventsClient";
 
-export const revalidate = 3600; // refresh hourly
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Denver Events | Dave Loves Denver",
