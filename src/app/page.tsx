@@ -22,15 +22,25 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [videos, articlesResult] = await Promise.all([
-    getPopularDenverVideos(6),
-    supabase
-      .from("articles")
-      .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count, published_at, duration_seconds)")
-      .order("generated_at", { ascending: false })
-      .limit(9),
-  ]);
-  const articles = (articlesResult.data ?? []).slice(0, 9);
+  let videos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
+  let articles: any[] = [];
+
+  try {
+    [videos, articles] = await Promise.race([
+      Promise.all([
+        getPopularDenverVideos(6),
+        supabase
+          .from("articles")
+          .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count, published_at, duration_seconds)")
+          .order("generated_at", { ascending: false })
+          .limit(9)
+          .then((r) => r.data?.slice(0, 9) ?? []),
+      ]),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 8000)),
+    ]);
+  } catch {
+    // Supabase timeout — render with empty state
+  }
   return (
     <>
       <SchemaMarkup
