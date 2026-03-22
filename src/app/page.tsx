@@ -28,7 +28,7 @@ export default async function HomePage() {
     supabase
       .from("articles")
       .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count, published_at)")
-      .order("generated_at", { ascending: false })
+      .order("updated_at", { ascending: false })
       .limit(20),
   ]);
   const articles = (articlesResult.data ?? []).slice(0, 7);

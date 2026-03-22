@@ -29,7 +29,7 @@ async function getArticles() {
         published_at
       )
     `)
-    .order("generated_at", { ascending: false })
+    .order("updated_at", { ascending: false })
     .limit(50);
 
   return data ?? [];
