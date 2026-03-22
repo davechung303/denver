@@ -151,8 +151,11 @@ export default async function HomePage() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={src} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                        <ArticleThumb
+                          src={src}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                       )}
                     </div>
                   )}

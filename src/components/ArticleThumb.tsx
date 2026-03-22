@@ -2,7 +2,7 @@
 
 interface Props {
   src: string;
-  rawSrc: string; // original hqdefault to fall back to
+  rawSrc?: string; // optional fallback (YouTube hqdefault)
   alt: string;
   className?: string;
 }
@@ -15,8 +15,12 @@ export default function ArticleThumb({ src, rawSrc, alt, className }: Props) {
       className={className}
       loading="lazy"
       onError={(e) => {
-        if ((e.target as HTMLImageElement).src !== rawSrc) {
-          (e.target as HTMLImageElement).src = rawSrc;
+        const img = e.target as HTMLImageElement;
+        if (rawSrc && img.src !== rawSrc) {
+          img.src = rawSrc;
+        } else {
+          // Hide the image and its container if everything fails
+          img.style.display = "none";
         }
       }}
     />
