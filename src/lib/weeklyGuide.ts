@@ -161,8 +161,8 @@ function formatShortDate(date: Date): string {
   return date.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 }
 
-export async function generateWeeklyGuide(): Promise<{ success: boolean; slug?: string; error?: string }> {
-  const friday = getThisFriday();
+export async function generateWeeklyGuide(overrideFriday?: Date): Promise<{ success: boolean; slug?: string; error?: string }> {
+  const friday = overrideFriday ?? getThisFriday();
   const sunday = new Date(friday);
   sunday.setDate(friday.getDate() + 2);
 

@@ -9,6 +9,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const result = await generateWeeklyGuide();
+  const url = new URL(request.url);
+  const fridayParam = url.searchParams.get("friday");
+  const overrideFriday = fridayParam ? new Date(fridayParam) : undefined;
+
+  const result = await generateWeeklyGuide(overrideFriday);
   return NextResponse.json(result);
 }
