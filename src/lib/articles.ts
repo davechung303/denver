@@ -258,7 +258,7 @@ Return ONLY the article text.`;
       category_slug: category,
       expedia_url: expediaUrl,
       places_mentioned: [],
-      generated_at: video.published_at ?? new Date().toISOString(),
+      generated_at: video.published_at,
       updated_at: new Date().toISOString(),
     }, { onConflict: "slug" });
 
