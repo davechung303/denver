@@ -26,13 +26,6 @@ function stripHtml(html: string, maxChars = 4000): string {
     .slice(0, maxChars);
 }
 
-function extractOgImage(html: string): string | null {
-  const match =
-    html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ??
-    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
-  return match?.[1] ?? null;
-}
-
 async function fetchHtml(url: string): Promise<string> {
   try {
     const res = await fetch(url, {
@@ -46,89 +39,64 @@ async function fetchHtml(url: string): Promise<string> {
   }
 }
 
-// Extract article links from a category page, filtered to the given domain
-function extractArticleLinks(html: string, domain: string, maxAge = 14): string[] {
+// Extract article links from a tag page
+function extractArticleLinks(html: string, domain: string, maxLinks = 8): string[] {
   const links: Set<string> = new Set();
-
-  // Match all hrefs
   const hrefRegex = /href=["']([^"']+)["']/gi;
   let match;
   while ((match = hrefRegex.exec(html)) !== null) {
     const url = match[1];
     if (!url.includes(domain)) continue;
-    // Must look like an article (has path depth > 1, not a category/tag page)
     try {
       const parsed = new URL(url.startsWith("http") ? url : `https://${domain}${url}`);
       const parts = parsed.pathname.split("/").filter(Boolean);
       if (parts.length < 2) continue;
-      // Skip obvious non-articles
       if (["tag", "category", "author", "page", "search"].some(s => parts[0] === s)) continue;
       links.add(parsed.href);
     } catch {
       continue;
     }
   }
-
-  // For Denver Post, prefer links with recent dates in the path (YYYY/MM/DD)
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - maxAge);
-  const dated = [...links].filter(url => {
-    const m = url.match(/\/(\d{4})\/(\d{2})\/(\d{2})\//);
-    if (!m) return false;
-    const d = new Date(`${m[1]}-${m[2]}-${m[3]}`);
-    return d >= cutoff;
-  });
-
-  // Return dated links if available, otherwise first N undated links
-  return (dated.length > 0 ? dated : [...links]).slice(0, 6);
+  return [...links].slice(0, maxLinks);
 }
 
-// Fetch full text from a list of article URLs, in parallel
+// Fetch full text from a list of article URLs in parallel
 async function fetchArticleTexts(urls: string[]): Promise<string> {
   const results = await Promise.all(
     urls.map(async (url) => {
       const html = await fetchHtml(url);
       if (!html) return "";
-      const text = stripHtml(html, 2000);
+      const text = stripHtml(html, 2500);
       return text ? `SOURCE: ${url}\n${text}` : "";
     })
   );
   return results.filter(Boolean).join("\n\n---\n\n");
 }
 
-// Brave Search fallback for paywalled or thin content
-async function braveSearch(query: string, count = 6): Promise<string> {
-  try {
-    const encoded = encodeURIComponent(query);
-    const res = await fetch(
-      `https://api.search.brave.com/res/v1/web/search?q=${encoded}&count=${count}&freshness=pm`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Accept-Encoding": "gzip",
-          "X-Subscription-Token": process.env.BRAVE_SEARCH_API_KEY ?? "",
-        },
-        signal: AbortSignal.timeout(8000),
-      }
-    );
-    if (!res.ok) return "";
-    const data = await res.json();
-    return (data.web?.results ?? [])
-      .map((r: any) => `${r.title}: ${r.description} — ${r.url}`)
-      .join("\n");
-  } catch {
-    return "";
-  }
+// Fetch Dave's videos that are relevant to food or neighborhoods — for natural in-article linking
+async function fetchRelevantVideos(): Promise<string> {
+  const { data } = await supabase
+    .from("youtube_videos")
+    .select("video_id, title, description")
+    .or("title.ilike.%restaurant%,title.ilike.%food%,title.ilike.%rino%,title.ilike.%lodo%,title.ilike.%capitol hill%,title.ilike.%highlands%,title.ilike.%cherry creek%,title.ilike.%colfax%,title.ilike.%denver%")
+    .order("view_count", { ascending: false })
+    .limit(30);
+
+  if (!data || data.length === 0) return "";
+
+  return data
+    .map((v) => `- [${v.title}](https://davelovesdenver.com/videos/${v.video_id}) — ${(v.description ?? "").slice(0, 100)}`)
+    .join("\n");
 }
 
-// Returns this Wednesday's date (or today if today is Wednesday)
-export function getThisWednesday(): Date {
+// Returns this Saturday's date (or today if today is Saturday)
+export function getThisSaturday(): Date {
   const now = new Date();
-  const day = now.getDay();
-  const diff = day <= 3 ? 3 - day : 10 - day;
-  const wednesday = new Date(now);
-  wednesday.setDate(now.getDate() + diff);
-  return wednesday;
+  const day = now.getDay(); // 0=Sun, 6=Sat
+  const diff = 6 - day;
+  const saturday = new Date(now);
+  saturday.setDate(now.getDate() + (diff < 0 ? 7 + diff : diff));
+  return saturday;
 }
 
 function formatDate(date: Date): string {
@@ -136,10 +104,10 @@ function formatDate(date: Date): string {
 }
 
 export async function generateRestaurantPreview(): Promise<{ success: boolean; slug?: string; error?: string }> {
-  const wednesday = getThisWednesday();
-  const dateStr = wednesday.toISOString().split("T")[0];
+  const saturday = getThisSaturday();
+  const dateStr = saturday.toISOString().split("T")[0];
   const slug = `denver-restaurant-openings-${dateStr}`;
-  const title = `Denver Restaurants Opening Soon — ${formatDate(wednesday)}`;
+  const title = `Denver Restaurant Openings This Week — ${formatDate(saturday)}`;
 
   const { data: existing } = await supabase
     .from("articles")
@@ -149,80 +117,70 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
 
   if (existing) return { success: true, slug };
 
-  // Step 1: fetch category pages to get article links
-  const [westwordHtml, denverPostHtml] = await Promise.all([
-    fetchHtml("https://www.westword.com/category/food-drink/restaurants/"),
-    fetchHtml("https://www.denverpost.com/things-to-do/restaurants-food-drink/"),
+  // Fetch tag pages to get article links, and Dave's videos, in parallel
+  const [denverPostHtml, westwordHtml, videosText] = await Promise.all([
+    fetchHtml("https://www.denverpost.com/tag/restaurant-opening-and-closing/"),
+    fetchHtml("https://www.westword.com/tag/openings-closings/"),
+    fetchRelevantVideos(),
   ]);
 
-  const westwordLinks = extractArticleLinks(westwordHtml, "westword.com");
-  const denverPostLinks = extractArticleLinks(denverPostHtml, "denverpost.com");
+  const denverPostLinks = extractArticleLinks(denverPostHtml, "denverpost.com", 6);
+  const westwordLinks = extractArticleLinks(westwordHtml, "westword.com", 6);
 
-  // Step 2: fetch individual articles in parallel
-  const [westwordContent, denverPostContent, braveResults] = await Promise.all([
-    westwordLinks.length > 0
-      ? fetchArticleTexts(westwordLinks)
-      : Promise.resolve(""),
-    denverPostLinks.length > 0
-      ? fetchArticleTexts(denverPostLinks)
-      : Promise.resolve(""),
-    braveSearch(
-      "Denver new restaurant opening soon 2026 site:westword.com OR site:denverpost.com OR site:denverite.com OR site:5280.com"
-    ),
+  // Fetch full article content from both sources in parallel
+  const [denverPostContent, westwordContent] = await Promise.all([
+    denverPostLinks.length > 0 ? fetchArticleTexts(denverPostLinks) : Promise.resolve(""),
+    westwordLinks.length > 0 ? fetchArticleTexts(westwordLinks) : Promise.resolve(""),
   ]);
 
-  // Use a consistent Denver food/restaurant Unsplash hero — news og:images are logos
-  const imageUrl = "https://images.unsplash.com/photo-r6BdUpN_iSk?auto=format&fit=crop&w=1600&q=80";
-  const imageCredit = "Pieter van de Sande / Unsplash";
-  const imageCreditUrl = "https://unsplash.com/photos/denver-street-artowrk-r6BdUpN_iSk";
+  const imageUrl = "https://images.unsplash.com/photo-1573297627466-6bed413a43f1?auto=format&fit=crop&w=1600&q=80";
 
-  const prompt = `You are writing a weekly Denver restaurant preview column for DaveLovesDenver.com, published every Wednesday. Write it in the first person as Dave Chung — a Denver local.
+  const prompt = `You are writing a weekly Denver restaurant openings column for DaveLovesDenver.com, published every Saturday. Write it in the first person as Dave Chung — a Denver local and YouTube creator with over 2 million views.
 
 ${VOICE_GUIDE}
 
-ADDITIONAL TONE FOR THIS COLUMN:
-- This is a PREVIEW column — only write about restaurants that have NOT opened yet
-- Focus on places that are "opening soon", "coming soon", "announced", "expected to open", "under construction"
-- Do NOT write about restaurants that are already open, even if they opened recently
-- Be specific: neighborhood, concept, who's behind it, expected opening timeframe
-- If a timeline is vague, say so honestly — "sometime this spring" is fine if that's what the source says
-- Link to the source articles using [text](url) markdown where you have real URLs
+CURRENT DATE: ${formatDate(saturday)}
 
-CURRENT DATE: ${formatDate(wednesday)}
+COLUMN FOCUS: New restaurant and bar openings in the Denver metro area this week. Openings only — do not include closings even if they appear in the source material.
 
-=== SOURCE ARTICLES (read carefully — only use upcoming/announced restaurants) ===
+=== SOURCE ARTICLES (read the full text carefully — these are the primary source of truth) ===
 
-WESTWORD RESTAURANT ARTICLES (past 2 weeks):
-${westwordContent || "Content not available"}
-
-DENVER POST RESTAURANT ARTICLES (past 2 weeks):
+DENVER POST (restaurant openings):
 ${denverPostContent || "Content not available"}
 
-ADDITIONAL SEARCH RESULTS:
-${braveResults || "Not available"}
+WESTWORD (openings & closings):
+${westwordContent || "Content not available"}
+
+=== DAVE'S YOUTUBE VIDEOS (link 2-3 that naturally fit) ===
+
+When a new restaurant is in a neighborhood Dave has covered, or is a cuisine/food type Dave has a video about, link to that video naturally in the prose — not as a list, just woven in. Use the markdown link format provided.
+
+${videosText || "No videos available"}
 
 === WRITING INSTRUCTIONS ===
 
-Write a 500–800 word column. Structure:
+Write a 400–700 word column covering what opened (or is opening imminently) in Denver this week.
 
-Opening paragraph (no header): 2-3 sentences — what's on Dave's radar this week, what the pipeline looks like. Conversational, like the start of a newsletter.
+Opening paragraph (no header): 1-2 sentences on what kind of week it was for new spots.
 
 ## [Restaurant Name]
-(2-4 sentences per restaurant: concept, neighborhood, what makes it interesting, when to expect it. Link to the source article with [read more](url) at the end of the entry.)
+2-3 sentences per opening: concept, neighborhood, what makes it worth knowing about. Link to the Denver Post or Westword source with [read more](url) at the end of each entry. Where relevant, naturally weave in a link to one of Dave's videos — e.g. "If you haven't been to RiNo before, [here's my neighborhood guide](url)."
 
-Closing: 1-2 sentences — Dave's honest take on what he's most curious to try, or a note on the direction Denver's restaurant scene is heading.
+Closing: 1 sentence — which opening Dave is most curious to check out.
 
 RULES:
-- Only include restaurants that are not yet open
-- If you cannot find at least 2 clearly upcoming restaurants in the source material, respond with exactly: NO_CONTENT
-- Never invent restaurant names, neighborhoods, or opening dates
+- Openings only — skip any closings in the source material
+- Use restaurant names and neighborhoods exactly as they appear in the sources
+- Only link to Dave's videos where the connection is genuinely natural — 2-3 max, never forced
+- Do not invent details not in the source material
+- If you cannot find at least 2 confirmed openings this week, respond with exactly: NO_CONTENT
 - First person as Dave throughout
 - Return ONLY the article text (or NO_CONTENT)`;
 
   try {
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 2000,
+      max_tokens: 1500,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -236,10 +194,6 @@ RULES:
 
     const articleText = await injectInternalLinks(raw);
 
-    const placesData = imageUrl
-      ? [{ photo_url: imageUrl, photo_credit: imageCredit, photo_credit_url: imageCreditUrl }]
-      : [];
-
     const { error } = await supabase.from("articles").upsert(
       {
         video_id: null,
@@ -250,8 +204,8 @@ RULES:
         neighborhood_slug: null,
         category_slug: "restaurants",
         expedia_url: expediaHotelUrl("Denver Colorado"),
-        places_mentioned: placesData,
-        generated_at: wednesday.toISOString(),
+        places_mentioned: [{ photo_url: imageUrl }],
+        generated_at: saturday.toISOString(),
         updated_at: new Date().toISOString(),
       },
       { onConflict: "slug" }
