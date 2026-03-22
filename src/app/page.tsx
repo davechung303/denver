@@ -36,7 +36,7 @@ export default async function HomePage() {
           .limit(9)
           .then((r) => r.data?.slice(0, 9) ?? []),
       ]),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 8000)),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
     ]);
   } catch {
     // Supabase timeout — render with empty state
