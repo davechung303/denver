@@ -2,12 +2,13 @@
 
 interface Props {
   src: string;
-  rawSrc?: string; // optional fallback (YouTube hqdefault)
+  rawSrc?: string;     // YouTube hqdefault fallback
+  fallbackSrc?: string; // last-resort image (e.g. Unsplash Denver)
   alt: string;
   className?: string;
 }
 
-export default function ArticleThumb({ src, rawSrc, alt, className }: Props) {
+export default function ArticleThumb({ src, rawSrc, fallbackSrc, alt, className }: Props) {
   return (
     <img
       src={src}
@@ -18,8 +19,9 @@ export default function ArticleThumb({ src, rawSrc, alt, className }: Props) {
         const img = e.target as HTMLImageElement;
         if (rawSrc && img.src !== rawSrc) {
           img.src = rawSrc;
+        } else if (fallbackSrc && img.src !== fallbackSrc) {
+          img.src = fallbackSrc;
         } else {
-          // Hide the image and its container if everything fails
           img.style.display = "none";
         }
       }}

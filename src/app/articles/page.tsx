@@ -83,6 +83,7 @@ export default async function ArticlesPage() {
                         ) : (
                           <ArticleThumb
                             src={src}
+                            fallbackSrc="https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1200&q=80"
                             alt={article.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
