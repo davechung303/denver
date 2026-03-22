@@ -113,9 +113,9 @@ async function fetchRelevantVideos(): Promise<string> {
   const { data } = await supabase
     .from("youtube_videos")
     .select("video_id, title, description")
-    .or("title.ilike.%restaurant%,title.ilike.%food%,title.ilike.%rino%,title.ilike.%lodo%,title.ilike.%capitol hill%,title.ilike.%highlands%,title.ilike.%cherry creek%,title.ilike.%colfax%,title.ilike.%denver%")
+    .or("title.ilike.%restaurant%,title.ilike.%food%,title.ilike.%bbq%,title.ilike.%barbecue%,title.ilike.%chicken%,title.ilike.%ramen%,title.ilike.%sushi%,title.ilike.%taco%,title.ilike.%pizza%,title.ilike.%burger%,title.ilike.%bar%,title.ilike.%brewery%,title.ilike.%rino%,title.ilike.%lodo%,title.ilike.%capitol hill%,title.ilike.%highlands%,title.ilike.%cherry creek%,title.ilike.%colfax%,title.ilike.%lone tree%,title.ilike.%littleton%,title.ilike.%thornton%,title.ilike.%wheat ridge%,title.ilike.%arvada%,title.ilike.%denver%")
     .order("view_count", { ascending: false })
-    .limit(30);
+    .limit(50);
 
   if (!data || data.length === 0) return "";
   return data
