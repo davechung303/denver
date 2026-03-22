@@ -6,7 +6,7 @@ import { getFoursquareData, type FoursquareTip } from "./foursquare";
 // Use server-side key (no referrer restrictions) for API calls
 // NEXT_PUBLIC_ key is for client-side map embeds only
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
-const CACHE_TTL_HOURS = 24;
+const CACHE_TTL_HOURS = 168; // 7 days — places data is stable, reduce DB reads
 
 export interface Place {
   id: string;

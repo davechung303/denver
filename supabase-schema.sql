@@ -122,6 +122,7 @@ create table if not exists articles (
 create index if not exists articles_slug on articles (slug);
 create index if not exists articles_neighborhood on articles (neighborhood_slug);
 create index if not exists articles_video on articles (video_id);
+create index if not exists articles_generated_at on articles (generated_at desc);
 
 alter table articles enable row level security;
 create policy "Public read" on articles for select using (true);

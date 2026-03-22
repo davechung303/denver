@@ -9,6 +9,8 @@ import ArticleThumb from "@/components/ArticleThumb";
 import WeatherWidget from "@/components/WeatherWidget";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
+export const revalidate = 3600; // ISR: revalidate every hour
+
 export const metadata: Metadata = {
   title: "Dave Loves Denver — Local Denver Guides, Videos & Restaurant Reviews",
   description:
