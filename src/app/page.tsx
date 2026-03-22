@@ -29,9 +29,9 @@ export default async function HomePage() {
       .from("articles")
       .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count, published_at)")
       .order("generated_at", { ascending: false })
-      .limit(20),
+      .limit(9),
   ]);
-  const articles = (articlesResult.data ?? []).slice(0, 7);
+  const articles = (articlesResult.data ?? []).slice(0, 9);
   return (
     <>
       <SchemaMarkup
