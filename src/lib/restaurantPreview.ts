@@ -119,7 +119,7 @@ async function fetchRelevantVideos(): Promise<string> {
 
   if (!data || data.length === 0) return "";
   return data
-    .map((v) => `- [${v.title}](https://davelovesdenver.com/videos/${v.video_id}) — ${(v.description ?? "").slice(0, 100)}`)
+    .map((v) => `- [${v.title}](https://www.youtube.com/watch?v=${v.video_id}) — ${(v.description ?? "").slice(0, 100)}`)
     .join("\n");
 }
 
@@ -154,12 +154,19 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
     fetchRelevantVideos(),
   ]);
 
-  // Step 2: Fetch full HTML for the top Westword weekly roundup to extract structured openings list
-  // Also fetch Denver Post articles for additional detail
-  const westwordRoundupUrl = westwordResults.find(r =>
-    r.url.includes("westword.com") &&
-    (r.title.toLowerCase().includes("opening") || r.title.toLowerCase().includes("debuted") || r.title.toLowerCase().includes("this week"))
-  )?.url ?? westwordResults[0]?.url ?? "";
+  // Step 2: Pick the most recent Westword weekly roundup — sort by numeric article ID (higher = newer)
+  const westwordRoundupUrl = westwordResults
+    .filter(r => r.url.includes("westword.com") &&
+      (r.title.toLowerCase().includes("opening") || r.title.toLowerCase().includes("debuted") || r.title.toLowerCase().includes("this week") || r.title.toLowerCase().includes("debut")))
+    .sort((a, b) => {
+      const idA = parseInt(a.url.match(/(\d{8,})/)?.[1] ?? "0");
+      const idB = parseInt(b.url.match(/(\d{8,})/)?.[1] ?? "0");
+      return idB - idA; // highest ID = most recent
+    })[0]?.url ?? westwordResults.sort((a, b) => {
+      const idA = parseInt(a.url.match(/(\d{8,})/)?.[1] ?? "0");
+      const idB = parseInt(b.url.match(/(\d{8,})/)?.[1] ?? "0");
+      return idB - idA;
+    })[0]?.url ?? "";
 
   const denverPostUrls = denverPostResults.map(r => r.url).slice(0, 5);
 
