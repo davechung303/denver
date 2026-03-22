@@ -183,8 +183,12 @@ export async function generateWeeklyGuide(overrideFriday?: Date): Promise<{ succ
   saturday.setDate(friday.getDate() + 1);
 
   // Fetch all sources in parallel
-  const [westword, denverite, kidsOut, reddit, ticketmasterEvents, braveResults] = await Promise.all([
+  // westwordFree: permanent URL Westword updates every week with that week's free events
+  // visitDenver: Visit Denver's weekly events roundup
+  const [westword, westwordFree, visitDenver, denverite, kidsOut, reddit, ticketmasterEvents, braveResults] = await Promise.all([
     fetchSource("https://www.westword.com/things-to-do/", 4000),
+    fetchSource("https://www.westword.com/arts-culture/free-things-to-do-in-denver-20764019/", 5000),
+    fetchSource("https://visitdenver.com/blog/post/denver-events-this-weekend/", 5000),
     fetchSource("https://denverite.com/category/entertainment/things-to-do-in-denver/", 3000),
     fetchSource("https://denver.kidsoutandabout.com/content/things-do-weekend-and-around-denver", 3000),
     fetchReddit(),
@@ -225,10 +229,16 @@ For Westword/Denverite/other text sources: only include an event if its date is 
 CONCERTS & TICKETED EVENTS — fully structured, trust these dates/times completely:
 ${ticketmasterEvents || "None available"}
 
-WESTWORD (things to do — extract only events with explicit dates matching this weekend):
+WESTWORD — Things To Do (general):
 ${westword.text || "Not available"}
 
-DENVERITE (things to do — same rule):
+WESTWORD — Free Things To Do This Week (updated weekly — high value, include everything that matches this weekend):
+${westwordFree.text || "Not available"}
+
+VISIT DENVER — Events This Weekend (updated weekly):
+${visitDenver.text || "Not available"}
+
+DENVERITE (things to do):
 ${denverite.text || "Not available"}
 
 KIDS OUT & ABOUT (family/kid events):
