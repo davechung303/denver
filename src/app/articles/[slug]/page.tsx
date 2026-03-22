@@ -256,6 +256,13 @@ export default async function ArticlePage({ params }: Props) {
         )}
         <div className="prose prose-slate dark:prose-invert max-w-none mb-10">
           {restParas.map((para: string, i: number) => {
+            if (para.startsWith("### ")) {
+              return (
+                <h3 key={i} className="text-base font-semibold uppercase tracking-wide mt-8 mb-2 text-denver-amber">
+                  {para.replace("### ", "")}
+                </h3>
+              );
+            }
             if (para.startsWith("## ")) {
               return (
                 <h2 key={i} className="text-xl font-bold mt-8 mb-3 text-slate-900 dark:text-slate-100">
