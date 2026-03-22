@@ -106,8 +106,9 @@ function formatDate(date: Date): string {
 export async function generateRestaurantPreview(): Promise<{ success: boolean; slug?: string; error?: string }> {
   const saturday = getThisSaturday();
   const dateStr = saturday.toISOString().split("T")[0];
-  const slug = `denver-restaurant-openings-${dateStr}`;
-  const title = `Denver Restaurant Openings This Week — ${formatDate(saturday)}`;
+  const formattedSlugDate = saturday.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toLowerCase().replace(/,/g, "").replace(/\s+/g, "-");
+  const slug = `new-denver-restaurant-openings-${formattedSlugDate}-${dateStr}`;
+  const title = `New Denver Restaurant Openings — ${formatDate(saturday)}`;
 
   const { data: existing } = await supabase
     .from("articles")
@@ -141,39 +142,52 @@ ${VOICE_GUIDE}
 
 CURRENT DATE: ${formatDate(saturday)}
 
-COLUMN FOCUS: New restaurant and bar openings in the Denver metro area this week. Openings only — do not include closings even if they appear in the source material.
+=== SOURCE ARTICLES (read every word — these are the only source of truth) ===
 
-=== SOURCE ARTICLES (read the full text carefully — these are the primary source of truth) ===
-
-DENVER POST (restaurant openings):
+DENVER POST:
 ${denverPostContent || "Content not available"}
 
-WESTWORD (openings & closings):
+WESTWORD:
 ${westwordContent || "Content not available"}
 
-=== DAVE'S YOUTUBE VIDEOS (link 2-3 that naturally fit) ===
+=== STEP 1: EXTRACT ALL OPENINGS (do this before writing) ===
 
-When a new restaurant is in a neighborhood Dave has covered, or is a cuisine/food type Dave has a video about, link to that video naturally in the prose — not as a list, just woven in. Use the markdown link format provided.
+Read both sources in full. Build a complete list of every restaurant or bar that has opened or is opening imminently this week — combining both sources, deduplicating if the same place appears in both. For each entry note: exact name, street address (if mentioned), neighborhood, concept/cuisine, and source URL.
+
+Openings only. Skip any closings entirely.
+
+=== STEP 2: WRITE THE ARTICLE ===
+
+Opening paragraph (no header): 1-2 sentences on the week's opening activity.
+
+For each restaurant, use this exact format:
+
+## [Exact Restaurant Name] — [Neighborhood]
+
+**Address:** [Street address, City] *(omit this line entirely if address not in source)*
+
+[2-3 sentences: concept, what makes it interesting, opening date or status. End with the source link: [Denver Post](url) or [Westword](url).]
+
+If Dave has a video that naturally fits — same neighborhood or same cuisine — weave a link into the paragraph prose. 2-3 video links max across the whole article, only where genuinely natural.
+
+## Worth Keeping an Eye On
+
+*Only include this section if there are announced openings that are NOT yet open this week — skip the section entirely if everything is already open.*
+
+Brief mention of 1-2 upcoming spots worth watching, with source link.
+
+Closing paragraph (no header): 1-2 sentences — which opening Dave is most curious about.
+
+=== DAVE'S YOUTUBE VIDEOS ===
 
 ${videosText || "No videos available"}
 
-=== WRITING INSTRUCTIONS ===
-
-Write a 400–700 word column covering what opened (or is opening imminently) in Denver this week.
-
-Opening paragraph (no header): 1-2 sentences on what kind of week it was for new spots.
-
-## [Restaurant Name]
-2-3 sentences per opening: concept, neighborhood, what makes it worth knowing about. Link to the Denver Post or Westword source with [read more](url) at the end of each entry. Where relevant, naturally weave in a link to one of Dave's videos — e.g. "If you haven't been to RiNo before, [here's my neighborhood guide](url)."
-
-Closing: 1 sentence — which opening Dave is most curious to check out.
-
 RULES:
-- Openings only — skip any closings in the source material
-- Use restaurant names and neighborhoods exactly as they appear in the sources
-- Only link to Dave's videos where the connection is genuinely natural — 2-3 max, never forced
-- Do not invent details not in the source material
-- If you cannot find at least 2 confirmed openings this week, respond with exactly: NO_CONTENT
+- Every opening from both sources must appear — comprehensiveness is the goal
+- Use restaurant names and addresses exactly as written in the sources — never guess or invent
+- If address is not in the source, omit the Address line entirely
+- Do not invent any details not in the source material
+- If fewer than 2 confirmed openings exist across both sources, respond with exactly: NO_CONTENT
 - First person as Dave throughout
 - Return ONLY the article text (or NO_CONTENT)`;
 
