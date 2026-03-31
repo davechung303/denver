@@ -1,9 +1,10 @@
 {
   "framework": "nextjs",
   "crons": [
-    { "path": "/api/sync-videos", "schedule": "0 6 * * *" },
+    { "path": "/api/sync-videos", "schedule": "0 */4 * * *" },
+    { "path": "/api/associate-videos", "schedule": "30 */4 * * *" },
+    { "path": "/api/generate-articles", "schedule": "0 */6 * * *" },
     { "path": "/api/sync-events", "schedule": "0 7 * * *" },
-    { "path": "/api/generate-articles", "schedule": "0 8 * * *" },
     { "path": "/api/generate-weekly", "schedule": "0 15 * * 5" },
     { "path": "/api/generate-restaurant-preview", "schedule": "0 15 * * 6" }
   ]

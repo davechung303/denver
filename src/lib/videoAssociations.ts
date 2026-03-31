@@ -82,11 +82,10 @@ export async function associateVideosWithNeighborhoods(
     existingWithNeighborhood?.map((a) => a.video_id) ?? []
   );
 
-  // Fetch unassociated long-form videos, newest first
+  // Fetch unassociated videos (all durations — Shorts are Denver content too), newest first
   const { data: allVideos } = await supabase
     .from("youtube_videos")
     .select("video_id, title, description")
-    .or("duration_seconds.is.null,duration_seconds.gt.180")
     .order("published_at", { ascending: false })
     .limit(500);
 
