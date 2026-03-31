@@ -7,7 +7,7 @@ import VideoCard from "@/components/VideoCard";
 import ArticleThumb from "@/components/ArticleThumb";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Dave Loves Denver — Local Denver Guides, Videos & Restaurant Reviews",
