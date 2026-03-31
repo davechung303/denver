@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import { generateArticle } from "@/lib/articles";
 import { associateVideosWithNeighborhoods } from "@/lib/videoAssociations";
@@ -73,6 +74,12 @@ export async function GET(request: Request) {
 
   // Generate article
   const result = await generateArticle(videoId);
+
+  // Invalidate ISR cache so the new article appears immediately
+  if (result.success) {
+    revalidatePath("/");
+    revalidatePath("/articles");
+  }
 
   return NextResponse.json({ videoId, synced: true, article: result });
 }
