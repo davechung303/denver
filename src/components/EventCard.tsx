@@ -1,4 +1,5 @@
 import type { DenverEvent } from "@/lib/eventbrite";
+import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 
 interface Props {
   event: DenverEvent;
@@ -17,7 +18,7 @@ function formatDate(iso: string): string {
 export default function EventCard({ event }: Props) {
   return (
     <a
-      href={event.url}
+      href={ticketmasterAffiliateUrl(event.url)}
       target="_blank"
       rel="noopener noreferrer"
       className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 hover:border-denver-amber hover:shadow-md transition-all duration-200"

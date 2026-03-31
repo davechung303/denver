@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { DenverEvent } from "@/lib/ticketmaster";
+import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 
 const PAGE_SIZE = 24;
 
@@ -62,7 +63,7 @@ export default function EventsClient({ events }: Props) {
             {visible.map((event) => (
               <a
                 key={event.event_id}
-                href={event.url}
+                href={ticketmasterAffiliateUrl(event.url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 hover:border-denver-amber hover:shadow-md transition-all duration-200"

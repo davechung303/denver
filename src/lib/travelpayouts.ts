@@ -17,6 +17,14 @@ export function affiliateUrl(directUrl: string): string {
   return `https://tp.media/r?marker=${MARKER}&trs=233738&p=4114&u=${encoded}`;
 }
 
+// Wrap a Ticketmaster event URL with the Impact affiliate link
+const TM_AFFILIATE_BASE = "https://ticketmaster.evyy.net/c/3433500/264167/4272?u=";
+
+export function ticketmasterAffiliateUrl(url: string | null): string | undefined {
+  if (!url) return undefined;
+  return TM_AFFILIATE_BASE + encodeURIComponent(url);
+}
+
 // Generate an Expedia hotel search URL with your Creator affiliate tags
 export function expediaHotelUrl(hotelName: string): string {
   const params = new URLSearchParams({
