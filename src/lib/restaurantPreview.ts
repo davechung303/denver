@@ -73,7 +73,7 @@ async function braveSearch(query: string, count = 8): Promise<Array<{ title: str
   try {
     const encoded = encodeURIComponent(query);
     const res = await fetch(
-      `https://api.search.brave.com/res/v1/web/search?q=${encoded}&count=${count}&freshness=pm`,
+      `https://api.search.brave.com/res/v1/web/search?q=${encoded}&count=${count}&freshness=pw`,
       {
         headers: {
           Accept: "application/json",
@@ -147,26 +147,48 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
 
   if (existing) return { success: true, slug };
 
+  // Find the Westword URL used in the previous weekly-guide article — used to detect stale source reuse
+  const { data: prevArticle } = await supabase
+    .from("articles")
+    .select("content")
+    .eq("content_type", "weekly-guide")
+    .order("generated_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  const prevWestwordUrl = prevArticle?.content?.match(/https:\/\/www\.westword\.com\/[^\s)"\]]+/)?.[0] ?? "";
+
   // Step 1: Find this week's Westword weekly roundup + Denver Post individual articles via Brave Search
+  // Include the month and year so the search engine finds the current week, not a stale cached result
+  const monthYear = saturday.toLocaleDateString("en-US", { month: "long", year: "numeric" });
   const [westwordResults, denverPostResults, videosText] = await Promise.all([
-    braveSearch("site:westword.com Denver restaurants opened this week openings", 5),
-    braveSearch("site:denverpost.com new restaurant opening Denver 2026", 6),
+    braveSearch(`site:westword.com Denver restaurants opening debuting this week ${monthYear}`, 5),
+    braveSearch(`site:denverpost.com new restaurant opening Denver ${monthYear}`, 6),
     fetchRelevantVideos(),
   ]);
 
   // Step 2: Pick the most recent Westword weekly roundup — sort by numeric article ID (higher = newer)
-  const westwordRoundupUrl = westwordResults
-    .filter(r => r.url.includes("westword.com") &&
-      (r.title.toLowerCase().includes("opening") || r.title.toLowerCase().includes("debuted") || r.title.toLowerCase().includes("this week") || r.title.toLowerCase().includes("debut")))
-    .sort((a, b) => {
-      const idA = parseInt(a.url.match(/(\d{8,})/)?.[1] ?? "0");
-      const idB = parseInt(b.url.match(/(\d{8,})/)?.[1] ?? "0");
-      return idB - idA; // highest ID = most recent
-    })[0]?.url ?? westwordResults.sort((a, b) => {
+  const pickBestUrl = (results: typeof westwordResults) =>
+    results
+      .filter(r => r.url.includes("westword.com") &&
+        (r.title.toLowerCase().includes("opening") || r.title.toLowerCase().includes("debuted") || r.title.toLowerCase().includes("this week") || r.title.toLowerCase().includes("debut")))
+      .sort((a, b) => {
+        const idA = parseInt(a.url.match(/(\d{8,})/)?.[1] ?? "0");
+        const idB = parseInt(b.url.match(/(\d{8,})/)?.[1] ?? "0");
+        return idB - idA;
+      })[0]?.url ??
+    results.sort((a, b) => {
       const idA = parseInt(a.url.match(/(\d{8,})/)?.[1] ?? "0");
       const idB = parseInt(b.url.match(/(\d{8,})/)?.[1] ?? "0");
       return idB - idA;
     })[0]?.url ?? "";
+
+  const westwordRoundupUrl = pickBestUrl(westwordResults);
+
+  // Abort if we found the same Westword source as last week — means no new roundup published yet
+  if (westwordRoundupUrl && prevWestwordUrl && westwordRoundupUrl === prevWestwordUrl) {
+    return { success: true, slug: undefined, skipped: true, debug: { reason: "same Westword source as previous article", westwordUrl: westwordRoundupUrl } } as any;
+  }
 
   const denverPostUrls = denverPostResults.map(r => r.url).slice(0, 5);
 
