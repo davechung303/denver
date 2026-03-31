@@ -271,11 +271,10 @@ Return ONLY the article text.`;
 
 // Batch generate articles for all videos that don't have one yet
 export async function generateMissingArticles(limit = 10): Promise<{ generated: number; errors: number }> {
-  // Find videos that have Denver associations
+  // Find videos that have any Denver association (neighborhood or category)
   const { data: associated } = await supabase
     .from("video_page_associations")
-    .select("video_id")
-    .not("neighborhood_slug", "is", null);
+    .select("video_id");
 
   const associatedIds = [...new Set(associated?.map((a) => a.video_id) ?? [])];
   if (associatedIds.length === 0) return { generated: 0, errors: 0 };
