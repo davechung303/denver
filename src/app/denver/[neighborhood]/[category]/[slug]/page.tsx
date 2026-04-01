@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPlace, getPlaces, getPlacesForSubcategory, photoUrl } from "@/lib/places";
+import { getPlace, getPlaces, getPlacesForSubcategory, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import { hotelSearchUrl, expediaHotelUrl, zenhotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
       images: place.photos?.[0]
-        ? [{ url: photoUrl(place.photos[0].name, 1200, 630) }]
+        ? [{ url: photoAbsoluteUrl(place.photos[0].name) }]
         : [],
     },
     alternates: {
@@ -226,7 +226,7 @@ export default async function BusinessPage({ params }: Props) {
         worstRating: 1,
       },
     }),
-    ...(place.photos?.[0] && { image: photoUrl(place.photos[0].name, 800, 600) }),
+    ...(place.photos?.[0] && { image: photoAbsoluteUrl(place.photos[0].name) }),
   };
 
   return (

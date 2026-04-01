@@ -59,11 +59,19 @@ function slugify(name: string): string {
     .replace(/\s+/g, "-");
 }
 
-function photoUrl(photoName: string, width = 600, height = 400): string {
-  return `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=${width}&maxHeightPx=${height}&key=${PLACES_API_KEY}`;
+const SITE_URL = "https://davelovesdenver.com";
+
+// Returns a proxy URL that keeps the API key server-side.
+// Use relative form in JSX img src; absolute form for og:image metadata.
+function photoUrl(photoName: string, _width = 600, _height = 400): string {
+  return `/api/places-photo?name=${encodeURIComponent(photoName)}`;
 }
 
-export { photoUrl };
+function photoAbsoluteUrl(photoName: string): string {
+  return `${SITE_URL}/api/places-photo?name=${encodeURIComponent(photoName)}`;
+}
+
+export { photoUrl, photoAbsoluteUrl };
 
 const FIELD_MASK = [
   "places.id",
