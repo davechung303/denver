@@ -17,6 +17,16 @@ export function affiliateUrl(directUrl: string): string {
   return `https://tp.media/r?marker=${MARKER}&trs=233738&p=4114&u=${encoded}`;
 }
 
+// Generate a ZenHotels search URL via the Impact affiliate program
+// Deep link format: base?u=<encoded ZenHotels search URL>
+// TODO: if/when ZenHotels B2B API credentials are available, replace with real-time pricing
+const ZEN_AFFILIATE_BASE = "https://emergingtravelinc.pxf.io/7XXqW5";
+
+export function zenhotelsUrl(destination: string): string {
+  const searchUrl = `https://www.zenhotels.com/hotels/#destination=${encodeURIComponent(destination)}&adults=2`;
+  return `${ZEN_AFFILIATE_BASE}?u=${encodeURIComponent(searchUrl)}`;
+}
+
 // Wrap a Ticketmaster event URL with the Impact affiliate link
 const TM_AFFILIATE_BASE = "https://ticketmaster.evyy.net/c/3433500/264167/4272?u=";
 

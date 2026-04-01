@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { embedUrl, getVideosForPage } from "@/lib/youtube";
-import { expediaHotelUrl, hotelSearchUrl } from "@/lib/travelpayouts";
+import { expediaHotelUrl, hotelSearchUrl, zenhotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import VideoCard from "@/components/VideoCard";
@@ -106,6 +106,10 @@ export default async function ArticlePage({ params }: Props) {
   const bookingUrl = article.neighborhood_slug
     ? hotelSearchUrl(`${neighborhood?.name ?? article.neighborhood_slug} Denver`)
     : hotelSearchUrl("Denver Colorado");
+
+  const zenUrl = zenhotelsUrl(
+    neighborhood ? `${neighborhood.name} Denver` : "Denver Colorado"
+  );
 
   const publishDate = video?.published_at
     ? new Date(video.published_at).toLocaleDateString("en-US", {
@@ -337,6 +341,20 @@ export default async function ArticlePage({ params }: Props) {
                 </p>
               </div>
               <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 px-4 py-2 bg-denver-amber text-slate-900 text-xs font-semibold rounded-xl hover:bg-amber-400 transition-colors">
+                Search hotels
+              </a>
+            </div>
+            <div className="flex items-center gap-4 px-5 py-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <span className="text-blue-700 font-bold text-xs">ZEN</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium">ZenHotels</p>
+                <p className="text-xs text-slate-500">
+                  {neighborhood ? `${neighborhood.name} area` : "Denver"} — often lower rates
+                </p>
+              </div>
+              <a href={zenUrl} target="_blank" rel="noopener noreferrer sponsored" className="flex-shrink-0 px-4 py-2 bg-denver-amber text-slate-900 text-xs font-semibold rounded-xl hover:bg-amber-400 transition-colors">
                 Search hotels
               </a>
             </div>

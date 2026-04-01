@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlace, getPlaces, getPlacesForSubcategory, photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
-import { hotelSearchUrl, expediaHotelUrl } from "@/lib/travelpayouts";
+import { hotelSearchUrl, expediaHotelUrl, zenhotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
 import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
@@ -206,6 +206,7 @@ export default async function BusinessPage({ params }: Props) {
   const isHotel = cSlug === "hotels";
   const bookingUrl = isHotel ? hotelSearchUrl(place.name) : null;
   const expediaUrl = isHotel ? expediaHotelUrl(place.name) : null;
+  const zenUrl = isHotel ? zenhotelsUrl(place.name + " Denver") : null;
 
   // LocalBusiness schema
   const localBusinessSchema = {
@@ -455,6 +456,16 @@ export default async function BusinessPage({ params }: Props) {
                   className="flex items-center justify-center w-full border border-slate-200 dark:border-slate-700 text-sm font-semibold py-2.5 px-4 rounded-xl hover:border-denver-amber hover:text-denver-amber transition-colors"
                 >
                   Search on Booking.com
+                </a>
+              )}
+              {isHotel && zenUrl && (
+                <a
+                  href={zenUrl}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-center w-full border border-slate-200 dark:border-slate-700 text-sm font-semibold py-2.5 px-4 rounded-xl hover:border-denver-amber hover:text-denver-amber transition-colors"
+                >
+                  Search on ZenHotels
                 </a>
               )}
 
