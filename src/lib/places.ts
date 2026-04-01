@@ -265,14 +265,12 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
 
   // Fetch reviews from Place Details API if not already cached
   let reviews = place.reviews;
+  let freshReviews = false;
   if (!reviews || reviews.length === 0) {
     reviews = await fetchReviewsForPlace(place.place_id);
     console.log(`[summary] fetchReviews for ${place.name}: ${reviews?.length ?? 0} reviews`);
     if (reviews && reviews.length > 0) {
-      await supabaseAdmin
-        .from("places")
-        .update({ reviews: reviews as any })
-        .eq("place_id", place.place_id);
+      freshReviews = true;
       place = { ...place, reviews };
     }
   }
@@ -289,11 +287,14 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
   );
   console.log(`[summary] generated for ${place.name}: ${summary ? "ok" : "null"}`);
   if (summary) {
-    await supabaseAdmin
-      .from("places")
-      .update({ review_summary: summary as any })
-      .eq("place_id", place.place_id);
+    // Batch reviews + summary into a single UPDATE to halve DB writes
+    const patch: Record<string, unknown> = { review_summary: summary };
+    if (freshReviews) patch.reviews = reviews;
+    await supabaseAdmin.from("places").update(patch).eq("place_id", place.place_id);
     return { ...place, review_summary: summary };
+  } else if (freshReviews) {
+    // Summary failed but we still have fresh reviews — persist them
+    await supabaseAdmin.from("places").update({ reviews: reviews as any }).eq("place_id", place.place_id);
   }
   return place;
 }
