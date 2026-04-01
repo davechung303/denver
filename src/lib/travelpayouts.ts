@@ -20,11 +20,24 @@ export function ticketmasterAffiliateUrl(url: string | null): string | undefined
   return TM_AFFILIATE_BASE + encodeURIComponent(url);
 }
 
-// Generate an Expedia hotel search URL with your Creator affiliate tags
+// Search for a specific hotel by name — omit regionId so Expedia resolves the property name
 export function expediaHotelUrl(hotelName: string): string {
   const params = new URLSearchParams({
-    destination: hotelName,
-    regionId: "996", // Denver, CO
+    destination: `${hotelName} Denver Colorado`,
+    sort: "RECOMMENDED",
+    affcid: EXPEDIA_AFFCID,
+    afflid: EXPEDIA_AFFLID,
+    clickref: EXPEDIA_AFFLID,
+    my_ad: `AFF.US.DIRECT.PHG.1011l422631.0`,
+  });
+  return `https://www.expedia.com/Hotel-Search?${params}`;
+}
+
+// Search all hotels in Denver or a specific neighborhood — uses regionId for city-level results
+export function expediaDenverHotelsUrl(area = "Denver, Colorado"): string {
+  const params = new URLSearchParams({
+    destination: area,
+    regionId: "996",
     sort: "RECOMMENDED",
     affcid: EXPEDIA_AFFCID,
     afflid: EXPEDIA_AFFLID,

@@ -14,7 +14,11 @@ import PlaceCard from "@/components/PlaceCard";
 import { getPlaceTag } from "@/lib/neighborhoods";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
-export const dynamicParams = true; // render new neighborhoods on-demand, don't pre-build all
+export const dynamicParams = true; // still render unknown slugs on-demand
+
+export function generateStaticParams() {
+  return NEIGHBORHOODS.map((n) => ({ neighborhood: n.slug }));
+}
 
 interface Props {
   params: Promise<{ neighborhood: string }>;

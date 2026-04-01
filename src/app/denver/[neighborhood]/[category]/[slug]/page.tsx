@@ -454,7 +454,7 @@ export default async function BusinessPage({ params }: Props) {
                   rel="noopener noreferrer sponsored"
                   className="flex items-center justify-center w-full border border-slate-200 dark:border-slate-700 text-sm font-semibold py-2.5 px-4 rounded-xl hover:border-denver-amber hover:text-denver-amber transition-colors"
                 >
-                  Search on ZenHotels
+                  Compare prices on ZenHotels
                 </a>
               )}
 

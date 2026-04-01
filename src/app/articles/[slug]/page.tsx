@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { embedUrl, getVideosForPage } from "@/lib/youtube";
-import { expediaHotelUrl, zenhotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, zenhotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import VideoCard from "@/components/VideoCard";
@@ -101,7 +101,7 @@ export default async function ArticlePage({ params }: Props) {
   ]);
 
   const expediaUrl = article.expedia_url ??
-    expediaHotelUrl(neighborhood ? `${neighborhood.name} Denver` : "Denver Colorado");
+    expediaDenverHotelsUrl(neighborhood ? `${neighborhood.name} Denver, Colorado` : "Denver, Colorado");
 
   const zenUrl = zenhotelsUrl(
     neighborhood ? `${neighborhood.name} Denver` : "Denver Colorado"
