@@ -33,3 +33,18 @@ export function expediaHotelUrl(hotelName: string): string {
   });
   return `https://www.expedia.com/Hotel-Search?${params}`;
 }
+
+// Generate an Expedia flights-to-Denver search URL (no origin — user picks their city)
+export function expediaFlightsToDenverUrl(): string {
+  const params = new URLSearchParams({
+    trip: "roundtrip",
+    leg1: "from:anywhere,to:DEN",
+    passengers: "adults:1",
+    options: "cabinclass:economy",
+    affcid: EXPEDIA_AFFCID,
+    afflid: EXPEDIA_AFFLID,
+    clickref: EXPEDIA_AFFLID,
+    my_ad: `AFF.US.DIRECT.PHG.1011l422631.0`,
+  });
+  return `https://www.expedia.com/Flights-Search?${params}`;
+}

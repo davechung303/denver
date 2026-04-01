@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getPlaces } from "@/lib/places";
+import { getPlaces, type Place } from "@/lib/places";
+import { expediaHotelUrl, zenhotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -40,6 +41,67 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `https://davelovesdenver.com/denver/${slug}`,
     },
   };
+}
+
+function HotelBookingWidget({ hotels, neighborhoodName }: { hotels: Place[]; neighborhoodName: string }) {
+  if (hotels.length === 0) return null;
+  const featured = hotels.slice(0, 3);
+
+  return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
+      <div className="bg-amber-50 dark:bg-amber-950/20 rounded-2xl p-6 border border-amber-100 dark:border-amber-900">
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <h2 className="font-bold text-xl">Where to Stay in {neighborhoodName}</h2>
+            <p className="text-sm text-slate-500 mt-0.5">Compare prices across top hotels</p>
+          </div>
+        </div>
+        <div className="space-y-3">
+          {featured.map((hotel) => (
+            <div key={hotel.place_id} className="flex items-center gap-4 bg-white dark:bg-slate-900 rounded-xl px-4 py-3">
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm truncate">{hotel.name}</p>
+                {hotel.rating && (
+                  <p className="text-xs text-slate-500">
+                    ★ {hotel.rating} · {hotel.review_count?.toLocaleString()} reviews
+                  </p>
+                )}
+              </div>
+              <div className="flex gap-2 shrink-0">
+                <a
+                  href={expediaHotelUrl(hotel.name)}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors"
+                >
+                  Expedia
+                </a>
+                <a
+                  href={zenhotelsUrl(`${hotel.name} Denver`)}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="px-3 py-1.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-lg hover:border-denver-amber hover:text-denver-amber transition-colors"
+                >
+                  ZenHotels
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 pt-4 border-t border-amber-100 dark:border-amber-900 flex items-center justify-between">
+          <p className="text-xs text-slate-400">Booking links support this site at no extra cost to you.</p>
+          <a
+            href={expediaFlightsToDenverUrl()}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="text-xs font-semibold text-denver-amber hover:underline shrink-0"
+          >
+            ✈ Find flights to Denver &rarr;
+          </a>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function CategorySection({ title, slug, categorySlug, places, limit, cols = 2 }: {
@@ -168,6 +230,9 @@ export default async function NeighborhoodPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Hotel booking widget — dynamic per-property affiliate links */}
+      <HotelBookingWidget hotels={hotels} neighborhoodName={n.name} />
 
       {/* Interactive Map */}
       {mapPins.length > 0 && (
