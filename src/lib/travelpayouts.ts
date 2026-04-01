@@ -3,12 +3,11 @@ const EXPEDIA_AFFCID = "US.DIRECT.PHG.1011l422631.0";
 const EXPEDIA_AFFLID = "1110l34nmQjG";
 
 // ZenHotels via Impact affiliate program
-// Use city path URL — hash fragments don't survive the Impact Radius redirect
+// Base link redirects to ZenHotels homepage with affiliate tracking — no deep link needed
 const ZEN_AFFILIATE_BASE = "https://emergingtravelinc.pxf.io/7XXqW5";
-const ZEN_DENVER_URL = "https://www.zenhotels.com/hotels/usa/colorado/denver/";
 
 export function zenhotelsUrl(_destination?: string): string {
-  return `${ZEN_AFFILIATE_BASE}?u=${encodeURIComponent(ZEN_DENVER_URL)}`;
+  return ZEN_AFFILIATE_BASE;
 }
 
 // Wrap a Ticketmaster event URL with the Impact affiliate link
