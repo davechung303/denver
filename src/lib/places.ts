@@ -383,15 +383,14 @@ export async function getPlacesForSubcategory(
   return merged;
 }
 
-const MIN_PLACES = 10;
-
 export async function getPlaces(
   neighborhoodSlug: string,
   categorySlug: string
 ): Promise<Place[]> {
   const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
 
-  // Try Supabase cache first — only trust it if we have enough results
+  // Trust the cache if it has any results within TTL — don't re-fetch just because
+  // the count is low (that causes a Google API call on every page visit)
   const { data: cached } = await supabase
     .from("places")
     .select("*")
@@ -400,10 +399,10 @@ export async function getPlaces(
     .gt("cached_at", cutoff)
     .order("rating", { ascending: false });
 
-  if (cached && cached.length >= MIN_PLACES) {
+  if (cached && cached.length > 0) {
     return cached as Place[];
   }
 
-  // Cache miss or too sparse — fetch from Google
+  // True cache miss (TTL expired or never fetched) — fetch from Google
   return fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
 }

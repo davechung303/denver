@@ -18,7 +18,8 @@ export async function GET(request: Request) {
     return new NextResponse(buffer, {
       headers: {
         "Content-Type": contentType,
-        "Cache-Control": "public, max-age=86400",
+        // 30-day browser + CDN cache — place photos are stable and expensive to re-fetch
+        "Cache-Control": "public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=86400",
       },
     });
   } catch {

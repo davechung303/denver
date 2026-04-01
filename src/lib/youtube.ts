@@ -224,15 +224,18 @@ export async function syncVideos(): Promise<{ synced: number; error?: string }> 
     };
   });
 
-  // Upsert videos into Supabase (without duration_seconds to avoid overwriting with null)
+  // Upsert all videos without duration_seconds first (avoids overwriting valid cached values with null)
   const videosWithoutDuration = videos.map(({ duration_seconds, ...rest }) => rest);
   await supabase.from("youtube_videos").upsert(videosWithoutDuration, { onConflict: "video_id" });
 
-  // Update duration_seconds separately — only for videos where we have a valid value
-  const durationUpdates = videos
+  // Update duration_seconds in a single batch upsert for videos where we have a valid value
+  // (one upsert instead of N individual UPDATEs — critical for Supabase Disk IO)
+  const withDuration = videos
     .filter((v) => v.duration_seconds !== null)
-    .map((v) => supabase.from("youtube_videos").update({ duration_seconds: v.duration_seconds }).eq("video_id", v.video_id));
-  await Promise.all(durationUpdates);
+    .map((v) => ({ video_id: v.video_id, duration_seconds: v.duration_seconds }));
+  if (withDuration.length > 0) {
+    await supabase.from("youtube_videos").upsert(withDuration, { onConflict: "video_id" });
+  }
 
   // Build and upsert page associations
   const associations = videos.flatMap((v) =>
