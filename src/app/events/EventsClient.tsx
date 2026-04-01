@@ -34,9 +34,12 @@ export default function EventsClient({ events }: Props) {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Category filters */}
+      {/* Category filters — only show categories that have at least one event */}
       <div className="flex flex-wrap gap-2 mb-8">
-        {CATEGORIES.map((cat) => {
+        {CATEGORIES.filter((cat) => {
+          if (cat === "All") return true;
+          return events.some((e) => e.description === cat);
+        }).map((cat) => {
           const count = cat === "All" ? events.length : events.filter(e => e.description === cat).length;
           return (
             <button

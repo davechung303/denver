@@ -2,14 +2,13 @@
 const EXPEDIA_AFFCID = "US.DIRECT.PHG.1011l422631.0";
 const EXPEDIA_AFFLID = "1110l34nmQjG";
 
-// Generate a ZenHotels search URL via the Impact affiliate program
-// Deep link format: base?u=<encoded ZenHotels search URL>
-// TODO: if/when ZenHotels B2B API credentials are available, replace with real-time pricing
+// ZenHotels via Impact affiliate program
+// Use city path URL — hash fragments don't survive the Impact Radius redirect
 const ZEN_AFFILIATE_BASE = "https://emergingtravelinc.pxf.io/7XXqW5";
+const ZEN_DENVER_URL = "https://www.zenhotels.com/hotels/usa/colorado/denver/";
 
-export function zenhotelsUrl(destination: string): string {
-  const searchUrl = `https://www.zenhotels.com/hotels/#destination=${encodeURIComponent(destination)}&adults=2`;
-  return `${ZEN_AFFILIATE_BASE}?u=${encodeURIComponent(searchUrl)}`;
+export function zenhotelsUrl(_destination?: string): string {
+  return `${ZEN_AFFILIATE_BASE}?u=${encodeURIComponent(ZEN_DENVER_URL)}`;
 }
 
 // Wrap a Ticketmaster event URL with the Impact affiliate link
@@ -20,17 +19,10 @@ export function ticketmasterAffiliateUrl(url: string | null): string | undefined
   return TM_AFFILIATE_BASE + encodeURIComponent(url);
 }
 
-// Search for a specific hotel by name — omit regionId so Expedia resolves the property name
-export function expediaHotelUrl(hotelName: string): string {
-  const params = new URLSearchParams({
-    destination: `${hotelName} Denver Colorado`,
-    sort: "RECOMMENDED",
-    affcid: EXPEDIA_AFFCID,
-    afflid: EXPEDIA_AFFLID,
-    clickref: EXPEDIA_AFFLID,
-    my_ad: `AFF.US.DIRECT.PHG.1011l422631.0`,
-  });
-  return `https://www.expedia.com/Hotel-Search?${params}`;
+// Hotel detail page CTA — Expedia resolves destination as a location, not a property name,
+// so we use the Denver area search (regionId=996) for reliable results
+export function expediaHotelUrl(_hotelName?: string): string {
+  return expediaDenverHotelsUrl();
 }
 
 // Search all hotels in Denver or a specific neighborhood — uses regionId for city-level results

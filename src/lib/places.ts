@@ -127,11 +127,13 @@ async function fetchFromGooglePlaces(
   const category = getCategory(categorySlug);
   if (!neighborhood || (!category && !overrideQuery)) return [];
 
-  // Bias results to within the neighborhood search radius (default 1.5km)
+  // Hotels serve a wider area than restaurants/bars — use 3km radius so neighborhoods
+  // that lack a hotel core still surface nearby options
+  const defaultRadius = categorySlug === "hotels" ? 3000.0 : 1500.0;
   const locationBias = {
     circle: {
       center: { latitude: neighborhood.lat, longitude: neighborhood.lng },
-      radius: neighborhood.searchRadius ?? 1500.0,
+      radius: neighborhood.searchRadius ?? defaultRadius,
     },
   };
 
@@ -390,6 +392,23 @@ export async function getPlacesForSubcategory(
   );
   const merged = [...filtered, ...fresh.filter((f) => !filtered.some((e) => e.place_id === f.place_id))];
   return merged;
+}
+
+// Google Places types that indicate an actual hotel (not vacation rentals / Airbnb-style)
+const HOTEL_TYPES = new Set([
+  "hotel",
+  "motel",
+  "resort_hotel",
+  "extended_stay_hotel",
+  "bed_and_breakfast",
+  "boutique_hotel",
+  "hostel",
+  "inn",
+]);
+
+// Returns true only for proper hotel/lodging businesses, filtering out vacation rentals
+export function isRealHotel(place: Place): boolean {
+  return place.types?.some((t) => HOTEL_TYPES.has(t)) ?? false;
 }
 
 export async function getPlaces(

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getPlaces, type Place } from "@/lib/places";
+import { getPlaces, isRealHotel, type Place } from "@/lib/places";
 import { expediaHotelUrl, zenhotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
@@ -56,7 +56,7 @@ function HotelBookingWidget({ hotels, neighborhoodName }: { hotels: Place[]; nei
       <div className="bg-amber-50 dark:bg-amber-950/20 rounded-2xl p-6 border border-amber-100 dark:border-amber-900">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h2 className="font-bold text-xl">Where to Stay in {neighborhoodName}</h2>
+            <h2 className="font-bold text-xl">Where to Stay {neighborhoodName}</h2>
             <p className="text-sm text-slate-500 mt-0.5">Compare prices across top hotels</p>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
 
-  const [videos, events, restaurants, hotels, bars, thingsToDo, coffee] = await Promise.all([
+  const [videos, events, restaurants, rawHotels, bars, thingsToDo, coffee] = await Promise.all([
     getVideosForPage(slug, null, 3),
     getEventsForNeighborhood(slug, 4),
     getPlaces(slug, "restaurants"),
@@ -169,6 +169,7 @@ export default async function NeighborhoodPage({ params }: Props) {
     getPlaces(slug, "things-to-do"),
     getPlaces(slug, "coffee"),
   ]);
+  const hotels = rawHotels.filter(isRealHotel);
 
   const mapPins = restaurants
     .filter((p) => p.lat && p.lng)
@@ -218,7 +219,7 @@ export default async function NeighborhoodPage({ params }: Props) {
         <div className="space-y-12">
           {/* Restaurants — 3-col grid, shows 6 */}
           <CategorySection
-            title={`Restaurants in ${n.name}`}
+            title={`Restaurants near ${n.name}`}
             slug={slug}
             categorySlug="restaurants"
             places={restaurants}
@@ -228,15 +229,15 @@ export default async function NeighborhoodPage({ params }: Props) {
           {/* Other categories — 2×2 grids side by side */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <CategorySection title={`Hotels near ${n.name}`} slug={slug} categorySlug="hotels" places={hotels} limit={4} />
-            <CategorySection title={`Bars & Drinks in ${n.name}`} slug={slug} categorySlug="bars" places={bars} limit={4} />
-            <CategorySection title={`Things To Do in ${n.name}`} slug={slug} categorySlug="things-to-do" places={thingsToDo} limit={4} />
-            <CategorySection title={`Coffee in ${n.name}`} slug={slug} categorySlug="coffee" places={coffee} limit={4} />
+            <CategorySection title={`Bars & Drinks near ${n.name}`} slug={slug} categorySlug="bars" places={bars} limit={4} />
+            <CategorySection title={`Things To Do near ${n.name}`} slug={slug} categorySlug="things-to-do" places={thingsToDo} limit={4} />
+            <CategorySection title={`Coffee near ${n.name}`} slug={slug} categorySlug="coffee" places={coffee} limit={4} />
           </div>
         </div>
       </section>
 
       {/* Hotel booking widget — dynamic per-property affiliate links */}
-      <HotelBookingWidget hotels={hotels} neighborhoodName={n.name} />
+      <HotelBookingWidget hotels={hotels} neighborhoodName={`near ${n.name}`} />
 
       {/* Interactive Map */}
       {mapPins.length > 0 && (
@@ -257,7 +258,7 @@ export default async function NeighborhoodPage({ params }: Props) {
       {/* Upcoming Events */}
       {events.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <h2 className="text-2xl font-bold mb-6">Upcoming Events in {n!.name}</h2>
+          <h2 className="text-2xl font-bold mb-6">Upcoming Events near {n!.name}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {events.map((event) => (
               <EventCard key={event.event_id} event={event} />
