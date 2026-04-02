@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPlace, getPlaces, getPlacesForSubcategory, isUsefulPlace, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
+import { getPlace, getPlaces, getPlacesForSubcategory, isUsefulPlace, isRealHotel, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
-import { expediaHotelUrl, zenhotelsUrl } from "@/lib/travelpayouts";
+import { expediaHotelUrl, zenhotelsUrl, expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
 import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
@@ -199,12 +199,17 @@ export default async function BusinessPage({ params }: Props) {
   if (!place || !isUsefulPlace(place)) notFound();
 
   const isHotel = cSlug === "hotels";
+  const isRestaurant = cSlug === "restaurants";
+  const isBar = cSlug === "bars";
+  const isThingsToDo = cSlug === "things-to-do";
 
-  const [relatedPlaces, videos, nearbyRestaurants, nearbyActivities] = await Promise.all([
+  const [relatedPlaces, videos, nearbyRestaurants, nearbyActivities, nearbyHotelsRaw, nearbyBarsRaw] = await Promise.all([
     getPlaces(nSlug, cSlug),
     getVideosForPage(nSlug, cSlug, 6),
-    isHotel ? getPlaces(nSlug, "restaurants") : Promise.resolve([]),
-    isHotel ? getPlaces(nSlug, "things-to-do") : Promise.resolve([]),
+    (isHotel || isThingsToDo) ? getPlaces(nSlug, "restaurants") : Promise.resolve([]),
+    (isHotel || isRestaurant || isBar) ? getPlaces(nSlug, "things-to-do") : Promise.resolve([]),
+    !isHotel ? getPlaces(nSlug, "hotels") : Promise.resolve([]),
+    isRestaurant ? getPlaces(nSlug, "bars") : Promise.resolve([]),
   ]);
 
   const nearby = relatedPlaces.filter((p) => p.slug !== slug).filter(isUsefulPlace).slice(0, 3);
@@ -229,6 +234,17 @@ export default async function BusinessPage({ params }: Props) {
   }
   const nearbyDining = nearbyTop(nearbyRestaurants, 6);
   const nearbyThingsToDo = nearbyTop(nearbyActivities, 4);
+  const nearbyHotels = nearbyTop(nearbyHotelsRaw.filter(isRealHotel), 3);
+  const nearbyBar = nearbyTop(nearbyBarsRaw, 1)[0] ?? null; // for "Plan Your Evening"
+  const nearbyHotelForEvening = nearbyHotels[0] ?? null;
+
+  // Neighborhood context: how this place compares to others in its category
+  const neighborhoodAvgRating = relatedPlaces.filter(isUsefulPlace).reduce((sum, p, _, arr) => {
+    return sum + (p.rating ?? 0) / arr.length;
+  }, 0);
+  const aboveAverage = place.rating && neighborhoodAvgRating > 0 && place.rating > neighborhoodAvgRating;
+  const categoryCount = relatedPlaces.filter(isUsefulPlace).length;
+
   const expediaUrl = isHotel ? expediaHotelUrl(place.name) : null;
   const zenUrl = isHotel ? zenhotelsUrl(place.name + " Denver") : null;
 
@@ -335,6 +351,67 @@ export default async function BusinessPage({ params }: Props) {
               )}
             </div>
 
+            {/* Neighborhood context */}
+            {categoryCount > 3 && place.rating && (
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                {aboveAverage
+                  ? `Rates above the average for ${c.name.toLowerCase()} in ${n.name} — one of ${categoryCount} we've tracked here.`
+                  : `One of ${categoryCount} ${c.name.toLowerCase()} we've tracked in ${n.name}.`
+                }
+              </p>
+            )}
+
+            {/* Plan Your Evening — restaurants only */}
+            {isRestaurant && (nearbyBar || nearbyHotelForEvening) && (
+              <div className="border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+                <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber mb-4">Plan Your Evening</p>
+                <div className="flex flex-col gap-3">
+                  {/* Step 1: This restaurant */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg shrink-0">🍽</span>
+                    <div className="min-w-0">
+                      <p className="text-xs text-slate-400 uppercase tracking-wide">Dinner</p>
+                      <p className="text-sm font-semibold truncate">{place.name}</p>
+                    </div>
+                  </div>
+                  {nearbyBar && (
+                    <>
+                      <div className="flex items-center gap-2 pl-4">
+                        <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
+                        <span className="text-xs text-slate-400">then</span>
+                      </div>
+                      <Link href={`/denver/${nSlug}/bars/${nearbyBar.slug}`} className="flex items-center gap-3 hover:text-denver-amber transition-colors group">
+                        <span className="text-lg shrink-0">🍸</span>
+                        <div className="min-w-0">
+                          <p className="text-xs text-slate-400 uppercase tracking-wide">Drinks</p>
+                          <p className="text-sm font-semibold truncate group-hover:text-denver-amber">{nearbyBar.name}</p>
+                          {nearbyBar.rating && <p className="text-xs text-slate-400">★ {nearbyBar.rating.toFixed(1)}</p>}
+                        </div>
+                        <span className="text-denver-amber text-xs ml-auto shrink-0">&rarr;</span>
+                      </Link>
+                    </>
+                  )}
+                  {nearbyHotelForEvening && (
+                    <>
+                      <div className="flex items-center gap-2 pl-4">
+                        <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
+                        <span className="text-xs text-slate-400">then</span>
+                      </div>
+                      <Link href={`/denver/${nSlug}/hotels/${nearbyHotelForEvening.slug}`} className="flex items-center gap-3 hover:text-denver-amber transition-colors group">
+                        <span className="text-lg shrink-0">🏨</span>
+                        <div className="min-w-0">
+                          <p className="text-xs text-slate-400 uppercase tracking-wide">Stay</p>
+                          <p className="text-sm font-semibold truncate group-hover:text-denver-amber">{nearbyHotelForEvening.name}</p>
+                          {nearbyHotelForEvening.rating && <p className="text-xs text-slate-400">★ {nearbyHotelForEvening.rating.toFixed(1)}</p>}
+                        </div>
+                        <span className="text-denver-amber text-xs ml-auto shrink-0">&rarr;</span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Dave's Take — AI review summary */}
             {place.review_summary && (
               <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6 space-y-4">
@@ -399,6 +476,50 @@ export default async function BusinessPage({ params }: Props) {
                     </ul>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Things to do nearby — non-hotel pages */}
+            {!isHotel && nearbyThingsToDo.length > 0 && (
+              <div>
+                <h2 className="text-lg font-semibold mb-3">Things To Do Nearby</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {nearbyThingsToDo.map((a) => (
+                    <Link
+                      key={a.place_id}
+                      href={`/denver/${nSlug}/things-to-do/${a.slug}`}
+                      className="flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2.5 hover:border-denver-amber transition-colors"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{a.name}</p>
+                        {a.rating && <p className="text-xs text-slate-400">★ {a.rating.toFixed(1)}</p>}
+                      </div>
+                      <span className="text-denver-amber text-xs shrink-0">&rarr;</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Restaurants nearby — things-to-do pages */}
+            {isThingsToDo && nearbyDining.length > 0 && (
+              <div>
+                <h2 className="text-lg font-semibold mb-3">Restaurants Nearby</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {nearbyDining.map((r) => (
+                    <Link
+                      key={r.place_id}
+                      href={`/denver/${nSlug}/restaurants/${r.slug}`}
+                      className="flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2.5 hover:border-denver-amber transition-colors"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{r.name}</p>
+                        {r.rating && <p className="text-xs text-slate-400">★ {r.rating.toFixed(1)}{r.price_level ? " · " + "$".repeat(r.price_level) : ""}</p>}
+                      </div>
+                      <span className="text-denver-amber text-xs shrink-0">&rarr;</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -572,6 +693,31 @@ export default async function BusinessPage({ params }: Props) {
                 &larr; More {c.name} near {n.name}
               </Link>
             </div>
+
+            {/* Hotels nearby — non-hotel pages */}
+            {!isHotel && nearbyHotels.length > 0 && (
+              <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900 rounded-2xl p-5 space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Hotels Nearby</p>
+                {nearbyHotels.map((hotel) => (
+                  <div key={hotel.place_id} className="flex items-center gap-3">
+                    <Link href={`/denver/${nSlug}/hotels/${hotel.slug}`} className="flex-1 min-w-0 group">
+                      <p className="text-sm font-semibold truncate group-hover:text-denver-amber transition-colors">{hotel.name}</p>
+                      {hotel.rating && (
+                        <p className="text-xs text-slate-500">★ {hotel.rating.toFixed(1)} · {hotel.review_count?.toLocaleString()} reviews</p>
+                      )}
+                    </Link>
+                    <a
+                      href={expediaDenverHotelsUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      className="text-xs font-bold px-2.5 py-1.5 bg-denver-amber text-slate-900 rounded-lg hover:bg-amber-400 transition-colors shrink-0"
+                    >
+                      Book
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Related videos in sidebar */}
             {videos.length > 0 && (
