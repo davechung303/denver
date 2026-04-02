@@ -11,7 +11,7 @@ export const RESTAURANT_SUBCATEGORIES: Subcategory[] = [
     slug: "japanese",
     name: "Japanese & Sushi",
     description: (n) =>
-      `Sushi, ramen, izakaya — ${n} has a surprisingly strong Japanese food scene for a landlocked city.`,
+      `Sushi, ramen, izakaya — ${n} has a surprisingly strong Japanese food scene that regularly punches above its weight.`,
     types: ["japanese_restaurant", "sushi_restaurant", "ramen_restaurant"],
     searchQuery: "Japanese restaurant sushi ramen",
   },
@@ -35,7 +35,7 @@ export const RESTAURANT_SUBCATEGORIES: Subcategory[] = [
     slug: "pizza",
     name: "Pizza",
     description: (n) =>
-      `${n} is not a pizza city by reputation, but the spots that do it right here are genuinely great.`,
+      `Denver's pizza scene doesn't get enough credit. These are the spots in ${n} that actually nail it.`,
     types: ["pizza_restaurant"],
     searchQuery: "pizza restaurant",
   },
@@ -90,14 +90,14 @@ export const RESTAURANT_SUBCATEGORIES: Subcategory[] = [
     name: "Vegetarian & Vegan",
     description: (n) =>
       `${n}'s plant-based scene has grown up fast. These aren't afterthought menus — they're the whole point.`,
-    types: ["vegetarian_restaurant", "vegan_restaurant"],
-    searchQuery: "vegetarian vegan restaurant",
+    types: ["vegetarian_restaurant", "vegan_restaurant", "health_food_restaurant", "organic_restaurant"],
+    searchQuery: "vegetarian vegan plant-based restaurant",
   },
   {
     slug: "seafood",
     name: "Seafood",
     description: (n) =>
-      `Landlocked state, but don't count out the seafood. The places in ${n} that do it well fly their fish in fresh.`,
+      `Colorado is landlocked, but don't count out the seafood. The places in ${n} that do it well fly their fish in fresh.`,
     types: ["seafood_restaurant"],
     searchQuery: "seafood restaurant fish",
   },

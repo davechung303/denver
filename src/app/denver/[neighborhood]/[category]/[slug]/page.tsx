@@ -101,8 +101,9 @@ export default async function BusinessPage({ params }: Props) {
       getVideosForPage(nSlug, cSlug, 3),
     ]);
     const otherSubs = getSubcategories(cSlug).filter((s) => s.slug !== slug);
-    const localPlaces = places.filter((p) => isInNeighborhood(p.lat, p.lng, nSlug));
-    const nearbyPlaces = places.filter((p) => !isInNeighborhood(p.lat, p.lng, nSlug));
+    const usefulPlaces = places.filter(isUsefulPlace);
+    const localPlaces = usefulPlaces.filter((p) => isInNeighborhood(p.lat, p.lng, nSlug));
+    const nearbyPlaces = usefulPlaces.filter((p) => !isInNeighborhood(p.lat, p.lng, nSlug));
 
     return (
       <>
@@ -129,7 +130,7 @@ export default async function BusinessPage({ params }: Props) {
 
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">{n.name} &middot; {c.name}</p>
-          <h1 className="text-4xl md:text-5xl font-bold">Best {subcategory.name} in {n.name}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold">Best {subcategory.name} near {n.name}</h1>
           <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">{subcategory.description(n.name)}</p>
         </section>
 
@@ -176,7 +177,7 @@ export default async function BusinessPage({ params }: Props) {
         {videos.length > 0 && (
           <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-8">{subcategory.name} Videos from {n.name}</h2>
+              <h2 className="text-2xl font-bold mb-8">Related Videos</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {videos.map((v) => <VideoCard key={v.video_id} video={v} neighborhood={n.name} category={c.name} />)}
               </div>
@@ -186,7 +187,7 @@ export default async function BusinessPage({ params }: Props) {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link href={`/denver/${nSlug}/${cSlug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-denver-amber hover:underline">
-            &larr; All {c.name} in {n.name}
+            &larr; All {c.name} near {n.name}
           </Link>
         </div>
       </>
