@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPlace, getPlaces, getPlacesForSubcategory, isUsefulPlace, photoUrl, photoAbsoluteUrl } from "@/lib/places";
+import { getPlace, getPlaces, getPlacesForSubcategory, isUsefulPlace, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import { expediaHotelUrl, zenhotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
@@ -197,13 +197,37 @@ export default async function BusinessPage({ params }: Props) {
   const place = await getPlace(nSlug, cSlug, slug);
   if (!place || !isUsefulPlace(place)) notFound();
 
-  const [relatedPlaces, videos] = await Promise.all([
+  const isHotel = cSlug === "hotels";
+
+  const [relatedPlaces, videos, nearbyRestaurants, nearbyActivities] = await Promise.all([
     getPlaces(nSlug, cSlug),
-    getVideosForPage(nSlug, cSlug, 3),
+    getVideosForPage(nSlug, cSlug, 6),
+    isHotel ? getPlaces(nSlug, "restaurants") : Promise.resolve([]),
+    isHotel ? getPlaces(nSlug, "things-to-do") : Promise.resolve([]),
   ]);
 
-  const nearby = relatedPlaces.filter((p) => p.slug !== slug).slice(0, 3);
-  const isHotel = cSlug === "hotels";
+  const nearby = relatedPlaces.filter((p) => p.slug !== slug).filter(isUsefulPlace).slice(0, 3);
+
+  // For hotel pages: show top-rated nearby places within ~3km of the hotel
+  function distKm(aLat: number, aLng: number, bLat: number, bLng: number): number {
+    const dLat = (bLat - aLat) * Math.PI / 180;
+    const dLng = (bLng - aLng) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(aLat * Math.PI / 180) * Math.cos(bLat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  const MAX_DIST_KM = 3.2; // ~2 miles
+  const placeLat = place.lat;
+  const placeLng = place.lng;
+  function nearbyTop(places: Place[], limit: number): Place[] {
+    if (!placeLat || !placeLng) return [];
+    return places
+      .filter(isUsefulPlace)
+      .filter((p) => p.lat && p.lng && distKm(placeLat, placeLng, p.lat, p.lng) <= MAX_DIST_KM)
+      .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+      .slice(0, limit);
+  }
+  const nearbyDining = nearbyTop(nearbyRestaurants, 6);
+  const nearbyThingsToDo = nearbyTop(nearbyActivities, 4);
   const expediaUrl = isHotel ? expediaHotelUrl(place.name) : null;
   const zenUrl = isHotel ? zenhotelsUrl(place.name + " Denver") : null;
 
@@ -370,6 +394,54 @@ export default async function BusinessPage({ params }: Props) {
               </div>
             )}
 
+            {/* Nearby dining + activities — hotel pages only */}
+            {isHotel && (nearbyDining.length > 0 || nearbyThingsToDo.length > 0) && (
+              <div className="space-y-5">
+                {nearbyDining.length > 0 && (
+                  <div>
+                    <h2 className="text-lg font-semibold mb-3">Restaurants Near This Hotel</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {nearbyDining.map((r) => (
+                        <Link
+                          key={r.place_id}
+                          href={`/denver/${nSlug}/restaurants/${r.slug}`}
+                          className="flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2.5 hover:border-denver-amber transition-colors"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{r.name}</p>
+                            {r.rating && (
+                              <p className="text-xs text-slate-400">★ {r.rating.toFixed(1)}{r.price_level ? " · " + "$".repeat(r.price_level) : ""}</p>
+                            )}
+                          </div>
+                          <span className="text-denver-amber text-xs shrink-0">&rarr;</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {nearbyThingsToDo.length > 0 && (
+                  <div>
+                    <h2 className="text-lg font-semibold mb-3">Things To Do Nearby</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {nearbyThingsToDo.map((a) => (
+                        <Link
+                          key={a.place_id}
+                          href={`/denver/${nSlug}/things-to-do/${a.slug}`}
+                          className="flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2.5 hover:border-denver-amber transition-colors"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{a.name}</p>
+                            {a.rating && <p className="text-xs text-slate-400">★ {a.rating.toFixed(1)}</p>}
+                          </div>
+                          <span className="text-denver-amber text-xs shrink-0">&rarr;</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Google Reviews */}
             {place.reviews && place.reviews.length > 0 && (
               <div>
@@ -424,7 +496,7 @@ export default async function BusinessPage({ params }: Props) {
 
           {/* Right: contact card + videos */}
           <div className="space-y-4">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 sticky top-20">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4">
               {/* Hotel booking CTAs */}
               {isHotel && expediaUrl && (
                 <a

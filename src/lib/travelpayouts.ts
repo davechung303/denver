@@ -1,6 +1,10 @@
-// Expedia Creator affiliate params
-const EXPEDIA_AFFCID = "US.DIRECT.PHG.1011l422631.0";
-const EXPEDIA_AFFLID = "1110l34nmQjG";
+// Expedia Creator affiliate short links
+// Home / general landing page
+const EXPEDIA_HOME = "https://expedia.com/affiliates/expedia-home.NcNzYg5";
+// Flights search (pre-filled for Denver)
+const EXPEDIA_FLIGHTS = "https://expedia.com/affiliates/expedia-home.6ch6qO8";
+// Hotel search — Denver area
+const EXPEDIA_HOTELS_DENVER = "https://expedia.com/affiliates/hotel-search-denver.7MjEKrC";
 
 // ZenHotels via Impact affiliate program
 // Base link redirects to ZenHotels homepage with affiliate tracking — no deep link needed
@@ -18,37 +22,21 @@ export function ticketmasterAffiliateUrl(url: string | null): string | undefined
   return TM_AFFILIATE_BASE + encodeURIComponent(url);
 }
 
-// Hotel detail page CTA — Expedia resolves destination as a location, not a property name,
-// so we use the Denver area search (regionId=996) for reliable results
+// Hotel CTAs — links to Expedia Denver hotel search
 export function expediaHotelUrl(_hotelName?: string): string {
-  return expediaDenverHotelsUrl();
+  return EXPEDIA_HOTELS_DENVER;
 }
 
-// Search all hotels in Denver or a specific neighborhood — uses regionId for city-level results
-export function expediaDenverHotelsUrl(area = "Denver, Colorado"): string {
-  const params = new URLSearchParams({
-    destination: area,
-    regionId: "996",
-    sort: "RECOMMENDED",
-    affcid: EXPEDIA_AFFCID,
-    afflid: EXPEDIA_AFFLID,
-    clickref: EXPEDIA_AFFLID,
-    my_ad: `AFF.US.DIRECT.PHG.1011l422631.0`,
-  });
-  return `https://www.expedia.com/Hotel-Search?${params}`;
+export function expediaDenverHotelsUrl(_area?: string): string {
+  return EXPEDIA_HOTELS_DENVER;
 }
 
-// Generate an Expedia flights-to-Denver search URL (no origin — user picks their city)
+// Flights to Denver
 export function expediaFlightsToDenverUrl(): string {
-  const params = new URLSearchParams({
-    trip: "roundtrip",
-    leg1: "from:anywhere,to:DEN",
-    passengers: "adults:1",
-    options: "cabinclass:economy",
-    affcid: EXPEDIA_AFFCID,
-    afflid: EXPEDIA_AFFLID,
-    clickref: EXPEDIA_AFFLID,
-    my_ad: `AFF.US.DIRECT.PHG.1011l422631.0`,
-  });
-  return `https://www.expedia.com/Flights-Search?${params}`;
+  return EXPEDIA_FLIGHTS;
+}
+
+// General Expedia home (for homepage widgets etc.)
+export function expediaHomeUrl(): string {
+  return EXPEDIA_HOME;
 }
