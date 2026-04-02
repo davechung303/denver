@@ -118,7 +118,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
       {isHotel && (
         <div className="px-4 pb-4">
           <a
-            href={expediaDenverHotelsUrl()}
+            href={place.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"

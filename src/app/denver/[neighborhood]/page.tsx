@@ -73,7 +73,7 @@ function HotelBookingWidget({ hotels, neighborhoodName }: { hotels: Place[]; nei
               </div>
               <div className="flex gap-2 shrink-0">
                 <a
-                  href={expediaHotelUrl(hotel.name)}
+                  href={hotel.expedia_affiliate_url ?? expediaHotelUrl()}
                   target="_blank"
                   rel="noopener noreferrer sponsored"
                   className="px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors"
