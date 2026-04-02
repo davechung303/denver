@@ -250,9 +250,9 @@ export const NEIGHBORHOODS: Neighborhood[] = [
       "DEN is one of the biggest airports in the world — confusing if you don't know it, genuinely great if you do. Plus the Gaylord Rockies is worth a visit even if you're not flying anywhere.",
     gradient: "from-blue-800 to-indigo-600",
     image: "https://images.unsplash.com/photo-1698760000085-1b0af6df057e?auto=format&fit=crop&w=1200&q=80",
-    searchName: "Denver International Airport DIA Gaylord Rockies Colorado",
-    lat: 39.880, lng: -104.677,
-    searchRadius: 5000,
+    searchName: "Denver International Airport DIA Colorado",
+    lat: 39.856, lng: -104.674,
+    searchRadius: 8000,
   },
 ];
 
@@ -474,7 +474,7 @@ export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number
   "curtis-park":     [39.748, 39.764, -104.978, -104.956],
   downtown:          [39.735, 39.752, -105.002, -104.975],
   "denver-suburbs":  [39.600, 39.820, -105.180, -104.720],
-  airport:           [39.828, 39.882, -104.725, -104.630],
+  airport:           [39.810, 39.882, -104.760, -104.630],
 };
 
 export function isInNeighborhood(lat: number | null, lng: number | null, slug: string): boolean {
