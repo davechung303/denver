@@ -362,35 +362,42 @@ export default async function BusinessPage({ params }: Props) {
                     ))}
                   </ul>
                 )}
-                {place.review_summary.popular_dishes && place.review_summary.popular_dishes.length > 0 && (
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">People Order</p>
-                    <div className="flex flex-wrap gap-2">
-                      {place.review_summary.popular_dishes.map((dish, i) => (
-                        <span key={i} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">
-                          {dish}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 <p className="text-xs text-slate-400">Based on Google reviews · AI summarized</p>
               </div>
             )}
 
-            {/* Hours */}
-            {place.hours?.weekdayDescriptions && (
-              <div>
-                <h2 className="text-lg font-semibold mb-3">Hours</h2>
-                <div className="space-y-1">
-                  {place.hours.weekdayDescriptions.map((day) => (
-                    <p key={day} className="text-sm text-slate-600 dark:text-slate-400">{day}</p>
-                  ))}
-                </div>
-                {place.hours.openNow !== undefined && (
-                  <span className={`mt-3 inline-block text-sm font-semibold px-3 py-1 rounded-full ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
-                    {place.hours.openNow ? "Open now" : "Closed now"}
-                  </span>
+            {/* Hours + People Order — side by side */}
+            {(place.hours?.weekdayDescriptions || place.review_summary?.popular_dishes?.length) && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                {/* Hours */}
+                {place.hours?.weekdayDescriptions && (
+                  <div>
+                    <h2 className="text-lg font-semibold mb-3">Hours</h2>
+                    <div className="space-y-1">
+                      {place.hours.weekdayDescriptions.map((day) => (
+                        <p key={day} className="text-sm text-slate-600 dark:text-slate-400">{day}</p>
+                      ))}
+                    </div>
+                    {place.hours.openNow !== undefined && (
+                      <span className={`mt-3 inline-block text-sm font-semibold px-3 py-1 rounded-full ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                        {place.hours.openNow ? "Open now" : "Closed now"}
+                      </span>
+                    )}
+                  </div>
+                )}
+                {/* People Order */}
+                {place.review_summary?.popular_dishes && place.review_summary.popular_dishes.length > 0 && (
+                  <div>
+                    <h2 className="text-lg font-semibold mb-3">People Order</h2>
+                    <ul className="space-y-2">
+                      {place.review_summary.popular_dishes.map((dish, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                          <span className="text-denver-amber">—</span>
+                          {dish}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </div>
             )}
