@@ -511,7 +511,7 @@ export default async function BusinessPage({ params }: Props) {
       {/* Related places */}
       {nearby.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <h2 className="text-2xl font-bold mb-6">More {c.name} in {n.name}</h2>
+          <h2 className="text-2xl font-bold mb-6">More {c.name} near {n.name}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {nearby.map((p) => (
               <PlaceCard key={p.place_id} place={p} neighborhoodSlug={nSlug} categorySlug={cSlug} />

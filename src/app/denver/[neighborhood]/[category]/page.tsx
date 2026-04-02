@@ -231,8 +231,8 @@ export default async function CategoryPage({ params }: Props) {
               <div>
                 <h2 className="text-2xl font-bold mb-6">
                   {cSlug === "things-to-do"
-                    ? `More things to do in ${n!.name}`
-                    : `More ${n!.name} ${c!.name.toLowerCase()}`}
+                    ? `More things to do near ${n!.name}`
+                    : `More ${c!.name.toLowerCase()} near ${n!.name}`}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {rest.map((place) => (
