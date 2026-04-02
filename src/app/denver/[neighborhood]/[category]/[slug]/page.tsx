@@ -248,8 +248,9 @@ export default async function BusinessPage({ params }: Props) {
   const aboveAverage = place.rating && neighborhoodAvgRating > 0 && place.rating > neighborhoodAvgRating;
   const categoryCount = relatedPlaces.filter(isUsefulPlace).length;
 
-  const expediaUrl = isHotel ? expediaHotelUrl(place.name) : null;
-  const zenUrl = isHotel ? zenhotelsUrl(place.name + " Denver") : null;
+  // Use per-hotel affiliate link if available, fall back to generic Denver search
+  const expediaUrl = isHotel ? (place.expedia_affiliate_url ?? expediaHotelUrl()) : null;
+  const zenUrl = isHotel ? zenhotelsUrl() : null;
 
   // LocalBusiness schema
   const localBusinessSchema = {
@@ -837,7 +838,7 @@ export default async function BusinessPage({ params }: Props) {
                       )}
                     </Link>
                     <a
-                      href={expediaDenverHotelsUrl()}
+                      href={hotel.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
                       className="text-xs font-bold px-2.5 py-1.5 bg-denver-amber text-slate-900 rounded-lg hover:bg-amber-400 transition-colors shrink-0"

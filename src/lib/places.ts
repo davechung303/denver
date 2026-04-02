@@ -32,6 +32,7 @@ export interface Place {
   fsq_tips: FoursquareTip[] | null;
   fsq_cached_at: string | null;
   cached_at: string;
+  expedia_affiliate_url: string | null;
 }
 
 export interface GoogleHours {
@@ -194,6 +195,7 @@ async function fetchFromGooglePlaces(
       fsq_tips: null,
       fsq_cached_at: null,
       cached_at: new Date().toISOString(),
+      expedia_affiliate_url: null,
     }));
 
   // Upsert into Supabase cache
