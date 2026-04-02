@@ -260,41 +260,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* YouTube Section */}
-      <section className="bg-slate-50 dark:bg-slate-900/50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold">Popular Denver Videos</h2>
-              <p className="mt-2 text-slate-500 dark:text-slate-400">
-                The most-watched Denver neighborhood, restaurant, and hotel videos from my channel.
-              </p>
-            </div>
-            <Link
-              href="/videos"
-              className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
-            >
-              See all videos &rarr;
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {videos.map((video) => (
-              <VideoCard key={video.video_id} video={video} />
-            ))}
-          </div>
-
-          <div className="mt-8 text-center sm:hidden">
-            <Link
-              href="/videos"
-              className="text-sm font-semibold text-denver-amber hover:underline"
-            >
-              See all videos &rarr;
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Neighborhoods Grid */}
       <section id="neighborhoods" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="mb-12">
@@ -327,6 +292,41 @@ export default async function HomePage() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* YouTube Section */}
+      <section className="bg-slate-50 dark:bg-slate-900/50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold">Popular Denver Videos</h2>
+              <p className="mt-2 text-slate-500 dark:text-slate-400">
+                The most-watched Denver neighborhood, restaurant, and hotel videos from my channel.
+              </p>
+            </div>
+            <Link
+              href="/videos"
+              className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
+            >
+              See all videos &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {videos.map((video) => (
+              <VideoCard key={video.video_id} video={video} />
+            ))}
+          </div>
+
+          <div className="mt-8 text-center sm:hidden">
+            <Link
+              href="/videos"
+              className="text-sm font-semibold text-denver-amber hover:underline"
+            >
+              See all videos &rarr;
+            </Link>
+          </div>
         </div>
       </section>
 
