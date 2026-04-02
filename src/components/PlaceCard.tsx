@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Place } from "@/lib/places";
 import { photoUrl } from "@/lib/places";
+import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 
 interface Props {
   place: Place;
@@ -113,12 +114,18 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
           <p className="text-xs text-slate-500 line-clamp-1">{place.address}</p>
         )}
 
-        {/* Hotel booking CTA */}
+        {/* Hotel booking CTA — opens Expedia, stops card navigation */}
         {categorySlug === "hotels" && (
           <div className="mt-auto pt-3">
-            <span className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors">
-              Check Availability
-            </span>
+            <a
+              href={expediaDenverHotelsUrl()}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
+            >
+              Check Availability on Expedia
+            </a>
           </div>
         )}
       </div>

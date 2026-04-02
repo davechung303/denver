@@ -255,7 +255,7 @@ export default async function CategoryPage({ params }: Props) {
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-8">
-            <h2 className="text-2xl font-bold">{c.name} Videos from {n.name}</h2>
+            <h2 className="text-2xl font-bold">{c.name} Videos near {n.name}</h2>
             <a
               href="https://youtube.com/davechung"
               target="_blank"
