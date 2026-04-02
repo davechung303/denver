@@ -30,27 +30,6 @@ export default function Nav() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
-            <Link
-              href="/articles"
-              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
-            >
-              Articles
-            </Link>
-
-            <Link
-              href="/videos"
-              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
-            >
-              Videos
-            </Link>
-
-            <Link
-              href="/events"
-              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
-            >
-              Events
-            </Link>
-
             {/* Neighborhoods dropdown */}
             <div className="relative">
               <button
@@ -104,6 +83,27 @@ export default function Nav() {
                 </>
               )}
             </div>
+
+            <Link
+              href="/events"
+              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+            >
+              Events
+            </Link>
+
+            <Link
+              href="/videos"
+              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+            >
+              Videos
+            </Link>
+
+            <Link
+              href="/articles"
+              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+            >
+              Articles
+            </Link>
 
             <Link
               href="/about"
@@ -162,28 +162,7 @@ export default function Nav() {
         {/* Mobile menu */}
         {open && (
           <div className="md:hidden border-t border-white/10 py-4 space-y-1">
-            <Link
-              href="/articles"
-              onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-            >
-              Articles
-            </Link>
-            <Link
-              href="/videos"
-              onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-            >
-              Videos
-            </Link>
-            <Link
-              href="/events"
-              onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-            >
-              Events
-            </Link>
-            <div className="border-t border-white/10 pt-3 mt-3">
+            <div className="border-b border-white/10 pb-3 mb-3">
               <p className="px-4 py-1 text-xs font-semibold text-white/40 uppercase tracking-widest">
                 Neighborhoods
               </p>
@@ -199,15 +178,34 @@ export default function Nav() {
                 </Link>
               ))}
             </div>
-            <div className="border-t border-white/10 pt-3 mt-3">
-              <Link
-                href="/about"
-                onClick={closeAll}
-                className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-              >
-                About
-              </Link>
-            </div>
+            <Link
+              href="/events"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+            >
+              Events
+            </Link>
+            <Link
+              href="/videos"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+            >
+              Videos
+            </Link>
+            <Link
+              href="/articles"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+            >
+              Articles
+            </Link>
+            <Link
+              href="/about"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+            >
+              About
+            </Link>
             <div className="border-t border-white/10 pt-4 mt-3 px-4 flex gap-3">
               <a
                 href="https://www.youtube.com/davechung"
