@@ -80,9 +80,11 @@ export default async function CategoryPage({ params }: Props) {
   }
 
   // Score = quality × proximity — well-reviewed local spots beat distant high-raters
+  // Hotels with a direct Expedia affiliate link get a 15% boost to surface them first
   const scored = [...filtered].sort((a, b) => {
-    const scoreA = (a.rating ?? 0) * Math.log10((a.review_count ?? 0) + 10) * proximityMultiplier(a.lat, a.lng);
-    const scoreB = (b.rating ?? 0) * Math.log10((b.review_count ?? 0) + 10) * proximityMultiplier(b.lat, b.lng);
+    const affiliateBoost = (p: typeof a) => (cSlug === "hotels" && p.expedia_affiliate_url ? 1.15 : 1);
+    const scoreA = (a.rating ?? 0) * Math.log10((a.review_count ?? 0) + 10) * proximityMultiplier(a.lat, a.lng) * affiliateBoost(a);
+    const scoreB = (b.rating ?? 0) * Math.log10((b.review_count ?? 0) + 10) * proximityMultiplier(b.lat, b.lng) * affiliateBoost(b);
     return scoreB - scoreA;
   });
   const topPicks = scored.slice(0, 5);

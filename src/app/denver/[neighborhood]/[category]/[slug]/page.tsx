@@ -232,7 +232,12 @@ export default async function BusinessPage({ params }: Props) {
     return places
       .filter(isUsefulPlace)
       .filter((p) => p.lat && p.lng && distKm(placeLat, placeLng, p.lat, p.lng) <= MAX_DIST_KM)
-      .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+      .sort((a, b) => {
+        // Hotels with a direct affiliate link rank above similar-rated ones without
+        const aScore = (a.rating ?? 0) * (a.expedia_affiliate_url ? 1.15 : 1);
+        const bScore = (b.rating ?? 0) * (b.expedia_affiliate_url ? 1.15 : 1);
+        return bScore - aScore;
+      })
       .slice(0, limit);
   }
   const nearbyDining = nearbyTop(nearbyRestaurants, 6);
