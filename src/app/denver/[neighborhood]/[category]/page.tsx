@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = getCategory(cSlug);
   if (!n || !c) return {};
 
-  const title = `Best ${c.name} in ${n.name}, Denver`;
+  const title = `Best ${c.name} near ${n.name}, Denver`;
   const description = `Find the best ${c.name.toLowerCase()} in ${n.name} (${n.tagline}), Denver. Local picks, Google ratings, and real recommendations from someone who actually lives here.`;
 
   return {
@@ -68,12 +68,23 @@ export default async function CategoryPage({ params }: Props) {
     .filter(isUsefulPlace)
     .filter((p) => cSlug !== "hotels" || isRealHotel(p));
 
-  // Score by rating × log(reviews) to reward well-reviewed places over obscure high-raters
-  const scored = [...filtered].sort(
-    (a, b) =>
-      (b.rating ?? 0) * Math.log10((b.review_count ?? 0) + 10) -
-      (a.rating ?? 0) * Math.log10((a.review_count ?? 0) + 10)
-  );
+  // Proximity boost: places physically inside the neighborhood score higher.
+  // Uses a decay from 1.0 (at center) to 0.75 (at 2km+), blended with quality score.
+  function proximityMultiplier(lat: number | null, lng: number | null): number {
+    if (!lat || !lng || !n!.lat || !n!.lng) return 0.85;
+    const dLat = (lat - n!.lat) * (Math.PI / 180);
+    const dLng = (lng - n!.lng) * (Math.PI / 180);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat * Math.PI / 180) * Math.cos(n!.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    const distKm = 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.max(0.75, 1.0 - distKm * 0.125); // drops 0.125 per km, floors at 0.75
+  }
+
+  // Score = quality × proximity — well-reviewed local spots beat distant high-raters
+  const scored = [...filtered].sort((a, b) => {
+    const scoreA = (a.rating ?? 0) * Math.log10((a.review_count ?? 0) + 10) * proximityMultiplier(a.lat, a.lng);
+    const scoreB = (b.rating ?? 0) * Math.log10((b.review_count ?? 0) + 10) * proximityMultiplier(b.lat, b.lng);
+    return scoreB - scoreA;
+  });
   const topPicks = scored.slice(0, 5);
   const rest = scored.slice(5);
 
@@ -111,7 +122,7 @@ export default async function CategoryPage({ params }: Props) {
           {n.name} &middot; {n.tagline}
         </p>
         <h1 className="text-4xl md:text-5xl font-bold">
-          Best {c.name} in {n.name}
+          Best {c.name} near {n.name}
         </h1>
         <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">
           {description}
