@@ -64,6 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!article) return {};
 
   const description = article.content.slice(0, 160).replace(/\n/g, " ");
+  const imageUrl = article.youtube_videos?.thumbnail_url ?? null;
 
   return {
     title: `${article.title} | Dave Loves Denver`,
@@ -72,9 +73,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: article.title,
       description,
       url: `https://davelovesdenver.com/articles/${slug}`,
-      images: article.youtube_videos?.thumbnail_url
-        ? [{ url: article.youtube_videos.thumbnail_url }]
-        : [],
+      type: "article",
+      publishedTime: article.updated_at ?? undefined,
+      authors: ["https://davelovesdenver.com/about"],
+      images: imageUrl ? [{ url: imageUrl }] : [],
     },
     alternates: {
       canonical: `https://davelovesdenver.com/articles/${slug}`,

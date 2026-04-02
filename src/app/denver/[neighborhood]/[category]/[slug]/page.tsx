@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Subcategory page
   const subcategory = getSubcategory(cSlug, slug);
   if (subcategory) {
-    const title = `Best ${subcategory.name} in ${n.name}, Denver`;
+    const title = `Best ${subcategory.name} near ${n.name}, Denver`;
     const description = subcategory.description(n.name);
     return {
       title,
@@ -49,8 +49,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const place = await getPlace(nSlug, cSlug, slug);
   if (!place) return {};
 
-  const title = `${place.name} — ${c.name} in ${n.name}, Denver`;
-  const description = `${place.name} in ${n.name}, Denver. ${place.rating ? `Rated ${place.rating}/5` : ""} ${place.address ? `· ${place.address}` : ""}. Find hours, photos, and more on Dave Loves Denver.`;
+  const title = `${place.name} — ${c.name} near ${n.name}, Denver`;
+  const description = `${place.name} near ${n.name}, Denver. ${place.rating ? `Rated ${place.rating}/5` : ""} ${place.address ? `· ${place.address}` : ""}. Find hours, photos, and more on Dave Loves Denver.`;
 
   return {
     title,

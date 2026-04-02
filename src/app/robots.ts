@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/videos", "/api/"],
+        disallow: ["/api/"],
       },
     ],
     sitemap: "https://davelovesdenver.com/sitemap.xml",
