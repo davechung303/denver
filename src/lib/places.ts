@@ -127,10 +127,10 @@ async function fetchFromGooglePlaces(
   const category = getCategory(categorySlug);
   if (!neighborhood || (!category && !overrideQuery)) return [];
 
-  // Hotels serve a wider area — always use at least 5km so neighborhoods without
-  // a hotel core (like RiNo) still surface options nearby
+  // Hotels and activities serve a wider area than restaurants/bars
   const baseRadius = neighborhood.searchRadius ?? 1500.0;
-  const radius = categorySlug === "hotels" ? Math.max(baseRadius, 5000.0) : baseRadius;
+  const wideCategories = new Set(["hotels", "things-to-do"]);
+  const radius = wideCategories.has(categorySlug) ? Math.max(baseRadius, 3000.0) : baseRadius;
   const locationBias = {
     circle: {
       center: { latitude: neighborhood.lat, longitude: neighborhood.lng },

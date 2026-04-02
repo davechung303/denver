@@ -25,8 +25,15 @@ export const CATEGORIES: Category[] = [
   {
     slug: "things-to-do",
     name: "Things To Do",
-    searchQuery: "things to do attractions",
-    extraQueries: ["art galleries and museums", "live music venues entertainment", "parks recreation outdoor activities"],
+    searchQuery: "things to do activities attractions",
+    extraQueries: [
+      "art galleries museums",
+      "live music venues concert halls",
+      "parks recreation outdoor activities",
+      "entertainment venues mini golf bowling arcade escape room",
+      "tours experiences sightseeing",
+      "fitness classes yoga climbing gym",
+    ],
   },
   {
     slug: "coffee",
