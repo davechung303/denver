@@ -420,20 +420,9 @@ export default async function BusinessPage({ params }: Props) {
               </div>
             )}
 
-            {/* Videos */}
-            {videos.length > 0 && (
-              <div>
-                <h2 className="text-lg font-semibold mb-4">Related Videos</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {videos.map((video) => (
-                    <VideoCard key={video.video_id} video={video} />
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* Right: contact card */}
+          {/* Right: contact card + videos */}
           <div className="space-y-4">
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 sticky top-20">
               {/* Hotel booking CTAs */}
@@ -500,9 +489,21 @@ export default async function BusinessPage({ params }: Props) {
                 href={`/denver/${nSlug}/${cSlug}`}
                 className="block text-center text-sm text-slate-500 hover:text-denver-amber transition-colors pt-2 border-t border-slate-100 dark:border-slate-800"
               >
-                &larr; More {c.name} in {n.name}
+                &larr; More {c.name} near {n.name}
               </Link>
             </div>
+
+            {/* Related videos in sidebar */}
+            {videos.length > 0 && (
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4">
+                <h2 className="text-base font-semibold">Related Videos</h2>
+                <div className="space-y-3">
+                  {videos.map((video) => (
+                    <VideoCard key={video.video_id} video={video} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

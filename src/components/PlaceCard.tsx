@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client";
+
+import { useRouter } from "next/navigation";
 import type { Place } from "@/lib/places";
 import { photoUrl } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
@@ -39,96 +41,92 @@ function PriceLevel({ level }: { level: number }) {
 }
 
 export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }: Props) {
+  const router = useRouter();
+  const href = `/denver/${neighborhoodSlug}/${categorySlug}/${place.slug}`;
   const photo = place.photos?.[0];
   const isOpen = place.hours?.openNow;
+  const isHotel = categorySlug === "hotels";
 
   return (
-    <Link
-      href={`/denver/${neighborhoodSlug}/${categorySlug}/${place.slug}`}
-      className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
-    >
-      {/* Photo */}
-      <div className="aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
-        {photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={photoUrl(photo.name)}
-            alt={place.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-slate-300 dark:text-slate-600 text-sm">No photo</span>
-          </div>
-        )}
-        {/* Cuisine/type tag */}
-        {tag && (
-          <span className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-semibold px-2 py-0.5 rounded-full backdrop-blur-sm">
-            {tag}
-          </span>
-        )}
-        {/* Open/closed badge */}
-        {place.hours && (
-          <span
-            className={`absolute top-3 right-3 text-xs font-semibold px-2 py-0.5 rounded-full ${
-              isOpen
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-600"
-            }`}
-          >
-            {isOpen ? "Open" : "Closed"}
-          </span>
-        )}
-      </div>
-
-      {/* Info */}
-      <div className="p-4 flex flex-col gap-2 flex-1">
-        <h3 className="font-semibold text-base leading-tight group-hover:text-denver-amber transition-colors line-clamp-1">
-          {place.name}
-        </h3>
-
-        {/* Rating row */}
-        {place.rating && (
-          <div className="flex items-center gap-2">
-            <StarRating rating={place.rating} />
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              {place.rating.toFixed(1)}
+    <div className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200">
+      {/* Clickable card body — navigates to detail page */}
+      <div onClick={() => router.push(href)} className="flex flex-col flex-1 cursor-pointer">
+        {/* Photo */}
+        <div className="aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
+          {photo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={photoUrl(photo.name)}
+              alt={place.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-slate-300 dark:text-slate-600 text-sm">No photo</span>
+            </div>
+          )}
+          {tag && (
+            <span className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-semibold px-2 py-0.5 rounded-full backdrop-blur-sm">
+              {tag}
             </span>
-            {place.review_count && (
-              <span className="text-xs text-slate-400">
-                ({place.review_count.toLocaleString()})
-              </span>
-            )}
-            {place.price_level != null && place.price_level > 0 && (
-              <>
-                <span className="text-slate-300">·</span>
-                <PriceLevel level={place.price_level} />
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Address */}
-        {place.address && (
-          <p className="text-xs text-slate-500 line-clamp-1">{place.address}</p>
-        )}
-
-        {/* Hotel booking CTA — opens Expedia, stops card navigation */}
-        {categorySlug === "hotels" && (
-          <div className="mt-auto pt-3">
-            <a
-              href={expediaDenverHotelsUrl()}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
+          )}
+          {place.hours && (
+            <span
+              className={`absolute top-3 right-3 text-xs font-semibold px-2 py-0.5 rounded-full ${
+                isOpen ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
+              }`}
             >
-              Check Availability on Expedia
-            </a>
-          </div>
-        )}
+              {isOpen ? "Open" : "Closed"}
+            </span>
+          )}
+        </div>
+
+        {/* Info */}
+        <div className="p-4 flex flex-col gap-2 flex-1">
+          <h3 className="font-semibold text-base leading-tight group-hover:text-denver-amber transition-colors line-clamp-1">
+            {place.name}
+          </h3>
+
+          {place.rating && (
+            <div className="flex items-center gap-2">
+              <StarRating rating={place.rating} />
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                {place.rating.toFixed(1)}
+              </span>
+              {place.review_count && (
+                <span className="text-xs text-slate-400">
+                  ({place.review_count.toLocaleString()})
+                </span>
+              )}
+              {place.price_level != null && place.price_level > 0 && (
+                <>
+                  <span className="text-slate-300">·</span>
+                  <PriceLevel level={place.price_level} />
+                </>
+              )}
+            </div>
+          )}
+
+          {place.address && (
+            <p className="text-xs text-slate-500 line-clamp-1">{place.address}</p>
+          )}
+        </div>
       </div>
-    </Link>
+
+      {/* Hotel CTA — outside the navigating div to avoid nested anchors */}
+      {isHotel && (
+        <div className="px-4 pb-4">
+          <a
+            href={expediaDenverHotelsUrl()}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
+          >
+            Check Availability on Expedia
+          </a>
+        </div>
+      )}
+    </div>
   );
 }

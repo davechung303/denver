@@ -135,7 +135,7 @@ function CategorySection({ title, slug, categorySlug, places, limit, cols = 2 }:
           href={`/denver/${slug}/${categorySlug}`}
           className="text-sm font-semibold text-denver-amber hover:underline shrink-0"
         >
-          See all &rarr;
+          Explore more &rarr;
         </Link>
       </div>
       <div className={`grid ${gridClass} gap-4`}>
@@ -282,7 +282,7 @@ export default async function NeighborhoodPage({ params }: Props) {
               rel="noopener noreferrer"
               className="text-sm font-semibold text-denver-amber hover:underline"
             >
-              See all &rarr;
+              Explore more &rarr;
             </a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
