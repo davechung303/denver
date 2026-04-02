@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { embedUrl, getVideosForPage } from "@/lib/youtube";
-import { expediaDenverHotelsUrl, zenhotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, zenhotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import VideoCard from "@/components/VideoCard";
@@ -304,43 +304,52 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         )}
 
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden mb-10">
-          <div className="px-5 py-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-            <p className="text-sm font-semibold">
-              {neighborhood ? `Staying near ${neighborhood.name}?` : "Planning a Denver trip?"}
+        {/* Trip planning widget */}
+        <div className="rounded-2xl overflow-hidden mb-10 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+          <div className="px-6 pt-6 pb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-amber-400 mb-1">Plan Your Trip</p>
+            <h3 className="text-lg font-bold">
+              {neighborhood ? `Visiting ${neighborhood.name}?` : "Coming to Denver?"}
+            </h3>
+            <p className="text-sm text-slate-400 mt-0.5">
+              Find the best deals on hotels and flights
             </p>
-            <p className="text-xs text-slate-500 mt-0.5">Dave recommends these booking options</p>
           </div>
-          <div className="divide-y divide-slate-100 dark:divide-slate-800">
-            <div className="flex items-center gap-4 px-5 py-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <span className="text-blue-700 font-bold text-xs">EXP</span>
-              </div>
+          <div className="px-6 pb-6 space-y-3">
+            {/* Hotels row */}
+            <div className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-3">
+              <span className="text-2xl">🏨</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">Expedia</p>
-                <p className="text-xs text-slate-500">
-                  {neighborhood ? `Hotels near ${neighborhood.name}` : "Denver hotels"} — compare prices
+                <p className="text-sm font-semibold">Hotels</p>
+                <p className="text-xs text-slate-400">
+                  {neighborhood ? `Near ${neighborhood.name}` : "Denver area"} · compare prices
                 </p>
               </div>
-              <a href={expediaUrl} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 px-4 py-2 bg-denver-amber text-slate-900 text-xs font-semibold rounded-xl hover:bg-amber-400 transition-colors">
-                Search hotels
-              </a>
+              <div className="flex gap-2 shrink-0">
+                <a href={expediaUrl} target="_blank" rel="noopener noreferrer sponsored"
+                  className="px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors">
+                  Expedia
+                </a>
+                <a href={zenUrl} target="_blank" rel="noopener noreferrer sponsored"
+                  className="px-3 py-1.5 bg-white/10 text-white text-xs font-semibold rounded-lg hover:bg-white/20 transition-colors">
+                  ZenHotels
+                </a>
+              </div>
             </div>
-            <div className="flex items-center gap-4 px-5 py-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <span className="text-blue-700 font-bold text-xs">ZEN</span>
-              </div>
+            {/* Flights row */}
+            <div className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-3">
+              <span className="text-2xl">✈️</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">ZenHotels</p>
-                <p className="text-xs text-slate-500">
-                  {neighborhood ? `${neighborhood.name} area` : "Denver"} — often lower rates
-                </p>
+                <p className="text-sm font-semibold">Flights to Denver</p>
+                <p className="text-xs text-slate-400">Search all airlines · DEN International</p>
               </div>
-              <a href={zenUrl} target="_blank" rel="noopener noreferrer sponsored" className="flex-shrink-0 px-4 py-2 bg-denver-amber text-slate-900 text-xs font-semibold rounded-xl hover:bg-amber-400 transition-colors">
-                Search hotels
+              <a href={expediaFlightsToDenverUrl()} target="_blank" rel="noopener noreferrer sponsored"
+                className="px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors shrink-0">
+                Search flights
               </a>
             </div>
           </div>
+          <p className="text-xs text-slate-500 px-6 pb-4">Affiliate links — booking supports this site at no cost to you.</p>
         </div>
         <div className="rounded-2xl bg-slate-900 dark:bg-slate-800 px-6 py-6 mb-10 flex items-center gap-5 flex-wrap">
           <div className="w-12 h-12 rounded-xl bg-red-600 flex items-center justify-center flex-shrink-0">

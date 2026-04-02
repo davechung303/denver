@@ -169,11 +169,24 @@ export default async function NeighborhoodPage({ params }: Props) {
     getPlaces(slug, "things-to-do"),
     getPlaces(slug, "coffee"),
   ]);
-  const restaurants = rawRestaurants.filter(isUsefulPlace);
-  const hotels = rawHotels.filter(isRealHotel).filter(isUsefulPlace);
-  const bars = rawBars.filter(isUsefulPlace);
-  const thingsToDo = rawThingsToDo.filter(isUsefulPlace);
-  const coffee = rawCoffee.filter(isUsefulPlace);
+  // Sort by quality × proximity so the featured cards are actually in the neighborhood
+  function sortByProximity(places: Place[]): Place[] {
+    return [...places].sort((a, b) => {
+      const dA = (a.lat && a.lng) ? Math.hypot(a.lat - n!.lat, a.lng - n!.lng) : 999;
+      const dB = (b.lat && b.lng) ? Math.hypot(b.lat - n!.lat, b.lng - n!.lng) : 999;
+      const proxA = 1 / (1 + dA * 80); // ~1.5km ≈ 0.5 weight decay
+      const proxB = 1 / (1 + dB * 80);
+      const scoreA = (a.rating ?? 0) * Math.log10((a.review_count ?? 0) + 10) * proxA;
+      const scoreB = (b.rating ?? 0) * Math.log10((b.review_count ?? 0) + 10) * proxB;
+      return scoreB - scoreA;
+    });
+  }
+
+  const restaurants = sortByProximity(rawRestaurants.filter(isUsefulPlace));
+  const hotels = sortByProximity(rawHotels.filter(isRealHotel).filter(isUsefulPlace));
+  const bars = sortByProximity(rawBars.filter(isUsefulPlace));
+  const thingsToDo = sortByProximity(rawThingsToDo.filter(isUsefulPlace));
+  const coffee = sortByProximity(rawCoffee.filter(isUsefulPlace));
 
   const mapPins = restaurants
     .filter((p) => p.lat && p.lng)
