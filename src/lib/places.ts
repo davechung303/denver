@@ -394,6 +394,12 @@ export async function getPlacesForSubcategory(
   return merged;
 }
 
+// A place is considered useful if it has a rating (real Google data) or at least one photo.
+// Parks/landmarks named after the neighborhood with no data are shell records — hide them.
+export function isUsefulPlace(place: Place): boolean {
+  return (place.rating != null && place.rating > 0) || (place.photos != null && place.photos.length > 0);
+}
+
 // Google Places types that indicate an actual hotel (not vacation rentals / Airbnb-style)
 const HOTEL_TYPES = new Set([
   "hotel",

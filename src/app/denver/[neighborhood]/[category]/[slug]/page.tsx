@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPlace, getPlaces, getPlacesForSubcategory, photoUrl, photoAbsoluteUrl } from "@/lib/places";
+import { getPlace, getPlaces, getPlacesForSubcategory, isUsefulPlace, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import { expediaHotelUrl, zenhotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
@@ -195,7 +195,7 @@ export default async function BusinessPage({ params }: Props) {
 
   // ── Business detail page ────────────────────────────────────────────────
   const place = await getPlace(nSlug, cSlug, slug);
-  if (!place) notFound();
+  if (!place || !isUsefulPlace(place)) notFound();
 
   const [relatedPlaces, videos] = await Promise.all([
     getPlaces(nSlug, cSlug),

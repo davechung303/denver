@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getPlaces, isRealHotel, type Place } from "@/lib/places";
+import { getPlaces, isRealHotel, isUsefulPlace, type Place } from "@/lib/places";
 import { expediaHotelUrl, zenhotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
@@ -160,7 +160,7 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
 
-  const [videos, events, restaurants, rawHotels, bars, thingsToDo, coffee] = await Promise.all([
+  const [videos, events, rawRestaurants, rawHotels, rawBars, rawThingsToDo, rawCoffee] = await Promise.all([
     getVideosForPage(slug, null, 3),
     getEventsForNeighborhood(slug, 4),
     getPlaces(slug, "restaurants"),
@@ -169,7 +169,11 @@ export default async function NeighborhoodPage({ params }: Props) {
     getPlaces(slug, "things-to-do"),
     getPlaces(slug, "coffee"),
   ]);
-  const hotels = rawHotels.filter(isRealHotel);
+  const restaurants = rawRestaurants.filter(isUsefulPlace);
+  const hotels = rawHotels.filter(isRealHotel).filter(isUsefulPlace);
+  const bars = rawBars.filter(isUsefulPlace);
+  const thingsToDo = rawThingsToDo.filter(isUsefulPlace);
+  const coffee = rawCoffee.filter(isUsefulPlace);
 
   const mapPins = restaurants
     .filter((p) => p.lat && p.lng)

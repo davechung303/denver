@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory, CATEGORY_DESCRIPTIONS, getPlaceTag } from "@/lib/neighborhoods";
 import { getSubcategories } from "@/lib/subcategories";
-import { getPlaces, isRealHotel } from "@/lib/places";
+import { getPlaces, isRealHotel, isUsefulPlace } from "@/lib/places";
 import { photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import PlaceCard from "@/components/PlaceCard";
@@ -63,8 +63,10 @@ export default async function CategoryPage({ params }: Props) {
   const description = CATEGORY_DESCRIPTIONS[nSlug]?.[cSlug] ??
     `Local picks for the best ${c!.name.toLowerCase()} in ${n!.name}, Denver.`;
 
-  // Filter vacation rentals / Airbnb-style listings out of the hotels category
-  const filtered = cSlug === "hotels" ? places.filter(isRealHotel) : places;
+  // Filter out shell records (no rating, no photos) and vacation rentals from hotels
+  const filtered = places
+    .filter(isUsefulPlace)
+    .filter((p) => cSlug !== "hotels" || isRealHotel(p));
 
   // Score by rating × log(reviews) to reward well-reviewed places over obscure high-raters
   const scored = [...filtered].sort(
