@@ -4,7 +4,7 @@ const EXPEDIA_HOME = "https://expedia.com/affiliates/expedia-home.NcNzYg5";
 // Flights search (pre-filled for Denver)
 const EXPEDIA_FLIGHTS = "https://expedia.com/affiliates/expedia-home.6ch6qO8";
 // Hotel search — Denver area
-const EXPEDIA_HOTELS_DENVER = "https://expedia.com/affiliates/hotel-search-denver.7MjEKrC";
+const EXPEDIA_HOTELS_DENVER = "https://expedia.com/affiliates/hotel-search-denver.unRLn22";
 
 // ZenHotels via Impact affiliate program
 // Base link redirects to ZenHotels homepage with affiliate tracking — no deep link needed
