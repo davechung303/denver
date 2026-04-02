@@ -225,9 +225,22 @@ CRITICAL RULES:
 - Use ## headers for section breaks
 - No bullet points
 - No mention of affiliate links or hotel booking in the article body
-- Return ONLY the article text — no preamble, no explanation
 
-Return ONLY the article text.`;
+SEO TITLE INSTRUCTIONS:
+Before the article, output a single line in this exact format:
+TITLE: {your SEO-optimized title}
+
+Title rules:
+- For neighborhood-specific content: "Best [Topic] near [Neighborhood], Denver" or "[Neighborhood]'s Best [Topic]"
+- For single-place reviews: "[Business Name]: [Short Hook] in [Neighborhood], Denver"
+- For general Denver guides: "Best [Topic] in Denver, Colorado"
+- Include the neighborhood name when the content is neighborhood-specific
+- 55-70 characters ideal, never exceed 70
+- Plain language — no clickbait, no ALL CAPS, no exclamation marks
+
+Then a blank line, then the article body.
+
+Return ONLY: the TITLE line, a blank line, and the article text. No other preamble.`;
 
   try {
     const message = await anthropic.messages.create({
@@ -241,7 +254,15 @@ Return ONLY the article text.`;
       return { success: false, error: "Unexpected response type" };
     }
 
-    const articleText = content.text.trim();
+    const raw = content.text.trim();
+
+    // Parse the TITLE: line from the response
+    const titleMatch = raw.match(/^TITLE:\s*(.+)/m);
+    const seoTitle = titleMatch ? titleMatch[1].trim() : video.title;
+    // Strip the TITLE line (and blank line after it) to get the article body
+    const articleText = raw.replace(/^TITLE:.*\n\n?/m, "").trim();
+
+    // Slug uses the original video title for URL stability (existing articles unaffected)
     const slug = generateSlug(video.title);
     const expediaUrl = neighborhood
       ? expediaHotelUrl(`${neighborhood} Denver`)
@@ -251,7 +272,7 @@ Return ONLY the article text.`;
     const { error } = await supabase.from("articles").upsert({
       video_id: videoId,
       slug,
-      title: video.title,
+      title: seoTitle,
       content: articleText,
       content_type: contentType,
       neighborhood_slug: neighborhood,

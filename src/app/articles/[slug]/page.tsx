@@ -10,6 +10,51 @@ import VideoCard from "@/components/VideoCard";
 
 export const revalidate = 86400;
 
+// Neighborhood name → slug map. Longer/more specific phrases listed first to
+// prevent partial matches (e.g. "River North Art District" before "River North").
+const NEIGHBORHOOD_LINK_MAP: Array<[RegExp, string]> = [
+  [/\bRiver North Art District\b/gi, "rino"],
+  [/\bRiver North\b/gi, "rino"],
+  [/\bRiNo\b/g, "rino"],
+  [/\bLower Downtown\b/gi, "lodo"],
+  [/\bLoDo\b/g, "lodo"],
+  [/\bUnion Station\b/gi, "lodo"],
+  [/\bCapitol Hill\b/gi, "capitol-hill"],
+  [/\bCap Hill\b/gi, "capitol-hill"],
+  [/\bthe Highlands\b/gi, "highlands"],
+  [/\bHighlands neighborhood\b/gi, "highlands"],
+  [/\bCherry Creek\b/gi, "cherry-creek"],
+  [/\bFive Points\b/gi, "five-points"],
+  [/\bWashington Park\b/gi, "washington-park"],
+  [/\bWash Park\b/gi, "washington-park"],
+  [/\bGolden Triangle\b/gi, "golden-triangle"],
+  [/\bSloan Lake\b/gi, "sloan-lake"],
+  [/\bPlatt Park\b/gi, "platt-park"],
+  [/\bSouth Pearl Street\b/gi, "platt-park"],
+  [/\bSouth Pearl\b/gi, "platt-park"],
+  [/\bJefferson Park\b/gi, "jefferson-park"],
+  [/\bCurtis Park\b/gi, "curtis-park"],
+  [/\bTennyson Street\b/gi, "berkeley"],
+  [/\bSouth Broadway\b/gi, "baker"],
+  [/\bSoBo\b/g, "baker"],
+];
+
+// Replace neighborhood name mentions in text with internal links.
+// Splits HTML into tags and text nodes so existing <a> tags are never touched.
+function linkifyNeighborhoods(html: string): string {
+  return html.replace(/(<[^>]+>)|([^<]+)/g, (match, tag, textNode) => {
+    if (tag) return tag;
+    let result = textNode;
+    for (const [pattern, slug] of NEIGHBORHOOD_LINK_MAP) {
+      result = result.replace(
+        pattern,
+        `<a href="/denver/${slug}" class="text-denver-amber hover:underline font-medium">$&</a>`
+      );
+    }
+    return result;
+  });
+}
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -233,9 +278,10 @@ export default async function ArticlePage({ params }: Props) {
             {firstPara.replace("## ", "")}
           </h2>
         ) : (
-          <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
-            {firstPara}
-          </p>
+          <p
+            className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6"
+            dangerouslySetInnerHTML={{ __html: linkifyNeighborhoods(firstPara) }}
+          />
         )}
         {video && (
           <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
@@ -282,9 +328,11 @@ export default async function ArticlePage({ params }: Props) {
             return (
               <p key={i} className="text-base leading-relaxed mb-5 text-slate-700 dark:text-slate-300"
                 dangerouslySetInnerHTML={{
-                  __html: para
-                    .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-teal-600 dark:text-teal-400 underline hover:no-underline">$1</a>')
-                    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                  __html: linkifyNeighborhoods(
+                    para
+                      .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-teal-600 dark:text-teal-400 underline hover:no-underline">$1</a>')
+                      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                  )
                 }}
               />
             );
