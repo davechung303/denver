@@ -13,7 +13,7 @@ export default function ViatorWidget() {
   return (
     <iframe
       srcDoc={EMBED_HTML}
-      style={{ width: "100%", height: "480px", border: "none" }}
+      style={{ width: "100%", height: "900px", border: "none" }}
       title="Tours & Experiences"
     />
   );
