@@ -22,7 +22,7 @@ export default function AboutPage() {
             About
           </p>
           <h1 className="text-5xl md:text-6xl font-bold">Dave Loves Denver</h1>
-          <p className="mt-4 text-white/70 text-xl">And he wants you to love it too.</p>
+          <p className="mt-4 text-white/70 text-xl">A local guide, built by someone who actually lives here.</p>
         </div>
       </section>
 

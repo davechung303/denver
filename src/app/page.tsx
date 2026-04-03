@@ -63,11 +63,12 @@ export default async function HomePage() {
                 Denver, Colorado
               </p>
               <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight">
-                Denver guides & videos from someone who actually lives here.
+                A local&apos;s guide to Denver neighborhoods, restaurants, and hotels.
               </h1>
               <p className="mt-5 text-base text-white/70 leading-relaxed">
-                I&apos;m Dave. I eat here, drink here, stay here, and film everything. Over 2 million YouTube
-                views and counting — this is the real Denver.
+                I&apos;m Dave. I live here, eat here, and spend a lot of time exploring every corner of this city.
+                This site is my attempt to make Denver easier to navigate — whether you&apos;re visiting for a weekend
+                or just haven&apos;t found your favorite neighborhood spot yet.
               </p>
               <div className="mt-6 flex flex-wrap gap-4">
                 <Link
@@ -336,10 +337,10 @@ export default async function HomePage() {
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold mb-4">Why I Built This</h2>
             <p className="text-white/70 leading-relaxed text-lg">
-              Every Denver guide I found felt like it was written by an algorithm or someone who visited
-              for a weekend. I&apos;ve lived here, explored every neighborhood, and filmed hundreds of hours
-              of content. This site is my attempt to give you the real Denver — the places that locals
-              actually go, the hotels worth the money, and the spots that never make the listicles.
+              I kept getting asked the same questions — where to eat in RiNo, which hotel is actually
+              worth it near downtown, what to do in neighborhoods people usually skip. I&apos;ve been making
+              YouTube videos about Denver for years, and this site is the written companion to all of that.
+              Everything here comes from time I&apos;ve actually spent in these places.
             </p>
             <Link
               href="/about"
