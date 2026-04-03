@@ -108,9 +108,11 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             </div>
           )}
 
-          {place.address && (
+          {place.review_summary?.tagline ? (
+            <p className="text-xs text-slate-500 italic line-clamp-1">{place.review_summary.tagline}</p>
+          ) : place.address ? (
             <p className="text-xs text-slate-500 line-clamp-1">{place.address}</p>
-          )}
+          ) : null}
         </div>
       </div>
 

@@ -6,6 +6,7 @@ export interface ReviewSummary {
   highlights: string[];
   lowlights: string[];
   popular_dishes?: string[];
+  tagline?: string; // 5-7 word descriptor shown on listing cards
 }
 
 const FOOD_CATEGORIES = new Set(["restaurants", "bars", "coffee"]);
@@ -49,12 +50,14 @@ export async function generateReviewSummary(
 
 Return ONLY valid JSON, no markdown, no explanation:
 {
+  "tagline": "5-7 word hook specific to this place",
   "consensus": "One specific sentence capturing the overall vibe or standout quality of this place",
   "highlights": ["specific thing reviewers love", "another concrete positive"],
   "lowlights": ["honest caveat or criticism from reviews"]${dishesField}
 }
 
 Rules:
+- tagline: exactly 5-7 words, lowercase, no period — a specific hook that makes someone want to click. Focus on what's unique: a signature dish, a view, a vibe, a standout feature. Examples: "wood-fired pizza with a perfect char", "rooftop views of the whole city", "best tonkotsu broth in Denver", "connected directly to the terminal"
 - consensus should be specific and useful (not "great place" — say what makes it worth visiting)
 - highlights and lowlights must come from what reviewers actually said, not generic observations
 - lowlights can be [] if reviews are overwhelmingly positive
@@ -81,7 +84,8 @@ ${reviewText}`,
     if (
       typeof parsed.consensus !== "string" ||
       !Array.isArray(parsed.highlights) ||
-      !Array.isArray(parsed.lowlights)
+      !Array.isArray(parsed.lowlights) ||
+      (parsed.tagline !== undefined && typeof parsed.tagline !== "string")
     ) {
       return null;
     }

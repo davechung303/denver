@@ -330,24 +330,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Browse by Category */}
-      <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-8">Browse by Category</h2>
-          <div className="flex flex-wrap gap-3">
-            {CATEGORIES.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/denver/rino/${c.slug}`}
-                className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors"
-              >
-                {c.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* About */}
       <section className="bg-denver-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

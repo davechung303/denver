@@ -228,9 +228,11 @@ export default async function CategoryPage({ params }: Props) {
                               )}
                             </div>
                           )}
-                          {place.address && (
+                          {place.review_summary?.tagline ? (
+                            <p className="text-xs text-slate-400 italic line-clamp-1">{place.review_summary.tagline}</p>
+                          ) : place.address ? (
                             <p className="text-xs text-slate-400 line-clamp-1">{place.address}</p>
-                          )}
+                          ) : null}
                         </div>
                       </a>
                     );
