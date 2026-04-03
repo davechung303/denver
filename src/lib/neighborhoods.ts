@@ -195,6 +195,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?auto=format&fit=crop&w=1200&q=80",
     searchName: "Berkeley Denver Colorado Tennyson Street",
     lat: 39.7784, lng: -105.0388,
+    stay22EmbedId: "69d05359bfb4999cdf0005eb",
     searchRadius: 2500,
   },
   {
