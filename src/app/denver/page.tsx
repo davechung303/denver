@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
-import { getBestOfDenver, isHiddenGem, isRealHotel, photoUrl, popularityScore, type Place } from "@/lib/places";
+import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealHotel, photoUrl, popularityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
@@ -185,12 +185,13 @@ function SectionHeader({ title, subtitle, href, linkText }: { title: string; sub
 }
 
 export default async function BestOfDenverPage() {
-  const [restaurants, hotels, bars, thingsToDo, coffee] = await Promise.all([
+  const [restaurants, hotels, bars, thingsToDo, coffee, trending] = await Promise.all([
     getBestOfDenver("restaurants", 10),
     getBestOfDenver("hotels", 9).then((h) => h.filter(isRealHotel)),
     getBestOfDenver("bars", 8),
     getBestOfDenver("things-to-do", 8),
     getBestOfDenver("coffee", 8),
+    getTrendingPlaces(30, 8),
   ]);
 
   // Hidden gems: ≥4.5 rating, 10–300 reviews, any category, sorted by score
@@ -262,6 +263,72 @@ export default async function BestOfDenverPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
+
+        {/* Trending — only shown once we have snapshot data */}
+        {trending.length > 0 && (
+          <section id="trending">
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-denver-amber">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+                  </svg>
+                  Trending now
+                </span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold">Gaining Momentum</h2>
+              <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">
+                Places picking up the most new Google reviews in the last 30 days — ranked by velocity × quality.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {(trending as TrendingPlace[]).map((place) => {
+                const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
+                const photo = place.photos?.[0];
+                const cat = CATEGORIES.find((c) => c.slug === place.category_slug);
+                return (
+                  <a
+                    key={place.place_id}
+                    href={href}
+                    className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
+                  >
+                    <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
+                      {photo && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={photoUrl(photo.name, 400, 280)}
+                          alt={place.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      )}
+                      <span className="absolute top-2 right-2 bg-denver-amber text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        +{place.velocity} reviews
+                      </span>
+                    </div>
+                    <div className="p-4 flex flex-col gap-1.5 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <NeighborhoodChip slug={place.neighborhood_slug} />
+                        {cat && (
+                          <span className="text-xs text-slate-400">{cat.name}</span>
+                        )}
+                      </div>
+                      <h3 className="font-bold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">
+                        {place.name}
+                      </h3>
+                      <RatingBadge place={place} />
+                      <p className="text-xs text-slate-400 mt-auto pt-1">
+                        {place.velocityPerWeek > 0
+                          ? `~${place.velocityPerWeek} new reviews/week`
+                          : `${place.velocity} new reviews in ${place.windowDays}d`}
+                      </p>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Restaurants */}
         {restaurants.length > 0 && (

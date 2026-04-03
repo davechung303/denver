@@ -30,13 +30,21 @@ export default function Nav() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
+            {/* Popular link */}
+            <Link
+              href="/denver"
+              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+            >
+              Popular
+            </Link>
+
             {/* Neighborhoods dropdown */}
             <div className="relative">
               <button
                 onClick={() => setNeighborhoodsOpen(!neighborhoodsOpen)}
                 className="flex items-center gap-1 px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
               >
-                Neighborhoods
+                Explore Neighborhoods
                 <svg
                   className={`w-4 h-4 transition-transform ${neighborhoodsOpen ? "rotate-180" : ""}`}
                   fill="none"
@@ -162,9 +170,16 @@ export default function Nav() {
         {/* Mobile menu */}
         {open && (
           <div className="md:hidden border-t border-white/10 py-4 space-y-1">
-            <div className="border-b border-white/10 pb-3 mb-3">
+            <Link
+              href="/denver"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              Popular
+            </Link>
+            <div className="border-b border-white/10 pb-3 mb-3 mt-1">
               <p className="px-4 py-1 text-xs font-semibold text-white/40 uppercase tracking-widest">
-                Neighborhoods
+                Explore Neighborhoods
               </p>
               {NEIGHBORHOODS.map((n) => (
                 <Link

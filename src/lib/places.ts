@@ -449,6 +449,95 @@ export async function getBestOfDenver(categorySlug: string, limit = 8): Promise<
     .slice(0, limit);
 }
 
+export interface TrendingPlace extends Place {
+  velocity: number;        // new reviews in the window
+  windowDays: number;      // actual days between snapshots used
+  velocityPerWeek: number; // normalized to per-7-days for display
+}
+
+// Returns the top trending places citywide, ranked by review velocity.
+// Velocity = reviews gained between oldest available snapshot in the window
+// and the most recent snapshot. Weighted by rating so low-quality viral
+// places don't dominate.
+export async function getTrendingPlaces(
+  windowDays = 30,
+  limit = 8
+): Promise<TrendingPlace[]> {
+  const windowStart = new Date(Date.now() - windowDays * 24 * 60 * 60 * 1000).toISOString();
+
+  // Fetch the two boundary snapshots per place in the window.
+  // We get the oldest snapshot within the window (baseline) and the newest (current).
+  const { data: snapshots, error } = await supabase
+    .from("place_snapshots")
+    .select("place_id, review_count, snapped_at")
+    .gte("snapped_at", windowStart)
+    .order("snapped_at", { ascending: true });
+
+  if (error || !snapshots || snapshots.length === 0) return [];
+
+  // Group by place_id → keep first (oldest) and last (newest) snapshot
+  const byPlace = new Map<string, { oldest: typeof snapshots[0]; newest: typeof snapshots[0] }>();
+  for (const snap of snapshots) {
+    const entry = byPlace.get(snap.place_id);
+    if (!entry) {
+      byPlace.set(snap.place_id, { oldest: snap, newest: snap });
+    } else {
+      byPlace.set(snap.place_id, { oldest: entry.oldest, newest: snap });
+    }
+  }
+
+  // Calculate velocity for places with at least 2 snapshots and positive growth
+  const velocities: Array<{ place_id: string; velocity: number; windowDays: number; velocityPerWeek: number }> = [];
+  for (const [place_id, { oldest, newest }] of byPlace) {
+    if (oldest.snapped_at === newest.snapped_at) continue; // only one snapshot
+    const gain = (newest.review_count ?? 0) - (oldest.review_count ?? 0);
+    if (gain <= 0) continue;
+    const daysBetween = (new Date(newest.snapped_at).getTime() - new Date(oldest.snapped_at).getTime()) / (1000 * 60 * 60 * 24);
+    if (daysBetween < 1) continue;
+    velocities.push({
+      place_id,
+      velocity: gain,
+      windowDays: Math.round(daysBetween),
+      velocityPerWeek: Math.round((gain / daysBetween) * 7),
+    });
+  }
+
+  if (velocities.length === 0) return [];
+
+  // Fetch place data for the top candidates (fetch more than limit to filter)
+  const topIds = velocities
+    .sort((a, b) => b.velocity - a.velocity)
+    .slice(0, limit * 4)
+    .map((v) => v.place_id);
+
+  const { data: places } = await supabase
+    .from("places")
+    .select("*")
+    .in("place_id", topIds)
+    .not("rating", "is", null)
+    .gte("rating", 4.0);
+
+  if (!places) return [];
+
+  const placeMap = new Map((places as Place[]).map((p) => [p.place_id, p]));
+
+  return velocities
+    .filter((v) => placeMap.has(v.place_id))
+    .map((v) => ({
+      ...placeMap.get(v.place_id)!,
+      velocity: v.velocity,
+      windowDays: v.windowDays,
+      velocityPerWeek: v.velocityPerWeek,
+    }))
+    .sort((a, b) => {
+      // Trending score: velocity weighted by quality (rating^2 normalizes 4.0 vs 4.9)
+      const scoreA = a.velocity * (a.rating ?? 0) ** 2;
+      const scoreB = b.velocity * (b.rating ?? 0) ** 2;
+      return scoreB - scoreA;
+    })
+    .slice(0, limit);
+}
+
 export async function getPlaces(
   neighborhoodSlug: string,
   categorySlug: string
