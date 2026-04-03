@@ -121,8 +121,7 @@ export default async function HiddenGemsPage() {
         </h1>
         <p className="mt-4 text-slate-500 dark:text-slate-400 text-lg max-w-2xl leading-relaxed">
           Rated 4.5 stars or higher, with fewer than 500 reviews — these are the places Denver locals
-          quietly love that haven&apos;t blown up on social media yet. We surface the top 3 from each
-          neighborhood so the picks are actually relevant to where you&apos;re going.
+          quietly love that haven&apos;t blown up on social media yet.
         </p>
         <div className="mt-6 flex gap-6 text-sm text-slate-500 dark:text-slate-400">
           <span>

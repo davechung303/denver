@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
+import { NEIGHBORHOODS, CATEGORIES, isInNeighborhood } from "@/lib/neighborhoods";
 import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -181,7 +181,7 @@ export default async function BestOfDenverPage() {
   const filteredRestaurants = rawRestaurants.filter(isRealRestaurant);
   const restaurantsByNeighborhood = NEIGHBORHOODS.map((n) => {
     const picks = filteredRestaurants
-      .filter((p) => p.neighborhood_slug === n.slug)
+      .filter((p) => p.neighborhood_slug === n.slug && isInNeighborhood(p.lat, p.lng, n.slug))
       .slice(0, 4); // already sorted by qualityScore from getBestOfDenver
     return { neighborhood: n, picks };
   }).filter((g) => g.picks.length > 0);
