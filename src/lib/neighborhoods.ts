@@ -264,6 +264,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
       "DEN is one of the biggest airports in the world — confusing if you don't know it, genuinely great if you do. Plus the Gaylord Rockies is worth a visit even if you're not flying anywhere.",
     gradient: "from-blue-800 to-indigo-600",
     image: "https://images.unsplash.com/photo-1698760000085-1b0af6df057e?auto=format&fit=crop&w=1200&q=80",
+    stay22EmbedId: "69d053d05021760e928bc4cb",
     searchName: "Denver International Airport DIA Colorado",
     lat: 39.856, lng: -104.674,
     searchRadius: 8000,
