@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ViatorWidget from "@/components/ViatorWidget";
+import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 
 export const revalidate = 86400;
 
@@ -145,27 +146,21 @@ export default function ExperiencesPage() {
 
       {/* Neighborhood CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h2 className="text-2xl font-bold mb-4">Explore Denver by Neighborhood</h2>
-        <p className="text-slate-500 dark:text-slate-400 mb-8">
-          Every tour starts somewhere. Dig into the neighborhoods before you go.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          {[
-            { name: "RiNo", slug: "rino" },
-            { name: "LoDo", slug: "lodo" },
-            { name: "Highlands", slug: "highlands" },
-            { name: "Capitol Hill", slug: "capitol-hill" },
-            { name: "Cherry Creek", slug: "cherry-creek" },
-            { name: "Five Points", slug: "five-points" },
-            { name: "Baker", slug: "baker" },
-            { name: "Uptown", slug: "uptown" },
-          ].map((n) => (
+        <h2 className="text-2xl font-bold mb-8">Explore Denver by Neighborhood</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {NEIGHBORHOODS.map((n) => (
             <Link
               key={n.slug}
               href={`/denver/${n.slug}`}
-              className="px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors"
+              className="group relative overflow-hidden rounded-2xl aspect-video flex flex-col justify-end p-4 hover:scale-[1.02] transition-transform duration-200"
             >
-              {n.name}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-all" />
+              <div className="relative z-10 text-white">
+                <p className="text-xs text-white/70">{n.tagline}</p>
+                <h3 className="font-bold">{n.name}</h3>
+              </div>
             </Link>
           ))}
         </div>
