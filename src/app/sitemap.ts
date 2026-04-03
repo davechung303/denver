@@ -82,6 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticPages,
     { url: `${BASE_URL}/denver`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
     { url: `${BASE_URL}/denver/hidden-gems`, lastModified: now, changeFrequency: "daily" as const, priority: 0.85 },
+    { url: `${BASE_URL}/denver/experiences`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.85 },
     { url: `${BASE_URL}/videos`, lastModified: now, changeFrequency: "daily" as const, priority: 0.6 },
     ...neighborhoodPages,
     ...categoryPages,
