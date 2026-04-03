@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NEIGHBORHOODS, CATEGORIES, isInNeighborhood } from "@/lib/neighborhoods";
+import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -169,7 +169,7 @@ function SectionHeader({ title, subtitle, href, linkText }: { title: string; sub
 
 export default async function BestOfDenverPage() {
   const [rawRestaurants, hotels, bars, thingsToDo, coffee, trending] = await Promise.all([
-    getBestOfDenver("restaurants", 300, { minReviews: 50 }),
+    getBestOfDenver("restaurants", 500, { minReviews: 30, minRating: 3.8 }),
     getBestOfDenver("hotels", 12).then((h) => h.filter(isRealHotel)),
     getBestOfDenver("bars", 60).then((b) => b.filter(isRealBar).slice(0, 12)),
     getBestOfDenver("things-to-do", 12),
@@ -177,11 +177,22 @@ export default async function BestOfDenverPage() {
     getTrendingPlaces(30, 8),
   ]);
 
-  // Filter to real restaurants and group by neighborhood — top 4 per neighborhood
+  // Filter to real restaurants and group by neighborhood — top 4 per neighborhood.
+  // Use proximity (3× searchRadius) instead of strict bounding boxes so places
+  // just outside a neighborhood's tight bbox (e.g. Rise & Shine in Wash Park) still show.
+  // qualityScore sorting ensures low-rated gap-fillers only surface when nothing better exists.
+  function isNearNeighborhood(place: Place, neighborhood: typeof NEIGHBORHOODS[0]): boolean {
+    if (!place.lat || !place.lng) return true; // no coords — trust the slug
+    const dLat = (place.lat - neighborhood.lat) * 111000;
+    const dLng = (place.lng - neighborhood.lng) * 85000; // cos(39.7°) ≈ 0.77
+    const distMeters = Math.hypot(dLat, dLng);
+    return distMeters <= (neighborhood.searchRadius ?? 1500) * 3;
+  }
+
   const filteredRestaurants = rawRestaurants.filter(isRealRestaurant);
   const restaurantsByNeighborhood = NEIGHBORHOODS.map((n) => {
     const picks = filteredRestaurants
-      .filter((p) => p.neighborhood_slug === n.slug && isInNeighborhood(p.lat, p.lng, n.slug))
+      .filter((p) => p.neighborhood_slug === n.slug && isNearNeighborhood(p, n))
       .slice(0, 4); // already sorted by qualityScore from getBestOfDenver
     return { neighborhood: n, picks };
   }).filter((g) => g.picks.length > 0);
