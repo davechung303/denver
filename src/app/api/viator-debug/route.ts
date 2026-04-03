@@ -14,7 +14,7 @@ export async function GET(request: Request) {
       "exp-api-key": apiKey!,
       "Accept-Language": "en-US",
       "Content-Type": "application/json",
-      Accept: "application/json;version=2.0",
+      Accept: "application/json",
     },
     body: JSON.stringify({
       searchTerm: "Denver food tour",

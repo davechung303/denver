@@ -34,7 +34,7 @@ export async function searchViatorProducts(
         "exp-api-key": VIATOR_API_KEY,
         "Accept-Language": "en-US",
         "Content-Type": "application/json",
-        Accept: "application/json;version=2.0",
+        Accept: "application/json",
       },
       body: JSON.stringify({
         searchTerm,
