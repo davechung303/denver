@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
-import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealHotel, photoUrl, popularityScore, type Place, type TrendingPlace } from "@/lib/places";
+import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealHotel, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
@@ -194,7 +194,7 @@ export default async function BestOfDenverPage() {
   const allForGems = [...restaurants, ...bars, ...thingsToDo, ...coffee];
   const gems = allForGems
     .filter(isHiddenGem)
-    .sort((a, b) => popularityScore(b) - popularityScore(a))
+    .sort((a, b) => qualityScore(b) - qualityScore(a))
     .slice(0, 9);
 
   const topRestaurant = restaurants[0];

@@ -426,6 +426,16 @@ export function popularityScore(place: Pick<Place, "rating" | "review_count">): 
   return (place.rating ?? 0) * Math.log10((place.review_count ?? 0) + 10);
 }
 
+// Quality score for "Best of" rankings.
+// rating² amplifies the difference between 4.5★ and 4.9★.
+// Review count scales up to 3000 — enough for Sushi Den (5200) to beat an obscure
+// 4.9★ place with 200 reviews, but chains with 50k reviews don't get unlimited credit.
+// e.g. Sushi Den 4.7★/5200 ≈ 76.8, obscure 4.9★/200 ≈ 68.7
+export function qualityScore(place: Pick<Place, "rating" | "review_count">): number {
+  const cappedCount = Math.min(place.review_count ?? 0, 3000);
+  return (place.rating ?? 0) ** 2 * Math.log10(cappedCount + 10);
+}
+
 // Hidden gem: high rating (≥4.5) but not yet discovered (≤300 reviews)
 export function isHiddenGem(place: Place): boolean {
   return (place.rating ?? 0) >= 4.5 && (place.review_count ?? 0) <= 300 && (place.review_count ?? 0) >= 10;
@@ -437,15 +447,15 @@ export async function getBestOfDenver(categorySlug: string, limit = 8): Promise<
     .select("*")
     .like("category_slug", `${categorySlug}%`)
     .not("rating", "is", null)
-    .gte("rating", 4.0)
-    .gte("review_count", 50)
+    .gte("rating", 4.2)      // raise floor — truly great places start here
+    .gte("review_count", 200) // enough reviews to be credible
     .order("rating", { ascending: false })
-    .limit(400); // fetch enough to rank client-side
+    .limit(500);
 
   const places = (data ?? []) as Place[];
   return places
     .filter(isUsefulPlace)
-    .sort((a, b) => popularityScore(b) - popularityScore(a))
+    .sort((a, b) => qualityScore(b) - qualityScore(a))
     .slice(0, limit);
 }
 
