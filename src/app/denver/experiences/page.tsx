@@ -39,7 +39,7 @@ const EXPERIENCE_TYPES = [
     id: "outdoor",
     emoji: "🚴",
     title: "Outdoor & Bike Tours",
-    searchTerm: "Denver outdoor tours",
+    searchTerm: "Denver tours",
     dave: "The best way to see Denver is to get out of the car. I'm a big fan of bike tours specifically — you cover more ground than walking, you're actually outside, and you see parts of the city most visitors completely miss.",
   },
   {
