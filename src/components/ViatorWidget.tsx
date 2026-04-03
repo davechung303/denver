@@ -12,7 +12,7 @@ const EMBED_HTML = `<!DOCTYPE html>
 export default function ViatorWidget() {
   return (
     <iframe
-      srcdoc={EMBED_HTML}
+      srcDoc={EMBED_HTML}
       style={{ width: "100%", height: "480px", border: "none" }}
       title="Tours & Experiences"
     />
