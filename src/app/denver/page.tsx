@@ -51,13 +51,9 @@ function NeighborhoodChip({ slug }: { slug: string }) {
   const n = NEIGHBORHOODS.find((n) => n.slug === slug);
   if (!n) return null;
   return (
-    <Link
-      href={`/denver/${slug}`}
-      className="text-xs font-medium text-denver-amber hover:underline"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <span className="text-xs font-medium text-denver-amber">
       {n.name}
-    </Link>
+    </span>
   );
 }
 
