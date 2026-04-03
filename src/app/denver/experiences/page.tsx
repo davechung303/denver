@@ -15,6 +15,13 @@ export const metadata: Metadata = {
     description:
       "Food tours, brewery tours, bike tours, and only-in-Denver adventures — honest picks from a local.",
     url: "https://davelovesdenver.com/denver/experiences",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1600&q=80",
+        width: 1600,
+        alt: "Tours and experiences in Denver, Colorado",
+      },
+    ],
   },
   alternates: {
     canonical: "https://davelovesdenver.com/denver/experiences",
@@ -83,6 +90,22 @@ export default async function ExperiencesPage() {
 
   return (
     <>
+      {/* BreadcrumbList schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
+              { "@type": "ListItem", position: 2, name: "Denver", item: "https://davelovesdenver.com/denver" },
+              { "@type": "ListItem", position: 3, name: "Tours & Experiences", item: "https://davelovesdenver.com/denver/experiences" },
+            ],
+          }),
+        }}
+      />
+
       {/* FAQ schema */}
       <script
         type="application/ld+json"
