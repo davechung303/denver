@@ -16,6 +16,8 @@ export async function GET(req: Request) {
     revalidatePath(`/denver/${n.slug}`);
     for (const c of CATEGORIES) {
       revalidatePath(`/denver/${n.slug}/${c.slug}`);
+      // Revalidate all place detail pages under this neighborhood+category
+      revalidatePath(`/denver/${n.slug}/${c.slug}/[slug]`, "page");
     }
   }
 
