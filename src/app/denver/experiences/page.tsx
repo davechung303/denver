@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ViatorWidget from "@/components/ViatorWidget";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
+import { searchViatorProducts } from "@/lib/viator";
+import ViatorProductCard from "@/components/ViatorProductCard";
 
 export const revalidate = 86400;
 
@@ -38,8 +39,8 @@ const EXPERIENCE_TYPES = [
   {
     id: "outdoor",
     emoji: "🚴",
-    title: "Outdoor & Bike Tours",
-    searchTerm: "Denver tours",
+    title: "Outdoor & City Tours",
+    searchTerm: "Denver city tour",
     dave: "The best way to see Denver is to get out of the car. I'm a big fan of bike tours specifically — you cover more ground than walking, you're actually outside, and you see parts of the city most visitors completely miss.",
   },
   {
@@ -74,7 +75,12 @@ const FAQS = [
   },
 ];
 
-export default function ExperiencesPage() {
+export default async function ExperiencesPage() {
+  // Fetch all experience types in parallel
+  const results = await Promise.all(
+    EXPERIENCE_TYPES.map((type) => searchViatorProducts(type.searchTerm, 8))
+  );
+
   return (
     <>
       {/* FAQ schema */}
@@ -113,20 +119,33 @@ export default function ExperiencesPage() {
 
       {/* Experience sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
-        {EXPERIENCE_TYPES.map((type) => (
-          <section key={type.id} id={type.id}>
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">{type.emoji}</span>
-              <h2 className="text-3xl font-bold">{type.title}</h2>
-            </div>
-            {/* Dave's editorial note */}
-            <blockquote className="border-l-4 border-denver-amber pl-5 py-1 mb-8 text-slate-600 dark:text-slate-400 text-lg leading-relaxed italic">
-              &ldquo;{type.dave}&rdquo;
-              <footer className="mt-2 text-sm not-italic text-slate-400 dark:text-slate-500">— Dave</footer>
-            </blockquote>
-            <ViatorWidget searchTerm={type.searchTerm} />
-          </section>
-        ))}
+        {EXPERIENCE_TYPES.map((type, i) => {
+          const products = results[i];
+          return (
+            <section key={type.id} id={type.id}>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl">{type.emoji}</span>
+                <h2 className="text-3xl font-bold">{type.title}</h2>
+              </div>
+
+              {/* Dave's editorial note */}
+              <blockquote className="border-l-4 border-denver-amber pl-5 py-1 mb-8 text-slate-600 dark:text-slate-400 text-lg leading-relaxed italic">
+                &ldquo;{type.dave}&rdquo;
+                <footer className="mt-2 text-sm not-italic text-slate-400 dark:text-slate-500">— Dave</footer>
+              </blockquote>
+
+              {products.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {products.map((product) => (
+                    <ViatorProductCard key={product.productCode} product={product} />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-400 text-sm">No experiences found for this category right now.</p>
+              )}
+            </section>
+          );
+        })}
       </div>
 
       {/* FAQ */}
@@ -144,7 +163,7 @@ export default function ExperiencesPage() {
         </div>
       </section>
 
-      {/* Neighborhood CTA */}
+      {/* Neighborhood grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <h2 className="text-2xl font-bold mb-8">Explore Denver by Neighborhood</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
