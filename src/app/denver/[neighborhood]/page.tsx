@@ -13,11 +13,8 @@ import PlaceCard from "@/components/PlaceCard";
 import { getPlaceTag } from "@/lib/neighborhoods";
 
 export const revalidate = 86400; // ISR: revalidate every 24 hours
-export const dynamicParams = true; // still render unknown slugs on-demand
-
-export function generateStaticParams() {
-  return NEIGHBORHOODS.map((n) => ({ neighborhood: n.slug }));
-}
+// No generateStaticParams — pages render on first visit and are ISR-cached.
+// Pre-rendering all neighborhoods at build time caused 60s timeouts when cache is cold.
 
 interface Props {
   params: Promise<{ neighborhood: string }>;

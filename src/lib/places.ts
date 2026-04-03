@@ -435,7 +435,7 @@ export async function getBestOfDenver(categorySlug: string, limit = 8): Promise<
   const { data } = await supabase
     .from("places")
     .select("*")
-    .eq("category_slug", categorySlug)
+    .like("category_slug", `${categorySlug}%`)
     .not("rating", "is", null)
     .gte("rating", 4.0)
     .gte("review_count", 50)

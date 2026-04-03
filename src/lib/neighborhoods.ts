@@ -65,6 +65,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1566036604088-319bcef67086?auto=format&fit=crop&w=1200&q=80",
     searchName: "LoDo Lower Downtown Denver Colorado",
     lat: 39.7527, lng: -104.9987,
+    searchRadius: 2000,
   },
   {
     slug: "capitol-hill",
@@ -109,7 +110,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1677051949386-d999c9076424?auto=format&fit=crop&w=1200&q=80",
     searchName: "Five Points Denver Colorado",
     lat: 39.7544, lng: -104.9742,
-    searchRadius: 2500,
+    searchRadius: 4000,
   },
   {
     slug: "cole",
@@ -187,6 +188,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?auto=format&fit=crop&w=1200&q=80",
     searchName: "Berkeley Denver Colorado Tennyson Street",
     lat: 39.7784, lng: -105.0388,
+    searchRadius: 2500,
   },
   {
     slug: "platt-park",
@@ -458,7 +460,7 @@ export function getPlaceTag(types: string[] | null): string | null {
 // [minLat, maxLat, minLng, maxLng]
 export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number]> = {
   rino:             [39.755, 39.780, -104.998, -104.970],
-  lodo:             [39.745, 39.760, -105.005, -104.988],
+  lodo:             [39.742, 39.765, -105.012, -104.980],
   "capitol-hill":   [39.727, 39.745, -104.985, -104.965],
   highlands:        [39.753, 39.775, -105.025, -105.000],
   "cherry-creek":   [39.708, 39.725, -104.960, -104.940],

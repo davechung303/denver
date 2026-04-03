@@ -182,11 +182,11 @@ function SectionHeader({ title, subtitle, href, linkText }: { title: string; sub
 
 export default async function BestOfDenverPage() {
   const [restaurants, hotels, bars, thingsToDo, coffee, trending] = await Promise.all([
-    getBestOfDenver("restaurants", 10),
-    getBestOfDenver("hotels", 9).then((h) => h.filter(isRealHotel)),
-    getBestOfDenver("bars", 8),
-    getBestOfDenver("things-to-do", 8),
-    getBestOfDenver("coffee", 8),
+    getBestOfDenver("restaurants", 16),
+    getBestOfDenver("hotels", 12).then((h) => h.filter(isRealHotel)),
+    getBestOfDenver("bars", 12),
+    getBestOfDenver("things-to-do", 12),
+    getBestOfDenver("coffee", 12),
     getTrendingPlaces(30, 8),
   ]);
 
@@ -195,10 +195,10 @@ export default async function BestOfDenverPage() {
   const gems = allForGems
     .filter(isHiddenGem)
     .sort((a, b) => popularityScore(b) - popularityScore(a))
-    .slice(0, 6);
+    .slice(0, 9);
 
   const topRestaurant = restaurants[0];
-  const restRestaurants = restaurants.slice(1, 9);
+  const restRestaurants = restaurants.slice(1);
 
   return (
     <>
@@ -349,7 +349,7 @@ export default async function BestOfDenverPage() {
                 ))}
               </div>
             </div>
-            {/* #6–9 as a bottom row */}
+            {/* #6+ as a bottom grid */}
             {restRestaurants.length > 4 && (
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {restRestaurants.slice(4).map((p, i) => (
@@ -370,7 +370,7 @@ export default async function BestOfDenverPage() {
               linkText="Browse by neighborhood"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {hotels.slice(0, 6).map((p, i) => (
+              {hotels.map((p, i) => (
                 <HotelCard key={p.place_id} place={p} rank={i + 1} />
               ))}
             </div>
@@ -393,7 +393,7 @@ export default async function BestOfDenverPage() {
             </div>
             {bars.length > 4 && (
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {bars.slice(4, 8).map((p, i) => (
+                {bars.slice(4).map((p, i) => (
                   <CompactCard key={p.place_id} place={p} rank={i + 5} />
                 ))}
               </div>
@@ -413,11 +413,18 @@ export default async function BestOfDenverPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {thingsToDo[0] && <FeaturedCard place={thingsToDo[0]} rank={1} />}
               <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start">
-                {thingsToDo.slice(1, 7).map((p, i) => (
+                {thingsToDo.slice(1, 5).map((p, i) => (
                   <CompactCard key={p.place_id} place={p} rank={i + 2} />
                 ))}
               </div>
             </div>
+            {thingsToDo.length > 5 && (
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {thingsToDo.slice(5).map((p, i) => (
+                  <CompactCard key={p.place_id} place={p} rank={i + 6} />
+                ))}
+              </div>
+            )}
           </section>
         )}
 
@@ -431,7 +438,7 @@ export default async function BestOfDenverPage() {
               linkText="Browse by neighborhood"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {coffee.slice(0, 8).map((p, i) => (
+              {coffee.map((p, i) => (
                 <FeaturedCard key={p.place_id} place={p} rank={i + 1} />
               ))}
             </div>
@@ -448,7 +455,7 @@ export default async function BestOfDenverPage() {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {gems.map((p) => (
+              {gems.map((p: Place) => (
                 <a
                   key={p.place_id}
                   href={`/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}`}
