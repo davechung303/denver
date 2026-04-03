@@ -67,6 +67,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1566036604088-319bcef67086?auto=format&fit=crop&w=1200&q=80",
     searchName: "LoDo Lower Downtown Denver Colorado",
     lat: 39.7527, lng: -104.9987,
+    stay22EmbedId: "69d053e731f2907978572a8b",
     searchRadius: 2000,
   },
   {
