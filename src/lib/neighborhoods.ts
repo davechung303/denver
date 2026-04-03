@@ -117,6 +117,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     searchName: "Five Points Denver Colorado",
     lat: 39.7544, lng: -104.9742,
     searchRadius: 4000,
+    stay22EmbedId: "69d054248ef49a292b4d71e1",
   },
   {
     slug: "cole",
