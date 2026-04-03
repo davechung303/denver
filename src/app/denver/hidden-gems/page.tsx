@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
+import { NEIGHBORHOODS, CATEGORIES, isInNeighborhood } from "@/lib/neighborhoods";
 import { getAllHiddenGems, isRealCoffeeShop, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
@@ -78,10 +78,12 @@ export default async function HiddenGemsPage() {
     return false; // exclude hotels, bars
   });
 
-  // Group by neighborhood, top 3 per neighborhood
+  // Group by neighborhood, top 6 per neighborhood.
+  // Also require the place to be within the neighborhood's bounding box —
+  // some places are tagged with a neighborhood_slug that doesn't match their actual location.
   const byNeighborhood = NEIGHBORHOODS.map((n) => {
     const picks = allGems
-      .filter((p) => p.neighborhood_slug === n.slug)
+      .filter((p) => p.neighborhood_slug === n.slug && isInNeighborhood(p.lat, p.lng, n.slug))
       .slice(0, 6); // already sorted by qualityScore
     return { neighborhood: n, picks };
   }).filter((g) => g.picks.length > 0);
