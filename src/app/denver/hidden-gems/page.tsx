@@ -82,7 +82,7 @@ export default async function HiddenGemsPage() {
   const byNeighborhood = NEIGHBORHOODS.map((n) => {
     const picks = allGems
       .filter((p) => p.neighborhood_slug === n.slug)
-      .slice(0, 3); // already sorted by qualityScore
+      .slice(0, 6); // already sorted by qualityScore
     return { neighborhood: n, picks };
   }).filter((g) => g.picks.length > 0);
 
