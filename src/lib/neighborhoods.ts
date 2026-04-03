@@ -149,6 +149,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1548966595-d87fccfc8a7f?auto=format&fit=crop&w=1200&q=80",
     searchName: "Baker neighborhood South Broadway Denver Colorado",
     lat: 39.7135, lng: -104.9862,
+    stay22EmbedId: "69d0532231f290797857297a",
   },
   {
     slug: "golden-triangle",
