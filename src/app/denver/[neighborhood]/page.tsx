@@ -309,6 +309,20 @@ export default async function NeighborhoodPage({ params }: Props) {
         </section>
       )}
 
+      {/* Stay22 Hotel Map */}
+      {n.stay22EmbedId && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <h2 className="text-2xl font-bold mb-6">Hotels near {n.name}</h2>
+          <iframe
+            id="stay22-widget"
+            width="100%"
+            height="428"
+            src={`https://stay22.com/embed/${n.stay22EmbedId}`}
+            frameBorder="0"
+          />
+        </section>
+      )}
+
       {/* Viator Tours & Experiences */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <h2 className="text-2xl font-bold mb-6">Tours & Experiences near {n.name}</h2>

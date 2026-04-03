@@ -16,6 +16,7 @@ export interface Neighborhood {
   lat: number; // center coordinates for maps
   lng: number;
   searchRadius?: number; // Places API search radius in meters (default 1500)
+  stay22EmbedId?: string; // Stay22 hotel map embed ID
 }
 
 export const CATEGORIES: Category[] = [
@@ -54,6 +55,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1573297627466-6bed413a43f1?auto=format&fit=crop&w=1200&q=80",
     searchName: "River North Art District RiNo Denver Colorado",
     lat: 39.7656, lng: -104.9869,
+    stay22EmbedId: "69d052a831f29079785728f1",
   },
   {
     slug: "lodo",
@@ -77,6 +79,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1586193771953-929042f3a381?auto=format&fit=crop&w=1200&q=80",
     searchName: "Capitol Hill Denver Colorado",
     lat: 39.7348, lng: -104.9782,
+    stay22EmbedId: "69d052cb5021760e928bc3db",
   },
   {
     slug: "highlands",
