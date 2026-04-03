@@ -20,11 +20,17 @@ interface ArticleItem {
   description?: string;
 }
 
+interface ListItem {
+  name: string;
+  url: string;
+}
+
 interface Props {
   breadcrumbs?: BreadcrumbItem[];
   videos?: VideoItem[];
   websiteSearch?: boolean;
   article?: ArticleItem;
+  itemLists?: { name: string; description?: string; items: ListItem[] }[];
 }
 
 const DAVE_PERSON = {
@@ -37,7 +43,7 @@ const DAVE_PERSON = {
   ],
 };
 
-export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, article }: Props) {
+export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, article, itemLists }: Props) {
   const schemas: object[] = [];
 
   // WebSite schema with sitelinks searchbox
@@ -87,6 +93,24 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, artic
       ...(article.imageUrl ? { image: article.imageUrl } : {}),
       ...(article.description ? { description: article.description } : {}),
     });
+  }
+
+  // ItemList schemas (curated place lists)
+  if (itemLists && itemLists.length > 0) {
+    for (const list of itemLists) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: list.name,
+        ...(list.description ? { description: list.description } : {}),
+        itemListElement: list.items.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+          url: `https://davelovesdenver.com${item.url}`,
+        })),
+      });
+    }
   }
 
   // VideoObject schema

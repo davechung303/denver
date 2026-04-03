@@ -8,12 +8,12 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best of Denver — Top Restaurants, Hotels, Bars & Things To Do",
+  title: "Best Restaurants, Hotels & Things To Do in Denver, CO",
   description:
-    "The top-rated restaurants, hotels, bars, coffee shops, and things to do across all of Denver — ranked by quality and real review counts, not just stars.",
+    "The definitive Denver guide: top-rated restaurants, hotels, bars, coffee shops, and things to do in RiNo, LoHi, Capitol Hill, Cherry Creek, and every neighborhood — ranked by real reviews, not ads.",
   openGraph: {
-    title: "Best of Denver",
-    description: "Top-rated places across all Denver neighborhoods, ranked by real popularity and quality.",
+    title: "Best of Denver — Restaurants, Hotels, Bars & Things To Do",
+    description: "Top-rated places across RiNo, LoHi, Capitol Hill, Cherry Creek and every Denver neighborhood, ranked by real reviews.",
     url: "https://davelovesdenver.com/denver",
   },
   alternates: {
@@ -208,6 +208,20 @@ export default async function BestOfDenverPage() {
         breadcrumbs={[
           { name: "Home", url: "https://davelovesdenver.com" },
           { name: "Best of Denver", url: "https://davelovesdenver.com/denver" },
+        ]}
+        itemLists={[
+          {
+            name: "Best Restaurants in Denver by Neighborhood",
+            description: "Top-rated restaurants across every Denver neighborhood, ranked by real reviews and quality.",
+            items: restaurantsByNeighborhood.flatMap(({ picks }) =>
+              picks.map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}` }))
+            ),
+          },
+          {
+            name: "Best Hotels in Denver",
+            description: "Top-rated hotels across Denver neighborhoods, with direct booking links.",
+            items: hotels.map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/hotels/${p.slug}` })),
+          },
         ]}
       />
 

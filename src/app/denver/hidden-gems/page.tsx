@@ -7,11 +7,11 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver's Hidden Gems — Under-the-Radar Restaurants, Bars & Local Favorites",
+  title: "Denver Hidden Gem Restaurants & Local Favorites — Under the Radar Picks",
   description:
-    "The best-kept secrets in Denver: restaurants, coffee shops, and things to do rated 4.5+ with under 500 reviews. Places locals know that haven't blown up yet.",
+    "The best-kept secrets in Denver: restaurants, coffee shops, and things to do rated 4.5+ with under 500 reviews — organized by neighborhood so you find gems wherever you're headed.",
   openGraph: {
-    title: "Denver's Hidden Gems",
+    title: "Denver's Hidden Gems — Under-the-Radar Restaurants & Local Favorites",
     description: "Rated 4.5+ with under 500 reviews — the places Denver locals know that haven't blown up yet.",
     url: "https://davelovesdenver.com/denver/hidden-gems",
   },
@@ -98,6 +98,15 @@ export default async function HiddenGemsPage() {
           { name: "Best of Denver", url: "https://davelovesdenver.com/denver" },
           { name: "Hidden Gems", url: "https://davelovesdenver.com/denver/hidden-gems" },
         ]}
+        itemLists={[
+          {
+            name: "Denver Hidden Gem Restaurants & Local Favorites by Neighborhood",
+            description: "Rated 4.5+ with under 500 reviews — the places Denver locals know that haven't blown up yet.",
+            items: byNeighborhood.flatMap(({ picks }) =>
+              picks.map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}` }))
+            ),
+          },
+        ]}
       />
 
       {/* Breadcrumb */}
@@ -150,19 +159,21 @@ export default async function HiddenGemsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-14">
         {byNeighborhood.map(({ neighborhood, picks }) => (
           <section key={neighborhood.slug} id={neighborhood.slug}>
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <Link
-                  href={`/denver/${neighborhood.slug}`}
-                  className="text-xl font-bold hover:text-denver-amber transition-colors"
-                >
-                  {neighborhood.name}
-                </Link>
-                <p className="text-sm text-slate-400 mt-0.5">{neighborhood.tagline}</p>
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl font-bold">
+                  Hidden Gems in{" "}
+                  <Link href={`/denver/${neighborhood.slug}`} className="hover:text-denver-amber transition-colors">
+                    {neighborhood.name}
+                  </Link>
+                </h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
+                  {neighborhood.description}
+                </p>
               </div>
               <Link
                 href={`/denver/${neighborhood.slug}`}
-                className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline shrink-0 ml-4"
+                className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline shrink-0 ml-6 mt-1"
               >
                 Explore {neighborhood.name} &rarr;
               </Link>
