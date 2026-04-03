@@ -169,7 +169,7 @@ function SectionHeader({ title, subtitle, href, linkText }: { title: string; sub
 
 export default async function BestOfDenverPage() {
   const [rawRestaurants, hotels, bars, thingsToDo, coffee, trending] = await Promise.all([
-    getBestOfDenver("restaurants", 150),
+    getBestOfDenver("restaurants", 300, { minReviews: 50 }),
     getBestOfDenver("hotels", 12).then((h) => h.filter(isRealHotel)),
     getBestOfDenver("bars", 60).then((b) => b.filter(isRealBar).slice(0, 12)),
     getBestOfDenver("things-to-do", 12),
@@ -177,12 +177,12 @@ export default async function BestOfDenverPage() {
     getTrendingPlaces(30, 8),
   ]);
 
-  // Filter to real restaurants and group by neighborhood — top 2 per neighborhood
+  // Filter to real restaurants and group by neighborhood — top 4 per neighborhood
   const filteredRestaurants = rawRestaurants.filter(isRealRestaurant);
   const restaurantsByNeighborhood = NEIGHBORHOODS.map((n) => {
     const picks = filteredRestaurants
       .filter((p) => p.neighborhood_slug === n.slug)
-      .slice(0, 2); // already sorted by qualityScore from getBestOfDenver
+      .slice(0, 4); // already sorted by qualityScore from getBestOfDenver
     return { neighborhood: n, picks };
   }).filter((g) => g.picks.length > 0);
 

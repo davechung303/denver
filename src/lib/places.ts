@@ -550,15 +550,15 @@ export async function getAllHiddenGems(): Promise<Place[]> {
 export async function getBestOfDenver(
   categorySlug: string,
   limit = 8,
-  options?: { requireTypes?: string[] }
+  options?: { requireTypes?: string[]; minReviews?: number; minRating?: number }
 ): Promise<Place[]> {
   const { data } = await supabase
     .from("places")
     .select("*")
     .like("category_slug", `${categorySlug}%`)
     .not("rating", "is", null)
-    .gte("rating", 4.2)
-    .gte("review_count", 200)
+    .gte("rating", options?.minRating ?? 4.2)
+    .gte("review_count", options?.minReviews ?? 200)
     .order("rating", { ascending: false })
     .limit(500);
 
