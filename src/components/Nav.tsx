@@ -60,7 +60,7 @@ export default function Nav() {
                 onClick={() => setNeighborhoodsOpen(!neighborhoodsOpen)}
                 className="flex items-center gap-1 px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
               >
-                Explore Neighborhoods
+                Neighborhoods
                 <svg
                   className={`w-4 h-4 transition-transform ${neighborhoodsOpen ? "rotate-180" : ""}`}
                   fill="none"
@@ -209,7 +209,7 @@ export default function Nav() {
             </Link>
             <div className="border-b border-white/10 pb-3 mb-3 mt-1">
               <p className="px-4 py-1 text-xs font-semibold text-white/40 uppercase tracking-widest">
-                Explore Neighborhoods
+                Neighborhoods
               </p>
               {NEIGHBORHOODS.map((n) => (
                 <Link
