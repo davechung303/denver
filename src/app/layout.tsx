@@ -61,6 +61,12 @@ export default function RootLayout({
             ]),
           }}
         />
+        {/* Stay22 hotel widget */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(s,t,a,y,twenty,two){s.Stay22=s.Stay22||{};s.Stay22.params={lmaID:'69d048505021760e928bb46e'};twenty=t.createElement(a);two=t.getElementsByTagName(a)[0];twenty.async=1;twenty.src=y;two.parentNode.insertBefore(twenty,two);})(window,document,'script','https://scripts.stay22.com/letmeallez.js');`,
+          }}
+        />
         {/* Travelpayouts ownership verification */}
         <script
           data-noptimize="1"
