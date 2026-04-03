@@ -172,6 +172,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1702568681326-7aff5eb7e80b?auto=format&fit=crop&w=1200&q=80",
     searchName: "Uptown Denver Colorado 17th Avenue restaurant row",
     lat: 39.7432, lng: -104.9702,
+    stay22EmbedId: "69d0533a8ef49a292b4d708d",
   },
   {
     slug: "sloan-lake",
