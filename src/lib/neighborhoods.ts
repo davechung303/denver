@@ -243,6 +243,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1677051949386-d999c9076424?auto=format&fit=crop&w=1200&q=80",
     searchName: "Downtown Denver Colorado 16th Street Mall",
     lat: 39.7420, lng: -104.9876,
+    stay22EmbedId: "69d053b3bfb4999cdf00063b",
   },
   {
     slug: "denver-suburbs",
