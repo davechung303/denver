@@ -211,6 +211,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1619856699906-09e1f58c98b1?auto=format&fit=crop&w=1200&q=80",
     searchName: "Jefferson Park Denver Colorado Jeff Park",
     lat: 39.7535, lng: -105.0168,
+    searchRadius: 3500,
   },
   {
     slug: "curtis-park",
@@ -473,7 +474,7 @@ export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number
   "sloan-lake":      [39.750, 39.770, -105.052, -105.020],
   berkeley:          [39.769, 39.790, -105.056, -105.025],
   "platt-park":      [39.687, 39.706, -104.986, -104.965],
-  "jefferson-park":  [39.746, 39.762, -105.030, -105.007],
+  "jefferson-park":  [39.740, 39.768, -105.038, -104.998],
   "curtis-park":     [39.748, 39.764, -104.978, -104.956],
   downtown:          [39.735, 39.752, -105.002, -104.975],
   "denver-suburbs":  [39.600, 39.820, -105.180, -104.720],
