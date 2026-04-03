@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
@@ -307,6 +308,17 @@ export default async function NeighborhoodPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* Viator Tours & Experiences */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <h2 className="text-2xl font-bold mb-6">Tours & Experiences near {n.name}</h2>
+        <div
+          data-vi-partner-id="P00295470"
+          data-vi-widget-ref="W-b6df82c7-382c-458d-b12e-9eef0ec392c0"
+          data-vi-search-term={`${n.name} Denver`}
+        />
+        <Script src="https://www.viator.com/orion/partner/widget.js" strategy="lazyOnload" />
+      </section>
 
       {/* YouTube Section */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
