@@ -126,6 +126,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1664736608475-0460bbe37bc2?auto=format&fit=crop&w=1200&q=80",
     searchName: "Cole neighborhood Denver Colorado",
     lat: 39.7665, lng: -104.9588,
+    stay22EmbedId: "69d053065021760e928bc417",
   },
   {
     slug: "washington-park",
