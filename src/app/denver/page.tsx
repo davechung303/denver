@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
+import ViatorWidget from "@/components/ViatorWidget";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
@@ -505,12 +505,7 @@ export default async function BestOfDenverPage() {
         {/* Viator Tours & Experiences */}
         <section>
           <h2 className="text-2xl font-bold mb-6">Tours & Experiences in Denver</h2>
-          <div
-            data-vi-partner-id="P00295470"
-            data-vi-widget-ref="W-b6df82c7-382c-458d-b12e-9eef0ec392c0"
-            data-vi-search-term="Denver"
-          />
-          <Script src="https://www.viator.com/orion/partner/widget.js" strategy="lazyOnload" />
+          <ViatorWidget searchTerm="Denver" />
         </section>
 
         {/* Explore by Neighborhood CTA */}
