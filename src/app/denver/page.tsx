@@ -186,12 +186,10 @@ export default async function BestOfDenverPage() {
     return { neighborhood: n, picks };
   }).filter((g) => g.picks.length > 0);
 
-  // Hidden gems: ≥4.5 rating, 10–300 reviews, any category, sorted by score
-  const allForGems = [...filteredRestaurants, ...bars, ...thingsToDo, ...coffee];
-  const gems = allForGems
+  // Hidden gems: restaurants only (hotels/bars don't feel like discoveries)
+  const gems = filteredRestaurants
     .filter(isHiddenGem)
-    .sort((a, b) => qualityScore(b) - qualityScore(a))
-    .slice(0, 9);
+    .slice(0, 9); // already sorted by qualityScore from getBestOfDenver pool
 
   return (
     <>
@@ -434,11 +432,16 @@ export default async function BestOfDenverPage() {
         {/* Hidden Gems */}
         {gems.length > 0 && (
           <section>
-            <div className="mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold">Hidden Gems</h2>
-              <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">
-                Rated 4.5+ with under 300 reviews — the places locals know that haven&apos;t blown up yet.
-              </p>
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold">Hidden Gems</h2>
+                <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">
+                  Rated 4.5+ with under 500 reviews — the places locals know that haven&apos;t blown up yet.
+                </p>
+              </div>
+              <Link href="/denver/hidden-gems" className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline shrink-0 ml-4">
+                See all by neighborhood &rarr;
+              </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {gems.map((p: Place) => (

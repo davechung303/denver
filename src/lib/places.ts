@@ -528,6 +528,25 @@ export function isHiddenGem(place: Place): boolean {
   return (place.rating ?? 0) >= 4.5 && (place.review_count ?? 0) <= 300 && (place.review_count ?? 0) >= 10;
 }
 
+// Fetches all hidden gems citywide for the dedicated /denver/hidden-gems page.
+// Slightly wider review window (20–500) vs the homepage widget (10–300), and
+// requires a photo so cards don't look broken.
+export async function getAllHiddenGems(): Promise<Place[]> {
+  const { data } = await supabase
+    .from("places")
+    .select("*")
+    .not("rating", "is", null)
+    .gte("rating", 4.5)
+    .gte("review_count", 20)
+    .lte("review_count", 500)
+    .order("rating", { ascending: false })
+    .limit(2000);
+
+  return ((data ?? []) as Place[])
+    .filter(isUsefulPlace)
+    .sort((a, b) => qualityScore(b) - qualityScore(a));
+}
+
 export async function getBestOfDenver(
   categorySlug: string,
   limit = 8,

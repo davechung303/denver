@@ -10,6 +10,7 @@ export async function GET(req: Request) {
 
   revalidatePath("/");
   revalidatePath("/denver");
+  revalidatePath("/denver/hidden-gems");
   revalidatePath("/articles");
   revalidatePath("/videos");
   revalidatePath("/events");
