@@ -47,10 +47,22 @@ export async function GET(request: Request) {
   let apiCalls = 0;
   const failures: string[] = [];
 
+  // Debug mode: run on first place only and return raw TA response
+  const debug = url.searchParams.get("debug") === "1";
+
   for (const place of places) {
     const taCategory = toTACategory(place.category_slug);
-    const nearby = await getTANearbySearch(place.lat!, place.lng!, taCategory);
+    const { results: nearby, raw } = await getTANearbySearch(place.lat!, place.lng!, taCategory);
     apiCalls++;
+
+    if (debug) {
+      return NextResponse.json({
+        place: { name: place.name, lat: place.lat, lng: place.lng, category: place.category_slug },
+        taCategory,
+        taRaw: raw,
+        taResults: nearby,
+      });
+    }
 
     // Find the best match by name similarity
     const ourName = normalizeName(place.name);

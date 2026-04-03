@@ -63,16 +63,17 @@ export async function getTALocationDetails(locationId: string): Promise<TALocati
 export async function getTANearbySearch(
   lat: number,
   lng: number,
-  category: "restaurants" | "hotels" | "attractions" = "restaurants"
-): Promise<TANearbyResult[]> {
-  const url = `${TA_BASE}/location/nearby_search?key=${TA_API_KEY}&latLong=${lat},${lng}&category=${category}&language=en&radius=100&radiusUnit=m`;
+  category: "restaurants" | "hotels" | "attractions" = "restaurants",
+  radiusKm = 0.15
+): Promise<{ results: TANearbyResult[]; raw?: unknown }> {
+  const url = `${TA_BASE}/location/nearby_search?key=${TA_API_KEY}&latLong=${lat},${lng}&category=${category}&language=en&radius=${radiusKm}&radiusUnit=km`;
   try {
     const res = await fetch(url, { next: { revalidate: 0 } });
-    if (!res.ok) return [];
     const json = await res.json();
-    return json.data ?? [];
-  } catch {
-    return [];
+    if (!res.ok) return { results: [], raw: json };
+    return { results: json.data ?? [], raw: json };
+  } catch (e) {
+    return { results: [], raw: String(e) };
   }
 }
 
