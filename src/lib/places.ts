@@ -420,6 +420,74 @@ export function isRealHotel(place: Place): boolean {
   return place.types?.some((t) => HOTEL_TYPES.has(t)) ?? false;
 }
 
+// Real food-service establishments — excludes pure bars/sports bars that land in restaurant searches.
+// Google Places types: https://developers.google.com/maps/documentation/places/web-service/place-types
+const RESTAURANT_TYPES = new Set([
+  "restaurant",
+  "american_restaurant",
+  "barbecue_restaurant",
+  "brazilian_restaurant",
+  "breakfast_restaurant",
+  "brunch_restaurant",
+  "chinese_restaurant",
+  "fast_food_restaurant",
+  "french_restaurant",
+  "greek_restaurant",
+  "hamburger_restaurant",
+  "indian_restaurant",
+  "indonesian_restaurant",
+  "italian_restaurant",
+  "japanese_restaurant",
+  "korean_restaurant",
+  "lebanese_restaurant",
+  "mediterranean_restaurant",
+  "mexican_restaurant",
+  "middle_eastern_restaurant",
+  "pizza_restaurant",
+  "ramen_restaurant",
+  "sandwich_shop",
+  "seafood_restaurant",
+  "spanish_restaurant",
+  "steak_house",
+  "sushi_restaurant",
+  "thai_restaurant",
+  "turkish_restaurant",
+  "vegan_restaurant",
+  "vegetarian_restaurant",
+  "vietnamese_restaurant",
+  "food",
+  "meal_delivery",
+  "meal_takeaway",
+]);
+
+export function isRealRestaurant(place: Place): boolean {
+  if (place.types && place.types.length > 0) {
+    return place.types.some((t) => RESTAURANT_TYPES.has(t));
+  }
+  return true; // No types stored — allow through
+}
+
+// Actual bar/drinking establishments — excludes restaurants that happen to be in the bars category.
+const BAR_TYPES = new Set([
+  "bar",
+  "cocktail_bar",
+  "wine_bar",
+  "sports_bar",
+  "pub",
+  "brewery",
+  "microbrewery",
+  "distillery",
+  "night_club",
+  "karaoke",
+]);
+
+export function isRealBar(place: Place): boolean {
+  if (place.types && place.types.length > 0) {
+    return place.types.some((t) => BAR_TYPES.has(t));
+  }
+  return true; // No types stored — allow through
+}
+
 // Actual coffee/cafe places — filters out restaurants, vape shops, etc.
 // Includes bakeries since many great Denver spots are coffee-bakery hybrids.
 const COFFEE_TYPES = new Set([

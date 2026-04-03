@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
-import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealHotel, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
+import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
@@ -90,7 +90,7 @@ function FeaturedCard({ place, rank }: { place: Place; rank?: number }) {
 }
 
 // Compact card: smaller, for grids
-function CompactCard({ place, rank }: { place: Place; rank?: number }) {
+function CompactCard({ place, hideNeighborhood }: { place: Place; rank?: number; hideNeighborhood?: boolean }) {
   const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
   return (
     <a
@@ -101,7 +101,7 @@ function CompactCard({ place, rank }: { place: Place; rank?: number }) {
         <PlacePhoto place={place} className="w-full h-full" />
       </div>
       <div className="flex flex-col gap-1 flex-1 min-w-0">
-        <NeighborhoodChip slug={place.neighborhood_slug} />
+        {!hideNeighborhood && <NeighborhoodChip slug={place.neighborhood_slug} />}
         <h3 className="font-semibold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">
           {place.name}
         </h3>
@@ -168,24 +168,30 @@ function SectionHeader({ title, subtitle, href, linkText }: { title: string; sub
 }
 
 export default async function BestOfDenverPage() {
-  const [restaurants, hotels, bars, thingsToDo, coffee, trending] = await Promise.all([
-    getBestOfDenver("restaurants", 16),
+  const [rawRestaurants, hotels, bars, thingsToDo, coffee, trending] = await Promise.all([
+    getBestOfDenver("restaurants", 150),
     getBestOfDenver("hotels", 12).then((h) => h.filter(isRealHotel)),
-    getBestOfDenver("bars", 12),
+    getBestOfDenver("bars", 60).then((b) => b.filter(isRealBar).slice(0, 12)),
     getBestOfDenver("things-to-do", 12),
     getBestOfDenver("coffee", 12, { requireTypes: ["coffee_shop", "cafe", "coffee_roastery"] }),
     getTrendingPlaces(30, 8),
   ]);
 
+  // Filter to real restaurants and group by neighborhood — top 2 per neighborhood
+  const filteredRestaurants = rawRestaurants.filter(isRealRestaurant);
+  const restaurantsByNeighborhood = NEIGHBORHOODS.map((n) => {
+    const picks = filteredRestaurants
+      .filter((p) => p.neighborhood_slug === n.slug)
+      .slice(0, 2); // already sorted by qualityScore from getBestOfDenver
+    return { neighborhood: n, picks };
+  }).filter((g) => g.picks.length > 0);
+
   // Hidden gems: ≥4.5 rating, 10–300 reviews, any category, sorted by score
-  const allForGems = [...restaurants, ...bars, ...thingsToDo, ...coffee];
+  const allForGems = [...filteredRestaurants, ...bars, ...thingsToDo, ...coffee];
   const gems = allForGems
     .filter(isHiddenGem)
     .sort((a, b) => qualityScore(b) - qualityScore(a))
     .slice(0, 9);
-
-  const topRestaurant = restaurants[0];
-  const restRestaurants = restaurants.slice(1);
 
   return (
     <>
@@ -313,37 +319,30 @@ export default async function BestOfDenverPage() {
           </section>
         )}
 
-        {/* Restaurants */}
-        {restaurants.length > 0 && (
+        {/* Restaurants — top picks by neighborhood */}
+        {restaurantsByNeighborhood.length > 0 && (
           <section id="restaurants">
             <SectionHeader
               title="Best Restaurants in Denver"
-              subtitle="Ranked by real reviews and popularity — the places Denverites actually go back to."
+              subtitle="Top picks from each neighborhood — so you always know where to eat wherever you are."
               href="/denver/rino/restaurants"
               linkText="Browse by neighborhood"
             />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Top pick — large */}
-              {topRestaurant && (
-                <div className="lg:col-span-1">
-                  <FeaturedCard place={topRestaurant} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {restaurantsByNeighborhood.map(({ neighborhood, picks }) => (
+                <div key={neighborhood.slug} className="flex flex-col gap-3">
+                  <Link
+                    href={`/denver/${neighborhood.slug}/restaurants`}
+                    className="text-sm font-bold text-denver-amber hover:underline uppercase tracking-wide"
+                  >
+                    {neighborhood.name}
+                  </Link>
+                  {picks.map((p) => (
+                    <CompactCard key={p.place_id} place={p} hideNeighborhood />
+                  ))}
                 </div>
-              )}
-              {/* #2–5 compact */}
-              <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start">
-                {restRestaurants.slice(0, 4).map((p, i) => (
-                  <CompactCard key={p.place_id} place={p} />
-                ))}
-              </div>
+              ))}
             </div>
-            {/* #6+ as a bottom grid */}
-            {restRestaurants.length > 4 && (
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {restRestaurants.slice(4).map((p, i) => (
-                  <CompactCard key={p.place_id} place={p} />
-                ))}
-              </div>
-            )}
           </section>
         )}
 

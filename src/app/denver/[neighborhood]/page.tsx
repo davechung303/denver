@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getPlaces, isRealCoffeeShop, isRealHotel, isUsefulPlace, type Place } from "@/lib/places";
+import { getPlaces, isRealBar, isRealCoffeeShop, isRealHotel, isRealRestaurant, isUsefulPlace, type Place } from "@/lib/places";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -118,9 +118,9 @@ export default async function NeighborhoodPage({ params }: Props) {
     });
   }
 
-  const restaurants = sortByProximity(rawRestaurants.filter(isUsefulPlace));
+  const restaurants = sortByProximity(rawRestaurants.filter(isUsefulPlace).filter(isRealRestaurant));
   const hotels = sortByProximity(rawHotels.filter(isRealHotel).filter(isUsefulPlace));
-  const bars = sortByProximity(rawBars.filter(isUsefulPlace));
+  const bars = sortByProximity(rawBars.filter(isUsefulPlace).filter(isRealBar));
   const thingsToDo = sortByProximity(rawThingsToDo.filter(isUsefulPlace));
   const coffee = sortByProximity(rawCoffee.filter(isUsefulPlace).filter(isRealCoffeeShop));
 
