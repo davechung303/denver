@@ -17,7 +17,7 @@ export default function ViatorWidget({ searchTerm }: Props) {
     const container = containerRef.current;
     if (!container) return;
 
-    // Clear any previously rendered widget
+    // Clear any previously rendered widget content
     container.innerHTML = "";
 
     // Create a fresh div with the data attributes
@@ -27,19 +27,18 @@ export default function ViatorWidget({ searchTerm }: Props) {
     widgetDiv.setAttribute("data-vi-search-term", searchTerm);
     container.appendChild(widgetDiv);
 
-    // Remove any previously injected Viator script so it re-runs
-    const existing = document.querySelector(`script[src="${SCRIPT_SRC}"]`);
-    if (existing) existing.remove();
+    // Remove any previously injected Viator script
+    document.querySelectorAll(`script[data-viator]`).forEach((s) => s.remove());
 
+    // Add a cache-busting param so the browser re-executes the script
     const script = document.createElement("script");
-    script.src = SCRIPT_SRC;
+    script.src = `${SCRIPT_SRC}?t=${Date.now()}`;
     script.async = true;
+    script.setAttribute("data-viator", "1");
     document.body.appendChild(script);
 
     return () => {
-      // Clean up on unmount
-      const s = document.querySelector(`script[src="${SCRIPT_SRC}"]`);
-      if (s) s.remove();
+      document.querySelectorAll(`script[data-viator]`).forEach((s) => s.remove());
     };
   }, [searchTerm]);
 
