@@ -312,7 +312,7 @@ export default async function NeighborhoodPage({ params }: Props) {
       {/* Viator Tours & Experiences */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <h2 className="text-2xl font-bold mb-6">Tours & Experiences near {n.name}</h2>
-        <ViatorWidget />
+        <ViatorWidget key={n.slug} />
       </section>
 
       {/* YouTube Section */}
