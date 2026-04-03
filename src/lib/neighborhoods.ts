@@ -102,6 +102,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1548966595-d87fccfc8a7f?auto=format&fit=crop&w=1200&q=80",
     searchName: "Cherry Creek Denver Colorado",
     lat: 39.7155, lng: -104.9522,
+    stay22EmbedId: "69d052e9bfb4999cdf000553",
   },
   {
     slug: "five-points",
