@@ -420,6 +420,25 @@ export function isRealHotel(place: Place): boolean {
   return place.types?.some((t) => HOTEL_TYPES.has(t)) ?? false;
 }
 
+// Actual coffee/cafe places — filters out restaurants, vape shops, etc.
+// Includes bakeries since many great Denver spots are coffee-bakery hybrids.
+const COFFEE_TYPES = new Set([
+  "coffee_shop",
+  "cafe",
+  "coffee_roastery",
+  "bakery",
+  "tea_house",
+]);
+
+export function isRealCoffeeShop(place: Place): boolean {
+  // If types are available, require at least one coffee/cafe type
+  if (place.types && place.types.length > 0) {
+    return place.types.some((t) => COFFEE_TYPES.has(t));
+  }
+  // No types stored — allow through rather than hide the place
+  return true;
+}
+
 // Score = rating × log10(review_count + 10) — balances quality with proven popularity.
 // Highly-rated places with thousands of reviews beat fringe entries with 4 reviews at 5.0.
 export function popularityScore(place: Pick<Place, "rating" | "review_count">): number {

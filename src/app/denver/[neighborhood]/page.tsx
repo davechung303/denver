@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getPlaces, isRealHotel, isUsefulPlace, type Place } from "@/lib/places";
+import { getPlaces, isRealCoffeeShop, isRealHotel, isUsefulPlace, type Place } from "@/lib/places";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -122,7 +122,7 @@ export default async function NeighborhoodPage({ params }: Props) {
   const hotels = sortByProximity(rawHotels.filter(isRealHotel).filter(isUsefulPlace));
   const bars = sortByProximity(rawBars.filter(isUsefulPlace));
   const thingsToDo = sortByProximity(rawThingsToDo.filter(isUsefulPlace));
-  const coffee = sortByProximity(rawCoffee.filter(isUsefulPlace));
+  const coffee = sortByProximity(rawCoffee.filter(isUsefulPlace).filter(isRealCoffeeShop));
 
   const mapPins = restaurants
     .filter((p) => p.lat && p.lng)
