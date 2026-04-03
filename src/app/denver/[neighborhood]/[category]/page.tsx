@@ -228,11 +228,14 @@ export default async function CategoryPage({ params }: Props) {
                               )}
                             </div>
                           )}
-                          {place.review_summary?.tagline ? (
-                            <p className="text-xs text-slate-400 italic line-clamp-1">{place.review_summary.tagline}</p>
-                          ) : place.address ? (
+                          {place.address && (
                             <p className="text-xs text-slate-400 line-clamp-1">{place.address}</p>
-                          ) : null}
+                          )}
+                          {place.review_summary?.tagline && (
+                            <p className="text-xs text-denver-amber font-medium line-clamp-1">
+                              Known for: {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
+                            </p>
+                          )}
                         </div>
                       </a>
                     );

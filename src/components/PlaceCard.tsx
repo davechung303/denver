@@ -108,11 +108,14 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             </div>
           )}
 
-          {place.review_summary?.tagline ? (
-            <p className="text-xs text-slate-500 italic line-clamp-1">{place.review_summary.tagline}</p>
-          ) : place.address ? (
+          {place.address && (
             <p className="text-xs text-slate-500 line-clamp-1">{place.address}</p>
-          ) : null}
+          )}
+          {place.review_summary?.tagline && (
+            <p className="text-xs text-denver-amber font-medium line-clamp-1">
+              Known for: {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
+            </p>
+          )}
         </div>
       </div>
 

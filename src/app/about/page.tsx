@@ -39,7 +39,7 @@ export default function AboutPage() {
           </p>
           <p>
             This site is the long-form answer to all of those questions. It&apos;s a neighborhood-by-neighborhood
-            guide built on real experience, not sponsored content or algorithm-chasing. Every restaurant,
+            guide built by people&apos;s real experiences, not sponsored content or influencer hype. Every restaurant,
             hotel, and bar on here is rated by Google and filtered through the lens of someone who
             actually spends time in these places.
           </p>
@@ -54,13 +54,13 @@ export default function AboutPage() {
             <li>Restaurant, hotel, bar, and coffee shop listings with live Google ratings</li>
             <li>My YouTube videos embedded on every relevant page</li>
             <li>Hotel booking links so you can plan a trip from start to finish</li>
-            <li>Honest takes from someone who lives here</li>
+            <li>Honest takes from people who live here (including me!)</li>
           </ul>
 
           <h2 className="text-2xl font-bold text-foreground mt-12">Find me on YouTube</h2>
           <p>
             I post Denver content regularly — neighborhood walkthroughs, restaurant reviews, hidden gems,
-            and hotel tours. Subscribe if you want to see Denver the way I see it.
+            and hotel tours.
           </p>
           <a
             href="https://youtube.com/davechung"

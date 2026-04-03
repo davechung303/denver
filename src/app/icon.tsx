@@ -20,7 +20,7 @@ export default function Icon() {
       >
         <div
           style={{
-            color: "#f59e0b",
+            color: "#ffffff",
             fontSize: 14,
             fontWeight: 900,
             lineHeight: 1,
@@ -31,7 +31,7 @@ export default function Icon() {
         </div>
         <div
           style={{
-            color: "#f59e0b",
+            color: "#ffffff",
             fontSize: 14,
             fontWeight: 900,
             lineHeight: 1,
