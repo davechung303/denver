@@ -30,14 +30,17 @@ export default function ViatorWidget({ searchTerm }: Props) {
     // Remove any previously injected Viator script
     document.querySelectorAll(`script[data-viator]`).forEach((s) => s.remove());
 
-    // Add a cache-busting param so the browser re-executes the script
-    const script = document.createElement("script");
-    script.src = `${SCRIPT_SRC}?t=${Date.now()}`;
-    script.async = true;
-    script.setAttribute("data-viator", "1");
-    document.body.appendChild(script);
+    // Small delay ensures the widget div is fully in the DOM before the script scans
+    const timer = setTimeout(() => {
+      const script = document.createElement("script");
+      script.src = `${SCRIPT_SRC}?t=${Date.now()}`;
+      script.async = true;
+      script.setAttribute("data-viator", "1");
+      document.body.appendChild(script);
+    }, 50);
 
     return () => {
+      clearTimeout(timer);
       document.querySelectorAll(`script[data-viator]`).forEach((s) => s.remove());
     };
   }, [searchTerm]);
