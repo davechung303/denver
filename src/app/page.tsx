@@ -37,8 +37,9 @@ export default async function HomePage() {
     // Supabase timeout — render with empty state
   }
 
-  // Filter hero video from popular list too
-  const videos = popularVideos.filter((v) => v.video_id !== HERO_VIDEO_ID);
+  // Filter hero video and any videos already shown in the Latest section from Popular
+  const shownIds = new Set([HERO_VIDEO_ID, ...latestVideos.map((v) => v.video_id)]);
+  const videos = popularVideos.filter((v) => !shownIds.has(v.video_id));
   return (
     <>
       <SchemaMarkup
