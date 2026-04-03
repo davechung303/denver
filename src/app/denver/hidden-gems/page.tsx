@@ -4,7 +4,7 @@ import { NEIGHBORHOODS, CATEGORIES, isInNeighborhood } from "@/lib/neighborhoods
 import { getAllHiddenGems, isRealCoffeeShop, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Denver Hidden Gem Restaurants & Local Favorites — Under the Radar Picks",
