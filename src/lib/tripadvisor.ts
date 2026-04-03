@@ -68,7 +68,10 @@ export async function getTANearbySearch(
 ): Promise<{ results: TANearbyResult[]; raw?: unknown }> {
   const url = `${TA_BASE}/location/nearby_search?key=${TA_API_KEY}&latLong=${lat},${lng}&category=${category}&language=en&radius=${radiusKm}&radiusUnit=km`;
   try {
-    const res = await fetch(url, { next: { revalidate: 0 } });
+    const res = await fetch(url, {
+      next: { revalidate: 0 },
+      headers: { "X-TripAdvisor-API-Key": TA_API_KEY },
+    });
     const json = await res.json();
     if (!res.ok) return { results: [], raw: json };
     return { results: json.data ?? [], raw: json };

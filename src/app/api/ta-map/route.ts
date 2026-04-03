@@ -61,6 +61,8 @@ export async function GET(request: Request) {
         taCategory,
         taRaw: raw,
         taResults: nearby,
+        keyPresent: !!process.env.TRIPADVISOR_API_KEY,
+        keyPrefix: process.env.TRIPADVISOR_API_KEY?.slice(0, 6) ?? "missing",
       });
     }
 
