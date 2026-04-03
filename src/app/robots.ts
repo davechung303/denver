@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
         // General crawlers — allow everything except internal API routes
         userAgent: "*",
         allow: ["/", "/api/places"],
-        disallow: ["/api/revalidate-all", "/api/snapshot-places", "/api/places-photo"],
+        disallow: ["/api/revalidate-all", "/api/snapshot-places", "/api/places-photo", "/api/ta-map", "/api/ta-refresh"],
       },
       {
         // AI crawlers — explicitly welcome; they respect robots.txt and we want citation
