@@ -218,6 +218,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1619856699906-09e1f58c98b1?auto=format&fit=crop&w=1200&q=80",
     searchName: "Jefferson Park Denver Colorado Jeff Park",
     lat: 39.7535, lng: -105.0168,
+    stay22EmbedId: "69d0538131f29079785729f4",
     searchRadius: 3500,
   },
   {
