@@ -67,11 +67,6 @@ function FeaturedCard({ place, rank }: { place: Place; rank?: number }) {
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
-        {rank && (
-          <span className="absolute top-3 left-3 bg-denver-amber text-slate-900 text-xs font-bold px-2.5 py-1 rounded-full">
-            #{rank} in Denver
-          </span>
-        )}
       </div>
       <div className="p-5 flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
@@ -104,11 +99,6 @@ function CompactCard({ place, rank }: { place: Place; rank?: number }) {
     >
       <div className="relative w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full" />
-        {rank && (
-          <span className="absolute top-1 left-1 bg-denver-amber text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
-            #{rank}
-          </span>
-        )}
       </div>
       <div className="flex flex-col gap-1 flex-1 min-w-0">
         <NeighborhoodChip slug={place.neighborhood_slug} />
@@ -127,7 +117,7 @@ function CompactCard({ place, rank }: { place: Place; rank?: number }) {
 }
 
 // Hotel card with Reserve button
-function HotelCard({ place, rank }: { place: Place; rank: number }) {
+function HotelCard({ place }: { place: Place }) {
   const href = `/denver/${place.neighborhood_slug}/hotels/${place.slug}`;
   const bookUrl = place.expedia_affiliate_url ?? expediaDenverHotelsUrl();
   return (
@@ -135,9 +125,6 @@ function HotelCard({ place, rank }: { place: Place; rank: number }) {
       <a href={href} className="flex flex-col flex-1">
         <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
           <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
-          <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">
-            #{rank} Hotel
-          </span>
         </div>
         <div className="p-4 flex flex-col gap-1.5 flex-1">
           <NeighborhoodChip slug={place.neighborhood_slug} />
@@ -331,7 +318,7 @@ export default async function BestOfDenverPage() {
           <section id="restaurants">
             <SectionHeader
               title="Best Restaurants in Denver"
-              subtitle="Ranked by rating × review count — the places Denverites actually go back to."
+              subtitle="Ranked by real reviews and popularity — the places Denverites actually go back to."
               href="/denver/rino/restaurants"
               linkText="Browse by neighborhood"
             />
@@ -339,13 +326,13 @@ export default async function BestOfDenverPage() {
               {/* Top pick — large */}
               {topRestaurant && (
                 <div className="lg:col-span-1">
-                  <FeaturedCard place={topRestaurant} rank={1} />
+                  <FeaturedCard place={topRestaurant} />
                 </div>
               )}
               {/* #2–5 compact */}
               <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start">
                 {restRestaurants.slice(0, 4).map((p, i) => (
-                  <CompactCard key={p.place_id} place={p} rank={i + 2} />
+                  <CompactCard key={p.place_id} place={p} />
                 ))}
               </div>
             </div>
@@ -353,7 +340,7 @@ export default async function BestOfDenverPage() {
             {restRestaurants.length > 4 && (
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {restRestaurants.slice(4).map((p, i) => (
-                  <CompactCard key={p.place_id} place={p} rank={i + 6} />
+                  <CompactCard key={p.place_id} place={p} />
                 ))}
               </div>
             )}
@@ -371,7 +358,7 @@ export default async function BestOfDenverPage() {
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {hotels.map((p, i) => (
-                <HotelCard key={p.place_id} place={p} rank={i + 1} />
+                <HotelCard key={p.place_id} place={p} />
               ))}
             </div>
           </section>
@@ -388,13 +375,13 @@ export default async function BestOfDenverPage() {
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {bars.slice(0, 4).map((p, i) => (
-                <FeaturedCard key={p.place_id} place={p} rank={i + 1} />
+                <FeaturedCard key={p.place_id} place={p} />
               ))}
             </div>
             {bars.length > 4 && (
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {bars.slice(4).map((p, i) => (
-                  <CompactCard key={p.place_id} place={p} rank={i + 5} />
+                  <CompactCard key={p.place_id} place={p} />
                 ))}
               </div>
             )}
@@ -411,17 +398,17 @@ export default async function BestOfDenverPage() {
               linkText="Browse by neighborhood"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {thingsToDo[0] && <FeaturedCard place={thingsToDo[0]} rank={1} />}
+              {thingsToDo[0] && <FeaturedCard place={thingsToDo[0]} />}
               <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 content-start">
                 {thingsToDo.slice(1, 5).map((p, i) => (
-                  <CompactCard key={p.place_id} place={p} rank={i + 2} />
+                  <CompactCard key={p.place_id} place={p} />
                 ))}
               </div>
             </div>
             {thingsToDo.length > 5 && (
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {thingsToDo.slice(5).map((p, i) => (
-                  <CompactCard key={p.place_id} place={p} rank={i + 6} />
+                  <CompactCard key={p.place_id} place={p} />
                 ))}
               </div>
             )}
@@ -439,7 +426,7 @@ export default async function BestOfDenverPage() {
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {coffee.map((p, i) => (
-                <FeaturedCard key={p.place_id} place={p} rank={i + 1} />
+                <FeaturedCard key={p.place_id} place={p} />
               ))}
             </div>
           </section>
