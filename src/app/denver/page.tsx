@@ -384,6 +384,15 @@ export default async function BestOfDenverPage() {
                 <HotelCard key={p.place_id} place={p} />
               ))}
             </div>
+            <div className="mt-8">
+              <iframe
+                id="stay22-widget"
+                width="100%"
+                height="428"
+                src="https://stay22.com/embed/69d0526a8ef49a292b4d6fc8"
+                frameBorder="0"
+              />
+            </div>
           </section>
         )}
 
