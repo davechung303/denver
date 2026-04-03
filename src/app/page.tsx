@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
-import { getPopularDenverVideos, getLatestLongFormVideos, watchUrl } from "@/lib/youtube";
+import { getPopularDenverVideos, getLatestLongFormVideos, getLatestShorts, watchUrl } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
@@ -24,12 +24,14 @@ const HERO_VIDEO_ID = "ny7PDhZ9FOQ";
 export default async function HomePage() {
   let popularVideos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
   let latestVideos: Awaited<ReturnType<typeof getLatestLongFormVideos>> = [];
+  let latestShorts: Awaited<ReturnType<typeof getLatestShorts>> = [];
 
   try {
-    [popularVideos, latestVideos] = await Promise.race([
+    [popularVideos, latestVideos, latestShorts] = await Promise.race([
       Promise.all([
         getPopularDenverVideos(6),
-        getLatestLongFormVideos(5, [HERO_VIDEO_ID]),
+        getLatestLongFormVideos(2, [HERO_VIDEO_ID]),
+        getLatestShorts(5),
       ]),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
     ]);
@@ -113,8 +115,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Latest Videos — featured layout */}
-      {latestVideos.length > 0 && (
+      {/* Latest Videos — 2 long-form + shorts row */}
+      {(latestVideos.length > 0 || latestShorts.length > 0) && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="flex items-end justify-between mb-10">
             <div>
@@ -131,55 +133,46 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Featured video — takes 2 columns */}
-            {latestVideos[0] && (() => {
-              const v = latestVideos[0];
-              return (
-                <a
-                  href={watchUrl(v.video_id)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="lg:col-span-2 group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
-                >
-                  <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
-                    {v.thumbnail_url && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={v.thumbnail_url.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg")}
-                        alt={v.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    )}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30">
-                      <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
-                        <svg className="w-7 h-7 text-slate-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-5 flex flex-col gap-2">
-                    <h3 className="font-bold text-lg leading-snug group-hover:text-denver-amber transition-colors">
-                      {v.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-xs text-slate-400">
-                      {v.view_count && <span>{v.view_count >= 1000 ? `${(v.view_count / 1000).toFixed(1)}K` : v.view_count} views</span>}
-                      {v.view_count && v.published_at && <span>·</span>}
-                      {v.published_at && <span>{new Date(v.published_at).toLocaleDateString("en-US", { year: "numeric", month: "short" })}</span>}
-                    </div>
-                  </div>
-                </a>
-              );
-            })()}
-
-            {/* Sidebar: 2–3 more videos */}
-            <div className="flex flex-col gap-4">
-              {latestVideos.slice(1, 4).map((v) => (
+          {/* 2 long-form videos side by side */}
+          {latestVideos.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+              {latestVideos.map((v) => (
                 <VideoCard key={v.video_id} video={v} />
               ))}
             </div>
-          </div>
+          )}
+
+          {/* Shorts row */}
+          {latestShorts.length > 0 && (
+            <>
+              <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Recent Shorts</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                {latestShorts.map((v) => (
+                  <a
+                    key={v.video_id}
+                    href={`https://www.youtube.com/shorts/${v.video_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex flex-col rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
+                  >
+                    <div className="relative aspect-[9/16] overflow-hidden bg-slate-100 dark:bg-slate-800">
+                      {v.thumbnail_url && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={v.thumbnail_url}
+                          alt={v.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      )}
+                    </div>
+                    <div className="p-2">
+                      <p className="text-xs font-medium line-clamp-2 leading-snug group-hover:text-denver-amber transition-colors">{v.title}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </>
+          )}
         </section>
       )}
 
