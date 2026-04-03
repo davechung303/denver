@@ -507,7 +507,7 @@ export default async function BestOfDenverPage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Tours & Experiences in Denver</h2>
           </div>
-          <ViatorWidget searchTerm="Denver" />
+          <ViatorWidget />
         </section>
 
         {/* Explore by Neighborhood CTA */}

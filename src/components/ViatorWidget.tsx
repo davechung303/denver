@@ -2,10 +2,6 @@
 
 import { useEffect } from "react";
 
-interface Props {
-  searchTerm: string;
-}
-
 const PARTNER_ID = "P00295470";
 const WIDGET_REF = "W-b6df82c7-382c-458d-b12e-9eef0ec392c0";
 const SCRIPT_SRC = "https://www.viator.com/orion/partner/widget.js";
@@ -21,13 +17,16 @@ function injectScript() {
   document.body.appendChild(script);
 }
 
-export default function ViatorWidget({ searchTerm }: Props) {
+export default function ViatorWidget() {
   useEffect(() => {
     if (reloadTimer) clearTimeout(reloadTimer);
+
+    const delay = document.readyState === "complete" ? 300 : 800;
+
     reloadTimer = setTimeout(() => {
       injectScript();
       reloadTimer = null;
-    }, 200);
+    }, delay);
 
     return () => {
       if (reloadTimer) {
@@ -35,13 +34,12 @@ export default function ViatorWidget({ searchTerm }: Props) {
         reloadTimer = null;
       }
     };
-  }, [searchTerm]);
+  }, []);
 
   return (
     <div
       data-vi-partner-id={PARTNER_ID}
       data-vi-widget-ref={WIDGET_REF}
-      data-vi-search-term={searchTerm}
     />
   );
 }
