@@ -506,9 +506,6 @@ export default async function BestOfDenverPage() {
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Tours & Experiences in Denver</h2>
-            <Link href="/denver/experiences" className="text-sm font-semibold text-denver-amber hover:underline shrink-0 ml-4">
-              See all experiences &rarr;
-            </Link>
           </div>
           <ViatorWidget searchTerm="Denver" />
         </section>

@@ -46,14 +46,6 @@ export default function Nav() {
               Hidden Gems
             </Link>
 
-            {/* Experiences link */}
-            <Link
-              href="/denver/experiences"
-              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver/experiences" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
-            >
-              Experiences
-            </Link>
-
             {/* Neighborhoods dropdown */}
             <div className="relative">
               <button
@@ -199,13 +191,6 @@ export default function Nav() {
               className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Hidden Gems
-            </Link>
-            <Link
-              href="/denver/experiences"
-              onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
-            >
-              Experiences
             </Link>
             <div className="border-b border-white/10 pb-3 mb-3 mt-1">
               <p className="px-4 py-1 text-xs font-semibold text-white/40 uppercase tracking-widest">
