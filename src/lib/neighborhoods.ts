@@ -90,6 +90,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
       "Stunning views of the skyline, the best brunch spots in Denver, and a neighborhood that somehow stays cool without trying.",
     gradient: "from-emerald-700 to-teal-500",
     image: "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?auto=format&fit=crop&w=1200&q=80",
+    stay22EmbedId: "69d0540e31f2907978572aee",
     searchName: "Highlands LoHi Denver Colorado",
     lat: 39.7604, lng: -105.0153,
   },
