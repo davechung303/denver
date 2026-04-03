@@ -90,8 +90,55 @@ export default async function CategoryPage({ params }: Props) {
   const topPicks = scored.slice(0, 5);
   const rest = scored.slice(5);
 
+  const pageUrl = `https://davelovesdenver.com/denver/${nSlug}/${cSlug}`;
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": pageUrl,
+    name: `Best ${c.name} near ${n.name}, Denver`,
+    description,
+    url: pageUrl,
+    author: {
+      "@type": "Person",
+      name: "Dave Chung",
+      url: "https://davelovesdenver.com/about",
+      sameAs: "https://www.youtube.com/@davechung",
+    },
+    hasPart: topPicks.map((place) => ({
+      "@type": "ListItem",
+      name: place.name,
+      url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${place.slug}`,
+      ...(place.rating && {
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: place.rating,
+          reviewCount: place.review_count ?? 1,
+          bestRating: 5,
+          worstRating: 1,
+        },
+      }),
+    })),
+  };
+
+  const categoryFaqs = [
+    {
+      question: `What are the best ${c.name.toLowerCase()} in ${n.name}, Denver?`,
+      answer: topPicks.length > 0
+        ? `The top-rated ${c.name.toLowerCase()} in ${n.name} include ${topPicks.slice(0, 3).map((p) => `${p.name}${p.rating ? ` (${p.rating}★)` : ""}`).join(", ")}.${topPicks[0]?.review_summary?.tagline ? ` ${topPicks[0].review_summary.tagline}` : ""}`
+        : `${n.name} has a solid ${c.name.toLowerCase()} scene. See the full guide on Dave Loves Denver.`,
+    },
+    {
+      question: `How many ${c.name.toLowerCase()} are there in ${n.name}?`,
+      answer: `Dave Loves Denver has tracked ${scored.length} ${c.name.toLowerCase()} in and around ${n.name}, ranked by real Google review counts and quality.`,
+    },
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
       <SchemaMarkup
         breadcrumbs={[
           { name: "Home", url: "https://davelovesdenver.com" },
@@ -105,6 +152,7 @@ export default async function CategoryPage({ params }: Props) {
           uploadDate: v.published_at,
           videoId: v.video_id,
         }))}
+        faqs={categoryFaqs}
       />
 
       {/* Breadcrumb */}

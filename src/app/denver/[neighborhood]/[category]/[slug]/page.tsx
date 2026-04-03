@@ -321,12 +321,56 @@ export default async function BusinessPage({ params }: Props) {
     ],
   };
 
+  // Review schema — the AI-generated consensus becomes a structured editorial review
+  // attributed to Dave Chung, giving Perplexity/Gemini a citable named-author opinion.
+  const reviewSchema = place.review_summary?.consensus ? {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}#review`,
+    itemReviewed: {
+      "@type": SCHEMA_TYPES[cSlug] ?? "LocalBusiness",
+      "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
+      name: place.name,
+    },
+    author: {
+      "@type": "Person",
+      name: "Dave Chung",
+      url: "https://davelovesdenver.com/about",
+      sameAs: "https://www.youtube.com/@davechung",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Dave Loves Denver",
+      url: "https://davelovesdenver.com",
+    },
+    reviewBody: [
+      place.review_summary.consensus,
+      ...(place.review_summary.highlights.length > 0
+        ? [`Highlights: ${place.review_summary.highlights.join(". ")}.`]
+        : []),
+    ].join(" "),
+    ...(place.rating && {
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: place.rating,
+        bestRating: 5,
+        worstRating: 1,
+      },
+    }),
+  } : null;
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
+      {reviewSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        />
+      )}
       <SchemaMarkup
         breadcrumbs={[
           { name: "Home", url: "https://davelovesdenver.com" },

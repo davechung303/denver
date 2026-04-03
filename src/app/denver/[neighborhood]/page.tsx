@@ -155,8 +155,33 @@ export default async function NeighborhoodPage({ params }: Props) {
     },
   ];
 
+  // Place schema — marks the neighborhood as a geographic entity for Knowledge Graph matching
+  const neighborhoodPlaceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "@id": `https://davelovesdenver.com/denver/${slug}#place`,
+    name: `${n.name}, Denver, CO`,
+    description: n.description,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: n.lat,
+      longitude: n.lng,
+    },
+    containedInPlace: {
+      "@type": "City",
+      name: "Denver",
+      addressRegion: "CO",
+      addressCountry: "US",
+    },
+    url: `https://davelovesdenver.com/denver/${slug}`,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(neighborhoodPlaceSchema) }}
+      />
       <SchemaMarkup
         breadcrumbs={[
           { name: "Home", url: "https://davelovesdenver.com" },
