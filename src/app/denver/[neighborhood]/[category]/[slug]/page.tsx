@@ -257,15 +257,50 @@ export default async function BusinessPage({ params }: Props) {
   const expediaUrl = isHotel ? (place.expedia_affiliate_url ?? expediaHotelUrl()) : null;
   const zenUrl = isHotel ? zenhotelsUrl() : null;
 
-  // LocalBusiness schema
+  // Map Google Places types → cuisine labels for Restaurant schema
+  const CUISINE_MAP: Record<string, string> = {
+    japanese_restaurant: "Japanese", italian_restaurant: "Italian",
+    mexican_restaurant: "Mexican", thai_restaurant: "Thai",
+    chinese_restaurant: "Chinese", indian_restaurant: "Indian",
+    french_restaurant: "French", greek_restaurant: "Greek",
+    korean_restaurant: "Korean", vietnamese_restaurant: "Vietnamese",
+    american_restaurant: "American", barbecue_restaurant: "Barbecue",
+    seafood_restaurant: "Seafood", pizza_restaurant: "Pizza",
+    sushi_restaurant: "Sushi", ramen_restaurant: "Ramen",
+    hamburger_restaurant: "Burgers", mediterranean_restaurant: "Mediterranean",
+    middle_eastern_restaurant: "Middle Eastern", spanish_restaurant: "Spanish",
+    turkish_restaurant: "Turkish", vegan_restaurant: "Vegan",
+    vegetarian_restaurant: "Vegetarian", breakfast_restaurant: "Breakfast",
+    brunch_restaurant: "Brunch", caribbean_restaurant: "Caribbean",
+    brazilian_restaurant: "Brazilian", indonesian_restaurant: "Indonesian",
+    lebanese_restaurant: "Lebanese", sandwich_shop: "Sandwiches",
+    steak_house: "Steakhouse", fast_food_restaurant: "Fast Food",
+  };
+  const servesCuisine = isRestaurant && place.types
+    ? place.types.filter((t) => CUISINE_MAP[t]).map((t) => CUISINE_MAP[t])
+    : [];
+  const priceRange = place.price_level ? "$".repeat(place.price_level) : undefined;
+
+  // LocalBusiness schema — rich version for AI citation (Gemini, Perplexity, SearchGPT)
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": SCHEMA_TYPES[cSlug] ?? "LocalBusiness",
+    "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
     name: place.name,
-    ...(place.address && { address: { "@type": "PostalAddress", streetAddress: place.address } }),
+    ...(place.address && {
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: place.address,
+        addressLocality: "Denver",
+        addressRegion: "CO",
+        addressCountry: "US",
+      },
+    }),
     ...(place.phone && { telephone: place.phone }),
     ...(place.website && { url: place.website }),
-    ...(place.lat && place.lng && { geo: { "@type": "GeoCoordinates", latitude: place.lat, longitude: place.lng } }),
+    ...(place.lat && place.lng && {
+      geo: { "@type": "GeoCoordinates", latitude: place.lat, longitude: place.lng },
+    }),
     ...(place.rating && {
       aggregateRating: {
         "@type": "AggregateRating",
@@ -276,6 +311,14 @@ export default async function BusinessPage({ params }: Props) {
       },
     }),
     ...(place.photos?.[0] && { image: photoAbsoluteUrl(place.photos[0].name) }),
+    ...(place.review_summary?.tagline && { description: place.review_summary.tagline }),
+    ...(priceRange && { priceRange }),
+    ...(servesCuisine.length > 0 && { servesCuisine }),
+    // sameAs Google Maps lets Gemini connect this entity to its Knowledge Graph
+    sameAs: [
+      `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
+      ...(place.website ? [place.website] : []),
+    ],
   };
 
   return (

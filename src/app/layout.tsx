@@ -33,6 +33,34 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
       <head>
+        {/* Person + WebSite schema — establishes Dave's authorship sitewide for E-E-A-T */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "@id": "https://davelovesdenver.com/#website",
+                name: "Dave Loves Denver",
+                url: "https://davelovesdenver.com",
+                description: "A hyperlocal guide to Denver's best neighborhoods, restaurants, hotels, bars, and things to do.",
+                publisher: {
+                  "@type": "Person",
+                  "@id": "https://davelovesdenver.com/about#dave",
+                  name: "Dave Chung",
+                  url: "https://davelovesdenver.com/about",
+                  sameAs: [
+                    "https://www.youtube.com/@davechung",
+                    "https://davelovesdenver.com/about",
+                  ],
+                  knowsAbout: ["Denver neighborhoods", "Denver restaurants", "Denver travel", "Denver hotels"],
+                  description: "Local Denver guide and content creator covering the best restaurants, neighborhoods, bars, and things to do in Denver, CO.",
+                },
+              },
+            ]),
+          }}
+        />
         {/* Travelpayouts ownership verification */}
         <script
           data-noptimize="1"

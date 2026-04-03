@@ -129,6 +129,32 @@ export default async function NeighborhoodPage({ params }: Props) {
     .slice(0, 20)
     .map((p) => ({ name: p.name, lat: p.lat!, lng: p.lng!, slug: p.slug, rating: p.rating }));
 
+  // FAQs — generated from live data for AI Overviews / Perplexity citation
+  const top3Restaurants = restaurants.slice(0, 3);
+  const topHotel = hotels[0];
+  const faqs = [
+    {
+      question: `What are the best restaurants in ${n.name}, Denver?`,
+      answer: top3Restaurants.length > 0
+        ? `The top-rated restaurants in ${n.name} include ${top3Restaurants.map((r) => `${r.name}${r.rating ? ` (${r.rating}★)` : ""}`).join(", ")}. ${top3Restaurants[0]?.review_summary?.tagline ?? ""}`
+        : `${n.name} has a growing restaurant scene. Explore the full list on Dave Loves Denver.`,
+    },
+    {
+      question: `What is ${n.name} in Denver known for?`,
+      answer: `${n.name} is known as ${n.tagline.toLowerCase()}. ${n.description}`,
+    },
+    ...(topHotel ? [{
+      question: `Where should I stay in ${n.name}, Denver?`,
+      answer: `${topHotel.name} is one of the top-rated hotels in ${n.name}${topHotel.rating ? ` with a ${topHotel.rating}★ rating` : ""}. ${topHotel.review_summary?.tagline ?? ""}`,
+    }] : []),
+    {
+      question: `What things to do are there in ${n.name}, Denver?`,
+      answer: thingsToDo.length > 0
+        ? `Popular things to do in ${n.name} include ${thingsToDo.slice(0, 3).map((t) => t.name).join(", ")}.`
+        : `${n.name} has plenty to explore — check the full neighborhood guide on Dave Loves Denver.`,
+    },
+  ];
+
   return (
     <>
       <SchemaMarkup
@@ -143,6 +169,7 @@ export default async function NeighborhoodPage({ params }: Props) {
           uploadDate: v.published_at,
           videoId: v.video_id,
         }))}
+        faqs={faqs}
       />
 
       {/* Breadcrumb */}
@@ -188,6 +215,16 @@ export default async function NeighborhoodPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Hidden Gems link */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+        <Link
+          href={`/denver/hidden-gems#${slug}`}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-denver-amber text-denver-amber font-semibold text-sm hover:bg-denver-amber hover:text-slate-900 transition-colors"
+        >
+          See hidden gem restaurants in {n.name} &rarr;
+        </Link>
+      </div>
 
       {/* Interactive Map */}
       {mapPins.length > 0 && (

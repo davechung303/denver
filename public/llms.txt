@@ -1,0 +1,81 @@
+# Dave Loves Denver
+
+> A hyperlocal guide to Denver's best neighborhoods, restaurants, hotels, bars, coffee shops, and things to do — written by Dave Chung, a local Denver content creator and YouTuber.
+
+Dave Loves Denver surfaces the best places in each Denver neighborhood using real Google review data, ranked by a quality algorithm (rating² × log10(review_count)) that favors proven local institutions over chains with inflated review counts.
+
+## Author
+
+Dave Chung is a Denver-based content creator and YouTube host (youtube.com/@davechung) covering Denver neighborhoods, restaurants, and local life from a first-person perspective.
+
+## Site Structure
+
+- / — Homepage with featured video, latest guides, and neighborhood overview
+- /denver — Best of Denver: top restaurants, hotels, bars, coffee, and things to do citywide, organized by neighborhood
+- /denver/hidden-gems — Under-the-radar restaurants, coffee shops, and local favorites rated 4.5+ with under 500 reviews, organized by neighborhood
+
+### Neighborhood Guides
+
+Each neighborhood page at /denver/[neighborhood] includes:
+- Top restaurants, hotels, bars, coffee shops, and things to do
+- Interactive map of restaurant locations
+- Upcoming local events
+- Related YouTube videos
+- Links to hidden gems in that neighborhood
+
+Denver neighborhoods covered:
+- RiNo (River North Art District) — /denver/rino
+- LoHi (Lower Highlands) — /denver/lohi
+- Capitol Hill — /denver/capitol-hill
+- Cherry Creek — /denver/cherry-creek
+- LoDo (Lower Downtown) — /denver/lodo
+- Five Points — /denver/five-points
+- Washington Park — /denver/washington-park
+- Golden Triangle — /denver/golden-triangle
+- Highlands — /denver/highlands
+- Berkeley — /denver/berkeley
+- Sloan Lake — /denver/sloan-lake
+- Jefferson Park — /denver/jefferson-park
+- Cole — /denver/cole
+- Uptown — /denver/uptown
+- Baker — /denver/baker
+- Curtis Park — /denver/curtis-park
+- Platt Park — /denver/platt-park
+- DEN Airport Area — /denver/airport
+- Denver Suburbs — /denver/denver-suburbs
+
+### Category Pages
+
+For each neighborhood, category guides at /denver/[neighborhood]/[category]:
+- /restaurants — Top-rated restaurants ranked by quality score
+- /hotels — Top hotels with direct Expedia booking links
+- /bars — Bars, cocktail bars, breweries, and nightlife
+- /things-to-do — Attractions, museums, parks, and activities
+- /coffee — Coffee shops, cafes, and roasteries
+
+### Individual Place Pages
+
+Each business has a dedicated page at /denver/[neighborhood]/[category]/[place-slug] with:
+- Google rating and review count
+- Address, phone, hours, and website
+- Photo gallery
+- AI-generated review summary and tagline
+- Nearby restaurants, hotels, and things to do
+- Related YouTube videos
+
+## Data Methodology
+
+Places are sourced from the Google Places API and ranked using a quality score:
+  qualityScore = rating² × log10(min(reviewCount, 3000) + 10)
+
+This formula amplifies the gap between a 4.5★ and 4.9★ rating while capping the review count benefit at 3,000 so that beloved local institutions with 2,000 reviews rank competitively against chains with 50,000 reviews.
+
+Hidden gems are defined as places with a rating ≥ 4.5 and fewer than 500 reviews — high quality that hasn't gone viral yet.
+
+Data is refreshed every 24 hours via Incremental Static Regeneration.
+
+## Contact
+
+Site: https://davelovesdenver.com
+YouTube: https://www.youtube.com/@davechung
+About: https://davelovesdenver.com/about

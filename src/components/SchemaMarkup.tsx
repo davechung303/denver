@@ -25,12 +25,18 @@ interface ListItem {
   url: string;
 }
 
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 interface Props {
   breadcrumbs?: BreadcrumbItem[];
   videos?: VideoItem[];
   websiteSearch?: boolean;
   article?: ArticleItem;
   itemLists?: { name: string; description?: string; items: ListItem[] }[];
+  faqs?: FAQItem[];
 }
 
 const DAVE_PERSON = {
@@ -43,7 +49,7 @@ const DAVE_PERSON = {
   ],
 };
 
-export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, article, itemLists }: Props) {
+export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, article, itemLists, faqs }: Props) {
   const schemas: object[] = [];
 
   // WebSite schema with sitelinks searchbox
@@ -92,6 +98,22 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, artic
       },
       ...(article.imageUrl ? { image: article.imageUrl } : {}),
       ...(article.description ? { description: article.description } : {}),
+    });
+  }
+
+  // FAQPage schema — gets pulled directly into AI Overviews and Perplexity answers
+  if (faqs && faqs.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
     });
   }
 
