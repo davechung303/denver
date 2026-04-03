@@ -405,6 +405,7 @@ export function isUsefulPlace(place: Place): boolean {
 
 // Google Places types that indicate an actual hotel (not vacation rentals / Airbnb-style)
 const HOTEL_TYPES = new Set([
+  "lodging",
   "hotel",
   "motel",
   "resort_hotel",
