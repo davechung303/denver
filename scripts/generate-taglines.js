@@ -53,19 +53,24 @@ Return ONLY the tagline text, nothing else.`;
 }
 
 async function run() {
-  // Fetch all places that have reviews but no tagline in their review_summary
-  const { data: places, error } = await db
-    .from("places")
-    .select("place_id, name, category_slug, rating, reviews, review_summary")
-    .not("reviews", "is", null);
+  // Fetch ALL places (paginated — Supabase caps at 1000 rows per request)
+  const allPlaces = [];
+  const PAGE = 1000;
+  let from = 0;
+  while (true) {
+    const { data, error } = await db
+      .from("places")
+      .select("place_id, name, category_slug, rating, reviews, review_summary")
+      .range(from, from + PAGE - 1);
+    if (error) { console.error("Fetch error:", error.message); process.exit(1); }
+    if (!data || data.length === 0) break;
+    allPlaces.push(...data);
+    if (data.length < PAGE) break;
+    from += PAGE;
+  }
 
-  if (error) { console.error("Fetch error:", error.message); process.exit(1); }
-
-  const needsTagline = places.filter((p) => {
-    const hasReviews = Array.isArray(p.reviews) && p.reviews.length > 0;
-    const hasTagline = p.review_summary?.tagline;
-    return hasReviews && !hasTagline;
-  });
+  const places = allPlaces;
+  const needsTagline = places.filter((p) => !p.review_summary?.tagline);
 
   console.log(`${places.length} total places, ${needsTagline.length} need taglines`);
 

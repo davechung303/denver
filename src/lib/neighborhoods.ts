@@ -109,6 +109,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1677051949386-d999c9076424?auto=format&fit=crop&w=1200&q=80",
     searchName: "Five Points Denver Colorado",
     lat: 39.7544, lng: -104.9742,
+    searchRadius: 2500,
   },
   {
     slug: "cole",
@@ -461,7 +462,7 @@ export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number
   "capitol-hill":   [39.727, 39.745, -104.985, -104.965],
   highlands:        [39.753, 39.775, -105.025, -105.000],
   "cherry-creek":   [39.708, 39.725, -104.960, -104.940],
-  "five-points":    [39.747, 39.762, -104.980, -104.960],
+  "five-points":    [39.742, 39.774, -104.992, -104.952],
   cole:             [39.758, 39.775, -104.970, -104.950],
   "washington-park":[39.700, 39.722, -104.975, -104.950],
   baker:             [39.704, 39.723, -104.998, -104.973],

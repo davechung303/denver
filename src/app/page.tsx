@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
-import { getPopularDenverVideos } from "@/lib/youtube";
-import { supabase } from "@/lib/supabase";
+import { NEIGHBORHOODS } from "@/lib/neighborhoods";
+import { getPopularDenverVideos, getLatestLongFormVideos, watchUrl } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
-import ArticleThumb from "@/components/ArticleThumb";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const revalidate = 3600;
@@ -21,26 +19,26 @@ export const metadata: Metadata = {
   },
 };
 
+const HERO_VIDEO_ID = "ny7PDhZ9FOQ";
+
 export default async function HomePage() {
-  let videos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
-  let articles: any[] = [];
+  let popularVideos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
+  let latestVideos: Awaited<ReturnType<typeof getLatestLongFormVideos>> = [];
 
   try {
-    [videos, articles] = await Promise.race([
+    [popularVideos, latestVideos] = await Promise.race([
       Promise.all([
         getPopularDenverVideos(6),
-        supabase
-          .from("articles")
-          .select("slug, title, content_type, neighborhood_slug, category_slug, generated_at, places_mentioned, youtube_videos(thumbnail_url, view_count, published_at, duration_seconds)")
-          .order("generated_at", { ascending: false })
-          .limit(9)
-          .then((r) => r.data?.slice(0, 9) ?? []),
+        getLatestLongFormVideos(5, [HERO_VIDEO_ID]),
       ]),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
     ]);
   } catch {
     // Supabase timeout — render with empty state
   }
+
+  // Filter hero video from popular list too
+  const videos = popularVideos.filter((v) => v.video_id !== HERO_VIDEO_ID);
   return (
     <>
       <SchemaMarkup
@@ -114,149 +112,72 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Latest Articles */}
-      {articles.length > 0 && (
+      {/* Latest Videos — featured layout */}
+      {latestVideos.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="flex items-end justify-between mb-10">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold">Latest Guides & Reviews</h2>
               <p className="mt-2 text-slate-500 dark:text-slate-400">
-                Denver restaurants, hotels, bars, and neighborhoods — written by a local.
+                Denver restaurants, hotels, bars, and neighborhoods — filmed by a local.
               </p>
             </div>
             <Link
-              href="/articles"
+              href="/videos"
               className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
             >
-              See all guides &rarr;
+              See all videos &rarr;
             </Link>
           </div>
 
-          {(() => {
-            const DENVER_FALLBACK = "https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1200&q=80";
-            // Shorts are ≤ 3 minutes — reliable signal regardless of title
-            const isShort = (article: any) => {
-              const dur = article.youtube_videos?.duration_seconds;
-              return dur != null && dur <= 180;
-            };
-
-            const getThumb = (article: any) => {
-              const rawThumb = article.youtube_videos?.thumbnail_url;
-              const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
-              const photoUrl = article.places_mentioned?.[0]?.photo_url;
-              const src = thumb || (photoUrl?.startsWith("places/")
-                ? `/api/places-photo?name=${encodeURIComponent(photoUrl)}`
-                : photoUrl) || null;
-              return { src, rawThumb };
-            };
-
-            // Sort: editorial (no video) first, then regular long-form, then shorts
-            const sorted = [...articles].sort((a: any, b: any) => {
-              const rank = (x: any) => !x.video_id ? 0 : isShort(x) ? 2 : 1;
-              return rank(a) - rank(b);
-            });
-
-            const mainArticles = sorted.filter((a: any) => !isShort(a));
-            const shortArticles = sorted.filter((a: any) => isShort(a));
-
-            const renderCard = (article: any, idx: number, featured = false) => {
-              const { src: rawSrcFromThumb, rawThumb } = getThumb(article);
-              // Use article's own image if available; fall back to Denver Unsplash only when
-              // featured with no image at all. (Previously forced Denver fallback for all
-              // no-video featured cards, but editorial articles like restaurant openings
-              // have their own Unsplash image that should be used instead.)
-              const src = rawSrcFromThumb ?? (featured ? DENVER_FALLBACK : null);
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Featured video — takes 2 columns */}
+            {latestVideos[0] && (() => {
+              const v = latestVideos[0];
               return (
-                <Link
-                  key={article.slug}
-                  href={`/articles/${article.slug}`}
-                  className={`group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200${featured ? " sm:col-span-2" : ""}`}
+                <a
+                  href={watchUrl(v.video_id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lg:col-span-2 group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
                 >
-                  {src && (
-                    <div className={`overflow-hidden bg-slate-100 dark:bg-slate-800 ${featured ? "aspect-[16/7]" : "aspect-video"}`}>
-                      <ArticleThumb
-                        src={src}
-                        rawSrc={rawThumb}
-                        fallbackSrc={DENVER_FALLBACK}
-                        alt={article.title}
+                  <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
+                    {v.thumbnail_url && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={v.thumbnail_url.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg")}
+                        alt={v.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
+                    )}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30">
+                      <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
+                        <svg className="w-7 h-7 text-slate-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
                     </div>
-                  )}
-                  <div className="p-4 flex flex-col gap-2 flex-1">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize self-start">
-                      {article.content_type?.replace(/-/g, " ")}
-                    </span>
-                    <h3 className="font-semibold text-sm leading-tight group-hover:text-denver-amber transition-colors line-clamp-2">
-                      {article.title}
+                  </div>
+                  <div className="p-5 flex flex-col gap-2">
+                    <h3 className="font-bold text-lg leading-snug group-hover:text-denver-amber transition-colors">
+                      {v.title}
                     </h3>
-                  </div>
-                </Link>
-              );
-            };
-
-            return (
-              <>
-                {/* Main grid — regular + editorial articles */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  {mainArticles.map((article: any, idx: number) =>
-                    renderCard(article, idx, idx === 0)
-                  )}
-                </div>
-
-                {/* Shorts — portrait grid, columns scale with count */}
-                {shortArticles.length > 0 && (
-                  <div className="mt-8">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">
-                      Shorts
-                    </p>
-                    <div className={`grid gap-3 ${
-                      shortArticles.length <= 3 ? "grid-cols-3" :
-                      shortArticles.length <= 4 ? "grid-cols-4" :
-                      shortArticles.length <= 6 ? "grid-cols-3 sm:grid-cols-6" :
-                      "grid-cols-4 sm:grid-cols-7"
-                    }`}>
-                      {shortArticles.map((article: any) => {
-                        const { src, rawThumb } = getThumb(article);
-                        return (
-                          <Link
-                            key={article.slug}
-                            href={`/articles/${article.slug}`}
-                            className="group rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
-                          >
-                            <div className="aspect-[9/16] overflow-hidden bg-slate-100 dark:bg-slate-800">
-                              {src && (
-                                <ArticleThumb
-                                  src={src}
-                                  rawSrc={rawThumb}
-                                  fallbackSrc={DENVER_FALLBACK}
-                                  alt={article.title}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                              )}
-                            </div>
-                            <div className="p-2">
-                              <p className="text-xs font-medium leading-snug line-clamp-2 group-hover:text-denver-amber transition-colors">
-                                {article.title}
-                              </p>
-                            </div>
-                          </Link>
-                        );
-                      })}
+                    <div className="flex items-center gap-2 text-xs text-slate-400">
+                      {v.view_count && <span>{v.view_count >= 1000 ? `${(v.view_count / 1000).toFixed(1)}K` : v.view_count} views</span>}
+                      {v.view_count && v.published_at && <span>·</span>}
+                      {v.published_at && <span>{new Date(v.published_at).toLocaleDateString("en-US", { year: "numeric", month: "short" })}</span>}
                     </div>
                   </div>
-                )}
-              </>
-            );
-          })()}
+                </a>
+              );
+            })()}
 
-          <div className="mt-10 text-center">
-            <Link
-              href="/articles"
-              className="inline-flex items-center gap-2 border border-slate-300 dark:border-slate-700 px-6 py-3 rounded-full text-sm font-semibold hover:border-denver-amber hover:text-denver-amber transition-colors"
-            >
-              See all guides &rarr;
-            </Link>
+            {/* Sidebar: 2–3 more videos */}
+            <div className="flex flex-col gap-4">
+              {latestVideos.slice(1, 4).map((v) => (
+                <VideoCard key={v.video_id} video={v} />
+              ))}
+            </div>
           </div>
         </section>
       )}

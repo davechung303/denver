@@ -336,6 +336,18 @@ export async function getAllVideos(): Promise<Video[]> {
   return (data ?? []) as Video[];
 }
 
+export async function getLatestLongFormVideos(limit = 5, excludeIds: string[] = []): Promise<Video[]> {
+  const { data } = await supabase
+    .from("youtube_videos")
+    .select("*")
+    .or("duration_seconds.is.null,duration_seconds.gt.180")
+    .order("published_at", { ascending: false })
+    .limit(limit + excludeIds.length);
+
+  const videos = (data ?? []) as Video[];
+  return videos.filter((v) => !excludeIds.includes(v.video_id)).slice(0, limit);
+}
+
 export async function getPopularDenverVideos(limit = 6): Promise<Video[]> {
   const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
 

@@ -232,7 +232,7 @@ export default async function CategoryPage({ params }: Props) {
                             <p className="text-xs text-slate-400 line-clamp-1">{place.address}</p>
                           )}
                           {place.review_summary?.tagline && (
-                            <p className="text-xs text-denver-amber font-medium line-clamp-1">
+                            <p className="text-xs text-denver-amber font-medium line-clamp-2">
                               Known for: {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
                             </p>
                           )}

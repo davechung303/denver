@@ -592,7 +592,7 @@ export default async function BusinessPage({ params }: Props) {
                   rel="noopener noreferrer sponsored"
                   className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
                 >
-                  Check Availability on Expedia &rarr;
+                  Reserve on Expedia &rarr;
                 </a>
               )}
               {isHotel && zenUrl && (

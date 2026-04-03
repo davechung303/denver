@@ -420,6 +420,35 @@ export function isRealHotel(place: Place): boolean {
   return place.types?.some((t) => HOTEL_TYPES.has(t)) ?? false;
 }
 
+// Score = rating × log10(review_count + 10) — balances quality with proven popularity.
+// Highly-rated places with thousands of reviews beat fringe entries with 4 reviews at 5.0.
+export function popularityScore(place: Pick<Place, "rating" | "review_count">): number {
+  return (place.rating ?? 0) * Math.log10((place.review_count ?? 0) + 10);
+}
+
+// Hidden gem: high rating (≥4.5) but not yet discovered (≤300 reviews)
+export function isHiddenGem(place: Place): boolean {
+  return (place.rating ?? 0) >= 4.5 && (place.review_count ?? 0) <= 300 && (place.review_count ?? 0) >= 10;
+}
+
+export async function getBestOfDenver(categorySlug: string, limit = 8): Promise<Place[]> {
+  const { data } = await supabase
+    .from("places")
+    .select("*")
+    .eq("category_slug", categorySlug)
+    .not("rating", "is", null)
+    .gte("rating", 4.0)
+    .gte("review_count", 50)
+    .order("rating", { ascending: false })
+    .limit(400); // fetch enough to rank client-side
+
+  const places = (data ?? []) as Place[];
+  return places
+    .filter(isUsefulPlace)
+    .sort((a, b) => popularityScore(b) - popularityScore(a))
+    .slice(0, limit);
+}
+
 export async function getPlaces(
   neighborhoodSlug: string,
   categorySlug: string

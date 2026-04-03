@@ -112,7 +112,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             <p className="text-xs text-slate-500 line-clamp-1">{place.address}</p>
           )}
           {place.review_summary?.tagline && (
-            <p className="text-xs text-denver-amber font-medium line-clamp-1">
+            <p className="text-xs text-denver-amber font-medium line-clamp-2">
               Known for: {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
             </p>
           )}
@@ -128,7 +128,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             rel="noopener noreferrer sponsored"
             className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
           >
-            Check Availability on Expedia
+            Reserve on Expedia
           </a>
         </div>
       )}
