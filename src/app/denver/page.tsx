@@ -173,7 +173,7 @@ export default async function BestOfDenverPage() {
     getBestOfDenver("hotels", 12).then((h) => h.filter(isRealHotel)),
     getBestOfDenver("bars", 12),
     getBestOfDenver("things-to-do", 12),
-    getBestOfDenver("coffee", 12),
+    getBestOfDenver("coffee", 12, { requireTypes: ["coffee_shop", "cafe", "coffee_roastery"] }),
     getTrendingPlaces(30, 8),
   ]);
 

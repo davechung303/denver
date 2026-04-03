@@ -441,20 +441,28 @@ export function isHiddenGem(place: Place): boolean {
   return (place.rating ?? 0) >= 4.5 && (place.review_count ?? 0) <= 300 && (place.review_count ?? 0) >= 10;
 }
 
-export async function getBestOfDenver(categorySlug: string, limit = 8): Promise<Place[]> {
+export async function getBestOfDenver(
+  categorySlug: string,
+  limit = 8,
+  options?: { requireTypes?: string[] }
+): Promise<Place[]> {
   const { data } = await supabase
     .from("places")
     .select("*")
     .like("category_slug", `${categorySlug}%`)
     .not("rating", "is", null)
-    .gte("rating", 4.2)      // raise floor — truly great places start here
-    .gte("review_count", 200) // enough reviews to be credible
+    .gte("rating", 4.2)
+    .gte("review_count", 200)
     .order("rating", { ascending: false })
     .limit(500);
 
   const places = (data ?? []) as Place[];
   return places
     .filter(isUsefulPlace)
+    .filter((p) =>
+      !options?.requireTypes ||
+      options.requireTypes.some((t) => p.types?.includes(t))
+    )
     .sort((a, b) => qualityScore(b) - qualityScore(a))
     .slice(0, limit);
 }

@@ -9,6 +9,7 @@ export async function GET(req: Request) {
   }
 
   revalidatePath("/");
+  revalidatePath("/denver");
   revalidatePath("/articles");
   revalidatePath("/videos");
   revalidatePath("/events");
