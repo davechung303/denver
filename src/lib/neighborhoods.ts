@@ -141,6 +141,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1632714393265-9adbc6ab8a91?auto=format&fit=crop&w=1200&q=80",
     searchName: "Washington Park Denver Colorado",
     lat: 39.7112, lng: -104.9638,
+    stay22EmbedId: "69d05442bfb4999cdf000704",
   },
   {
     slug: "baker",
