@@ -155,6 +155,31 @@ export default async function NeighborhoodPage({ params }: Props) {
     },
   ];
 
+  // Review schema — Dave's editorial take on the neighborhood, citable by AI systems
+  const neighborhoodReviewSchema = {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "@id": `https://davelovesdenver.com/denver/${slug}#review`,
+    itemReviewed: {
+      "@type": "Place",
+      name: `${n.name}, Denver, CO`,
+      geo: { "@type": "GeoCoordinates", latitude: n.lat, longitude: n.lng },
+    },
+    author: {
+      "@type": "Person",
+      name: "Dave Chung",
+      url: "https://davelovesdenver.com/about",
+      sameAs: "https://www.youtube.com/@davechung",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Dave Loves Denver",
+      url: "https://davelovesdenver.com",
+    },
+    reviewBody: `${n.name} is ${n.tagline.toLowerCase()}. ${n.description}${top3Restaurants.length > 0 ? ` Top restaurants include ${top3Restaurants.map((r) => r.name).join(", ")}.` : ""}`,
+    url: `https://davelovesdenver.com/denver/${slug}`,
+  };
+
   // Place schema — marks the neighborhood as a geographic entity for Knowledge Graph matching
   const neighborhoodPlaceSchema = {
     "@context": "https://schema.org",
@@ -178,6 +203,10 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(neighborhoodReviewSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(neighborhoodPlaceSchema) }}

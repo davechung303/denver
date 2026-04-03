@@ -56,11 +56,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  // Place pages — paginate through all ~2,800 places with real lastModified from cached_at
+  const placePages: MetadataRoute.Sitemap = [];
+  let from = 0;
+  const PAGE_SIZE = 1000;
+  while (true) {
+    const { data } = await supabase
+      .from("places")
+      .select("neighborhood_slug, category_slug, slug, cached_at")
+      .range(from, from + PAGE_SIZE - 1);
+    if (!data || data.length === 0) break;
+    for (const p of data) {
+      placePages.push({
+        url: `${BASE_URL}/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}`,
+        lastModified: p.cached_at ? new Date(p.cached_at) : now,
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      });
+    }
+    if (data.length < PAGE_SIZE) break;
+    from += PAGE_SIZE;
+  }
+
   return [
     ...staticPages,
+    { url: `${BASE_URL}/denver`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/denver/hidden-gems`, lastModified: now, changeFrequency: "daily" as const, priority: 0.85 },
+    { url: `${BASE_URL}/videos`, lastModified: now, changeFrequency: "daily" as const, priority: 0.6 },
     ...neighborhoodPages,
     ...categoryPages,
     ...subcategoryPages,
     ...articlePages,
+    ...placePages,
   ];
 }

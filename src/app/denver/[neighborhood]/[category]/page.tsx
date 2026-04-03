@@ -177,6 +177,21 @@ export default async function CategoryPage({ params }: Props) {
         <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">
           {description}
         </p>
+        {/* Answer-formatted sentence — directly answers the AI query in visible prose */}
+        {topPicks.length > 0 && (
+          <p className="mt-3 text-base text-slate-600 dark:text-slate-300 max-w-2xl">
+            Top picks: {topPicks.slice(0, 3).map((p, i) => (
+              <span key={p.slug}>
+                <Link href={`/denver/${nSlug}/${cSlug}/${p.slug}`} className="font-semibold hover:text-denver-amber transition-colors">
+                  {p.name}
+                </Link>
+                {p.rating && <span className="text-slate-400"> ({p.rating}★)</span>}
+                {i < Math.min(topPicks.length, 3) - 1 ? ", " : "."}
+              </span>
+            ))}{" "}
+            {scored.length} {c.name.toLowerCase()} tracked in and around {n.name}.
+          </p>
+        )}
       </section>
 
       {/* Subcategory filters (restaurants & bars) */}
