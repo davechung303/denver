@@ -259,17 +259,9 @@ export async function getVideosForPage(
   categorySlug: string | null,
   limit = 3
 ): Promise<Video[]> {
-  const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
-
-  // Check if we have any cached videos at all
-  const { count } = await supabase
-    .from("youtube_videos")
-    .select("*", { count: "exact", head: true })
-    .gt("cached_at", cutoff);
-
-  if (!count || count === 0) {
-    await syncVideos();
-  }
+  // Never auto-sync from a page render — only the /api/sync-videos cron does that.
+  // Auto-syncing caused ~1000 YouTube API calls per ISR cycle when 95+ pages
+  // revalidated simultaneously and all saw a stale cache.
 
   // Query via associations — fetch more than needed to account for duplicate video_ids
   // (a video can have multiple associations for the same neighborhood with different categories)
