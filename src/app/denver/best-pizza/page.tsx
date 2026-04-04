@@ -54,13 +54,12 @@ function DishChips({ dishes }: { dishes: string[] }) {
   );
 }
 
-function PizzaCard({ place, rank }: { place: Place; rank?: number }) {
+function PizzaCard({ place }: { place: Place }) {
   const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
   return (
     <a href={href} className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200">
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
-        {rank && <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">#{rank}</span>}
       </div>
       <div className="p-5 flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
@@ -83,8 +82,10 @@ function PizzaCard({ place, rank }: { place: Place; rank?: number }) {
 }
 
 export default async function BestPizzaPage() {
-  const raw = await getBestOfDenver("restaurants", 100, { minReviews: 50, minRating: 4.0 });
-  const places = raw.filter(isRealRestaurant).filter((p) => p.types?.includes("pizza_restaurant"));
+  const raw = await getBestOfDenver("restaurants", 200, { minReviews: 20, minRating: 3.8 });
+  const places = raw
+    .filter(isRealRestaurant)
+    .filter((p) => !p.types || p.types.length === 0 || p.types.some((t) => t === "pizza_restaurant"));
   const top = places.slice(0, 12);
   const rest = places.slice(12);
 
@@ -128,7 +129,7 @@ export default async function BestPizzaPage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <h2 className="text-2xl font-bold mb-6">Top Picks</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {top.map((place, i) => <PizzaCard key={place.place_id} place={place} rank={i + 1} />)}
+            {top.map((place) => <PizzaCard key={place.place_id} place={place} />)}
           </div>
         </section>
       )}

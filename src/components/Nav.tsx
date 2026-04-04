@@ -146,18 +146,18 @@ export default function Nav() {
                       <span className="text-sm font-semibold text-slate-900 dark:text-white">Where to Stay</span>
                       <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Best neighborhoods for hotels</span>
                     </Link>
+                    <Link
+                      href="/denver/hidden-gems"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Hidden Gems</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">4.5★+ spots locals know</span>
+                    </Link>
                   </div>
                 </>
               )}
             </div>
-
-            {/* Hidden Gems link */}
-            <Link
-              href="/denver/hidden-gems"
-              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver/hidden-gems" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
-            >
-              Hidden Gems
-            </Link>
 
             {/* Neighborhoods dropdown */}
             <div className="relative">
