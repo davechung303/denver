@@ -189,6 +189,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1712403235961-3d0a14d8e33b?auto=format&fit=crop&w=1200&q=80",
     searchName: "Sloan Lake Denver Colorado Edgewater",
     lat: 39.7589, lng: -105.0356,
+    stay22EmbedId: "69d0547d31f2907978572baa",
   },
   {
     slug: "berkeley",
