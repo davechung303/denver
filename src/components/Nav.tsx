@@ -55,7 +55,7 @@ export default function Nav() {
                     className="fixed inset-0 z-10"
                     onClick={() => setDenverOpen(false)}
                   />
-                  <div className="absolute top-full left-0 mt-1 w-[220px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
+                  <div className="absolute top-full left-0 mt-1 w-[240px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
                     <Link
                       href="/denver"
                       onClick={() => setDenverOpen(false)}
@@ -63,6 +63,46 @@ export default function Nav() {
                     >
                       <span className="text-sm font-semibold text-slate-900 dark:text-white">Popular</span>
                       <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Top picks in Denver</span>
+                    </Link>
+                    <Link
+                      href="/denver/best-restaurants"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Best Restaurants</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Top-rated picks citywide</span>
+                    </Link>
+                    <Link
+                      href="/denver/best-bars"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Best Bars</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Craft cocktails to dive bars</span>
+                    </Link>
+                    <Link
+                      href="/denver/best-coffee"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Best Coffee</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Local roasters & cafes</span>
+                    </Link>
+                    <Link
+                      href="/denver/best-things-to-do"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Things To Do</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Activities & attractions</span>
+                    </Link>
+                    <Link
+                      href="/denver/for-foodies"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">For Foodies</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">The ultimate food guide</span>
                     </Link>
                     <Link
                       href="/denver/where-to-stay"
@@ -231,6 +271,41 @@ export default function Nav() {
               className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Popular
+            </Link>
+            <Link
+              href="/denver/best-restaurants"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              Best Restaurants
+            </Link>
+            <Link
+              href="/denver/best-bars"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              Best Bars
+            </Link>
+            <Link
+              href="/denver/best-coffee"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              Best Coffee
+            </Link>
+            <Link
+              href="/denver/best-things-to-do"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              Things To Do
+            </Link>
+            <Link
+              href="/denver/for-foodies"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              For Foodies
             </Link>
             <Link
               href="/denver/where-to-stay"
