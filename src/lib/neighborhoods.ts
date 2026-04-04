@@ -214,6 +214,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1200&q=80",
     searchName: "Platt Park Denver Colorado South Pearl Street",
     lat: 39.6962, lng: -104.9762,
+    stay22EmbedId: "69d054b5bfb4999cdf000781",
   },
   {
     slug: "jefferson-park",
