@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
-import { getPopularDenverVideos, getLatestLongFormVideos, getLatestShorts, watchUrl } from "@/lib/youtube";
+import { getPopularDenverVideos, getLatestShorts, watchUrl } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import { supabase } from "@/lib/supabase";
 
 export const revalidate = 3600;
 
@@ -23,15 +24,20 @@ const HERO_VIDEO_ID = "ny7PDhZ9FOQ";
 
 export default async function HomePage() {
   let popularVideos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
-  let latestVideos: Awaited<ReturnType<typeof getLatestLongFormVideos>> = [];
   let latestShorts: Awaited<ReturnType<typeof getLatestShorts>> = [];
+  let latestArticles: any[] = [];
 
   try {
-    [popularVideos, latestVideos, latestShorts] = await Promise.race([
+    [popularVideos, latestShorts, latestArticles] = await Promise.race([
       Promise.all([
         getPopularDenverVideos(6),
-        getLatestLongFormVideos(2, [HERO_VIDEO_ID]),
         getLatestShorts(5),
+        supabase
+          .from("articles")
+          .select(`slug, title, content_type, neighborhood_slug, generated_at, youtube_videos (thumbnail_url)`)
+          .order("generated_at", { ascending: false })
+          .limit(4)
+          .then(({ data }) => data ?? []),
       ]),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
     ]);
@@ -39,8 +45,8 @@ export default async function HomePage() {
     // Supabase timeout — render with empty state
   }
 
-  // Filter hero video and any videos already shown in the Latest section from Popular
-  const shownIds = new Set([HERO_VIDEO_ID, ...latestVideos.map((v) => v.video_id)]);
+  // Filter hero video from Popular
+  const shownIds = new Set([HERO_VIDEO_ID]);
   const videos = popularVideos.filter((v) => !shownIds.has(v.video_id));
   return (
     <>
@@ -115,34 +121,56 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Latest Videos — 2 long-form + shorts row */}
-      {(latestVideos.length > 0 || latestShorts.length > 0) && (
+      {/* Latest Guides & Reviews — articles linking to internal pages */}
+      {(latestArticles.length > 0 || latestShorts.length > 0) && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="flex items-end justify-between mb-10">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold">Latest Guides & Reviews</h2>
               <p className="mt-2 text-slate-500 dark:text-slate-400">
-                Denver restaurants, hotels, bars, and neighborhoods — filmed by a local.
+                Denver restaurants, hotels, bars, and neighborhoods — written by a local.
               </p>
             </div>
             <Link
-              href="/videos"
+              href="/articles"
               className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline"
             >
-              See all videos &rarr;
+              See all articles &rarr;
             </Link>
           </div>
 
-          {/* 2 long-form videos side by side */}
-          {latestVideos.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-              {latestVideos.map((v) => (
-                <VideoCard key={v.video_id} video={v} />
-              ))}
+          {/* Article cards — link to /articles/[slug] */}
+          {latestArticles.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              {latestArticles.map((article: any) => {
+                const rawThumb = article.youtube_videos?.thumbnail_url;
+                const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
+                return (
+                  <Link
+                    key={article.slug}
+                    href={`/articles/${article.slug}`}
+                    className="group flex flex-col rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber hover:shadow-lg transition-all duration-200 bg-white dark:bg-slate-900"
+                  >
+                    <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
+                      {thumb && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={thumb} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                      )}
+                    </div>
+                    <div className="p-4 flex flex-col gap-1.5 flex-1">
+                      {article.neighborhood_slug && (
+                        <p className="text-xs font-medium text-denver-amber uppercase tracking-wide">{article.neighborhood_slug.replace(/-/g, " ")}</p>
+                      )}
+                      <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-denver-amber transition-colors">{article.title}</h3>
+                      <p className="text-xs text-slate-400 mt-auto pt-1 capitalize">{article.content_type ?? "guide"}</p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
 
-          {/* Shorts row */}
+          {/* Shorts row — these stay as YouTube links */}
           {latestShorts.length > 0 && (
             <>
               <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Recent Shorts</h3>
