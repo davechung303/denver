@@ -268,10 +268,16 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
 
   if (!needsSummary && !needsDishes) return place;
 
-  // Fetch reviews from Place Details API if not already cached
+  // COST GUARD: for the needsDishes backfill, only use already-cached reviews.
+  // Never call the Google Places API on a page render — that costs $0.017/call
+  // and fires on every crawler visit. The refresh-places cron handles backfilling.
   let reviews = place.reviews;
   let freshReviews = false;
   if (!reviews || reviews.length === 0) {
+    if (needsDishes) {
+      // No cached reviews and only need popular_dishes — skip to avoid Google API cost
+      return place;
+    }
     reviews = await fetchReviewsForPlace(place.place_id);
     console.log(`[summary] fetchReviews for ${place.name}: ${reviews?.length ?? 0} reviews`);
     if (reviews && reviews.length > 0) {
