@@ -6,7 +6,7 @@ import { getFoursquareData, type FoursquareTip } from "./foursquare";
 // Use server-side key (no referrer restrictions) for API calls
 // NEXT_PUBLIC_ key is for client-side map embeds only
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
-const CACHE_TTL_HOURS = 168; // 7 days — places data is stable, reduce DB reads
+const CACHE_TTL_HOURS = 720; // 30 days — places data is stable, refreshed monthly by cron
 
 export interface Place {
   id: string;
@@ -349,13 +349,7 @@ export async function getPlace(
     return maybeFetchFoursquare(withSummary);
   }
 
-  // No row — fetch the full category from Google and find the match
-  const places = await fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
-  const found = places.find((p) => p.slug === slug) ?? null;
-  if (found) {
-    const withSummary = await maybeGenerateSummary(found);
-    return maybeFetchFoursquare(withSummary);
-  }
+  // Not found in Supabase — return null. Google fetches only happen via refresh-places.
   return null;
 }
 
@@ -388,13 +382,9 @@ export async function getPlacesForSubcategory(
     return merged;
   }
 
-  const fresh = await fetchFromGooglePlaces(
-    neighborhoodSlug,
-    compoundSlug,
-    `${subcategorySearchQuery} in ${neighborhoodSearchName}`
-  );
-  const merged = [...filtered, ...fresh.filter((f) => !filtered.some((e) => e.place_id === f.place_id))];
-  return merged;
+  // No Google fallback — return whatever we have from the main category cache.
+  // Subcategory results improve automatically after the next monthly refresh-places run.
+  return filtered;
 }
 
 // A place is considered useful if it has a rating (real Google data) or at least one photo.
@@ -667,22 +657,36 @@ export async function getPlaces(
   neighborhoodSlug: string,
   categorySlug: string
 ): Promise<Place[]> {
-  const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
-
-  // Trust the cache if it has any results within TTL — don't re-fetch just because
-  // the count is low (that causes a Google API call on every page visit)
-  const { data: cached } = await supabase
+  // Return whatever Supabase has — stale or fresh. Never call Google from a page render.
+  // Google fetches only happen via the /api/refresh-places admin route (monthly cron).
+  // This prevents surprise API bills from ISR revalidation or build-time pre-rendering.
+  const { data } = await supabase
     .from("places")
     .select("*")
     .eq("neighborhood_slug", neighborhoodSlug)
     .eq("category_slug", categorySlug)
-    .gt("cached_at", cutoff)
     .order("rating", { ascending: false });
 
-  if (cached && cached.length > 0) {
-    return cached as Place[];
-  }
+  return (data ?? []) as Place[];
+}
 
-  // True cache miss (TTL expired or never fetched) — fetch from Google
+// Called only by /api/refresh-places — never from page renders.
+// Checks the TTL, invalidates stale rows, and re-fetches from Google.
+export async function refreshPlacesFromGoogle(
+  neighborhoodSlug: string,
+  categorySlug: string,
+  minResults = 0
+): Promise<Place[]> {
+  const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
+  const { count } = await supabaseAdmin
+    .from("places")
+    .select("*", { count: "exact", head: true })
+    .eq("neighborhood_slug", neighborhoodSlug)
+    .eq("category_slug", categorySlug)
+    .gt("cached_at", cutoff);
+
+  // Skip if still fresh and above the minimum threshold
+  if ((count ?? 0) >= minResults && minResults > 0) return [];
+
   return fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
 }

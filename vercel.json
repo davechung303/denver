@@ -5,6 +5,7 @@
     { "path": "/api/associate-videos", "schedule": "30 18 * * *" },
     { "path": "/api/generate-articles","schedule": "0 19 * * *" },
     { "path": "/api/sync-events",      "schedule": "0 7 * * *" },
-    { "path": "/api/snapshot-places",  "schedule": "0 9 * * 1" }
+    { "path": "/api/snapshot-places",  "schedule": "0 9 * * 1" },
+    { "path": "/api/refresh-places",   "schedule": "0 10 1 * *" }
   ]
 }
