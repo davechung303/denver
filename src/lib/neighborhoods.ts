@@ -239,6 +239,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1483937107025-27d8bebc7074?auto=format&fit=crop&w=1200&q=80",
     searchName: "Curtis Park Denver Colorado",
     lat: 39.7562, lng: -104.9672,
+    stay22EmbedId: "69d054cf8ef49a292b4d7342",
   },
   {
     slug: "downtown",
