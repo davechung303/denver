@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 
 export const revalidate = 3600;
 
@@ -80,6 +81,41 @@ const HOTEL_NEIGHBORHOODS = [
   },
 ];
 
+// eslint-disable-next-line @next/next/no-img-element
+function HotelCard({ place }: { place: Place }) {
+  const href = place.expedia_affiliate_url ?? expediaDenverHotelsUrl();
+  const photo = place.photos?.[0];
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200"
+    >
+      <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
+        {photo ? (
+          <img src={photoUrl(photo.name, 600, 400)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+        ) : (
+          <div className="w-full h-full bg-slate-100 dark:bg-slate-800" />
+        )}
+      </div>
+      <div className="p-4 flex flex-col gap-1.5 flex-1">
+        <h3 className="font-bold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
+        {place.rating && (
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+            ★ {place.rating.toFixed(1)}
+            {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
+          </span>
+        )}
+        {place.price_level != null && place.price_level > 0 && (
+          <span className="text-xs text-slate-400">{"$".repeat(place.price_level)}</span>
+        )}
+        <span className="mt-auto pt-2 text-xs font-semibold text-denver-amber group-hover:underline">Book on Expedia &rarr;</span>
+      </div>
+    </a>
+  );
+}
+
 const FAQS = [
   {
     q: "What is the best neighborhood to stay in Denver?",
@@ -103,7 +139,20 @@ const FAQS = [
   },
 ];
 
-export default function WhereToStayPage() {
+export default async function WhereToStayPage() {
+  // Fetch hotels for all neighborhoods in parallel
+  const hotelsByNeighborhood = await Promise.all(
+    HOTEL_NEIGHBORHOODS.map(async (hn) => {
+      const places = await getPlaces(hn.slug, "hotels");
+      const hotels = places
+        .filter(isRealHotel)
+        .filter((p) => p.photos && p.photos.length > 0)
+        .slice(0, 4);
+      return { slug: hn.slug, hotels };
+    })
+  );
+  const hotelMap = new Map(hotelsByNeighborhood.map((h) => [h.slug, h.hotels]));
+
   return (
     <>
       {/* BreadcrumbList schema */}
@@ -221,6 +270,20 @@ export default function WhereToStayPage() {
                 Browse hotels in {n.name} &rarr;
               </a>
             </div>
+
+            {/* Hotel cards */}
+            {(() => {
+              const hotels = hotelMap.get(hn.slug) ?? [];
+              if (hotels.length === 0) return null;
+              return (
+                <div className="mt-8">
+                  <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Top-Rated Hotels in {n.name}</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {hotels.map((hotel) => <HotelCard key={hotel.place_id} place={hotel} />)}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Stay22 embed */}
             {n.stay22EmbedId && (
