@@ -81,7 +81,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticPages,
     { url: `${BASE_URL}/denver`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
-    { url: `${BASE_URL}/denver/best-restaurants`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/denver/best-steakhouses`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/denver/best-pizza`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/denver/best-sushi`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/denver/best-mexican-food`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/denver/best-burgers`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
     { url: `${BASE_URL}/denver/best-bars`, lastModified: now, changeFrequency: "daily" as const, priority: 0.85 },
     { url: `${BASE_URL}/denver/best-coffee`, lastModified: now, changeFrequency: "daily" as const, priority: 0.85 },
     { url: `${BASE_URL}/denver/best-things-to-do`, lastModified: now, changeFrequency: "daily" as const, priority: 0.85 },
