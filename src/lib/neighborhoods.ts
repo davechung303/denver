@@ -263,6 +263,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1613003492754-a022330915ac?auto=format&fit=crop&w=1200&q=80",
     searchName: "Aurora Lakewood Littleton Englewood Denver suburbs Colorado",
     lat: 39.7294, lng: -104.8319,
+    stay22EmbedId: "69d054f1bfb4999cdf0007de",
   },
   {
     slug: "airport",
