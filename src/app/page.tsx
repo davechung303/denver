@@ -26,6 +26,7 @@ export default async function HomePage() {
   let popularVideos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
   let latestShorts: Awaited<ReturnType<typeof getLatestShorts>> = [];
   let latestArticles: any[] = [];
+  let shortArticleMap = new Map<string, string>(); // video_id → article slug
 
   try {
     [popularVideos, latestShorts, latestArticles] = await Promise.race([
@@ -41,6 +42,15 @@ export default async function HomePage() {
       ]),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
     ]);
+
+    // Look up article slugs for the shorts we just fetched
+    if (latestShorts.length > 0) {
+      const { data: shortArticles } = await supabase
+        .from("articles")
+        .select("slug, video_id")
+        .in("video_id", latestShorts.map((s) => s.video_id));
+      shortArticleMap = new Map((shortArticles ?? []).map((a) => [a.video_id, a.slug]));
+    }
   } catch {
     // Supabase timeout — render with empty state
   }
@@ -170,34 +180,38 @@ export default async function HomePage() {
             </div>
           )}
 
-          {/* Shorts row — these stay as YouTube links */}
+          {/* Shorts row — link to article when one exists, otherwise YouTube */}
           {latestShorts.length > 0 && (
             <>
               <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Recent Shorts</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                {latestShorts.map((v) => (
-                  <a
-                    key={v.video_id}
-                    href={`https://www.youtube.com/shorts/${v.video_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex flex-col rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
-                  >
-                    <div className="relative aspect-[9/16] overflow-hidden bg-slate-100 dark:bg-slate-800">
-                      {v.thumbnail_url && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={v.thumbnail_url}
-                          alt={v.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      )}
-                    </div>
-                    <div className="p-2">
-                      <p className="text-xs font-medium line-clamp-2 leading-snug group-hover:text-denver-amber transition-colors">{v.title}</p>
-                    </div>
-                  </a>
-                ))}
+                {latestShorts.map((v) => {
+                  const articleSlug = shortArticleMap.get(v.video_id);
+                  const href = articleSlug ? `/articles/${articleSlug}` : `https://www.youtube.com/shorts/${v.video_id}`;
+                  const isExternal = !articleSlug;
+                  return (
+                    <a
+                      key={v.video_id}
+                      href={href}
+                      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="group flex flex-col rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
+                    >
+                      <div className="relative aspect-[9/16] overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        {v.thumbnail_url && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={v.thumbnail_url}
+                            alt={v.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        )}
+                      </div>
+                      <div className="p-2">
+                        <p className="text-xs font-medium line-clamp-2 leading-snug group-hover:text-denver-amber transition-colors">{v.title}</p>
+                      </div>
+                    </a>
+                  );
+                })}
               </div>
             </>
           )}
