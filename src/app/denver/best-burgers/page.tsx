@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, isRealRestaurant, isRealBar, photoUrl, type Place } from "@/lib/places";
+import { supabase } from "@/lib/supabase";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const revalidate = 3600;
@@ -18,6 +19,15 @@ export const metadata: Metadata = {
   },
   alternates: { canonical: "https://davelovesdenver.com/denver/best-burgers" },
 };
+
+// Dave's personally curated burger picks — ordered intentionally
+const DAVES_PICKS_KEYS = [
+  { slug: "right-cream",         neighborhood_slug: "platt-park",       note: "Ice cream shop with sneaky good burgers." },
+  { slug: "candlelight-tavern",  neighborhood_slug: "washington-park",  note: "Best bar burger in the city." },
+  { slug: "big-sky-burger",      neighborhood_slug: "denver-suburbs",   note: "Local favorite hidden gem with unique burgers." },
+  { slug: "daltons-cheeseburgs", neighborhood_slug: "five-points",      note: "Some of the best smashburgers in Denver." },
+  { slug: "the-cherry-cricket",  neighborhood_slug: "cherry-creek",     note: "Lost a step but still a local favorite." },
+];
 
 // eslint-disable-next-line @next/next/no-img-element
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
@@ -54,12 +64,18 @@ function DishChips({ dishes }: { dishes: string[] }) {
   );
 }
 
-function BurgerCard({ place }: { place: Place }) {
+function BurgerCard({ place, note }: { place: Place; note?: string }) {
   const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
+  const davePick = !!note;
   return (
     <a href={href} className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200">
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
+        {davePick && (
+          <span className="absolute top-3 left-3 bg-denver-amber text-slate-900 text-xs font-bold px-2.5 py-1 rounded-full shadow">
+            Dave&apos;s Pick
+          </span>
+        )}
       </div>
       <div className="p-5 flex flex-col gap-2 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
@@ -68,7 +84,8 @@ function BurgerCard({ place }: { place: Place }) {
         </div>
         <h3 className="font-bold text-base leading-snug group-hover:text-denver-amber transition-colors">{place.name}</h3>
         <RatingBadge place={place} />
-        {place.review_summary?.tagline && (
+        {note && <p className="text-sm text-slate-600 dark:text-slate-300 italic">&ldquo;{note}&rdquo;</p>}
+        {!note && place.review_summary?.tagline && (
           <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
             {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
           </p>
@@ -93,14 +110,28 @@ function hasBurgerDish(p: Place): boolean {
 }
 
 export default async function BestBurgersPage() {
-  // Pull from both restaurants AND bars — many of Denver's best burger spots (Cherry Cricket,
-  // My Brother's Bar, etc.) are Google-tagged as bars, not hamburger_restaurant.
-  const [rawRestaurants, rawBars] = await Promise.all([
+  // Fetch Dave's picks and the generated list in parallel
+  const [{ data: davesPicksRaw }, rawRestaurants, rawBars] = await Promise.all([
+    supabase
+      .from("places")
+      .select("*")
+      .in("slug", DAVES_PICKS_KEYS.map((p) => p.slug)),
     getBestOfDenver("restaurants", 200, { minReviews: 20, minRating: 3.8 }),
     getBestOfDenver("bars", 200, { minReviews: 20, minRating: 3.8 }),
   ]);
 
-  const seen = new Set<string>();
+  // Order Dave's picks to match the curated list, preserving notes
+  const davesPicks = DAVES_PICKS_KEYS
+    .map((key) => {
+      const place = (davesPicksRaw ?? []).find((p) => p.slug === key.slug && p.neighborhood_slug === key.neighborhood_slug);
+      return place ? { place: place as Place, note: key.note } : null;
+    })
+    .filter(Boolean) as { place: Place; note: string }[];
+
+  const davesPickIds = new Set(davesPicks.map((d) => d.place.place_id));
+
+  // Merge restaurants + bars, deduplicate, exclude Dave's picks
+  const seen = new Set<string>(davesPickIds);
   const merged: Place[] = [];
   for (const p of [...rawRestaurants, ...rawBars]) {
     if (!seen.has(p.place_id)) {
@@ -109,8 +140,6 @@ export default async function BestBurgersPage() {
     }
   }
 
-  // Use popular_dishes as primary signal — only show places where people actually order burgers.
-  // Fall back to explicit hamburger_restaurant type for places without dish data.
   const places = merged.filter(
     (p) => hasBurgerDish(p) || p.types?.some((t) => BURGER_EXPLICIT_TYPES.has(t))
   );
@@ -128,7 +157,7 @@ export default async function BestBurgersPage() {
         itemLists={[{
           name: "Best Burgers in Denver",
           description: "Top-rated burger spots across Denver, ranked by real reviews.",
-          items: places.map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}` })),
+          items: [...davesPicks.map((d) => d.place), ...places].map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}` })),
         }]}
       />
 
@@ -148,14 +177,25 @@ export default async function BestBurgersPage() {
         <p className="mt-4 text-slate-500 dark:text-slate-400 text-lg max-w-2xl leading-relaxed">
           From smash burgers to proper diner classics — Denver&apos;s burger scene punches well above its weight. These are the spots that keep people coming back, ranked by real reviews.
         </p>
-        <div className="mt-4 text-sm text-slate-500">
-          <strong className="text-foreground font-bold">{places.length}</strong> burger spots tracked citywide
-        </div>
       </section>
 
+      {/* Dave's Picks */}
+      {davesPicks.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold">Dave&apos;s Picks</h2>
+            <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">The spots I keep coming back to.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {davesPicks.map(({ place, note }) => <BurgerCard key={place.place_id} place={place} note={note} />)}
+          </div>
+        </section>
+      )}
+
+      {/* Generated list — deduplicated from Dave's picks */}
       {top.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <h2 className="text-2xl font-bold mb-6">Top Picks</h2>
+          <h2 className="text-2xl font-bold mb-6">Popular Burger Spots</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {top.map((place) => <BurgerCard key={place.place_id} place={place} />)}
           </div>
