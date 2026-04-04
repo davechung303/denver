@@ -8,11 +8,13 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [neighborhoodsOpen, setNeighborhoodsOpen] = useState(false);
+  const [denverOpen, setDenverOpen] = useState(false);
   const pathname = usePathname();
 
   const closeAll = () => {
     setOpen(false);
     setNeighborhoodsOpen(false);
+    setDenverOpen(false);
   };
 
   return (
@@ -30,13 +32,50 @@ export default function Nav() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
-            {/* Popular link */}
-            <Link
-              href="/denver"
-              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
-            >
-              Popular
-            </Link>
+            {/* Denver dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setDenverOpen(!denverOpen)}
+                className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver" || pathname === "/denver/where-to-stay" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+              >
+                Denver
+                <svg
+                  className={`w-4 h-4 transition-transform ${denverOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {denverOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => setDenverOpen(false)}
+                  />
+                  <div className="absolute top-full left-0 mt-1 w-[220px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
+                    <Link
+                      href="/denver"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Popular</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Top picks in Denver</span>
+                    </Link>
+                    <Link
+                      href="/denver/where-to-stay"
+                      onClick={() => setDenverOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Where to Stay</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Best neighborhoods for hotels</span>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
 
             {/* Hidden Gems link */}
             <Link
@@ -192,6 +231,13 @@ export default function Nav() {
               className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Popular
+            </Link>
+            <Link
+              href="/denver/where-to-stay"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              Where to Stay
             </Link>
             <Link
               href="/denver/hidden-gems"
