@@ -92,7 +92,7 @@ const MEXICAN_TYPES = new Set([
 ]);
 
 export default async function BestMexicanFoodPage() {
-  const raw = await getBestOfDenver("restaurants", 200, { minReviews: 20, minRating: 3.8 });
+  const raw = await getBestOfDenver("restaurants", 500, { minReviews: 20, minRating: 3.8 });
   const places = raw
     .filter(isRealRestaurant)
     .filter((p) => !p.types || p.types.length === 0 || p.types.some((t) => MEXICAN_TYPES.has(t)));

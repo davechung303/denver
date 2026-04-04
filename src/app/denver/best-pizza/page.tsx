@@ -104,7 +104,7 @@ export default async function BestPizzaPage() {
       .from("places")
       .select("*")
       .in("slug", DAVES_PICKS_KEYS.map((p) => p.slug)),
-    getBestOfDenver("restaurants", 200, { minReviews: 20, minRating: 3.8 }),
+    getBestOfDenver("restaurants", 500, { minReviews: 20, minRating: 3.8 }),
   ]);
 
   // Order Dave's picks to match the curated list, preserving notes

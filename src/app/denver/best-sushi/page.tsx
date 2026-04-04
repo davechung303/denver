@@ -106,7 +106,7 @@ export default async function BestSushiPage() {
       .from("places")
       .select("*")
       .in("slug", DAVES_PICKS_KEYS.map((p) => p.slug)),
-    getBestOfDenver("restaurants", 200, { minReviews: 20, minRating: 3.8 }),
+    getBestOfDenver("restaurants", 500, { minReviews: 20, minRating: 3.8 }),
   ]);
 
   const davesPicks = DAVES_PICKS_KEYS

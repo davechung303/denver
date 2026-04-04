@@ -98,7 +98,10 @@ function BurgerCard({ place, note }: { place: Place; note?: string }) {
   );
 }
 
-const BURGER_EXPLICIT_TYPES = new Set(["hamburger_restaurant", "fast_food_restaurant"]);
+// Types that clearly indicate a burger spot
+const BURGER_INCLUDE_TYPES = new Set(["hamburger_restaurant", "fast_food_restaurant", "american_restaurant", "bar", "pub", "diner"]);
+// Types that rule out a burger spot (steakhouses, ethnic cuisines, etc.)
+const BURGER_EXCLUDE_TYPES = new Set(["steak_house", "italian_restaurant", "seafood_restaurant", "french_restaurant", "mexican_restaurant", "latin_american_restaurant", "korean_restaurant", "chinese_restaurant", "thai_restaurant", "sushi_restaurant", "japanese_restaurant", "ramen_restaurant", "pizza_restaurant", "indian_restaurant", "mediterranean_restaurant", "vietnamese_restaurant"]);
 const BURGER_KEYWORDS = ["burger", "cheeseburger", "smash burger", "patty melt", "double double"];
 
 function hasBurgerDish(p: Place): boolean {
@@ -109,6 +112,13 @@ function hasBurgerDish(p: Place): boolean {
   );
 }
 
+function isBurgerSpot(p: Place): boolean {
+  // Exclude places clearly in another cuisine
+  if (p.types?.some((t) => BURGER_EXCLUDE_TYPES.has(t))) return false;
+  // Include if dishes mention burgers, explicit burger type, or broad American/bar type
+  return hasBurgerDish(p) || (p.types?.some((t) => BURGER_INCLUDE_TYPES.has(t)) ?? false);
+}
+
 export default async function BestBurgersPage() {
   // Fetch Dave's picks and the generated list in parallel
   const [{ data: davesPicksRaw }, rawRestaurants, rawBars] = await Promise.all([
@@ -116,8 +126,8 @@ export default async function BestBurgersPage() {
       .from("places")
       .select("*")
       .in("slug", DAVES_PICKS_KEYS.map((p) => p.slug)),
-    getBestOfDenver("restaurants", 200, { minReviews: 20, minRating: 3.8 }),
-    getBestOfDenver("bars", 200, { minReviews: 20, minRating: 3.8 }),
+    getBestOfDenver("restaurants", 500, { minReviews: 20, minRating: 3.8 }),
+    getBestOfDenver("bars", 500, { minReviews: 20, minRating: 3.8 }),
   ]);
 
   // Order Dave's picks to match the curated list, preserving notes
@@ -140,9 +150,7 @@ export default async function BestBurgersPage() {
     }
   }
 
-  const places = merged.filter(
-    (p) => hasBurgerDish(p) || p.types?.some((t) => BURGER_EXPLICIT_TYPES.has(t))
-  );
+  const places = merged.filter(isBurgerSpot);
   const top = places.slice(0, 12);
   const rest = places.slice(12);
 
