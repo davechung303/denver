@@ -9,7 +9,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Denver for Foodies — The Ultimate Food Guide to Denver, CO",
   description:
-    "The definitive Denver food guide: best restaurants by neighborhood, top coffee shops, hidden gem eats, and the neighborhoods serious food people actually know.",
+    "The definitive Denver food guide: best steakhouses, pizza, sushi, Mexican, hidden gems, top coffee, and the food neighborhoods serious eaters actually know.",
   openGraph: {
     title: "Denver for Foodies — The Ultimate Food Guide",
     description: "Best restaurants, coffee, and food neighborhoods in Denver — from someone who actually lives here.",
@@ -20,6 +20,14 @@ export const metadata: Metadata = {
 };
 
 const FOOD_NEIGHBORHOODS = ["rino", "highlands", "cherry-creek", "baker", "uptown", "platt-park"];
+
+const CUISINE_GUIDES = [
+  { href: "/denver/best-steakhouses", label: "Best Steakhouses", description: "Colorado beef & dry-aged cuts", emoji: "🥩" },
+  { href: "/denver/best-pizza", label: "Best Pizza", description: "Wood-fired to late-night slices", emoji: "🍕" },
+  { href: "/denver/best-sushi", label: "Best Sushi", description: "Sushi Den and beyond", emoji: "🍣" },
+  { href: "/denver/best-mexican-food", label: "Best Mexican Food", description: "Green chile, tacos, and more", emoji: "🌮" },
+  { href: "/denver/best-burgers", label: "Best Burgers", description: "Smash burgers to diner classics", emoji: "🍔" },
+];
 
 // eslint-disable-next-line @next/next/no-img-element
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
@@ -44,11 +52,23 @@ function NeighborhoodChip({ slug }: { slug: string }) {
   return <span className="text-xs font-medium text-denver-amber">{n.name}</span>;
 }
 
-function RestaurantCard({ place }: { place: Place }) {
+function DishChips({ dishes }: { dishes: string[] }) {
+  return (
+    <div className="flex flex-wrap gap-1 mt-1">
+      {dishes.slice(0, 3).map((d) => (
+        <span key={d} className="text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 rounded-full px-2 py-0.5">
+          {d}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function EditorPickCard({ place }: { place: Place }) {
   const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
   return (
     <a href={href} className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200">
-      <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
+      <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
       </div>
       <div className="p-5 flex flex-col gap-2 flex-1">
@@ -58,7 +78,14 @@ function RestaurantCard({ place }: { place: Place }) {
         </div>
         <h3 className="font-bold text-base leading-snug group-hover:text-denver-amber transition-colors">{place.name}</h3>
         <RatingBadge place={place} />
-        {place.review_summary?.tagline && <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}</p>}
+        {place.review_summary?.tagline && (
+          <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+            {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
+          </p>
+        )}
+        {place.review_summary?.popular_dishes && place.review_summary.popular_dishes.length > 0 && (
+          <DishChips dishes={place.review_summary.popular_dishes} />
+        )}
       </div>
     </a>
   );
@@ -101,11 +128,19 @@ const FAQS = [
 ];
 
 export default async function ForFoodiesPage() {
+  // Pull restaurants that have review summaries with popular_dishes — these are the richest entries.
+  // Lowering the minReviews floor so hidden gems with dish data surface alongside well-known spots.
   const [rawRestaurants, coffee] = await Promise.all([
-    getBestOfDenver("restaurants", 100, { minReviews: 50, minRating: 4.3 }).then((r) => r.filter(isRealRestaurant)),
+    getBestOfDenver("restaurants", 200, { minReviews: 30, minRating: 4.3 }).then((r) => r.filter(isRealRestaurant)),
     getBestOfDenver("coffee", 8, { requireTypes: ["coffee_shop", "cafe", "coffee_roastery"] }),
   ]);
-  const topRestaurants = rawRestaurants.slice(0, 8);
+
+  // Editor's picks: restaurants with popular_dishes AND a tagline — the places we actually know something about.
+  // Sort by quality score so the order is earned, not arbitrary.
+  const editorPicks = rawRestaurants
+    .filter((p) => p.review_summary?.popular_dishes && p.review_summary.popular_dishes.length > 0 && p.review_summary.tagline)
+    .slice(0, 9);
+
   const foodNeighborhoods = FOOD_NEIGHBORHOODS.map((slug) => NEIGHBORHOODS.find((n) => n.slug === slug)).filter(Boolean) as typeof NEIGHBORHOODS;
 
   return (
@@ -117,9 +152,9 @@ export default async function ForFoodiesPage() {
           { name: "For Foodies", url: "https://davelovesdenver.com/denver/for-foodies" },
         ]}
         itemLists={[{
-          name: "Best Restaurants in Denver for Foodies",
-          description: "The top-rated restaurants in Denver, curated for serious food lovers.",
-          items: topRestaurants.map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}` })),
+          name: "Denver for Foodies — Editor's Picks",
+          description: "The Denver restaurants worth seeking out, curated for serious food lovers.",
+          items: editorPicks.map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}` })),
         }]}
         faqs={FAQS}
       />
@@ -139,12 +174,13 @@ export default async function ForFoodiesPage() {
         <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">A food lover&apos;s guide</p>
         <h1 className="text-4xl md:text-5xl font-bold leading-tight max-w-2xl">Denver for Foodies</h1>
         <p className="mt-4 text-slate-500 dark:text-slate-400 text-lg max-w-2xl leading-relaxed">
-          Denver&apos;s food scene has been quietly getting better for a decade and still doesn&apos;t get enough credit. From James Beard-level cooking in RiNo to the best green chile you&apos;ve ever had at a no-name spot in the suburbs — here&apos;s what serious food people actually need to know.
+          Denver&apos;s food scene has been quietly getting better for a decade and still doesn&apos;t get enough credit. Here&apos;s everything serious eaters need — broken down by cuisine, neighborhood, and what people actually order.
         </p>
         {/* Quick nav */}
         <div className="mt-8 flex flex-wrap gap-2">
           {[
-            { href: "#restaurants", label: "Top Restaurants" },
+            { href: "#by-cuisine", label: "By Cuisine" },
+            { href: "#picks", label: "Editor's Picks" },
             { href: "#neighborhoods", label: "Food Neighborhoods" },
             { href: "#coffee", label: "Best Coffee" },
             { href: "#hidden-gems", label: "Hidden Gems" },
@@ -156,25 +192,39 @@ export default async function ForFoodiesPage() {
         </div>
       </section>
 
-      {/* Top Restaurants */}
-      {topRestaurants.length > 0 && (
-        <section id="restaurants" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold">Top Restaurants in Denver</h2>
-              <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">Ranked by rating and review count — the places with both quality and proof.</p>
-            </div>
-            <Link href="/denver/best-restaurants" className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline shrink-0 ml-4">
-              See all {rawRestaurants.length} &rarr;
+      {/* Cuisine Guides */}
+      <section id="by-cuisine" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold">Explore by Cuisine</h2>
+          <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">Each guide ranked by real reviews, with what people actually order at each spot.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {CUISINE_GUIDES.map((guide) => (
+            <Link
+              key={guide.href}
+              href={guide.href}
+              className="group flex items-center gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber hover:shadow-lg transition-all duration-200"
+            >
+              <span className="text-3xl shrink-0">{guide.emoji}</span>
+              <div>
+                <h3 className="font-bold text-base group-hover:text-denver-amber transition-colors">{guide.label}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{guide.description}</p>
+              </div>
+              <span className="ml-auto text-slate-300 dark:text-slate-600 group-hover:text-denver-amber transition-colors text-lg">&rarr;</span>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Editor's Picks */}
+      {editorPicks.length > 0 && (
+        <section id="picks" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+          <div className="mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold">Editor&apos;s Picks</h2>
+            <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">Places with the story behind them — what makes them worth going, and what to order when you get there.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {topRestaurants.map((place) => <RestaurantCard key={place.place_id} place={place} />)}
-          </div>
-          <div className="mt-6 sm:hidden">
-            <Link href="/denver/best-restaurants" className="text-sm font-semibold text-denver-amber hover:underline">
-              See all {rawRestaurants.length} restaurants &rarr;
-            </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {editorPicks.map((place) => <EditorPickCard key={place.place_id} place={place} />)}
           </div>
         </section>
       )}
