@@ -165,6 +165,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1586193771953-929042f3a381?auto=format&fit=crop&w=1200&q=80",
     searchName: "Golden Triangle Denver Colorado Santa Fe Arts District",
     lat: 39.7356, lng: -104.9908,
+    stay22EmbedId: "69d0545e8ef49a292b4d7220",
   },
   {
     slug: "uptown",
