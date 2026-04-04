@@ -81,14 +81,23 @@ function BurgerCard({ place }: { place: Place }) {
   );
 }
 
-const BURGER_TYPES = new Set(["hamburger_restaurant", "american_restaurant", "bar", "pub", "fast_food_restaurant"]);
+const BURGER_EXPLICIT_TYPES = new Set(["hamburger_restaurant", "fast_food_restaurant"]);
+const BURGER_KEYWORDS = ["burger", "cheeseburger", "smash burger", "patty melt", "double double"];
+
+function hasBurgerDish(p: Place): boolean {
+  return (
+    p.review_summary?.popular_dishes?.some((d) =>
+      BURGER_KEYWORDS.some((kw) => d.toLowerCase().includes(kw))
+    ) ?? false
+  );
+}
 
 export default async function BestBurgersPage() {
   // Pull from both restaurants AND bars — many of Denver's best burger spots (Cherry Cricket,
-  // My Brother's Bar, etc.) are Google-tagged as bars or american restaurants, not hamburger_restaurant.
+  // My Brother's Bar, etc.) are Google-tagged as bars, not hamburger_restaurant.
   const [rawRestaurants, rawBars] = await Promise.all([
-    getBestOfDenver("restaurants", 200, { minReviews: 30, minRating: 4.0 }),
-    getBestOfDenver("bars", 200, { minReviews: 30, minRating: 4.0 }),
+    getBestOfDenver("restaurants", 200, { minReviews: 20, minRating: 3.8 }),
+    getBestOfDenver("bars", 200, { minReviews: 20, minRating: 3.8 }),
   ]);
 
   const seen = new Set<string>();
@@ -100,8 +109,11 @@ export default async function BestBurgersPage() {
     }
   }
 
-  const places = merged
-    .filter((p) => !p.types || p.types.length === 0 || p.types.some((t) => BURGER_TYPES.has(t)));
+  // Use popular_dishes as primary signal — only show places where people actually order burgers.
+  // Fall back to explicit hamburger_restaurant type for places without dish data.
+  const places = merged.filter(
+    (p) => hasBurgerDish(p) || p.types?.some((t) => BURGER_EXPLICIT_TYPES.has(t))
+  );
   const top = places.slice(0, 12);
   const rest = places.slice(12);
 

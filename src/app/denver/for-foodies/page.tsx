@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
-import { getBestOfDenver, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
+import { getBestOfDenver, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const revalidate = 3600;
@@ -52,45 +52,6 @@ function NeighborhoodChip({ slug }: { slug: string }) {
   return <span className="text-xs font-medium text-denver-amber">{n.name}</span>;
 }
 
-function DishChips({ dishes }: { dishes: string[] }) {
-  return (
-    <div className="flex flex-wrap gap-1 mt-1">
-      {dishes.slice(0, 3).map((d) => (
-        <span key={d} className="text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 rounded-full px-2 py-0.5">
-          {d}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function EditorPickCard({ place }: { place: Place }) {
-  const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
-  return (
-    <a href={href} className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200">
-      <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-800">
-        <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
-      </div>
-      <div className="p-5 flex flex-col gap-2 flex-1">
-        <div className="flex items-center gap-2 flex-wrap">
-          <NeighborhoodChip slug={place.neighborhood_slug} />
-          {place.price_level != null && place.price_level > 0 && <span className="text-xs text-slate-400">{"$".repeat(place.price_level)}</span>}
-        </div>
-        <h3 className="font-bold text-base leading-snug group-hover:text-denver-amber transition-colors">{place.name}</h3>
-        <RatingBadge place={place} />
-        {place.review_summary?.tagline && (
-          <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
-            {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
-          </p>
-        )}
-        {place.review_summary?.popular_dishes && place.review_summary.popular_dishes.length > 0 && (
-          <DishChips dishes={place.review_summary.popular_dishes} />
-        )}
-      </div>
-    </a>
-  );
-}
-
 function CoffeeCard({ place }: { place: Place }) {
   const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
   return (
@@ -128,18 +89,7 @@ const FAQS = [
 ];
 
 export default async function ForFoodiesPage() {
-  // Pull restaurants that have review summaries with popular_dishes — these are the richest entries.
-  // Lowering the minReviews floor so hidden gems with dish data surface alongside well-known spots.
-  const [rawRestaurants, coffee] = await Promise.all([
-    getBestOfDenver("restaurants", 200, { minReviews: 30, minRating: 4.3 }).then((r) => r.filter(isRealRestaurant)),
-    getBestOfDenver("coffee", 8, { requireTypes: ["coffee_shop", "cafe", "coffee_roastery"] }),
-  ]);
-
-  // Editor's picks: restaurants with popular_dishes AND a tagline — the places we actually know something about.
-  // Sort by quality score so the order is earned, not arbitrary.
-  const editorPicks = rawRestaurants
-    .filter((p) => p.review_summary?.popular_dishes && p.review_summary.popular_dishes.length > 0 && p.review_summary.tagline)
-    .slice(0, 9);
+  const coffee = await getBestOfDenver("coffee", 8, { requireTypes: ["coffee_shop", "cafe", "coffee_roastery"] });
 
   const foodNeighborhoods = FOOD_NEIGHBORHOODS.map((slug) => NEIGHBORHOODS.find((n) => n.slug === slug)).filter(Boolean) as typeof NEIGHBORHOODS;
 
@@ -152,9 +102,9 @@ export default async function ForFoodiesPage() {
           { name: "For Foodies", url: "https://davelovesdenver.com/denver/for-foodies" },
         ]}
         itemLists={[{
-          name: "Denver for Foodies — Editor's Picks",
-          description: "The Denver restaurants worth seeking out, curated for serious food lovers.",
-          items: editorPicks.map((p) => ({ name: p.name, url: `/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}` })),
+          name: "Denver Cuisine Guides",
+          description: "The best Denver restaurants by cuisine, ranked by real reviews.",
+          items: CUISINE_GUIDES.map((g) => ({ name: g.label, url: `https://davelovesdenver.com${g.href}` })),
         }]}
         faqs={FAQS}
       />
@@ -180,7 +130,6 @@ export default async function ForFoodiesPage() {
         <div className="mt-8 flex flex-wrap gap-2">
           {[
             { href: "#by-cuisine", label: "By Cuisine" },
-            { href: "#picks", label: "Editor's Picks" },
             { href: "#neighborhoods", label: "Food Neighborhoods" },
             { href: "#coffee", label: "Best Coffee" },
             { href: "#hidden-gems", label: "Hidden Gems" },
@@ -215,19 +164,6 @@ export default async function ForFoodiesPage() {
           ))}
         </div>
       </section>
-
-      {/* Editor's Picks */}
-      {editorPicks.length > 0 && (
-        <section id="picks" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">Editor&apos;s Picks</h2>
-            <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">Places with the story behind them — what makes them worth going, and what to order when you get there.</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {editorPicks.map((place) => <EditorPickCard key={place.place_id} place={place} />)}
-          </div>
-        </section>
-      )}
 
       {/* Food Neighborhoods */}
       <section id="neighborhoods" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">

@@ -90,7 +90,10 @@ function StarRating({ rating }: { rating: number }) {
 export default async function BusinessPage({ params }: Props) {
   const { neighborhood: nSlug, category: cSlug, slug } = await params;
   const n = getNeighborhood(nSlug);
-  const c = getCategory(cSlug);
+  // Compound slugs like "restaurants-steak_house" are stored under the base category in Supabase.
+  // Resolve to the base category for page rendering; getPlace handles the lookup.
+  const baseCSlug = cSlug.includes("-") ? cSlug.split("-")[0] : cSlug;
+  const c = getCategory(baseCSlug) ?? getCategory(cSlug);
   if (!n || !c) notFound();
 
   // ── Subcategory listing page ────────────────────────────────────────────
