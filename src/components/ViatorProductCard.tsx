@@ -36,7 +36,7 @@ export default function ViatorProductCard({ product }: { product: ViatorProduct 
 
       {/* Content */}
       <div className="p-4 flex flex-col gap-2 flex-1">
-        <h3 className="font-semibold text-sm leading-snug line-clamp-2 group-hover:text-denver-amber transition-colors">
+        <h3 className="font-semibold text-sm leading-snug line-clamp-2 text-slate-900 dark:text-slate-100 group-hover:text-denver-amber transition-colors">
           {product.title}
         </h3>
 
