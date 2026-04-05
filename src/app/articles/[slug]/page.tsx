@@ -180,7 +180,7 @@ export default async function ArticlePage({ params }: Props) {
           h.filter(isRealHotel).filter(isUsefulPlace).slice(0, 3)
         )
       : Promise.resolve([] as Place[]),
-    searchViatorProducts(viatorQuery, 6),
+    searchViatorProducts(viatorQuery, 6).then((p) => p.slice(0, 6)),
   ]);
 
   const expediaUrl = article.expedia_url ??

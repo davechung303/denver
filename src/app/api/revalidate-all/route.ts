@@ -12,6 +12,7 @@ export async function GET(req: Request) {
   revalidatePath("/denver");
   revalidatePath("/denver/hidden-gems");
   revalidatePath("/articles");
+  revalidatePath("/articles/[slug]", "page");
   revalidatePath("/videos");
   revalidatePath("/events");
   for (const n of NEIGHBORHOODS) {
