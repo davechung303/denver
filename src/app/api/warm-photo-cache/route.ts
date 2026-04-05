@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase, supabaseAdmin } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export const maxDuration = 300;
 
@@ -31,8 +31,8 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const batchSize = parseInt(url.searchParams.get("batch") ?? "50");
 
-  // Get all cached photo names
-  const { data: cachedRows } = await supabase
+  // Get all cached photo names (use admin client to bypass RLS)
+  const { data: cachedRows } = await supabaseAdmin
     .from("photo_cache")
     .select("photo_name");
   const cached = new Set((cachedRows ?? []).map((r: { photo_name: string }) => r.photo_name));

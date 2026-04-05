@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase, supabaseAdmin } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
 
@@ -17,7 +17,8 @@ export async function GET(request: Request) {
 
   // Check the persistent photo cache first — avoids hitting Google on every request.
   // CDN cache is purged on every deploy, but Supabase persists across deploys.
-  const { data: cached } = await supabase
+  // Use admin client to bypass RLS on photo_cache.
+  const { data: cached } = await supabaseAdmin
     .from("photo_cache")
     .select("cdn_url")
     .eq("photo_name", photoName)
