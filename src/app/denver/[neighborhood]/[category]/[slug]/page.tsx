@@ -17,6 +17,35 @@ interface Props {
   params: Promise<{ neighborhood: string; category: string; slug: string }>;
 }
 
+function to24h(time: string): string | null {
+  const m = time.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+  if (!m) return null;
+  let h = parseInt(m[1]);
+  const min = m[2];
+  const period = m[3].toUpperCase();
+  if (period === "AM") { if (h === 12) h = 0; }
+  else { if (h !== 12) h += 12; }
+  return `${h.toString().padStart(2, "0")}:${min}`;
+}
+
+function parseOpeningHours(descs: string[]): object[] {
+  return descs.flatMap((desc) => {
+    const match = desc.match(/^(\w+):\s*(.+)$/);
+    if (!match) return [];
+    const [, day, hours] = match;
+    if (/closed/i.test(hours)) return [];
+    if (/open 24 hours/i.test(hours)) {
+      return [{ "@type": "OpeningHoursSpecification", dayOfWeek: `https://schema.org/${day}`, opens: "00:00", closes: "23:59" }];
+    }
+    const t = hours.match(/(\d+:\d+\s*[AP]M)\s*[–\-]\s*(\d+:\d+\s*[AP]M)/i);
+    if (!t) return [];
+    const opens = to24h(t[1].trim());
+    const closes = to24h(t[2].trim());
+    if (!opens || !closes) return [];
+    return [{ "@type": "OpeningHoursSpecification", dayOfWeek: `https://schema.org/${day}`, opens, closes }];
+  });
+}
+
 // Schema.org type map by category
 const SCHEMA_TYPES: Record<string, string> = {
   restaurants: "Restaurant",
@@ -317,6 +346,9 @@ export default async function BusinessPage({ params }: Props) {
     ...(place.review_summary?.tagline && { description: place.review_summary.tagline }),
     ...(priceRange && { priceRange }),
     ...(servesCuisine.length > 0 && { servesCuisine }),
+    ...(place.hours?.weekdayDescriptions?.length && {
+      openingHoursSpecification: parseOpeningHours(place.hours.weekdayDescriptions),
+    }),
     // sameAs Google Maps lets Gemini connect this entity to its Knowledge Graph
     sameAs: [
       `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
