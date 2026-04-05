@@ -31,11 +31,20 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const batchSize = parseInt(url.searchParams.get("batch") ?? "50");
 
-  // Get all cached photo names (use admin client to bypass RLS)
-  const { data: cachedRows } = await supabaseAdmin
-    .from("photo_cache")
-    .select("photo_name");
-  const cached = new Set((cachedRows ?? []).map((r: { photo_name: string }) => r.photo_name));
+  // Get all cached photo names — paginate to avoid Supabase 1000-row default limit
+  const cached = new Set<string>();
+  let cachePage = 0;
+  const CACHE_PAGE = 1000;
+  while (true) {
+    const { data: cachedRows } = await supabaseAdmin
+      .from("photo_cache")
+      .select("photo_name")
+      .range(cachePage * CACHE_PAGE, (cachePage + 1) * CACHE_PAGE - 1);
+    if (!cachedRows || cachedRows.length === 0) break;
+    for (const r of cachedRows) cached.add(r.photo_name);
+    if (cachedRows.length < CACHE_PAGE) break;
+    cachePage++;
+  }
 
   // Get all photo names from places
   let page = 0;
