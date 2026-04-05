@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
-import { getPopularDenverVideos, getLatestShorts, watchUrl } from "@/lib/youtube";
+import { getPopularDenverVideos } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { supabase } from "@/lib/supabase";
@@ -24,15 +24,12 @@ const HERO_VIDEO_ID = "ny7PDhZ9FOQ";
 
 export default async function HomePage() {
   let popularVideos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
-  let latestShorts: Awaited<ReturnType<typeof getLatestShorts>> = [];
   let latestArticles: any[] = [];
-  let shortArticleMap = new Map<string, string>(); // video_id → article slug
 
   try {
-    [popularVideos, latestShorts, latestArticles] = await Promise.race([
+    [popularVideos, latestArticles] = await Promise.race([
       Promise.all([
         getPopularDenverVideos(6),
-        getLatestShorts(5),
         supabase
           .from("articles")
           .select(`slug, title, content_type, neighborhood_slug, generated_at, youtube_videos (thumbnail_url)`)
@@ -42,15 +39,6 @@ export default async function HomePage() {
       ]),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
     ]);
-
-    // Look up article slugs for the shorts we just fetched
-    if (latestShorts.length > 0) {
-      const { data: shortArticles } = await supabase
-        .from("articles")
-        .select("slug, video_id")
-        .in("video_id", latestShorts.map((s) => s.video_id));
-      shortArticleMap = new Map((shortArticles ?? []).map((a) => [a.video_id, a.slug]));
-    }
   } catch {
     // Supabase timeout — render with empty state
   }
@@ -132,7 +120,7 @@ export default async function HomePage() {
       </section>
 
       {/* Latest Guides & Reviews — articles linking to internal pages */}
-      {(latestArticles.length > 0 || latestShorts.length > 0) && (
+      {latestArticles.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="flex items-end justify-between mb-10">
             <div>
@@ -151,7 +139,7 @@ export default async function HomePage() {
 
           {/* Article cards — link to /articles/[slug] */}
           {latestArticles.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {latestArticles.map((article: any) => {
                 const rawThumb = article.youtube_videos?.thumbnail_url;
                 const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
@@ -180,41 +168,6 @@ export default async function HomePage() {
             </div>
           )}
 
-          {/* Shorts row — link to article when one exists, otherwise YouTube */}
-          {latestShorts.length > 0 && (
-            <>
-              <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Recent Shorts</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                {latestShorts.map((v) => {
-                  const articleSlug = shortArticleMap.get(v.video_id);
-                  const href = articleSlug ? `/articles/${articleSlug}` : `https://www.youtube.com/shorts/${v.video_id}`;
-                  const isExternal = !articleSlug;
-                  return (
-                    <a
-                      key={v.video_id}
-                      href={href}
-                      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className="group flex flex-col rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-denver-amber transition-colors"
-                    >
-                      <div className="relative aspect-[9/16] overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        {v.thumbnail_url && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={v.thumbnail_url}
-                            alt={v.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        )}
-                      </div>
-                      <div className="p-2">
-                        <p className="text-xs font-medium line-clamp-2 leading-snug group-hover:text-denver-amber transition-colors">{v.title}</p>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            </>
-          )}
         </section>
       )}
 
