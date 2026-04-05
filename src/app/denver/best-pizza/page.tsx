@@ -5,7 +5,7 @@ import { getBestOfDenver, isRealRestaurant, photoUrl, type Place } from "@/lib/p
 import { supabase } from "@/lib/supabase";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Best Pizza in Denver, CO — Top-Rated Pizzerias",

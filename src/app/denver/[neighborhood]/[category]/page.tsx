@@ -10,7 +10,7 @@ import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const revalidate = 604800; // ISR: revalidate weekly — place data refreshed monthly by cron
 export const dynamicParams = true; // still render unknown combinations on-demand
 
 export function generateStaticParams() {

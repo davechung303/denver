@@ -6,7 +6,7 @@ import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Best Restaurants, Hotels & Things To Do in Denver, CO",

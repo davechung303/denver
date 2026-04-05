@@ -13,7 +13,7 @@ import MapWrapper from "@/components/MapWrapper";
 import PlaceCard from "@/components/PlaceCard";
 import { getPlaceTag } from "@/lib/neighborhoods";
 
-export const revalidate = 86400; // ISR: revalidate every 24 hours
+export const revalidate = 604800; // ISR: revalidate weekly — place data refreshed monthly by cron
 // No generateStaticParams — pages render on first visit and are ISR-cached.
 // Pre-rendering all neighborhoods at build time caused 60s timeouts when cache is cold.
 

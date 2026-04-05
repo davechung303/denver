@@ -10,7 +10,7 @@ import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 86400;
+export const revalidate = 604800; // weekly — place data only changes on monthly cron
 export const dynamicParams = true; // generate on-demand for any slug not pre-built
 
 interface Props {

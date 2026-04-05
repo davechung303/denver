@@ -4,7 +4,7 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Where to Stay in Denver, CO — Best Neighborhoods for Hotels | Dave Loves Denver",

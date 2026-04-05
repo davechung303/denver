@@ -5,7 +5,7 @@ import { getBestOfDenver, isRealRestaurant, isRealBar, photoUrl, type Place } fr
 import { supabase } from "@/lib/supabase";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Best Burgers in Denver, CO — Top-Rated Burger Joints",

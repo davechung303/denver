@@ -6,7 +6,7 @@ import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { supabase } from "@/lib/supabase";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Dave Loves Denver — Local Denver Guides, Videos & Restaurant Reviews",

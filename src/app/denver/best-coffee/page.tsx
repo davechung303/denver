@@ -4,7 +4,7 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Best Coffee Shops in Denver, CO — Local Favorites & Hidden Gems",

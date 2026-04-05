@@ -4,7 +4,7 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Denver for Foodies — The Ultimate Food Guide to Denver, CO",

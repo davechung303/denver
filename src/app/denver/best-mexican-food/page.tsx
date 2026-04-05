@@ -4,7 +4,7 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Best Mexican Food in Denver, CO — Top-Rated Mexican Restaurants",
