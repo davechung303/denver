@@ -32,7 +32,7 @@ export default async function HomePage() {
         getPopularDenverVideos(6),
         supabase
           .from("articles")
-          .select(`slug, title, content_type, neighborhood_slug, generated_at, youtube_videos (thumbnail_url)`)
+          .select(`slug, title, content_type, neighborhood_slug, generated_at, places_mentioned, youtube_videos (thumbnail_url)`)
           .order("generated_at", { ascending: false })
           .limit(4)
           .then(({ data }) => data ?? []),
@@ -142,7 +142,8 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {latestArticles.map((article: any) => {
                 const rawThumb = article.youtube_videos?.thumbnail_url;
-                const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
+                const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg")
+                  ?? article.places_mentioned?.[0]?.photo_url ?? null;
                 return (
                   <Link
                     key={article.slug}
