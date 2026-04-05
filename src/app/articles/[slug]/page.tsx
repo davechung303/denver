@@ -3,10 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { embedUrl, getVideosForPage } from "@/lib/youtube";
-import { expediaDenverHotelsUrl, zenhotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
+import { getPlaces, isRealHotel, isUsefulPlace, photoUrl, type Place } from "@/lib/places";
+import { searchViatorProducts } from "@/lib/viator";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import VideoCard from "@/components/VideoCard";
+import ViatorProductCard from "@/components/ViatorProductCard";
 
 export const revalidate = 86400;
 
@@ -129,6 +132,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// eslint-disable-next-line @next/next/no-img-element
+function HotelCard({ hotel, fallbackUrl }: { hotel: Place; fallbackUrl: string }) {
+  const photo = hotel.photos?.[0];
+  const href = hotel.expedia_affiliate_url ?? fallbackUrl;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer sponsored"
+      className="group flex flex-col rounded-xl overflow-hidden border border-white/10 hover:border-denver-amber transition-colors bg-white/5">
+      <div className="aspect-[16/9] overflow-hidden bg-slate-800">
+        {photo && (
+          <img src={photoUrl(photo.name, 400, 225)} alt={hotel.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+        )}
+      </div>
+      <div className="p-3 flex flex-col gap-1 flex-1">
+        <p className="text-sm font-semibold text-white line-clamp-1 group-hover:text-denver-amber transition-colors">{hotel.name}</p>
+        <div className="flex items-center gap-2 text-xs text-slate-400">
+          {hotel.rating && <span className="text-amber-400">★ {hotel.rating.toFixed(1)}</span>}
+          {hotel.price_level != null && hotel.price_level > 0 && <span>{"$".repeat(hotel.price_level)}</span>}
+        </div>
+        <p className="text-xs font-semibold text-denver-amber mt-auto pt-1">Book on Expedia →</p>
+      </div>
+    </a>
+  );
+}
+
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const article = await getArticle(slug);
@@ -140,19 +168,23 @@ export default async function ArticlePage({ params }: Props) {
     : null;
   const isWeeklyGuide = article.content_type === "weekly-guide";
 
-  const [related, weeklyVideos] = await Promise.all([
+  const viatorQuery = neighborhood ? `${neighborhood.name} Denver` : "Denver Colorado";
+
+  const [related, weeklyVideos, nearbyHotels, viatorProducts] = await Promise.all([
     getRelatedArticles(slug, article.neighborhood_slug),
     isWeeklyGuide
       ? getVideosForPage(null, article.category_slug ?? "things-to-do", 3)
       : Promise.resolve([]),
+    article.neighborhood_slug
+      ? getPlaces(article.neighborhood_slug, "hotels").then((h) =>
+          h.filter(isRealHotel).filter(isUsefulPlace).slice(0, 3)
+        )
+      : Promise.resolve([] as Place[]),
+    searchViatorProducts(viatorQuery, 3),
   ]);
 
   const expediaUrl = article.expedia_url ??
     expediaDenverHotelsUrl(neighborhood ? `${neighborhood.name} Denver, Colorado` : "Denver, Colorado");
-
-  const zenUrl = zenhotelsUrl(
-    neighborhood ? `${neighborhood.name} Denver` : "Denver Colorado"
-  );
 
   const publishDate = video?.published_at
     ? new Date(video.published_at).toLocaleDateString("en-US", {
@@ -354,52 +386,79 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         )}
 
-        {/* Trip planning widget */}
+        {/* Trip planning module */}
         <div className="rounded-2xl overflow-hidden mb-10 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
           <div className="px-6 pt-6 pb-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-amber-400 mb-1">Plan Your Trip</p>
-            <h3 className="text-lg font-bold">
+            <h3 className="text-xl font-bold">
               {neighborhood ? `Visiting ${neighborhood.name}?` : "Coming to Denver?"}
             </h3>
-            <p className="text-sm text-slate-400 mt-0.5">
-              Find the best deals on hotels and flights
+            <p className="text-sm text-slate-400 mt-1">
+              Book hotels, tours, and flights — all in one place.
             </p>
           </div>
-          <div className="px-6 pb-6 space-y-3">
-            {/* Hotels row */}
-            <div className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-3">
-              <span className="text-2xl">🏨</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold">Hotels</p>
-                <p className="text-xs text-slate-400">
-                  {neighborhood ? `Near ${neighborhood.name}` : "Denver area"} · compare prices
-                </p>
+
+          {/* Hotels */}
+          <div className="px-6 py-5 border-t border-white/10">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-sm font-bold text-white">🏨 Where to Stay</p>
+              <a href={expediaUrl} target="_blank" rel="noopener noreferrer sponsored"
+                className="text-xs text-denver-amber hover:underline font-medium">
+                {neighborhood ? `All ${neighborhood.name} hotels →` : "All Denver hotels →"}
+              </a>
+            </div>
+            {nearbyHotels.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {nearbyHotels.map((hotel) => (
+                  <HotelCard key={hotel.place_id} hotel={hotel} fallbackUrl={expediaUrl} />
+                ))}
               </div>
-              <div className="flex gap-2 shrink-0">
-                <a href={expediaUrl} target="_blank" rel="noopener noreferrer sponsored"
-                  className="px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors">
-                  Expedia
+            ) : (
+              <a href={expediaUrl} target="_blank" rel="noopener noreferrer sponsored"
+                className="flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 hover:bg-white/10 transition-colors group">
+                <p className="text-sm text-slate-300">
+                  {neighborhood ? `Hotels near ${neighborhood.name}` : "Denver area hotels"} · compare prices
+                </p>
+                <span className="text-xs font-bold text-denver-amber shrink-0 ml-3 group-hover:underline">Search →</span>
+              </a>
+            )}
+          </div>
+
+          {/* Viator experiences */}
+          {viatorProducts.length > 0 && (
+            <div className="px-6 py-5 border-t border-white/10">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-sm font-bold text-white">🎯 Things to Do</p>
+                <a href="https://www.viator.com/Denver/d672-ttd?pid=P00295470&mcid=42383&medium=api"
+                  target="_blank" rel="noopener noreferrer sponsored"
+                  className="text-xs text-denver-amber hover:underline font-medium">
+                  Browse all experiences →
                 </a>
-                <a href={zenUrl} target="_blank" rel="noopener noreferrer sponsored"
-                  className="px-3 py-1.5 bg-white/10 text-white text-xs font-semibold rounded-lg hover:bg-white/20 transition-colors">
-                  ZenHotels
-                </a>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {viatorProducts.map((product) => (
+                  <ViatorProductCard key={product.productCode} product={product} />
+                ))}
               </div>
             </div>
-            {/* Flights row */}
-            <div className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-3">
+          )}
+
+          {/* Flights */}
+          <div className="px-6 py-5 border-t border-white/10">
+            <div className="flex items-center gap-4 bg-white/5 rounded-xl px-4 py-3">
               <span className="text-2xl">✈️</span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold">Flights to Denver</p>
-                <p className="text-xs text-slate-400">Search all airlines · DEN International</p>
+                <p className="text-xs text-slate-400">Search all airlines · DEN International Airport</p>
               </div>
               <a href={expediaFlightsToDenverUrl()} target="_blank" rel="noopener noreferrer sponsored"
-                className="px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors shrink-0">
+                className="px-4 py-2 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors shrink-0">
                 Search flights
               </a>
             </div>
           </div>
-          <p className="text-xs text-slate-500 px-6 pb-4">Affiliate links — booking supports this site at no cost to you.</p>
+
+          <p className="text-xs text-slate-500 px-6 pb-5">Affiliate links — booking supports this site at no extra cost to you.</p>
         </div>
         <div className="rounded-2xl bg-slate-900 dark:bg-slate-800 px-6 py-6 mb-10 flex items-center gap-5 flex-wrap">
           <div className="w-12 h-12 rounded-xl bg-red-600 flex items-center justify-center flex-shrink-0">
