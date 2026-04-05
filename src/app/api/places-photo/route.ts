@@ -44,8 +44,7 @@ export async function GET(request: Request) {
       // Store in Supabase so future requests (including after deploys) are free
       await supabaseAdmin
         .from("photo_cache")
-        .upsert({ photo_name: photoName, cdn_url: cdnUrl })
-        .eq("photo_name", photoName);
+        .upsert({ photo_name: photoName, cdn_url: cdnUrl }, { onConflict: "photo_name" });
 
       return NextResponse.redirect(cdnUrl, {
         status: 301,

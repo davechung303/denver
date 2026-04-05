@@ -14,8 +14,7 @@ async function fetchAndCachePhoto(photoName: string): Promise<boolean> {
     if (!cdnUrl) return false;
     await supabaseAdmin
       .from("photo_cache")
-      .upsert({ photo_name: photoName, cdn_url: cdnUrl })
-      .eq("photo_name", photoName);
+      .upsert({ photo_name: photoName, cdn_url: cdnUrl }, { onConflict: "photo_name" });
     return true;
   } catch {
     return false;
