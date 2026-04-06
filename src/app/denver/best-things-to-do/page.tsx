@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, photoUrl, type Place } from "@/lib/places";
+import { searchViatorProducts } from "@/lib/viator";
+import ViatorProductCard from "@/components/ViatorProductCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const revalidate = 86400;
@@ -61,7 +63,10 @@ function ActivityCard({ place, rank }: { place: Place; rank?: number }) {
 }
 
 export default async function BestThingsToDoPage() {
-  const places = await getBestOfDenver("things-to-do", 24);
+  const [places, viatorProducts] = await Promise.all([
+    getBestOfDenver("things-to-do", 24),
+    searchViatorProducts("Denver experiences", 8),
+  ]);
 
   return (
     <>
@@ -104,6 +109,18 @@ export default async function BestThingsToDoPage() {
           {places.map((place, i) => <ActivityCard key={place.place_id} place={place} rank={i + 1} />)}
         </div>
       </section>
+
+      {viatorProducts.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+          <h2 className="text-2xl font-bold mb-2">Book a Denver Experience</h2>
+          <p className="text-slate-500 dark:text-slate-400 mb-8">Top-rated tours and activities you can book directly.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {viatorProducts.map((product) => (
+              <ViatorProductCard key={product.productCode} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="bg-denver-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
