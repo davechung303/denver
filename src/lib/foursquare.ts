@@ -11,12 +11,17 @@ export interface FoursquareData {
 }
 
 const API_KEY = process.env.FOURSQUARE_API_KEY;
+const FSQ_VERSION = "2025-06-17";
 
 async function fsqFetch(path: string): Promise<any | null> {
   if (!API_KEY) return null;
   try {
-    const res = await fetch(`https://api.foursquare.com/v3${path}`, {
-      headers: { Authorization: API_KEY, Accept: "application/json" },
+    const res = await fetch(`https://places-api.foursquare.com${path}`, {
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+        Accept: "application/json",
+        "X-Places-Api-Version": FSQ_VERSION,
+      },
       next: { revalidate: 0 },
     });
     if (!res.ok) {
@@ -39,14 +44,14 @@ async function searchFsqId(
   if (lat && lng) {
     const params = new URLSearchParams({ query: name, limit: "1", ll: `${lat},${lng}`, radius: "500" });
     const data = await fsqFetch(`/places/search?${params}`);
-    const id = data?.results?.[0]?.fsq_id ?? null;
+    const id = data?.results?.[0]?.fsq_place_id ?? null;
     if (id) return id;
   }
 
   // Fallback: search by name near Denver
   const params = new URLSearchParams({ query: name, limit: "1", near: "Denver, CO" });
   const data = await fsqFetch(`/places/search?${params}`);
-  return data?.results?.[0]?.fsq_id ?? null;
+  return data?.results?.[0]?.fsq_place_id ?? null;
 }
 
 async function fetchTips(fsqId: string): Promise<FoursquareTip[]> {
@@ -55,7 +60,7 @@ async function fetchTips(fsqId: string): Promise<FoursquareTip[]> {
   // API returns a bare array
   const arr = Array.isArray(data) ? data : (data.results ?? []);
   return arr.slice(0, 5).map((t: any) => ({
-    id: t.id ?? "",
+    id: t.fsq_tip_id ?? t.id ?? "",
     text: t.text ?? "",
     agree_count: t.agree_count ?? 0,
     created_at: t.created_at ?? "",
