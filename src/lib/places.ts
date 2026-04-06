@@ -312,7 +312,7 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
 
 async function maybeFetchFoursquare(place: Place): Promise<Place> {
   if (!process.env.FOURSQUARE_API_KEY) return place;
-  const TTL = 24 * 60 * 60 * 1000;
+  const TTL = 30 * 24 * 60 * 60 * 1000; // 30 days
   if (place.fsq_cached_at && Date.now() - new Date(place.fsq_cached_at).getTime() < TTL) {
     return place;
   }
