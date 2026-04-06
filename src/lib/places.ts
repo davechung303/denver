@@ -1,7 +1,6 @@
 import { supabase, supabaseAdmin } from "./supabase";
 import { getNeighborhood, getCategory } from "./neighborhoods";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
-import { getFoursquareData, type FoursquareTip } from "./foursquare";
 
 // Use server-side key (no referrer restrictions) for API calls
 // NEXT_PUBLIC_ key is for client-side map embeds only
@@ -28,9 +27,6 @@ export interface Place {
   types: string[] | null;
   reviews: GoogleReview[] | null;
   review_summary: ReviewSummary | null;
-  fsq_id: string | null;
-  fsq_tips: FoursquareTip[] | null;
-  fsq_cached_at: string | null;
   cached_at: string;
   expedia_affiliate_url: string | null;
 }
@@ -191,9 +187,6 @@ async function fetchFromGooglePlaces(
       types: p.types ?? null,
       reviews: null,
       review_summary: null,
-      fsq_id: null,
-      fsq_tips: null,
-      fsq_cached_at: null,
       cached_at: new Date().toISOString(),
       expedia_affiliate_url: null,
     }));
@@ -310,18 +303,6 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
   return place;
 }
 
-async function maybeFetchFoursquare(place: Place): Promise<Place> {
-  if (!process.env.FOURSQUARE_API_KEY) return place;
-  const TTL = 30 * 24 * 60 * 60 * 1000; // 30 days
-  if (place.fsq_cached_at && Date.now() - new Date(place.fsq_cached_at).getTime() < TTL) {
-    return place;
-  }
-  const data = await getFoursquareData(place.name, place.lat, place.lng, place.fsq_id);
-  if (!data) return place;
-  const update = { fsq_id: data.fsq_id, fsq_tips: data.tips as any, fsq_cached_at: new Date().toISOString() };
-  await supabaseAdmin.from("places").update(update).eq("place_id", place.place_id);
-  return { ...place, ...update };
-}
 
 export async function getPlace(
   neighborhoodSlug: string,
@@ -339,7 +320,7 @@ export async function getPlace(
   // Row exists — generate summary if needed (fetches reviews lazily if missing)
   if (data) {
     const withSummary = await maybeGenerateSummary(data as Place);
-    return maybeFetchFoursquare(withSummary);
+    return withSummary;
   }
 
   // Try any category (handles places cached under a compound subcategory slug)
@@ -352,7 +333,7 @@ export async function getPlace(
 
   if (anyCategory) {
     const withSummary = await maybeGenerateSummary(anyCategory as Place);
-    return maybeFetchFoursquare(withSummary);
+    return withSummary;
   }
 
   // Not found in Supabase — return null. Google fetches only happen via refresh-places.
