@@ -27,6 +27,7 @@ const DAVES_PICKS_KEYS = [
   { slug: "cart-driver-rino",          neighborhood_slug: "rino",            note: "Unique menu with excellent wood-fired pizza." },
   { slug: "pizzeria-lui",              neighborhood_slug: "denver-suburbs",  note: "A local favorite with seasonal specials." },
   { slug: "dtc-slice",                 neighborhood_slug: "denver-suburbs",  note: "A true pizza hidden gem in the suburbs." },
+  { slug: "kaos-pizzeria",             neighborhood_slug: "platt-park",      note: "Unique pizzas on Denver's Pearl Street with a great outdoor patio." },
 ];
 
 // eslint-disable-next-line @next/next/no-img-element
