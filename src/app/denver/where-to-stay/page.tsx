@@ -141,9 +141,9 @@ export default async function WhereToStayPage() {
   const hotelsByNeighborhood = await Promise.all(
     HOTEL_NEIGHBORHOODS.map(async (hn) => {
       const places = await getPlaces(hn.slug, "hotels");
-      const real = places.filter(isRealHotel);
-      // Use real hotels; if fewer than 4, fall back to all lodging places
-      const hotels = (real.length >= 4 ? real : places).slice(0, 4);
+      const real = places.filter(isRealHotel).filter((p) => p.rating != null);
+      // Use real hotels; if fewer than 4, fall back to any rated lodging
+      const hotels = (real.length >= 4 ? real : places.filter((p) => p.rating != null)).slice(0, 4);
       return { slug: hn.slug, hotels };
     })
   );

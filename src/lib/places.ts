@@ -393,8 +393,11 @@ const HOTEL_TYPES = new Set([
   "inn",
 ]);
 
+const VACATION_RENTAL_TYPES = new Set(["cottage", "vacation_rental", "vacation_home_rental", "farm"]);
+
 // Returns true only for proper hotel/lodging businesses, filtering out vacation rentals
 export function isRealHotel(place: Place): boolean {
+  if (place.types?.some((t) => VACATION_RENTAL_TYPES.has(t))) return false;
   return place.types?.some((t) => HOTEL_TYPES.has(t)) ?? false;
 }
 
