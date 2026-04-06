@@ -27,6 +27,7 @@ const DAVES_PICKS_KEYS = [
   { slug: "ototo",        neighborhood_slug: "platt-park",    note: "Excellent Japanese food and sushi in one spot." },
   { slug: "sushi-katsu",  neighborhood_slug: "denver-suburbs",note: "Made-to-order AYCE sushi in Greenwood Village." },
   { slug: "uchi-denver",  neighborhood_slug: "rino",          note: "Transplant that lives up to the hype." },
+  { slug: "sushi-den",   neighborhood_slug: "platt-park",    note: "A Denver legend with fish flown in from a Japanese fish market." },
 ];
 
 // eslint-disable-next-line @next/next/no-img-element
