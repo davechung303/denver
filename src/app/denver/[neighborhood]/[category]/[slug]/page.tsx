@@ -373,11 +373,6 @@ export default async function BusinessPage({ params }: Props) {
       url: "https://davelovesdenver.com/about",
       sameAs: "https://www.youtube.com/@davechung",
     },
-    publisher: {
-      "@type": "Organization",
-      name: "Dave Loves Denver",
-      url: "https://davelovesdenver.com",
-    },
     reviewBody: [
       place.review_summary.consensus,
       ...(place.review_summary.highlights.length > 0
