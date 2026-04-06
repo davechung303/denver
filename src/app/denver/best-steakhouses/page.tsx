@@ -27,6 +27,7 @@ const DAVES_PICKS_KEYS = [
   { slug: "steakhouse-10",                     neighborhood_slug: "sloan-lake",      note: "Great steaks with zero hype." },
   { slug: "del-friscos-double-eagle-steakhouse", neighborhood_slug: "cherry-creek", note: "Classic steakhouse experience with great service." },
   { slug: "eddie-merlots",                     neighborhood_slug: "denver-suburbs",  note: "White tablecloths for special occasions." },
+  { slug: "bastiens-restaurant",               neighborhood_slug: "sloan-lake",      note: "Local favorite known for great service and its sugar steaks." },
 ];
 
 // eslint-disable-next-line @next/next/no-img-element
