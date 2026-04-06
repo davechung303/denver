@@ -27,6 +27,7 @@ const DAVES_PICKS_KEYS = [
   { slug: "big-sky-burger",      neighborhood_slug: "denver-suburbs",   note: "Local favorite hidden gem with unique burgers." },
   { slug: "daltons-cheeseburgs", neighborhood_slug: "five-points",      note: "Some of the best smashburgers in Denver." },
   { slug: "the-cherry-cricket",  neighborhood_slug: "cherry-creek",     note: "Lost a step but still a local favorite." },
+  { slug: "brasserie-brixton",   neighborhood_slug: "cole",             note: "If you like a fancier, more upscale burger, this is it." },
 ];
 
 // eslint-disable-next-line @next/next/no-img-element
