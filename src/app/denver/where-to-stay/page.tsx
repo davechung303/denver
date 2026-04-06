@@ -82,7 +82,7 @@ const HOTEL_NEIGHBORHOODS = [
 ];
 
 // eslint-disable-next-line @next/next/no-img-element
-function HotelCard({ place }: { place: Place }) {
+function HotelCardStacked({ place }: { place: Place }) {
   const href = place.expedia_affiliate_url ?? expediaDenverHotelsUrl();
   const photo = place.photos?.[0];
   return (
@@ -90,27 +90,24 @@ function HotelCard({ place }: { place: Place }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200"
+      className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200"
     >
-      <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
+      <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
         {photo ? (
-          <img src={photoUrl(photo.name, 600, 400)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          <img src={photoUrl(photo.name, 128, 128)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         ) : (
-          <div className="w-full h-full bg-slate-100 dark:bg-slate-800" />
+          <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
         )}
       </div>
-      <div className="p-4 flex flex-col gap-1.5 flex-1">
-        <h3 className="font-bold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
+      <div className="flex flex-col justify-center gap-0.5 min-w-0 flex-1">
+        <h3 className="font-semibold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
         {place.rating && (
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
             ★ {place.rating.toFixed(1)}
             {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
           </span>
         )}
-        {place.price_level != null && place.price_level > 0 && (
-          <span className="text-xs text-slate-400">{"$".repeat(place.price_level)}</span>
-        )}
-        <span className="mt-auto pt-2 text-xs font-semibold text-denver-amber group-hover:underline">Book on Expedia &rarr;</span>
+        <span className="text-xs text-denver-amber font-medium group-hover:underline">Book on Expedia &rarr;</span>
       </div>
     </a>
   );
@@ -144,10 +141,9 @@ export default async function WhereToStayPage() {
   const hotelsByNeighborhood = await Promise.all(
     HOTEL_NEIGHBORHOODS.map(async (hn) => {
       const places = await getPlaces(hn.slug, "hotels");
-      const hotels = places
-        .filter(isRealHotel)
-        .filter((p) => p.photos && p.photos.length > 0)
-        .slice(0, 4);
+      const real = places.filter(isRealHotel);
+      // Use real hotels; if fewer than 4, fall back to all lodging places
+      const hotels = (real.length >= 4 ? real : places).slice(0, 4);
       return { slug: hn.slug, hotels };
     })
   );
@@ -271,34 +267,34 @@ export default async function WhereToStayPage() {
               </a>
             </div>
 
-            {/* Hotel cards */}
+            {/* Hotels + map side by side */}
             {(() => {
               const hotels = hotelMap.get(hn.slug) ?? [];
-              if (hotels.length === 0) return null;
+              if (hotels.length === 0 && !n.stay22EmbedId) return null;
               return (
-                <div className="mt-8">
-                  <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Top-Rated Hotels in {n.name}</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {hotels.map((hotel) => <HotelCard key={hotel.place_id} place={hotel} />)}
-                  </div>
+                <div className="mt-8 flex flex-col lg:flex-row gap-4">
+                  {/* Left: stacked hotel cards */}
+                  {hotels.length > 0 && (
+                    <div className="flex flex-col gap-2 lg:w-2/5">
+                      <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Top-Rated Hotels in {n.name}</h3>
+                      {hotels.map((hotel) => <HotelCardStacked key={hotel.place_id} place={hotel} />)}
+                    </div>
+                  )}
+                  {/* Right: map — absolute fill to match card column height */}
+                  {n.stay22EmbedId && (
+                    <div className="hidden lg:block flex-1 relative">
+                      <iframe
+                        src={`https://www.stay22.com/embed/${n.stay22EmbedId}`}
+                        frameBorder="0"
+                        className="absolute inset-0 w-full h-full rounded-2xl"
+                        title={`Hotels in ${n.name}, Denver`}
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                 </div>
               );
             })()}
-
-            {/* Stay22 embed */}
-            {n.stay22EmbedId && (
-              <div className="mt-10">
-                <iframe
-                  src={`https://www.stay22.com/embed/${n.stay22EmbedId}`}
-                  width="100%"
-                  height="380"
-                  frameBorder="0"
-                  className="rounded-2xl w-full"
-                  title={`Hotels in ${n.name}, Denver`}
-                  loading="lazy"
-                />
-              </div>
-            )}
           </section>
         );
       })}

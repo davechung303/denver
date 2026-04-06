@@ -127,7 +127,7 @@ async function fetchFromGooglePlaces(
   // Hotels and activities serve a wider area than restaurants/bars
   const baseRadius = neighborhood.searchRadius ?? 1500.0;
   const wideCategories = new Set(["hotels", "things-to-do"]);
-  const radius = wideCategories.has(categorySlug) ? Math.max(baseRadius, 3000.0) : baseRadius;
+  const radius = wideCategories.has(categorySlug) ? Math.max(baseRadius, 5000.0) : baseRadius;
   const locationBias = {
     circle: {
       center: { latitude: neighborhood.lat, longitude: neighborhood.lng },
