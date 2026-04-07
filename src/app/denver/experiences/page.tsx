@@ -85,7 +85,7 @@ const FAQS = [
 export default async function ExperiencesPage() {
   // Fetch all experience types in parallel
   const results = await Promise.all(
-    EXPERIENCE_TYPES.map((type) => searchViatorProducts(type.searchTerm, 12))
+    EXPERIENCE_TYPES.map((type) => searchViatorProducts(type.searchTerm, 8))
   );
 
   return (
