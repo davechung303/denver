@@ -58,7 +58,8 @@ const SCHEMA_TYPES: Record<string, string> = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { neighborhood: nSlug, category: cSlug, slug } = await params;
   const n = getNeighborhood(nSlug);
-  const c = getCategory(cSlug);
+  const baseCSlug = cSlug.includes("-") ? cSlug.split("-")[0] : cSlug;
+  const c = getCategory(baseCSlug) ?? getCategory(cSlug);
   if (!n || !c) return {};
 
   // Subcategory page
