@@ -48,9 +48,9 @@ export default async function EventsPage() {
           <p className="mt-4 text-white/70 text-lg max-w-2xl">
             Live concerts, sports, and shows — plus curated experiences you can book any time.
           </p>
-          {events.length > 0 && (
-            <p className="mt-3 text-white/40 text-sm">{events.length} upcoming events</p>
-          )}
+          <p className="mt-3 text-white/40 text-sm">
+            {events.length} upcoming events · {feverEvents.length} experiences
+          </p>
         </div>
       </section>
 
