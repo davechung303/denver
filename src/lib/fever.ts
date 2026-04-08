@@ -22,8 +22,6 @@ export interface FeverEvent {
   synced_at: string;
 }
 
-const IMPACT_ACCOUNT_SID = process.env.IMPACT_ACCOUNT_SID;
-const IMPACT_AUTH_TOKEN = process.env.IMPACT_AUTH_TOKEN;
 const CATALOG_ID = "15532";
 
 function assignNeighborhood(lat: number, lng: number): string | null {
@@ -53,6 +51,9 @@ function parseNextDate(manufacturer: string | null): string | null {
 }
 
 export async function syncFeverEvents(): Promise<number> {
+  const IMPACT_ACCOUNT_SID = process.env.IMPACT_ACCOUNT_SID;
+  const IMPACT_AUTH_TOKEN = process.env.IMPACT_AUTH_TOKEN;
+
   if (!IMPACT_ACCOUNT_SID || !IMPACT_AUTH_TOKEN) {
     throw new Error("IMPACT_ACCOUNT_SID or IMPACT_AUTH_TOKEN not set");
   }
@@ -66,8 +67,8 @@ export async function syncFeverEvents(): Promise<number> {
   const pageSize = 100;
 
   while (true) {
-    const url = `https://api.impact.com/Mediapartners/${IMPACT_ACCOUNT_SID}/Catalogs/${CATALOG_ID}/Items?PageSize=${pageSize}&Page=${page}`;
-    const res = await fetch(url, { headers });
+    const apiUrl = `https://api.impact.com/Mediapartners/${IMPACT_ACCOUNT_SID}/Catalogs/${CATALOG_ID}/Items?PageSize=${pageSize}&Page=${page}`;
+    const res = await fetch(apiUrl, { headers });
 
     if (!res.ok) {
       console.error(`[fever] API error page ${page}:`, res.status, await res.text());
