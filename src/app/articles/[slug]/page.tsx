@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { embedUrl, getVideosForPage } from "@/lib/youtube";
@@ -228,7 +229,29 @@ export default async function ArticlePage({ params }: Props) {
           videoId: video.video_id,
         }] : []}
       />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 lg:grid lg:grid-cols-[1fr_300px] lg:gap-10 lg:items-start">
+        {/* Sidebar */}
+        <aside className="hidden lg:block lg:col-start-2 lg:row-start-1 sticky top-20">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden p-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Denver Experiences</p>
+            <div
+              data-gyg-href="https://widget.getyourguide.com/default/activities.frame"
+              data-gyg-locale-code="en-US"
+              data-gyg-widget="activities"
+              data-gyg-number-of-items="3"
+              data-gyg-partner-id="9SRZ2CR"
+              data-gyg-q="Denver, Colorado"
+            />
+            <Script
+              src="https://widget.getyourguide.com/dist/pa.umd.production.min.js"
+              data-gyg-partner-id="9SRZ2CR"
+              strategy="afterInteractive"
+            />
+          </div>
+        </aside>
+
+        {/* Main content */}
+        <div className="lg:col-start-1 lg:row-start-1 min-w-0">
         <nav className="mb-6">
           <ol className="flex items-center gap-2 text-sm text-slate-500">
             <li><Link href="/" className="hover:text-foreground transition-colors">Home</Link></li>
@@ -496,6 +519,7 @@ export default async function ArticlePage({ params }: Props) {
             </div>
           </div>
         )}
+        </div>{/* end main content */}
       </div>
     </>
   );
