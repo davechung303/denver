@@ -10,19 +10,26 @@ export async function GET(req: Request) {
   const token = process.env.IMPACT_AUTH_TOKEN;
   if (!sid || !token) return NextResponse.json({ error: "creds missing" }, { status: 500 });
 
-  // Show stored values for debugging (partial, not full secrets)
-  const sidInfo = { len: sid.length, start: sid.slice(0, 4), end: sid.slice(-4) };
-  const tokenInfo = { len: token.length, start: token.slice(0, 4), end: token.slice(-4), charCodes: [...token].slice(-6).map(c => c.charCodeAt(0)) };
+  const { createClient } = await import("@supabase/supabase-js");
+  const db = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
-  const credentials = Buffer.from(`${sid}:${token}`).toString("base64");
-  const url = `https://api.impact.com/Mediapartners/${sid}/Catalogs/15532/Items?PageSize=3&Page=1`;
-  const res = await fetch(url, { headers: { Authorization: `Basic ${credentials}`, Accept: "application/json" } });
+  const now = new Date().toISOString();
 
-  const text = await res.text();
+  const { data: total } = await db.from("fever_events").select("event_id", { count: "exact", head: true });
+  const { count: totalCount } = await db.from("fever_events").select("*", { count: "exact", head: true });
+  const { data: sample, error } = await db.from("fever_events").select("event_id, name, next_date, expiration_date, popularity").order("popularity", { ascending: false }).limit(3);
+  const { data: filtered, error: ferr } = await db.from("fever_events").select("event_id", { count: "exact", head: true }).or(`expiration_date.is.null,expiration_date.gt.${now}`);
+  const { count: filteredCount } = await db.from("fever_events").select("*", { count: "exact", head: true }).or(`expiration_date.is.null,expiration_date.gt.${now}`);
+
   return NextResponse.json({
-    status: res.status,
-    rawBody: text.slice(0, 200),
-    sidInfo,
-    tokenInfo,
+    totalCount,
+    filteredCount,
+    now,
+    sample,
+    sampleError: error?.message,
+    filterError: ferr?.message,
   });
 }
