@@ -12,7 +12,7 @@ export async function GET(req: Request) {
 
   const credentials = Buffer.from(`${sid}:${token}`).toString("base64");
   const url = `https://api.impact.com/Mediapartners/${sid}/Catalogs/15532/Items?PageSize=3&Page=1`;
-  const res = await fetch(url, { headers: { Authorization: `Basic ${credentials}` } });
+  const res = await fetch(url, { headers: { Authorization: `Basic ${credentials}`, Accept: "application/json" } });
 
   const text = await res.text();
   let data: any = null;
@@ -21,10 +21,11 @@ export async function GET(req: Request) {
   const firstItem = data?.Items?.[0] ?? null;
   return NextResponse.json({
     status: res.status,
-    rawBody: text.slice(0, 1000),
-    totalCount: data?.TotalCount,
+    rawBody: text.slice(0, 500),
+    totalPages: data?.["@numpages"],
     itemCount: data?.Items?.length,
-    firstItemKeys: firstItem ? Object.keys(firstItem) : [],
-    firstItem,
+    firstItemCity: firstItem?.Text2,
+    firstItemCurrency: firstItem?.Currency,
+    firstItemName: firstItem?.Name,
   });
 }
