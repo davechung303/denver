@@ -102,35 +102,35 @@ export default function EventsClient({ events, feverEvents }: Props) {
     return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
   }, [events]);
 
-  // Group Fever events by next_date (YYYY-MM-DD)
-  const feverByDate = useMemo(() => {
-    const map = new Map<string, FeverEvent[]>();
-    const unmatched: FeverEvent[] = [];
-    for (const event of feverEvents) {
-      if (!event.next_date) { unmatched.push(event); continue; }
-      const dateKey = event.next_date.slice(0, 10);
-      if (!map.has(dateKey)) map.set(dateKey, []);
-      map.get(dateKey)!.push(event);
+  // Distribute Fever events evenly across date groups for blending
+  const { tmByDate, feverSlots, feverUnmatched } = useMemo(() => {
+    const tmByDate = new Map(groups);
+    const dateKeys = groups.map(([k]) => k);
+
+    // Spread fever events across date groups round-robin
+    const feverUnmatched: FeverEvent[] = [];
+    const feverSlots = new Map<string, FeverEvent[]>();
+
+    if (dateKeys.length === 0) {
+      feverUnmatched.push(...feverEvents);
+    } else {
+      feverEvents.forEach((event, i) => {
+        const key = dateKeys[i % dateKeys.length];
+        if (!feverSlots.has(key)) feverSlots.set(key, []);
+        feverSlots.get(key)!.push(event);
+      });
     }
-    return { byDate: map, unmatched };
-  }, [feverEvents]);
 
-  // All date keys (union of TM dates + Fever dates), sorted
-  const allDateKeys = useMemo(() => {
-    const keys = new Set([
-      ...groups.map(([k]) => k),
-      ...feverByDate.byDate.keys(),
-    ]);
-    return Array.from(keys).sort();
-  }, [groups, feverByDate]);
+    return { tmByDate, feverSlots, feverUnmatched };
+  }, [groups, feverEvents]);
 
-  const tmByDate = useMemo(() => new Map(groups), [groups]);
+  const allDateKeys = useMemo(() => groups.map(([k]) => k), [groups]);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-14">
       {allDateKeys.map((dateKey) => {
         const dateEvents = tmByDate.get(dateKey) ?? [];
-        const dateFeverEvents = feverByDate.byDate.get(dateKey) ?? [];
+        const dateFeverEvents = feverSlots.get(dateKey) ?? [];
         const { label, sub } = formatDateHeader(dateKey);
         const active = getActive(dateKey);
 
@@ -232,21 +232,20 @@ export default function EventsClient({ events, feverEvents }: Props) {
         );
       })}
 
-      {/* Fever events not matched to any specific date */}
-      {feverByDate.unmatched.length > 0 && (
+      {feverUnmatched.length > 0 && (
         <div>
           <div className="flex items-baseline gap-3 mb-4">
             <h2 className="text-2xl font-bold">More Experiences</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {feverByDate.unmatched.map((event) => (
+            {feverUnmatched.map((event) => (
               <FeverCard key={event.event_id} event={event} />
             ))}
           </div>
         </div>
       )}
 
-      {allDateKeys.length === 0 && feverByDate.unmatched.length === 0 && (
+      {allDateKeys.length === 0 && feverUnmatched.length === 0 && (
         <p className="text-slate-400 text-center py-16">No upcoming events found.</p>
       )}
     </section>
