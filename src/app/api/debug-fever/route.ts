@@ -14,13 +14,16 @@ export async function GET(req: Request) {
   const url = `https://api.impact.com/Mediapartners/${sid}/Catalogs/15532/Items?PageSize=3&Page=1`;
   const res = await fetch(url, { headers: { Authorization: `Basic ${credentials}` } });
 
-  const data = await res.json();
-  // Return the first item's keys + values so we can see the field names
-  const firstItem = data.Items?.[0] ?? null;
+  const text = await res.text();
+  let data: any = null;
+  try { data = JSON.parse(text); } catch {}
+
+  const firstItem = data?.Items?.[0] ?? null;
   return NextResponse.json({
     status: res.status,
-    totalCount: data.TotalCount,
-    itemCount: data.Items?.length,
+    rawBody: text.slice(0, 1000),
+    totalCount: data?.TotalCount,
+    itemCount: data?.Items?.length,
     firstItemKeys: firstItem ? Object.keys(firstItem) : [],
     firstItem,
   });
