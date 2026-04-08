@@ -11,6 +11,17 @@ export async function GET(req: Request) {
   revalidatePath("/");
   revalidatePath("/denver");
   revalidatePath("/denver/hidden-gems");
+  revalidatePath("/denver/experiences");
+  revalidatePath("/denver/best-things-to-do");
+  revalidatePath("/denver/where-to-stay");
+  revalidatePath("/denver/best-steakhouses");
+  revalidatePath("/denver/best-pizza");
+  revalidatePath("/denver/best-sushi");
+  revalidatePath("/denver/best-burgers");
+  revalidatePath("/denver/best-bars");
+  revalidatePath("/denver/best-coffee");
+  revalidatePath("/denver/best-mexican-food");
+  revalidatePath("/denver/for-foodies");
   revalidatePath("/articles");
   revalidatePath("/articles/[slug]", "page");
   revalidatePath("/videos");
