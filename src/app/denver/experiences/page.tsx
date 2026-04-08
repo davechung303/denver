@@ -85,7 +85,7 @@ const FAQS = [
 export default async function ExperiencesPage() {
   // Fetch all experience types in parallel
   const results = await Promise.all(
-    EXPERIENCE_TYPES.map((type) => searchViatorProducts(type.searchTerm, 8))
+    EXPERIENCE_TYPES.map((type) => searchViatorProducts(type.searchTerm, 16))
   );
 
   return (
@@ -143,7 +143,7 @@ export default async function ExperiencesPage() {
       {/* Experience sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
         {EXPERIENCE_TYPES.map((type, i) => {
-          const products = results[i];
+          const products = results[i].slice(0, 8);
           return (
             <section key={type.id} id={type.id}>
               <div className="flex items-center gap-3 mb-3">
