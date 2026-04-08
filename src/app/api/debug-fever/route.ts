@@ -18,18 +18,33 @@ export async function GET(req: Request) {
 
   const now = new Date().toISOString();
 
-  const { data: total } = await db.from("fever_events").select("event_id", { count: "exact", head: true });
+  const oneYearOut = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const nowDate = now.slice(0, 10);
+
   const { count: totalCount } = await db.from("fever_events").select("*", { count: "exact", head: true });
-  const { data: sample, error } = await db.from("fever_events").select("event_id, name, next_date, expiration_date, popularity").order("popularity", { ascending: false }).limit(3);
-  const { data: filtered, error: ferr } = await db.from("fever_events").select("event_id", { count: "exact", head: true }).or(`expiration_date.is.null,expiration_date.gt.${now}`);
-  const { count: filteredCount } = await db.from("fever_events").select("*", { count: "exact", head: true }).or(`expiration_date.is.null,expiration_date.gt.${now}`);
+  const { count: giftCardCount } = await db.from("fever_events").select("*", { count: "exact", head: true }).ilike("name", "%gift card%");
+  const { count: nullNextDate } = await db.from("fever_events").select("*", { count: "exact", head: true }).is("next_date", null);
+
+  // Non-gift-card events sample
+  const { data: realSample, error } = await db
+    .from("fever_events")
+    .select("event_id, name, next_date, expiration_date, popularity")
+    .not("name", "ilike", "%gift card%")
+    .order("popularity", { ascending: false })
+    .limit(5);
+
+  // What passes the full getFeverEvents filter
+  const { count: filteredCount } = await db
+    .from("fever_events")
+    .select("*", { count: "exact", head: true })
+    .not("name", "ilike", "%gift card%")
+    .gte("next_date", nowDate)
+    .lte("next_date", oneYearOut);
 
   return NextResponse.json({
-    totalCount,
-    filteredCount,
-    now,
-    sample,
-    sampleError: error?.message,
-    filterError: ferr?.message,
+    totalCount, giftCardCount, nullNextDate, filteredCount,
+    nowDate, oneYearOut,
+    realSample,
+    error: error?.message,
   });
 }
