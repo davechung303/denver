@@ -48,7 +48,10 @@ function parseNextDate(manufacturer: string | null): string | null {
   return dates.find((d) => d > now) ?? dates[0] ?? null;
 }
 
-export async function syncFeverEvents(): Promise<number> {
+export async function syncFeverEvents(
+  startAfter?: string,
+  maxPages = 30
+): Promise<{ count: number; nextStartAfter: string | null }> {
   const IMPACT_ACCOUNT_SID = process.env.IMPACT_ACCOUNT_SID;
   const IMPACT_AUTH_TOKEN = process.env.IMPACT_AUTH_TOKEN;
 
@@ -64,11 +67,14 @@ export async function syncFeverEvents(): Promise<number> {
   const now = new Date().toISOString();
 
   const allDenverItems: any[] = [];
-  let nextUri: string | null =
-    `/Mediapartners/${IMPACT_ACCOUNT_SID}/Catalogs/${CATALOG_ID}/Items?PageSize=100`;
+  const baseUri = `/Mediapartners/${IMPACT_ACCOUNT_SID}/Catalogs/${CATALOG_ID}/Items?PageSize=100`;
+  let nextUri: string | null = startAfter
+    ? `${baseUri}&AfterId=${startAfter}`
+    : baseUri;
   let pageNum = 0;
+  let lastNextUri: string | null = null;
 
-  while (nextUri) {
+  while (nextUri && pageNum < maxPages) {
     pageNum++;
     const response: Response = await fetch(`${API_BASE}${nextUri}`, { headers });
 
@@ -91,14 +97,22 @@ export async function syncFeverEvents(): Promise<number> {
     allDenverItems.push(...denverItems);
 
     const totalPages = parseInt(data["@numpages"] ?? "0", 10);
-    console.log(`[fever] page ${pageNum}/${totalPages}, +${denverItems.length} Denver items (total: ${allDenverItems.length})`);
+    console.log(`[fever] page ${pageNum}/${totalPages}, +${denverItems.length} Denver items`);
 
-    nextUri = data["@nextpageuri"] || null;
+    lastNextUri = data["@nextpageuri"] || null;
+    nextUri = lastNextUri;
+  }
+
+  // Extract AfterId from nextpageuri for the next batch call
+  let nextStartAfter: string | null = null;
+  if (lastNextUri && pageNum >= maxPages) {
+    const match = lastNextUri.match(/AfterId=([^&]+)/);
+    nextStartAfter = match ? match[1] : null;
   }
 
   if (allDenverItems.length === 0) {
-    console.log("[fever] no Denver items found");
-    return 0;
+    console.log("[fever] no Denver items in this batch");
+    return { count: 0, nextStartAfter };
   }
 
   const rows = allDenverItems.map((item) => {
@@ -124,7 +138,10 @@ export async function syncFeverEvents(): Promise<number> {
     };
   }).filter((r) => r.event_id && r.name && r.url);
 
-  await supabaseAdmin.from("fever_events").delete().lt("expiration_date", now);
+  // Only delete expired events on the first batch
+  if (!startAfter) {
+    await supabaseAdmin.from("fever_events").delete().lt("expiration_date", now);
+  }
 
   let inserted = 0;
   for (let i = 0; i < rows.length; i += 50) {
@@ -137,7 +154,7 @@ export async function syncFeverEvents(): Promise<number> {
   }
 
   console.log(`[fever] upserted ${inserted}/${rows.length} Denver events`);
-  return rows.length;
+  return { count: rows.length, nextStartAfter };
 }
 
 export async function getFeverEvents(limit = 12): Promise<FeverEvent[]> {

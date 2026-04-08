@@ -7,6 +7,9 @@ import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
 const CACHE_TTL_HOURS = 720; // 30 days — places data is stable, refreshed monthly by cron
 
+// Columns for listing/card views — excludes heavy `reviews` field (only needed on detail pages)
+const LISTING_COLUMNS = "id, place_id, neighborhood_slug, category_slug, name, slug, address, phone, website, lat, lng, rating, review_count, price_level, hours, photos, types, review_summary, cached_at, expedia_affiliate_url";
+
 export interface Place {
   id: string;
   place_id: string;
@@ -515,13 +518,13 @@ export function isHiddenGem(place: Place): boolean {
 export async function getAllHiddenGems(): Promise<Place[]> {
   const { data } = await supabase
     .from("places")
-    .select("*")
+    .select(LISTING_COLUMNS)
     .not("rating", "is", null)
     .gte("rating", 4.5)
     .gte("review_count", 20)
     .lte("review_count", 500)
     .order("rating", { ascending: false })
-    .limit(2000);
+    .limit(300);
 
   return ((data ?? []) as Place[])
     .filter(isUsefulPlace)
@@ -535,13 +538,13 @@ export async function getBestOfDenver(
 ): Promise<Place[]> {
   const { data } = await supabase
     .from("places")
-    .select("*")
+    .select(LISTING_COLUMNS)
     .like("category_slug", `${categorySlug}%`)
     .not("rating", "is", null)
     .gte("rating", options?.minRating ?? 4.2)
     .gte("review_count", options?.minReviews ?? 200)
     .order("rating", { ascending: false })
-    .limit(500);
+    .limit(150);
 
   const places = (data ?? []) as Place[];
   return places
@@ -652,7 +655,7 @@ export async function getPlaces(
   // This prevents surprise API bills from ISR revalidation or build-time pre-rendering.
   const { data } = await supabase
     .from("places")
-    .select("*")
+    .select(LISTING_COLUMNS)
     .eq("neighborhood_slug", neighborhoodSlug)
     .eq("category_slug", categorySlug)
     .order("rating", { ascending: false });
