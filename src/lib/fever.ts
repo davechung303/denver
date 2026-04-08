@@ -23,6 +23,7 @@ export interface FeverEvent {
 }
 
 const CATALOG_ID = "15532";
+const API_BASE = "https://api.impact.com";
 
 function assignNeighborhood(lat: number, lng: number): string | null {
   for (const [slug, [minLat, maxLat, minLng, maxLng]] of Object.entries(NEIGHBORHOOD_BOUNDS)) {
@@ -35,7 +36,6 @@ function assignNeighborhood(lat: number, lng: number): string | null {
 
 function parseCoords(pattern: string | null): { lat: number | null; lng: number | null } {
   if (!pattern) return { lat: null, lng: null };
-  // Format: "(lat; lng)"
   const match = pattern.match(/\(?([\d.-]+);\s*([\d.-]+)\)?/);
   if (!match) return { lat: null, lng: null };
   return { lat: parseFloat(match[1]), lng: parseFloat(match[2]) };
@@ -43,11 +43,9 @@ function parseCoords(pattern: string | null): { lat: number | null; lng: number 
 
 function parseNextDate(manufacturer: string | null): string | null {
   if (!manufacturer) return null;
-  // Comma-separated date strings — take the first upcoming one
   const dates = manufacturer.split(",").map((d) => d.trim()).filter(Boolean);
   const now = new Date().toISOString();
-  const upcoming = dates.find((d) => d > now);
-  return upcoming ?? dates[0] ?? null;
+  return dates.find((d) => d > now) ?? dates[0] ?? null;
 }
 
 export async function syncFeverEvents(): Promise<number> {
@@ -59,43 +57,43 @@ export async function syncFeverEvents(): Promise<number> {
   }
 
   const credentials = Buffer.from(`${IMPACT_ACCOUNT_SID}:${IMPACT_AUTH_TOKEN}`).toString("base64");
-  const headers = { Authorization: `Basic ${credentials}` };
+  const headers = {
+    Authorization: `Basic ${credentials}`,
+    Accept: "application/json",
+  };
   const now = new Date().toISOString();
 
   const allDenverItems: any[] = [];
-  let page = 1;
-  const pageSize = 100;
+  let nextUri: string | null =
+    `/Mediapartners/${IMPACT_ACCOUNT_SID}/Catalogs/${CATALOG_ID}/Items?PageSize=100`;
+  let pageNum = 0;
 
-  while (true) {
-    const apiUrl = `https://api.impact.com/Mediapartners/${IMPACT_ACCOUNT_SID}/Catalogs/${CATALOG_ID}/Items?PageSize=${pageSize}&Page=${page}`;
-    const res = await fetch(apiUrl, { headers });
+  while (nextUri) {
+    pageNum++;
+    const res = await fetch(`${API_BASE}${nextUri}`, { headers });
 
     if (!res.ok) {
-      console.error(`[fever] API error page ${page}:`, res.status, await res.text());
+      console.error(`[fever] API error page ${pageNum}:`, res.status, await res.text());
       break;
     }
 
     const data = await res.json();
     const items: any[] = data.Items ?? [];
-
     if (items.length === 0) break;
 
-    // Filter to Denver USD events with future expiration
     const denverItems = items.filter(
       (item) =>
         item.Text2 === "Denver" &&
         item.Currency === "USD" &&
-        item.Category !== "Tier 4" && // non-commissionable
+        !item.Category?.startsWith("Tier 4") &&
         (!item.ExpirationDate || item.ExpirationDate > now)
     );
     allDenverItems.push(...denverItems);
 
-    const totalItems = data.TotalCount ?? 0;
-    const totalPages = Math.ceil(totalItems / pageSize);
-    console.log(`[fever] page ${page}/${totalPages}, found ${denverItems.length} Denver items this page`);
+    const totalPages = parseInt(data["@numpages"] ?? "0", 10);
+    console.log(`[fever] page ${pageNum}/${totalPages}, +${denverItems.length} Denver items (total: ${allDenverItems.length})`);
 
-    if (page >= totalPages) break;
-    page++;
+    nextUri = data["@nextpageuri"] || null;
   }
 
   if (allDenverItems.length === 0) {
@@ -126,10 +124,8 @@ export async function syncFeverEvents(): Promise<number> {
     };
   }).filter((r) => r.event_id && r.name && r.url);
 
-  // Delete expired events
   await supabaseAdmin.from("fever_events").delete().lt("expiration_date", now);
 
-  // Upsert in chunks
   let inserted = 0;
   for (let i = 0; i < rows.length; i += 50) {
     const chunk = rows.slice(i, i + 50);
