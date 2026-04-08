@@ -34,7 +34,6 @@ function formatDateHeader(dateKey: string): { label: string; sub: string } {
 
 // eslint-disable-next-line @next/next/no-img-element
 function FeverCard({ event }: { event: FeverEvent }) {
-  const subcategories = event.subcategory?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
   return (
     <a
       href={event.url}
@@ -51,15 +50,6 @@ function FeverCard({ event }: { event: FeverEvent }) {
         />
       )}
       <div className="flex flex-col gap-1 min-w-0">
-        {subcategories.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {subcategories.slice(0, 2).map((s) => (
-              <span key={s} className="text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 rounded-full px-2 py-0.5">
-                {s}
-              </span>
-            ))}
-          </div>
-        )}
         <h3 className="font-semibold text-sm leading-tight group-hover:text-denver-amber transition-colors line-clamp-2">
           {event.name}
         </h3>
