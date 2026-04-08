@@ -160,9 +160,8 @@ export async function syncFeverEvents(
 
 export async function getFeverEvents(limit = 12): Promise<FeverEvent[]> {
   const now = new Date().toISOString();
-  // Only show events with a next_date within the next year (excludes gift cards with fake 2030 dates)
   const oneYearOut = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("fever_events")
     .select("*")
     .not("name", "ilike", "%gift card%")
@@ -183,11 +182,14 @@ export async function getFeverEventsByCategory(
   limit = 8
 ): Promise<FeverEvent[]> {
   const now = new Date().toISOString();
-  const { data, error } = await supabase
+  const oneYearOut = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const { data, error } = await supabaseAdmin
     .from("fever_events")
     .select("*")
+    .not("name", "ilike", "%gift card%")
     .ilike("subcategory", `%${subcategory}%`)
-    .or(`expiration_date.is.null,expiration_date.gt.${now}`)
+    .gte("next_date", now.slice(0, 10))
+    .lte("next_date", oneYearOut)
     .order("popularity", { ascending: false })
     .limit(limit);
 
