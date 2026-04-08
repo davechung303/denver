@@ -70,7 +70,7 @@ export async function syncFeverEvents(): Promise<number> {
 
   while (nextUri) {
     pageNum++;
-    const response = await fetch(`${API_BASE}${nextUri}`, { headers });
+    const response: Response = await fetch(`${API_BASE}${nextUri}`, { headers });
 
     if (!response.ok) {
       console.error(`[fever] API error page ${pageNum}:`, response.status, await response.text());
