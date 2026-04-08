@@ -92,6 +92,7 @@ export async function syncFeverEvents(
         item.Text2 === "Denver" &&
         item.Currency === "USD" &&
         !item.Category?.startsWith("Tier 4") &&
+        !item.Name?.toLowerCase().includes("gift card") &&
         (!item.ExpirationDate || item.ExpirationDate > now)
     );
     allDenverItems.push(...denverItems);
@@ -159,10 +160,14 @@ export async function syncFeverEvents(
 
 export async function getFeverEvents(limit = 12): Promise<FeverEvent[]> {
   const now = new Date().toISOString();
+  // Only show events with a next_date within the next year (excludes gift cards with fake 2030 dates)
+  const oneYearOut = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const { data, error } = await supabase
     .from("fever_events")
     .select("*")
-    .or(`expiration_date.is.null,expiration_date.gt.${now}`)
+    .not("name", "ilike", "%gift card%")
+    .gte("next_date", now.slice(0, 10))
+    .lte("next_date", oneYearOut)
     .order("popularity", { ascending: false })
     .limit(limit);
 
