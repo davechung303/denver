@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { supabase } from "./supabase";
 import { NEIGHBORHOODS, CATEGORIES } from "./neighborhoods";
+import { fetchTranscript } from "./articles";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
@@ -16,6 +17,9 @@ async function classifyVideo(video: {
   title: string;
   description: string | null;
 }): Promise<{ neighborhood_slug: string; category_slug: string; relevance_score: number }[]> {
+  // Fetch transcript to give Claude real context — titles alone are often too sparse for Shorts
+  const transcript = await fetchTranscript(video.video_id);
+
   const prompt = `You are classifying a Denver YouTube video into neighborhoods and categories for a local guide website.
 
 VALID NEIGHBORHOODS:
@@ -26,11 +30,13 @@ ${CATEGORY_LIST}
 
 VIDEO TITLE: ${video.title}
 VIDEO DESCRIPTION: ${(video.description ?? "").slice(0, 800)}
+${transcript ? `TRANSCRIPT (first 1500 chars): ${transcript.slice(0, 1500)}` : ""}
 
 Task: Identify which Denver neighborhood(s) and category(ies) this video belongs to.
 
 Rules:
-- Only include associations you are confident about based on the title/description
+- Use title, description, AND transcript together — titles are often vague for Shorts
+- Only include associations you are confident about
 - A video can have multiple associations (e.g. a restaurant in RiNo AND Capitol Hill)
 - "denver-suburbs" covers Aurora, Lakewood, Littleton, Englewood, Arvada, Westminster, etc.
 - "downtown" covers LoDo, Union Station, 16th Street Mall, Larimer Square

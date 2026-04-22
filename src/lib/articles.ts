@@ -297,8 +297,23 @@ export async function generateMissingArticles(limit = 10): Promise<{ generated: 
     .from("video_page_associations")
     .select("video_id");
 
-  const associatedIds = [...new Set(associated?.map((a) => a.video_id) ?? [])];
-  if (associatedIds.length === 0) return { generated: 0, errors: 0 };
+  const associatedIds = new Set(associated?.map((a) => a.video_id) ?? []);
+
+  // Also include recently-published videos that have no associations at all —
+  // Shorts and videos with vague titles can slip through keyword matching entirely.
+  // Fetch the 50 most recently published videos and check which ones have no associations.
+  const { data: recentVideos } = await supabase
+    .from("youtube_videos")
+    .select("video_id")
+    .order("published_at", { ascending: false })
+    .limit(50);
+
+  const recentUnassociated = (recentVideos ?? [])
+    .map((v) => v.video_id)
+    .filter((id) => !associatedIds.has(id));
+
+  const candidateIds = [...new Set([...associatedIds, ...recentUnassociated])];
+  if (candidateIds.length === 0) return { generated: 0, errors: 0 };
 
   // Filter out ones that already have articles before applying limit
   const { data: existing } = await supabase
@@ -306,25 +321,40 @@ export async function generateMissingArticles(limit = 10): Promise<{ generated: 
     .select("video_id");
 
   const existingIds = new Set(existing?.map((a) => a.video_id) ?? []);
-  const missingIds = associatedIds.filter((id) => !existingIds.has(id));
+  const missingIds = candidateIds.filter((id) => !existingIds.has(id));
 
   if (missingIds.length === 0) return { generated: 0, errors: 0 };
 
   const { data: videos } = await supabase
     .from("youtube_videos")
-    .select("video_id, title")
+    .select("video_id, title, description")
     .in("video_id", missingIds)
     .order("published_at", { ascending: false })
     .limit(limit);
 
   if (!videos || videos.length === 0) return { generated: 0, errors: 0 };
 
-  const missing = videos;
-
   let generated = 0;
   let errors = 0;
 
-  for (const video of missing) {
+  for (const video of videos) {
+    // For videos with no associations, use transcript + description to confirm Denver content
+    // before spending Claude API credits on article generation
+    if (!associatedIds.has(video.video_id)) {
+      const transcript = await fetchTranscript(video.video_id);
+      const searchText = [video.title, video.description ?? "", transcript ?? ""].join(" ").toLowerCase();
+      const DENVER_SIGNALS = [
+        "denver", "colorado", "co ", "mile high", "front range", "rino", "lodo",
+        "capitol hill", "highlands", "cherry creek", "wash park", "washington park",
+        "five points", "baker", "uptown", "sloan lake", "berkeley", "platt park",
+        "jefferson park", "aurora", "lakewood", "littleton", "englewood", "arvada",
+        "westminster", "thornton", "centennial", "red rocks", "coors field",
+        "ball arena", "union station", "colfax",
+      ];
+      const isDenver = DENVER_SIGNALS.some((kw) => searchText.includes(kw));
+      if (!isDenver) continue;
+    }
+
     const result = await generateArticle(video.video_id);
     if (result.success) {
       generated++;
