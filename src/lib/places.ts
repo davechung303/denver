@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { getNeighborhood, getCategory } from "./neighborhoods";
+import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES } from "./neighborhoods";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
 
 // Use server-side key (no referrer restrictions) for API calls
@@ -644,6 +644,33 @@ export async function getTrendingPlaces(
       return scoreB - scoreA;
     })
     .slice(0, limit);
+}
+
+// Places added to the DB in the last 30 days, ordered newest first.
+// Uses created_at (set on insert, never updated) so monthly refresh-places
+// cron doesn't reset the "new" status of existing places.
+// Optionally scoped to a single neighborhood. Hotels excluded — not useful as "new openings."
+export async function getRecentlyAddedPlaces(
+  neighborhoodSlug?: string,
+  limit = 12
+): Promise<(Place & { created_at: string })[]> {
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  let query = supabase
+    .from("places")
+    .select(LISTING_COLUMNS + ", created_at")
+    .gte("created_at", thirtyDaysAgo)
+    .not("photos", "is", null)
+    .neq("category_slug", "hotels")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (neighborhoodSlug) {
+    query = query.eq("neighborhood_slug", neighborhoodSlug);
+  }
+
+  const { data } = await query;
+  return (data ?? []) as unknown as (Place & { created_at: string })[];
 }
 
 export async function getPlaces(

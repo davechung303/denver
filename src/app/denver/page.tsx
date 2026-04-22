@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ViatorWidget from "@/components/ViatorWidget";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
-import { getBestOfDenver, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
+import { getBestOfDenver, getRecentlyAddedPlaces, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
@@ -169,13 +169,14 @@ function SectionHeader({ title, subtitle, href, linkText }: { title: string; sub
 }
 
 export default async function BestOfDenverPage() {
-  const [rawRestaurants, hotels, bars, thingsToDo, coffee, trending] = await Promise.all([
+  const [rawRestaurants, hotels, bars, thingsToDo, coffee, trending, recentlyAdded] = await Promise.all([
     getBestOfDenver("restaurants", 500, { minReviews: 30, minRating: 3.8 }),
     getBestOfDenver("hotels", 12).then((h) => h.filter(isRealHotel)),
     getBestOfDenver("bars", 60).then((b) => b.filter(isRealBar).slice(0, 12)),
     getBestOfDenver("things-to-do", 12),
     getBestOfDenver("coffee", 12, { requireTypes: ["coffee_shop", "cafe", "coffee_roastery"] }),
     getTrendingPlaces(30, 8),
+    getRecentlyAddedPlaces(undefined, 16),
   ]);
 
   // Filter to real restaurants and group by neighborhood — top 4 per neighborhood.
@@ -274,6 +275,57 @@ export default async function BestOfDenverPage() {
           ))}
         </div>
       </div>
+
+      {/* Just Added strip — only rendered when there are recent places */}
+      {recentlyAdded.length > 0 && (
+        <section className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-denver-amber">
+                <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                </svg>
+                Just Added
+              </span>
+              <span className="text-sm text-slate-400">New places discovered in the last 30 days</span>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+              {recentlyAdded.map((place) => {
+                const photo = place.photos?.[0];
+                const n = NEIGHBORHOODS.find((nb) => nb.slug === place.neighborhood_slug);
+                const daysSince = Math.floor((Date.now() - new Date((place as any).created_at).getTime()) / 86400000);
+                const timeLabel = daysSince === 0 ? "Today" : daysSince === 1 ? "Yesterday" : `${daysSince}d ago`;
+                const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
+                return (
+                  <a key={place.place_id} href={href}
+                    className="group flex flex-col w-40 shrink-0"
+                  >
+                    <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+                      {photo && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={photoUrl(photo.name, 200, 200)} alt={place.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      )}
+                      <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                        NEW
+                      </span>
+                    </div>
+                    <div className="mt-2 px-0.5">
+                      <p className="text-[11px] text-slate-400">{timeLabel}</p>
+                      <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-denver-amber transition-colors">
+                        {place.name}
+                      </h3>
+                      {n && <p className="text-xs text-denver-amber mt-0.5">{n.name}</p>}
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
 

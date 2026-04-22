@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getPlaces, isRealBar, isRealCoffeeShop, isRealHotel, isRealRestaurant, isUsefulPlace, type Place } from "@/lib/places";
+import { getPlaces, getRecentlyAddedPlaces, isRealBar, isRealCoffeeShop, isRealHotel, isRealRestaurant, isUsefulPlace, photoUrl, type Place } from "@/lib/places";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -97,7 +97,7 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
 
-  const [videos, events, rawRestaurants, rawHotels, rawBars, rawThingsToDo, rawCoffee] = await Promise.all([
+  const [videos, events, rawRestaurants, rawHotels, rawBars, rawThingsToDo, rawCoffee, recentlyAdded] = await Promise.all([
     getVideosForPage(slug, null, 3),
     getEventsForNeighborhood(slug, 4),
     getPlaces(slug, "restaurants"),
@@ -105,6 +105,7 @@ export default async function NeighborhoodPage({ params }: Props) {
     getPlaces(slug, "bars"),
     getPlaces(slug, "things-to-do"),
     getPlaces(slug, "coffee"),
+    getRecentlyAddedPlaces(slug, 10),
   ]);
   // Sort by quality × proximity so the featured cards are actually in the neighborhood
   function sortByProximity(places: Place[]): Place[] {
@@ -220,6 +221,56 @@ export default async function NeighborhoodPage({ params }: Props) {
           <p className="mt-5 text-lg text-white/70 max-w-2xl leading-relaxed">{n.description}</p>
         </div>
       </section>
+
+      {/* Just Added strip — only shown when the discover-places cron has found recent additions */}
+      {recentlyAdded.length > 0 && (
+        <section className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-denver-amber">
+                <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                </svg>
+                Just Added in {n.name}
+              </span>
+              <span className="text-sm text-slate-400">New places discovered in the last 30 days</span>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+              {recentlyAdded.map((place) => {
+                const photo = place.photos?.[0];
+                const daysSince = Math.floor((Date.now() - new Date((place as any).created_at).getTime()) / 86400000);
+                const timeLabel = daysSince === 0 ? "Today" : daysSince === 1 ? "Yesterday" : `${daysSince}d ago`;
+                const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
+                return (
+                  <a key={place.place_id} href={href} className="group flex flex-col w-40 shrink-0">
+                    <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+                      {photo && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={photoUrl(photo.name, 200, 200)} alt={place.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      )}
+                      <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                        NEW
+                      </span>
+                    </div>
+                    <div className="mt-2 px-0.5">
+                      <p className="text-[11px] text-slate-400">{timeLabel}</p>
+                      <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-denver-amber transition-colors">
+                        {place.name}
+                      </h3>
+                      <p className="text-xs text-slate-500 capitalize mt-0.5">
+                        {place.category_slug.replace("-", " ")}
+                      </p>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* At-a-glance place sections */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
