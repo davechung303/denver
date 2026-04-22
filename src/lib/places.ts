@@ -673,6 +673,24 @@ export async function getRecentlyAddedPlaces(
   return (data ?? []) as unknown as (Place & { created_at: string })[];
 }
 
+// Hotels with price_level <= 2 and rating >= minRating across all (or one) neighborhood.
+// Used for the best-value hotel guide page.
+export async function getBestValueHotels(
+  minRating = 4.3,
+  limit = 30
+): Promise<Place[]> {
+  const { data } = await supabase
+    .from("places")
+    .select(LISTING_COLUMNS)
+    .eq("category_slug", "hotels")
+    .lte("price_level", 2)
+    .gte("rating", minRating)
+    .not("photos", "is", null)
+    .order("rating", { ascending: false })
+    .limit(limit);
+  return (data ?? []) as Place[];
+}
+
 export async function getPlaces(
   neighborhoodSlug: string,
   categorySlug: string

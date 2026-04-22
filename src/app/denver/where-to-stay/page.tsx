@@ -373,6 +373,7 @@ export default async function WhereToStayPage() {
             { href: "/hotels/near-city-park", label: "City Park & Denver Zoo" },
             { href: "/hotels/near-botanic-gardens", label: "Botanic Gardens" },
             { href: "/hotels/near-cherry-creek", label: "Cherry Creek North" },
+            { href: "/hotels/best-value-denver", label: "Best Value Hotels (4.3+ rating)" },
           ].map((v) => (
             <Link key={v.href} href={v.href}
               className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-denver-amber hover:text-denver-amber text-sm font-medium transition-all"
