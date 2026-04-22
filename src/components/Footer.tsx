@@ -36,14 +36,30 @@ const EXPLORE = [
   { href: "/about", label: "About Dave" },
 ];
 
+const HOTEL_GUIDES = [
+  { href: "/denver/where-to-stay", label: "Where to Stay in Denver" },
+  { href: "/hotels/best-value-denver", label: "Best Value Hotels" },
+  { href: "/hotels/near-red-rocks", label: "Near Red Rocks" },
+  { href: "/hotels/near-empower-field", label: "Near Empower Field" },
+  { href: "/hotels/near-coors-field", label: "Near Coors Field" },
+  { href: "/hotels/near-ball-arena", label: "Near Ball Arena" },
+  { href: "/hotels/near-mission-ballroom", label: "Near Mission Ballroom" },
+  { href: "/hotels/near-fiddlers-green", label: "Near Fiddler's Green" },
+  { href: "/hotels/near-convention-center", label: "Near Convention Center" },
+  { href: "/hotels/near-denver-airport", label: "Near Denver Airport" },
+  { href: "/hotels/near-city-park", label: "Near City Park" },
+  { href: "/hotels/near-botanic-gardens", label: "Near Botanic Gardens" },
+  { href: "/hotels/near-cherry-creek", label: "Near Cherry Creek" },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-denver-navy text-white/70 mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
 
           {/* Brand */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-1">
+          <div className="col-span-2 md:col-span-3 lg:col-span-1">
             <Link href="/" className="text-white font-bold text-lg hover:text-denver-amber transition-colors">
               Dave Loves Denver
             </Link>
@@ -99,6 +115,20 @@ export default function Footer() {
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Explore</p>
             <ul className="space-y-2">
               {EXPLORE.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Hotel Guides */}
+          <div className="col-span-1">
+            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Hotel Guides</p>
+            <ul className="space-y-2">
+              {HOTEL_GUIDES.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm hover:text-white transition-colors">
                     {link.label}

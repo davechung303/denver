@@ -436,7 +436,29 @@ export default async function BestOfDenverPage() {
                 <HotelCard key={p.place_id} place={p} />
               ))}
             </div>
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap gap-2">
+              {[
+                { href: "/hotels/near-red-rocks", label: "Near Red Rocks" },
+                { href: "/hotels/near-empower-field", label: "Near Empower Field" },
+                { href: "/hotels/near-coors-field", label: "Near Coors Field" },
+                { href: "/hotels/near-ball-arena", label: "Near Ball Arena" },
+                { href: "/hotels/near-mission-ballroom", label: "Near Mission Ballroom" },
+                { href: "/hotels/near-fiddlers-green", label: "Near Fiddler's Green" },
+                { href: "/hotels/near-convention-center", label: "Near Convention Center" },
+                { href: "/hotels/near-denver-airport", label: "Near Airport" },
+                { href: "/hotels/near-city-park", label: "Near City Park" },
+                { href: "/hotels/near-botanic-gardens", label: "Near Botanic Gardens" },
+                { href: "/hotels/near-cherry-creek", label: "Near Cherry Creek" },
+                { href: "/hotels/best-value-denver", label: "Best Value Hotels" },
+              ].map((v) => (
+                <Link key={v.href} href={v.href}
+                  className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap"
+                >
+                  {v.label}
+                </Link>
+              ))}
+            </div>
+            <div className="mt-6">
               <iframe
                 id="stay22-widget"
                 width="100%"

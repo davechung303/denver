@@ -343,6 +343,32 @@ export default async function NeighborhoodPage({ params }: Props) {
             src={`https://stay22.com/embed/${n.stay22EmbedId}`}
             frameBorder="0"
           />
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link href="/denver/where-to-stay" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Full hotel guide
+            </Link>
+            <Link href="/hotels/best-value-denver" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Best value hotels
+            </Link>
+            <Link href="/hotels/near-red-rocks" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Near Red Rocks
+            </Link>
+            <Link href="/hotels/near-empower-field" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Near Empower Field
+            </Link>
+            <Link href="/hotels/near-coors-field" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Near Coors Field
+            </Link>
+            <Link href="/hotels/near-ball-arena" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Near Ball Arena
+            </Link>
+            <Link href="/hotels/near-mission-ballroom" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Near Mission Ballroom
+            </Link>
+            <Link href="/hotels/near-convention-center" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+              Near Convention Center
+            </Link>
+          </div>
         </section>
       )}
 
