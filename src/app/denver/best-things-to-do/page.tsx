@@ -63,10 +63,19 @@ function ActivityCard({ place, rank }: { place: Place; rank?: number }) {
 }
 
 export default async function BestThingsToDoPage() {
-  const [places, viatorProducts] = await Promise.all([
+  const [places, viatorA, viatorB] = await Promise.all([
     getBestOfDenver("things-to-do", 24),
-    searchViatorProducts("Denver experiences", 8),
+    searchViatorProducts("Denver activities experiences", 12),
+    searchViatorProducts("Denver tours attractions", 12),
   ]);
+
+  // Merge and deduplicate by productCode, take first 12
+  const seen = new Set<string>();
+  const viatorProducts = [...viatorA, ...viatorB].filter((p) => {
+    if (seen.has(p.productCode)) return false;
+    seen.add(p.productCode);
+    return true;
+  }).slice(0, 12);
 
   return (
     <>

@@ -9,12 +9,14 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
   const [neighborhoodsOpen, setNeighborhoodsOpen] = useState(false);
   const [denverOpen, setDenverOpen] = useState(false);
+  const [thingsOpen, setThingsOpen] = useState(false);
   const pathname = usePathname();
 
   const closeAll = () => {
     setOpen(false);
     setNeighborhoodsOpen(false);
     setDenverOpen(false);
+    setThingsOpen(false);
   };
 
   return (
@@ -213,17 +215,63 @@ export default function Nav() {
               )}
             </div>
 
-            {/* Experiences link */}
-            <Link
-              href="/denver/experiences"
-              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver/experiences" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
-            >
-              Experiences
-            </Link>
+            {/* Things To Do dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setThingsOpen(!thingsOpen)}
+                className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname.startsWith("/denver/things-to-do") || pathname === "/denver/experiences" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+              >
+                Things To Do
+                <svg className={`w-4 h-4 transition-transform ${thingsOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {thingsOpen && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setThingsOpen(false)} />
+                  <div className="absolute top-full left-0 mt-1 w-[220px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
+                    <Link
+                      href="/denver/things-to-do"
+                      onClick={() => setThingsOpen(false)}
+                      className="flex flex-col px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Overview</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Events, tours & attractions</span>
+                    </Link>
+                    <div className="mx-3 my-1 border-t border-slate-100 dark:border-slate-800" />
+                    <Link
+                      href="/events"
+                      onClick={() => setThingsOpen(false)}
+                      className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Events</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Concerts, sports & shows</span>
+                    </Link>
+                    <Link
+                      href="/denver/experiences"
+                      onClick={() => setThingsOpen(false)}
+                      className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Tours & Experiences</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Food tours, brewery tours & more</span>
+                    </Link>
+                    <Link
+                      href="/denver/best-things-to-do"
+                      onClick={() => setThingsOpen(false)}
+                      className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-900 dark:text-white">Top Attractions</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Museums, parks & landmarks</span>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
 
             <Link
               href="/events"
-              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/events" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
             >
               Events
             </Link>
@@ -401,11 +449,11 @@ export default function Nav() {
               ))}
             </div>
             <Link
-              href="/denver/experiences"
+              href="/denver/things-to-do"
               onClick={closeAll}
               className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
-              Experiences
+              Things To Do
             </Link>
             <Link
               href="/events"

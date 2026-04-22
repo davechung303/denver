@@ -33,6 +33,10 @@ const HOTEL_NEIGHBORHOODS = [
     slug: "lodo",
     bestFor: "First-timers & sports fans",
     dave: "LoDo is the easiest place to stay in Denver if it's your first time. Union Station is one of the best train stations in the country — it's also a hotel, a food hall, and a hangout spot. You're walking distance from Coors Field, Ball Arena, and basically everything downtown. It costs more than staying elsewhere, but you won't need Uber as much.",
+    venueLinks: [
+      { href: "/hotels/near-coors-field", label: "Hotels near Coors Field" },
+      { href: "/hotels/near-ball-arena", label: "Hotels near Ball Arena" },
+    ],
   },
   {
     slug: "rino",
@@ -78,6 +82,9 @@ const HOTEL_NEIGHBORHOODS = [
     slug: "airport",
     bestFor: "Early flights & late arrivals",
     dave: "If you have a 6am flight or a midnight arrival, staying near DEN makes more sense than spending $80 on an Uber to downtown. There are solid options at every price point out here, and the Gaylord Rockies is worth knowing about if you want something more than just a sleep-and-fly.",
+    venueLinks: [
+      { href: "/hotels/near-denver-airport", label: "Hotels near Denver Airport (DEN)" },
+    ],
   },
 ];
 
@@ -204,16 +211,22 @@ export default async function WhereToStayPage() {
       {/* Quick nav strip */}
       <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-2 overflow-x-auto py-3 scrollbar-none">
+          <div className="flex flex-wrap gap-2 py-3">
             {HOTEL_NEIGHBORHOODS.map((hn) => (
               <a
                 key={hn.slug}
                 href={`#${hn.slug}`}
-                className="flex-shrink-0 px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap"
+                className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap"
               >
                 {hn.bestFor}
               </a>
             ))}
+            <Link
+              href="/hotels/near-red-rocks"
+              className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap"
+            >
+              Red Rocks shows
+            </Link>
           </div>
         </div>
       </div>
@@ -265,6 +278,17 @@ export default async function WhereToStayPage() {
               >
                 Browse hotels in {n.name} &rarr;
               </a>
+              {hn.venueLinks && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {hn.venueLinks.map((v) => (
+                    <Link key={v.href} href={v.href}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors"
+                    >
+                      {v.label} &rarr;
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Hotels + map side by side */}

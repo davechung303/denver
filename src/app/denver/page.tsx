@@ -262,12 +262,12 @@ export default async function BestOfDenverPage() {
 
       {/* Neighborhood browse strip */}
       <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex gap-3 overflow-x-auto no-scrollbar">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-3">
           {NEIGHBORHOODS.map((n) => (
             <Link
               key={n.slug}
               href={`/denver/${n.slug}`}
-              className="shrink-0 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-denver-amber transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-denver-amber transition-colors whitespace-nowrap"
             >
               {n.name}
             </Link>

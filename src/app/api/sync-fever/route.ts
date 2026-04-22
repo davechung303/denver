@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
   const url = new URL(req.url);
   const startAfter = url.searchParams.get("startAfter") ?? undefined;
-  const pagesPerBatch = 30;
+  const pagesPerBatch = 20;
 
   try {
     const { count, nextStartAfter } = await syncFeverEvents(startAfter, pagesPerBatch);
