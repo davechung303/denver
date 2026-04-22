@@ -663,6 +663,82 @@ export async function getPlaces(
   return (data ?? []) as Place[];
 }
 
+// Searches for newly opened places in each neighborhood for the discovery cron.
+// Only upserts places NOT already in the DB — this is additive, not a full refresh.
+// Runs weekly (~54 API calls for restaurants/bars/coffee across all neighborhoods).
+export async function discoverNewPlaces(): Promise<{ added: number; neighborhoods: number }> {
+  // Only the categories where new openings happen regularly
+  const DISCOVERY_CATEGORIES = ["restaurants", "bars", "coffee"] as const;
+
+  // Fetch all existing place_ids so we can skip them
+  const { data: existing } = await supabaseAdmin
+    .from("places")
+    .select("place_id");
+  const knownIds = new Set((existing ?? []).map((p: { place_id: string }) => p.place_id));
+
+  let totalAdded = 0;
+  let neighborhoodsChecked = 0;
+
+  for (const neighborhood of NEIGHBORHOODS) {
+    for (const categorySlug of DISCOVERY_CATEGORIES) {
+      const category = CATEGORIES.find((c) => c.slug === categorySlug);
+      if (!category) continue;
+
+      // "new" prefix surfaces recently-opened places near the top of results
+      const query = `new ${category.searchQuery} in ${neighborhood.searchName}`;
+      const locationBias = {
+        circle: {
+          center: { latitude: neighborhood.lat, longitude: neighborhood.lng },
+          radius: neighborhood.searchRadius ?? 1500,
+        },
+      };
+
+      const places = await fetchAllPagesForQuery({ textQuery: query, locationBias });
+      const newPlaces = places.filter(
+        (p: any) => !knownIds.has(p.id) && p.businessStatus !== "CLOSED_PERMANENTLY"
+      );
+
+      if (newPlaces.length > 0) {
+        const rows = newPlaces.map((p: any) => ({
+          place_id: p.id,
+          neighborhood_slug: neighborhood.slug,
+          category_slug: categorySlug,
+          name: p.displayName?.text ?? "",
+          slug: slugify(p.displayName?.text ?? p.id),
+          address: p.formattedAddress ?? null,
+          phone: p.nationalPhoneNumber ?? null,
+          website: p.websiteUri ?? null,
+          lat: p.location?.latitude ?? null,
+          lng: p.location?.longitude ?? null,
+          rating: p.rating ?? null,
+          review_count: p.userRatingCount ?? null,
+          price_level: p.priceLevel
+            ? ["PRICE_LEVEL_FREE", "PRICE_LEVEL_INEXPENSIVE", "PRICE_LEVEL_MODERATE", "PRICE_LEVEL_EXPENSIVE", "PRICE_LEVEL_VERY_EXPENSIVE"].indexOf(p.priceLevel)
+            : null,
+          hours: p.regularOpeningHours
+            ? { openNow: p.regularOpeningHours.openNow, weekdayDescriptions: p.regularOpeningHours.weekdayDescriptions }
+            : null,
+          photos: p.photos?.slice(0, 3).map((ph: any) => ({ name: ph.name })) ?? null,
+          types: p.types ?? null,
+          cached_at: new Date().toISOString(),
+        }));
+
+        await supabaseAdmin.from("places").upsert(rows, { onConflict: "place_id", ignoreDuplicates: true });
+        totalAdded += newPlaces.length;
+
+        // Track new IDs so later iterations don't re-insert the same place under a different neighborhood
+        newPlaces.forEach((p: any) => knownIds.add(p.id));
+      }
+
+      neighborhoodsChecked++;
+      // Small delay between API calls to stay well within rate limits
+      await new Promise((r) => setTimeout(r, 200));
+    }
+  }
+
+  return { added: totalAdded, neighborhoods: neighborhoodsChecked };
+}
+
 // Called only by /api/refresh-places — never from page renders.
 // Checks the TTL, invalidates stale rows, and re-fetches from Google.
 export async function refreshPlacesFromGoogle(
