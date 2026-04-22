@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPlace, getPlaces, getPlacesForSubcategory, isUsefulPlace, isRealHotel, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
-import { expediaHotelUrl, zenhotelsUrl, expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaHotelUrl, expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
 import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
@@ -288,8 +288,6 @@ export default async function BusinessPage({ params }: Props) {
 
   // Use per-hotel affiliate link if available, fall back to generic Denver search
   const expediaUrl = isHotel ? (place.expedia_affiliate_url ?? expediaHotelUrl()) : null;
-  const zenUrl = isHotel ? zenhotelsUrl() : null;
-
   // Map Google Places types → cuisine labels for Restaurant schema
   const CUISINE_MAP: Record<string, string> = {
     japanese_restaurant: "Japanese", italian_restaurant: "Italian",
@@ -696,17 +694,6 @@ export default async function BusinessPage({ params }: Props) {
                   Reserve on Expedia &rarr;
                 </a>
               )}
-              {isHotel && zenUrl && (
-                <a
-                  href={zenUrl}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  className="flex items-center justify-center w-full border border-slate-200 dark:border-slate-700 text-sm font-semibold py-2.5 px-4 rounded-xl hover:border-denver-amber hover:text-denver-amber transition-colors"
-                >
-                  Compare prices on ZenHotels
-                </a>
-              )}
-
               {place.phone && (
                 <a href={`tel:${place.phone}`} className="flex items-center gap-3 text-sm hover:text-denver-amber transition-colors">
                   <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

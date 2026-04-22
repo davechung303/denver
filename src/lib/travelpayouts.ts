@@ -6,14 +6,6 @@ const EXPEDIA_FLIGHTS = "https://expedia.com/affiliates/expedia-home.6ch6qO8";
 // Hotel search — Denver area
 const EXPEDIA_HOTELS_DENVER = "https://expedia.com/affiliates/hotel-search-denver.unRLn22";
 
-// ZenHotels via Impact affiliate program
-// Base link redirects to ZenHotels homepage with affiliate tracking — no deep link needed
-const ZEN_AFFILIATE_BASE = "https://emergingtravelinc.pxf.io/7XXqW5";
-
-export function zenhotelsUrl(_destination?: string): string {
-  return ZEN_AFFILIATE_BASE;
-}
-
 // Wrap a Ticketmaster event URL with the Impact affiliate link
 const TM_AFFILIATE_BASE = "https://ticketmaster.evyy.net/c/3433500/264167/4272?u=";
 
