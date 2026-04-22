@@ -221,11 +221,29 @@ export default async function WhereToStayPage() {
                 {hn.bestFor}
               </a>
             ))}
-            <Link
-              href="/hotels/near-red-rocks"
-              className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap"
-            >
+            <Link href="/hotels/near-red-rocks" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
               Red Rocks shows
+            </Link>
+            <Link href="/hotels/near-empower-field" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
+              Broncos games
+            </Link>
+            <Link href="/hotels/near-mission-ballroom" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
+              Mission Ballroom
+            </Link>
+            <Link href="/hotels/near-fiddlers-green" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
+              Fiddler&apos;s Green
+            </Link>
+            <Link href="/hotels/near-convention-center" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
+              Convention Center
+            </Link>
+            <Link href="/hotels/near-city-park" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
+              City Park &amp; Zoo
+            </Link>
+            <Link href="/hotels/near-botanic-gardens" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
+              Botanic Gardens
+            </Link>
+            <Link href="/hotels/near-cherry-creek" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
+              Cherry Creek
             </Link>
           </div>
         </div>
@@ -335,6 +353,34 @@ export default async function WhereToStayPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Venue hotel guides */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-2">Hotels Near Denver Venues &amp; Attractions</h2>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mb-8">Here for a specific event or attraction? These guides cover the best options for each.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {[
+            { href: "/hotels/near-red-rocks", label: "Red Rocks Amphitheatre" },
+            { href: "/hotels/near-empower-field", label: "Empower Field at Mile High" },
+            { href: "/hotels/near-coors-field", label: "Coors Field" },
+            { href: "/hotels/near-ball-arena", label: "Ball Arena" },
+            { href: "/hotels/near-mission-ballroom", label: "Mission Ballroom" },
+            { href: "/hotels/near-fiddlers-green", label: "Fiddler's Green" },
+            { href: "/hotels/near-convention-center", label: "Convention Center" },
+            { href: "/hotels/near-denver-airport", label: "Denver Airport (DEN)" },
+            { href: "/hotels/near-city-park", label: "City Park & Denver Zoo" },
+            { href: "/hotels/near-botanic-gardens", label: "Botanic Gardens" },
+            { href: "/hotels/near-cherry-creek", label: "Cherry Creek North" },
+          ].map((v) => (
+            <Link key={v.href} href={v.href}
+              className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-denver-amber hover:text-denver-amber text-sm font-medium transition-all"
+            >
+              <span>{v.label}</span>
+              <span className="text-denver-amber flex-shrink-0">&rarr;</span>
+            </Link>
+          ))}
         </div>
       </section>
 
