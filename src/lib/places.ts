@@ -673,7 +673,7 @@ export async function getRecentlyAddedPlaces(
   return (data ?? []) as unknown as (Place & { created_at: string })[];
 }
 
-// Hotels with price_level <= 2 and rating >= minRating across all (or one) neighborhood.
+// Hotels with price_level <= 2 (or null — Google often omits it for hotels) and rating >= minRating.
 // Used for the best-value hotel guide page.
 export async function getBestValueHotels(
   minRating = 4.3,
@@ -683,7 +683,7 @@ export async function getBestValueHotels(
     .from("places")
     .select(LISTING_COLUMNS)
     .eq("category_slug", "hotels")
-    .lte("price_level", 2)
+    .or("price_level.lte.2,price_level.is.null")
     .gte("rating", minRating)
     .not("photos", "is", null)
     .order("rating", { ascending: false })

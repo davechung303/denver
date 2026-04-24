@@ -62,21 +62,6 @@ export default function RootLayout({
             ]),
           }}
         />
-        {/* Stay22 hotel widget */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(s,t,a,y,twenty,two){s.Stay22=s.Stay22||{};s.Stay22.params={lmaID:'69d048505021760e928bb46e'};twenty=t.createElement(a);two=t.getElementsByTagName(a)[0];twenty.async=1;twenty.src=y;two.parentNode.insertBefore(twenty,two);})(window,document,'script','https://scripts.stay22.com/letmeallez.js');`,
-          }}
-        />
-        {/* Travelpayouts ownership verification */}
-        <script
-          data-noptimize="1"
-          data-cfasync="false"
-          data-wpfc-render="false"
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var script=document.createElement("script");script.async=1;script.src='https://emrldtp.cc/NTA5NzE3.js?t=509717';document.head.appendChild(script);})();`,
-          }}
-        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {/* Google Analytics */}
