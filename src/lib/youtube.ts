@@ -157,23 +157,22 @@ function mapVideoToPages(video: { title: string; description: string | null; tag
   return associations;
 }
 
-async function getUploadsPlaylistId(): Promise<string | null> {
+async function getPlaylistIds(): Promise<{ uploads: string | null; shorts: string | null }> {
   const res = await fetch(
-    `https://www.googleapis.com/youtube/v3/channels?forHandle=${CHANNEL_HANDLE}&part=contentDetails&key=${API_KEY}`
+    `https://www.googleapis.com/youtube/v3/channels?forHandle=${CHANNEL_HANDLE}&part=contentDetails,id&key=${API_KEY}`
   );
-  if (!res.ok) return null;
+  if (!res.ok) return { uploads: null, shorts: null };
   const data = await res.json();
-  return data.items?.[0]?.contentDetails?.relatedPlaylists?.uploads ?? null;
+  const channelId: string = data.items?.[0]?.id ?? "";
+  const uploads: string = data.items?.[0]?.contentDetails?.relatedPlaylists?.uploads ?? null;
+  // YouTube Shorts live in a separate UUSH playlist that the uploads playlist omits
+  const shorts = channelId ? `UUSH${channelId.replace(/^UC/, "")}` : null;
+  return { uploads, shorts };
 }
 
-export async function syncVideos(): Promise<{ synced: number; error?: string }> {
-  const playlistId = await getUploadsPlaylistId();
-  if (!playlistId) return { synced: 0, error: "Could not fetch channel playlist ID" };
-
-  // Fetch all videos from uploads playlist (up to 200)
-  let allItems: any[] = [];
+async function fetchPlaylistItems(playlistId: string, max = 200): Promise<any[]> {
+  const items: any[] = [];
   let pageToken: string | undefined;
-
   do {
     const url = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
     url.searchParams.set("playlistId", playlistId);
@@ -181,13 +180,33 @@ export async function syncVideos(): Promise<{ synced: number; error?: string }> 
     url.searchParams.set("maxResults", "50");
     url.searchParams.set("key", API_KEY);
     if (pageToken) url.searchParams.set("pageToken", pageToken);
-
     const res = await fetch(url.toString());
     if (!res.ok) break;
     const data = await res.json();
-    allItems = allItems.concat(data.items ?? []);
+    items.push(...(data.items ?? []));
     pageToken = data.nextPageToken;
-  } while (pageToken && allItems.length < 200);
+  } while (pageToken && items.length < max);
+  return items;
+}
+
+export async function syncVideos(): Promise<{ synced: number; error?: string }> {
+  const { uploads, shorts } = await getPlaylistIds();
+  if (!uploads) return { synced: 0, error: "Could not fetch channel playlist ID" };
+
+  // Fetch from both playlists — Shorts often only appear in the UUSH playlist
+  const [uploadItems, shortsItems] = await Promise.all([
+    fetchPlaylistItems(uploads, 200),
+    shorts ? fetchPlaylistItems(shorts, 200) : Promise.resolve([]),
+  ]);
+
+  // Deduplicate by video ID (many Shorts appear in both playlists)
+  const seen = new Set<string>();
+  const allItems = [...uploadItems, ...shortsItems].filter((item) => {
+    const id = item.contentDetails?.videoId;
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
 
   if (allItems.length === 0) return { synced: 0, error: "No videos found" };
 
