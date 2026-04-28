@@ -309,14 +309,15 @@ function parseDuration(iso: string): number {
   return h * 3600 + m * 60 + s;
 }
 
-export function isShort(video: Pick<Video, "title" | "tags" | "duration_seconds">): boolean {
+export function isShort(video: Pick<Video, "title" | "description" | "tags" | "duration_seconds">): boolean {
   // Duration-based detection: Shorts are 3 minutes or under
   if (video.duration_seconds !== null && video.duration_seconds !== undefined) {
     return video.duration_seconds <= 180;
   }
-  // Fallback: tag/title signals for older cached videos without duration
+  // Fallback: tag/title/description signals for videos without duration
   if (video.title?.toLowerCase().includes("#short")) return true;
   if (video.tags?.some((t) => t.toLowerCase() === "shorts" || t.toLowerCase() === "short")) return true;
+  if (video.description?.toLowerCase().includes("#shorts")) return true;
   return false;
 }
 
