@@ -20,21 +20,29 @@ export const metadata: Metadata = {
   },
 };
 
-const HERO_VIDEO_ID = "ny7PDhZ9FOQ";
+const HERO_VIDEO_ID = "Jnbjxwl84c8";
+const PINNED_VIDEO_IDS = ["ny7PDhZ9FOQ", "Zp66Pfg-ZqM"];
+const EXCLUDED_VIDEO_IDS = new Set(["ygxF4hz7KBY", "yIX0Y5Wc7QQ", "zMYd-4Iqllo"]);
 
 export default async function HomePage() {
   let popularVideos: Awaited<ReturnType<typeof getPopularDenverVideos>> = [];
   let latestArticles: any[] = [];
 
+  let pinnedRaw: any[] = [];
   try {
-    [popularVideos, latestArticles] = await Promise.race([
+    [popularVideos, latestArticles, pinnedRaw] = await Promise.race([
       Promise.all([
-        getPopularDenverVideos(6),
+        getPopularDenverVideos(15),
         supabase
           .from("articles")
           .select(`slug, title, content_type, neighborhood_slug, generated_at, places_mentioned, youtube_videos (thumbnail_url)`)
           .order("generated_at", { ascending: false })
           .limit(4)
+          .then(({ data }) => data ?? []),
+        supabase
+          .from("youtube_videos")
+          .select("*")
+          .in("video_id", PINNED_VIDEO_IDS)
           .then(({ data }) => data ?? []),
       ]),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
@@ -43,9 +51,13 @@ export default async function HomePage() {
     // Supabase timeout — render with empty state
   }
 
-  // Filter hero video from Popular
-  const shownIds = new Set([HERO_VIDEO_ID]);
-  const videos = popularVideos.filter((v) => !shownIds.has(v.video_id));
+  // Build Popular Videos: pinned first, then fill from popular, excluding hero + Gaylord Rockies
+  const excludeIds = new Set([HERO_VIDEO_ID, ...EXCLUDED_VIDEO_IDS]);
+  const popular = popularVideos.filter((v) => !excludeIds.has(v.video_id) && !PINNED_VIDEO_IDS.includes(v.video_id));
+  const pinned = PINNED_VIDEO_IDS
+    .map((id) => pinnedRaw.find((v: any) => v.video_id === id))
+    .filter(Boolean);
+  const videos = [...pinned, ...popular].slice(0, 6);
   return (
     <>
       <SchemaMarkup
@@ -104,15 +116,15 @@ export default async function HomePage() {
             <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <div className="aspect-video">
                 <iframe
-                  src="https://www.youtube.com/embed/ny7PDhZ9FOQ"
-                  title="Denver Noodle Shops You Should Try In 2026"
+                  src="https://www.youtube.com/embed/Jnbjxwl84c8"
+                  title="Havana Street Night Market — Denver's Best Kept Secret"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="w-full h-full"
                 />
               </div>
               <div className="px-4 py-3 bg-white/5">
-                <p className="text-sm text-white/70">Denver Noodle Shops You Should Try In 2026</p>
+                <p className="text-sm text-white/70">Havana Street Night Market — Denver&apos;s Best Kept Secret</p>
               </div>
             </div>
           </div>
