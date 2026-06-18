@@ -8,16 +8,14 @@
     { "path": "/api/sync-fever-full",   "schedule": "0 8 * * *" },
     { "path": "/api/snapshot-places",  "schedule": "0 9 * * 1" },
     { "path": "/api/discover-places",  "schedule": "0 12 * * 4" },
-    { "path": "/api/refresh-places",   "schedule": "0 10 1 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 11 1 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 12 1 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 13 1 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 14 1 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 16 1 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 18 1 * *" },
-    { "path": "/api/revalidate-all",   "schedule": "0 20 1 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 10 8,15,22 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 11 8,15,22 * *" },
-    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 12 8,15,22 * *" }
+    { "path": "/api/refresh-places",   "schedule": "0 10 * * 1" },
+    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 11 * * 1" },
+    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 12 * * 1" },
+    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 13 * * 1" },
+    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 14 * * 1" },
+    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 15 * * 1" },
+    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 16 * * 1" },
+    { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 17 * * 1" },
+    { "path": "/api/revalidate-all",   "schedule": "0 20 1 * *" }
   ]
 }
