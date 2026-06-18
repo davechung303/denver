@@ -46,6 +46,66 @@ function parseOpeningHours(descs: string[]): object[] {
   });
 }
 
+// Build place-specific FAQs from review_summary + place metadata.
+// These appear both visibly on the page AND as FAQPage schema for AI Overviews / Perplexity.
+function buildPlaceFAQs(place: Place, categorySlug: string, neighborhoodName: string): { question: string; answer: string }[] {
+  const faqs: { question: string; answer: string }[] = [];
+  const s = place.review_summary;
+  const isFoodCategory = ["restaurants", "bars", "coffee"].includes(categorySlug);
+
+  // 1. The main "is it good?" question — grounded in consensus
+  if (s?.consensus) {
+    const verb = categorySlug === "hotels" ? "stay at" : categorySlug === "things-to-do" ? "visit" : "eat at";
+    faqs.push({
+      question: `Is ${place.name} worth it in ${neighborhoodName}?`,
+      answer: s.consensus + (s.tagline ? ` Known for: ${s.tagline}.` : ""),
+    });
+  }
+
+  // 2. What to order / what's popular (food places)
+  if (isFoodCategory && s?.popular_dishes && s.popular_dishes.length > 0) {
+    faqs.push({
+      question: `What should I order at ${place.name}?`,
+      answer: `Popular choices at ${place.name} include ${s.popular_dishes.join(", ")}.`,
+    });
+  }
+
+  // 3. What people love — highlights
+  if (s?.highlights && s.highlights.length > 0) {
+    faqs.push({
+      question: `What do visitors love about ${place.name}?`,
+      answer: s.highlights.join(" "),
+    });
+  }
+
+  // 4. Honest caveats — lowlights (only if there are any)
+  if (s?.lowlights && s.lowlights.length > 0) {
+    faqs.push({
+      question: `Is there anything to know before visiting ${place.name}?`,
+      answer: s.lowlights.join(" "),
+    });
+  }
+
+  // 5. Price question (food/bar/coffee places)
+  if (isFoodCategory && place.price_level != null && place.price_level > 0) {
+    const priceDesc = ["", "inexpensive — a budget-friendly pick", "moderately priced", "on the pricier side", "a splurge"][place.price_level] ?? "moderately priced";
+    faqs.push({
+      question: `How expensive is ${place.name}?`,
+      answer: `${place.name} is ${priceDesc}${place.rating ? `, with a ${place.rating.toFixed(1)}-star rating from ${place.review_count?.toLocaleString() ?? "many"} Google reviews` : ""}.`,
+    });
+  }
+
+  // 6. Hotel-specific: why stay in this neighborhood
+  if (categorySlug === "hotels") {
+    faqs.push({
+      question: `Why stay in ${neighborhoodName} when visiting Denver?`,
+      answer: `${neighborhoodName} is a great base for exploring Denver. It's known for its walkable streets, local restaurants, and access to the rest of the city.`,
+    });
+  }
+
+  return faqs.slice(0, 5);
+}
+
 // Schema.org type map by category
 const SCHEMA_TYPES: Record<string, string> = {
   restaurants: "Restaurant",
@@ -288,6 +348,8 @@ export default async function BusinessPage({ params }: Props) {
 
   // Use per-hotel affiliate link if available, fall back to generic Denver search
   const expediaUrl = isHotel ? (place.expedia_affiliate_url ?? expediaHotelUrl()) : null;
+
+  const placeFAQs = buildPlaceFAQs(place, cSlug, n.name);
   // Map Google Places types → cuisine labels for Restaurant schema
   const CUISINE_MAP: Record<string, string> = {
     japanese_restaurant: "Japanese", italian_restaurant: "Italian",
@@ -414,6 +476,7 @@ export default async function BusinessPage({ params }: Props) {
           uploadDate: v.published_at,
           videoId: v.video_id,
         }))}
+        faqs={placeFAQs.length > 0 ? placeFAQs : undefined}
       />
 
       {/* Breadcrumb */}
@@ -957,6 +1020,21 @@ export default async function BusinessPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section — visible content matches FAQPage schema for AI Overviews */}
+      {placeFAQs.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {placeFAQs.map((faq, i) => (
+              <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+                <h3 className="text-base font-semibold mb-2">{faq.question}</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Related places */}
       {nearby.length > 0 && (
