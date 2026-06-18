@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
@@ -11,6 +11,7 @@ export default function Nav() {
   const [denverOpen, setDenverOpen] = useState(false);
   const [thingsOpen, setThingsOpen] = useState(false);
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
 
   const closeAll = () => {
     setOpen(false);
@@ -19,8 +20,21 @@ export default function Nav() {
     setThingsOpen(false);
   };
 
+  // Close dropdowns when clicking outside the nav
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setDenverOpen(false);
+        setNeighborhoodsOpen(false);
+        setThingsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-[9999] bg-denver-navy border-b border-white/10">
+    <header ref={navRef} className="sticky top-0 z-[9999] bg-denver-navy border-b border-white/10">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -53,10 +67,6 @@ export default function Nav() {
 
               {denverOpen && (
                 <>
-                  <div
-                    className="fixed inset-0 z-[9998]"
-                    onClick={() => setDenverOpen(false)}
-                  />
                   <div className="absolute top-full left-0 mt-1 w-[240px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-[10000] p-2">
                     <Link
                       href="/denver"
@@ -180,10 +190,6 @@ export default function Nav() {
 
               {neighborhoodsOpen && (
                 <>
-                  <div
-                    className="fixed inset-0 z-[9998]"
-                    onClick={() => setNeighborhoodsOpen(false)}
-                  />
                   <div className="absolute top-full right-0 mt-1 w-[480px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-[10000] p-4">
                     <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3 px-1">
                       Denver Neighborhoods
@@ -229,7 +235,6 @@ export default function Nav() {
 
               {thingsOpen && (
                 <>
-                  <div className="fixed inset-0 z-[9998]" onClick={() => setThingsOpen(false)} />
                   <div className="absolute top-full left-0 mt-1 w-[220px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-[10000] p-2">
                     <Link
                       href="/denver/things-to-do"
