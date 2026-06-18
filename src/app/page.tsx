@@ -107,6 +107,10 @@ export default async function HomePage() {
                   <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">YouTube Views</p>
                 </div>
                 <div>
+                  <p className="text-2xl font-bold text-denver-amber">25K+</p>
+                  <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">Denver Subscribers</p>
+                </div>
+                <div>
                   <p className="text-2xl font-bold text-denver-amber">100+</p>
                   <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">Guides & Reviews</p>
                 </div>
