@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getPlace, getPlaces, getPlacesForSubcategory, isUsefulPlace, isRealHotel, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
+import { notFound, redirect } from "next/navigation";
+import { getPlace, getPlaceBySlug, getPlaces, getPlacesForSubcategory, isUsefulPlace, isRealHotel, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import { expediaHotelUrl, expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
@@ -135,8 +135,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  // Business page
-  const place = await getPlace(nSlug, cSlug, slug);
+  // Business page — try exact match first, then fall back to slug-only lookup
+  let place = await getPlace(nSlug, cSlug, slug);
+  if (!place) {
+    const canonical = await getPlaceBySlug(slug);
+    if (canonical) place = canonical;
+  }
   if (!place) return {};
 
   const title = `${place.name} — ${c.name} near ${n.name}, Denver`;
@@ -288,8 +292,27 @@ export default async function BusinessPage({ params }: Props) {
   }
 
   // ── Business detail page ────────────────────────────────────────────────
-  const place = await getPlace(nSlug, cSlug, slug);
-  if (!place || !isUsefulPlace(place)) notFound();
+  let place = await getPlace(nSlug, cSlug, slug);
+
+  // If not found at this URL, try finding by slug only — then 301 redirect to correct canonical URL.
+  // This fixes noindex pages caused by old URLs where neighborhood/category changed after refresh.
+  if (!place) {
+    const canonical = await getPlaceBySlug(slug);
+    if (canonical && isUsefulPlace(canonical)) {
+      const canonicalCSlug = canonical.category_slug;
+      const canonicalNSlug = canonical.neighborhood_slug;
+      redirect(`/denver/${canonicalNSlug}/${canonicalCSlug}/${slug}`);
+    }
+    notFound();
+  }
+
+  // If found but URL uses compound category (e.g. bars-sports_bar) while place is under base category,
+  // redirect to canonical base-category URL.
+  if (cSlug !== place.category_slug && place.category_slug) {
+    redirect(`/denver/${place.neighborhood_slug}/${place.category_slug}/${slug}`);
+  }
+
+  if (!isUsefulPlace(place)) notFound();
 
   const isHotel = cSlug === "hotels";
   const isRestaurant = cSlug === "restaurants";

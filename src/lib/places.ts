@@ -343,6 +343,17 @@ export async function getPlace(
   return null;
 }
 
+// Find a place by slug alone (ignoring neighborhood/category) — used for redirect resolution
+export async function getPlaceBySlug(slug: string): Promise<Place | null> {
+  const { data } = await supabase
+    .from("places")
+    .select(LISTING_COLUMNS)
+    .eq("slug", slug)
+    .limit(1)
+    .single();
+  return (data as Place) ?? null;
+}
+
 export async function getPlacesForSubcategory(
   neighborhoodSlug: string,
   categorySlug: string,
