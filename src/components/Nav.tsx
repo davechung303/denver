@@ -20,7 +20,7 @@ export default function Nav() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-denver-navy border-b border-white/10">
+    <header className="sticky top-0 z-[9999] bg-denver-navy border-b border-white/10">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -54,7 +54,7 @@ export default function Nav() {
               {denverOpen && (
                 <>
                   <div
-                    className="fixed inset-0 z-10"
+                    className="fixed inset-0 z-[9998]"
                     onClick={() => setDenverOpen(false)}
                   />
                   <div className="absolute top-full left-0 mt-1 w-[240px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
@@ -181,7 +181,7 @@ export default function Nav() {
               {neighborhoodsOpen && (
                 <>
                   <div
-                    className="fixed inset-0 z-10"
+                    className="fixed inset-0 z-[9998]"
                     onClick={() => setNeighborhoodsOpen(false)}
                   />
                   <div className="absolute top-full right-0 mt-1 w-[480px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-4">
@@ -229,7 +229,7 @@ export default function Nav() {
 
               {thingsOpen && (
                 <>
-                  <div className="fixed inset-0 z-10" onClick={() => setThingsOpen(false)} />
+                  <div className="fixed inset-0 z-[9998]" onClick={() => setThingsOpen(false)} />
                   <div className="absolute top-full left-0 mt-1 w-[220px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
                     <Link
                       href="/denver/things-to-do"

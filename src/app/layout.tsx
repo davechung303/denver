@@ -4,6 +4,7 @@ import Script from "next/script";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import PrefetchOnHover from "@/components/PrefetchOnHover";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -78,6 +79,7 @@ export default function RootLayout({
           `}
         </Script>
         <ScrollToTop />
+        <PrefetchOnHover />
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />
