@@ -7,6 +7,20 @@ const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
 // from being used as an arbitrary Google API proxy by bots or attackers.
 const VALID_PHOTO_NAME = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/;
 
+// 1×1 transparent GIF — returned when a photo name is expired or invalid.
+// Browsers render it as nothing (no broken-image icon), and the card's
+// bg-slate-100 placeholder colour shows through instead.
+const TRANSPARENT_GIF = Buffer.from("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7", "base64");
+
+function placeholderResponse() {
+  return new NextResponse(TRANSPARENT_GIF, {
+    headers: {
+      "Content-Type": "image/gif",
+      "Cache-Control": "public, max-age=86400",
+    },
+  });
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const photoName = searchParams.get("name");
@@ -55,9 +69,12 @@ export async function GET(request: Request) {
       });
     }
 
+    // Google returned an error (e.g. 400 for an expired photo name) — return placeholder
+    if (!redirectRes.ok) return placeholderResponse();
+
     // Fallback: follow redirect and return image bytes if redirect URL not captured
     const res = await fetch(googleUrl);
-    if (!res.ok) return new NextResponse("Photo fetch failed", { status: 502 });
+    if (!res.ok) return placeholderResponse();
     const buffer = await res.arrayBuffer();
     const contentType = res.headers.get("content-type") ?? "image/jpeg";
     return new NextResponse(buffer, {
@@ -67,6 +84,6 @@ export async function GET(request: Request) {
       },
     });
   } catch {
-    return new NextResponse("Error", { status: 500 });
+    return placeholderResponse();
   }
 }
