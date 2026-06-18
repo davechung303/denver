@@ -61,7 +61,11 @@ export async function GET(request: Request) {
     cachePage++;
   }
 
-  // Get photo names from ALL places — check against photo_cache set to skip already-cached
+  // Only warm photos from places refreshed within the last 7 days.
+  // Google photo names expire in ~2 weeks, so names older than 7 days have
+  // a high failure rate. Places outside this window need a fresh refresh-places run first.
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
   let page = 0;
   const PAGE = 500;
   const uncached: string[] = [];
@@ -71,6 +75,7 @@ export async function GET(request: Request) {
       .from("places")
       .select("photos")
       .not("photos", "is", null)
+      .gte("cached_at", sevenDaysAgo)
       .range(page * PAGE, (page + 1) * PAGE - 1);
 
     if (!places || places.length === 0) break;
