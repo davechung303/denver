@@ -74,23 +74,16 @@ export async function GET(request: Request) {
     page++;
   }
 
-  // Just test the first photo to surface any errors before running a full batch
   if (uncached.length === 0) {
     return NextResponse.json({ total_uncached: 0, warmed: 0, failed: 0, remaining: 0 });
   }
 
-  const testResult = await fetchAndCachePhoto(uncached[0]);
-  if (!testResult.ok) {
-    return NextResponse.json({ error: testResult.error, photo: uncached[0], cdnUrl: testResult.cdnUrl }, { status: 500 });
-  }
-
-  // Test passed — warm the full batch
   const toWarm = uncached.slice(0, batchSize);
-  let warmed = 1; // already warmed the test photo
+  let warmed = 0;
   let failed = 0;
 
   const CONCURRENCY = 5;
-  for (let i = 1; i < toWarm.length; i += CONCURRENCY) {
+  for (let i = 0; i < toWarm.length; i += CONCURRENCY) {
     const chunk = toWarm.slice(i, i + CONCURRENCY);
     const results = await Promise.all(chunk.map(fetchAndCachePhoto));
     warmed += results.filter((r) => r.ok).length;
