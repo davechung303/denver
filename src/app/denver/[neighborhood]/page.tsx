@@ -235,18 +235,18 @@ export default async function NeighborhoodPage({ params }: Props) {
               </span>
               <span className="text-sm text-slate-400">New places discovered in the last 30 days</span>
             </div>
-            <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {recentlyAdded.map((place) => {
                 const photo = place.photos?.[0];
                 const daysSince = Math.floor((Date.now() - new Date((place as any).created_at).getTime()) / 86400000);
                 const timeLabel = daysSince === 0 ? "Today" : daysSince === 1 ? "Yesterday" : `${daysSince}d ago`;
                 const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
                 return (
-                  <a key={place.place_id} href={href} className="group flex flex-col w-40 shrink-0">
-                    <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  <a key={place.place_id} href={href} className="group flex flex-col">
+                    <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
                       {photo && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={photoUrl(photo.name, 200, 200)} alt={place.name}
+                        <img src={photoUrl(photo.name, 400, 225)} alt={place.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         />
@@ -255,7 +255,7 @@ export default async function NeighborhoodPage({ params }: Props) {
                         NEW
                       </span>
                     </div>
-                    <div className="mt-2 px-0.5">
+                    <div className="mt-2">
                       <p className="text-[11px] text-slate-400">{timeLabel}</p>
                       <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-denver-amber transition-colors">
                         {place.name}
