@@ -444,12 +444,17 @@ export default async function BusinessPage({ params }: Props) {
   // attributed to Dave Chung, giving Perplexity/Gemini a citable named-author opinion.
   const reviewSchema = place.review_summary?.consensus ? {
     "@context": "https://schema.org",
-    "@type": "Review",
+    "@type": ["Review", "Recommendation"],
     "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}#review`,
     itemReviewed: {
       "@type": SCHEMA_TYPES[cSlug] ?? "LocalBusiness",
       "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
       name: place.name,
+      // Mirror sameAs from LocalBusiness so AI can resolve the same entity
+      sameAs: [
+        `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
+        ...(place.website ? [place.website] : []),
+      ],
     },
     author: {
       "@type": "Person",
@@ -473,8 +478,35 @@ export default async function BusinessPage({ params }: Props) {
     }),
   } : null;
 
+  // WebPage + Speakable — marks key sections for voice AI (Gemini Live, etc.)
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}#webpage`,
+    url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
+    name: place.name,
+    ...(place.review_summary?.tagline && { description: place.review_summary.tagline }),
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-speakable]"],
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
+        { "@type": "ListItem", position: 2, name: n.name, item: `https://davelovesdenver.com/denver/${nSlug}` },
+        { "@type": "ListItem", position: 3, name: c.name, item: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}` },
+        { "@type": "ListItem", position: 4, name: place.name, item: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
+      ],
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
@@ -576,7 +608,7 @@ export default async function BusinessPage({ params }: Props) {
             {place.review_summary && (
               <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6 space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Things to Know</p>
-                <p className="text-lg font-medium leading-snug text-slate-800 dark:text-slate-100">
+                <p className="text-lg font-medium leading-snug text-slate-800 dark:text-slate-100" data-speakable>
                   {place.review_summary.consensus}
                 </p>
                 {place.review_summary.highlights.length > 0 && (
@@ -1052,7 +1084,7 @@ export default async function BusinessPage({ params }: Props) {
             {placeFAQs.map((faq, i) => (
               <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
                 <h3 className="text-base font-semibold mb-2">{faq.question}</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{faq.answer}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-speakable>{faq.answer}</p>
               </div>
             ))}
           </div>
