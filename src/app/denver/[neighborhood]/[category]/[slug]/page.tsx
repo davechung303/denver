@@ -427,7 +427,11 @@ export default async function BusinessPage({ params }: Props) {
       },
     }),
     ...(place.photos?.[0] && { image: photoAbsoluteUrl(place.photos[0].name) }),
-    ...(place.review_summary?.tagline && { description: place.review_summary.tagline }),
+    ...(place.review_summary?.tldr
+      ? { description: place.review_summary.tldr }
+      : place.review_summary?.tagline
+      ? { description: place.review_summary.tagline }
+      : {}),
     ...(priceRange && { priceRange }),
     ...(servesCuisine.length > 0 && { servesCuisine }),
     ...(place.hours?.weekdayDescriptions?.length && {
@@ -485,7 +489,11 @@ export default async function BusinessPage({ params }: Props) {
     "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}#webpage`,
     url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
     name: place.name,
-    ...(place.review_summary?.tagline && { description: place.review_summary.tagline }),
+    ...(place.review_summary?.tldr
+      ? { description: place.review_summary.tldr }
+      : place.review_summary?.tagline
+      ? { description: place.review_summary.tagline }
+      : {}),
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["[data-speakable]"],
@@ -608,6 +616,11 @@ export default async function BusinessPage({ params }: Props) {
             {place.review_summary && (
               <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6 space-y-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Things to Know</p>
+                {place.review_summary.tldr && (
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed" data-speakable>
+                    {place.review_summary.tldr}
+                  </p>
+                )}
                 <p className="text-lg font-medium leading-snug text-slate-800 dark:text-slate-100" data-speakable>
                   {place.review_summary.consensus}
                 </p>

@@ -7,6 +7,7 @@ export interface ReviewSummary {
   lowlights: string[];
   popular_dishes?: string[];
   tagline?: string; // 5-7 word descriptor shown on listing cards
+  tldr?: string;   // Full one-sentence summary for AI extraction and detail page hero
 }
 
 const FOOD_CATEGORIES = new Set(["restaurants", "bars", "coffee"]);
@@ -42,7 +43,7 @@ export async function generateReviewSummary(
   try {
     const message = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 500,
+      max_tokens: 600,
       messages: [
         {
           role: "user",
@@ -50,6 +51,7 @@ export async function generateReviewSummary(
 
 Return ONLY valid JSON, no markdown, no explanation:
 {
+  "tldr": "One complete sentence: '[Name] is a [type] [specific descriptor] known for [1-2 specific things], located [specific location detail].'",
   "tagline": "5-7 word hook specific to this place",
   "consensus": "One specific sentence capturing the overall vibe or standout quality of this place",
   "highlights": ["specific thing reviewers love", "another concrete positive"],
@@ -57,7 +59,8 @@ Return ONLY valid JSON, no markdown, no explanation:
 }
 
 Rules:
-- tagline: exactly 5-7 words, lowercase, no period — a specific hook that makes someone want to click. Focus on what's unique: a signature dish, a view, a vibe, a standout feature. Examples: "wood-fired pizza with a perfect char", "rooftop views of the whole city", "best tonkotsu broth in Denver", "connected directly to the terminal"
+- tldr: a single complete sentence structured for AI extraction. Include the place name, what kind of place it is, its standout quality, and a specific location detail. Example: "La Calle Grill is a no-frills taco counter on Tower Road specializing in birria and horchata, located 10 minutes from Denver International Airport." Another: "Rioja is a nationally acclaimed Mediterranean restaurant on Larimer Square known for its handmade pasta and James Beard-nominated chef."
+- tagline: exactly 5-7 words, lowercase, no period — a specific hook. Examples: "wood-fired pizza with a perfect char", "rooftop views of the whole city"
 - consensus should be specific and useful (not "great place" — say what makes it worth visiting)
 - highlights and lowlights must come from what reviewers actually said, not generic observations
 - lowlights can be [] if reviews are overwhelmingly positive
@@ -85,7 +88,8 @@ ${reviewText}`,
       typeof parsed.consensus !== "string" ||
       !Array.isArray(parsed.highlights) ||
       !Array.isArray(parsed.lowlights) ||
-      (parsed.tagline !== undefined && typeof parsed.tagline !== "string")
+      (parsed.tagline !== undefined && typeof parsed.tagline !== "string") ||
+      (parsed.tldr !== undefined && typeof parsed.tldr !== "string")
     ) {
       return null;
     }
