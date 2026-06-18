@@ -24,7 +24,7 @@ function detectContentType(title: string, description: string): "review" | "guid
   return matches.length >= 2 ? "guide" : "review";
 }
 
-// Fetch YouTube transcript using the timedtext API
+// Fetch YouTube transcript by scraping the watch page for the real caption track URL
 export async function fetchTranscript(videoId: string): Promise<string | null> {
   // Check Supabase cache first
   const { data: cached } = await supabase
@@ -33,36 +33,58 @@ export async function fetchTranscript(videoId: string): Promise<string | null> {
     .eq("video_id", videoId)
     .single();
 
-  if (cached) return cached.transcript;
+  if (cached?.transcript) return cached.transcript;
 
   try {
-    // Fetch the transcript list
-    const listRes = await fetch(
-      `https://www.youtube.com/api/timedtext?v=${videoId}&type=list`
-    );
-    if (!listRes.ok) return null;
-    const listText = await listRes.text();
+    // Fetch the YouTube watch page to extract the caption track URL with session params
+    const watchRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      },
+    });
+    if (!watchRes.ok) return null;
+    const html = await watchRes.text();
 
-    // Parse available languages — prefer English
-    const langMatch = listText.match(/lang_code="([^"]+)"/);
-    const lang = langMatch ? langMatch[1] : "en";
+    // Extract captionTracks from ytInitialPlayerResponse
+    const match = html.match(/"captionTracks":\s*(\[.*?\])/);
+    if (!match) return null;
 
-    // Fetch the actual transcript
-    const transcriptRes = await fetch(
-      `https://www.youtube.com/api/timedtext?v=${videoId}&lang=${lang}&fmt=json3`
-    );
-    if (!transcriptRes.ok) return null;
-    const transcriptData = await transcriptRes.json();
+    const tracks: any[] = JSON.parse(match[1]);
+    // Prefer manual English, fall back to auto-generated English, then any track
+    const track =
+      tracks.find((t) => t.languageCode === "en" && t.kind !== "asr") ||
+      tracks.find((t) => t.languageCode === "en") ||
+      tracks.find((t) => t.languageCode?.startsWith("en")) ||
+      tracks[0];
 
-    // Extract text from transcript events
-    const transcript = transcriptData.events
-      ?.filter((e: any) => e.segs)
-      .map((e: any) => e.segs.map((s: any) => s.utf8).join(""))
-      .join(" ")
+    if (!track?.baseUrl) return null;
+
+    // Unescape the URL (YouTube encodes & as \u0026 in JSON)
+    const captionUrl = track.baseUrl.replace(/\\u0026/g, "&");
+
+    // Fetch as XML (default format) — more reliable than json3
+    const captionRes = await fetch(captionUrl);
+    if (!captionRes.ok) return null;
+    const xml = await captionRes.text();
+
+    if (!xml || xml.trim().length === 0) return null;
+
+    // Parse XML: extract text from <text> elements, decode HTML entities
+    const transcript = xml
+      .replace(/<text[^>]*>/g, " ")
+      .replace(/<\/text>/g, " ")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
       .replace(/\s+/g, " ")
       .trim();
 
-    if (!transcript) return null;
+    if (!transcript || transcript.length < 100) return null;
 
     // Cache in Supabase
     await supabaseAdmin.from("transcripts").upsert({
@@ -111,29 +133,6 @@ export async function generateArticle(videoId: string): Promise<{ success: boole
   const neighborhood = associations?.[0]?.neighborhood_slug ?? null;
   const category = associations?.[0]?.category_slug ?? null;
   const contentType = detectContentType(video.title, video.description ?? "");
-
-  // Fetch real places from database to ground the article
-  let realPlaces = "";
-  if (neighborhood || category) {
-    const { createClient } = await import("@supabase/supabase-js");
-    const db = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-    let query = db
-      .from("places")
-      .select("name, address, rating, review_count, price_level")
-      .order("rating", { ascending: false })
-      .limit(15);
-    if (neighborhood) query = query.eq("neighborhood_slug", neighborhood);
-    if (category) query = query.eq("category_slug", category);
-    const { data: places } = await query;
-    if (places && places.length > 0) {
-      realPlaces = places
-        .map((p: any) => `- ${p.name} | ${p.address} | Rating: ${p.rating} | Price: ${"$".repeat(p.price_level ?? 1)}`)
-        .join("\n");
-    }
-  }
 
   // Search for local press coverage to add credibility
   const pressQuery = encodeURIComponent(`${video.title} site:westword.com OR site:denverpost.com`);
@@ -207,12 +206,11 @@ ${transcript ? `TRANSCRIPT: ${transcript.slice(0, 4000)}` : "No transcript avail
 CONTENT TYPE: ${contentType} (${contentType === "guide" ? "roundup covering multiple places" : "single place review"})
 ${neighborhood ? `NEIGHBORHOOD: ${neighborhood}` : ""}
 ${category ? `CATEGORY: ${category}` : ""}
-${realPlaces ? `NEARBY PLACES (supplementary reference — prioritize names from the transcript and description above all else):\n${realPlaces}` : ""}
 ${pressMentions ? `LOCAL PRESS (weave in naturally if relevant, do not quote directly):\n${pressMentions}` : ""}
 
 === WRITING INSTRUCTIONS ===
 
-Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article. Stay tightly focused on what's in the video — the transcript and description are your primary source.
+Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article. Stay tightly focused on what's in the video — the transcript and description are your ONLY sources for business names and specific details.
 
 ${contentType === "guide"
   ? "For each place covered in the video: give it a ## header with the business name. Write 2-4 sentences that describe what makes it worth going, what to get, and one specific detail that sets it apart. Vary the sentence structure between entries — they should not all sound the same."
@@ -220,7 +218,8 @@ ${contentType === "guide"
 
 CRITICAL RULES:
 - First person as Dave throughout
-- Use business names exactly as they appear in the transcript or description — do not invent names not mentioned in the video
+- ONLY mention businesses and places explicitly named in the transcript or video description — if a place is not in the transcript/description, it does not exist for this article
+- Do not invent, assume, or add any business name that is not word-for-word in the transcript or description
 - Do not invent prices, hours, or addresses
 - Use ## headers for section breaks
 - No bullet points

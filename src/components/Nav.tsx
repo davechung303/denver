@@ -57,7 +57,7 @@ export default function Nav() {
                     className="fixed inset-0 z-[9998]"
                     onClick={() => setDenverOpen(false)}
                   />
-                  <div className="absolute top-full left-0 mt-1 w-[240px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
+                  <div className="absolute top-full left-0 mt-1 w-[240px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-[10000] p-2">
                     <Link
                       href="/denver"
                       onClick={() => setDenverOpen(false)}
@@ -184,7 +184,7 @@ export default function Nav() {
                     className="fixed inset-0 z-[9998]"
                     onClick={() => setNeighborhoodsOpen(false)}
                   />
-                  <div className="absolute top-full right-0 mt-1 w-[480px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-4">
+                  <div className="absolute top-full right-0 mt-1 w-[480px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-[10000] p-4">
                     <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3 px-1">
                       Denver Neighborhoods
                     </p>
@@ -230,7 +230,7 @@ export default function Nav() {
               {thingsOpen && (
                 <>
                   <div className="fixed inset-0 z-[9998]" onClick={() => setThingsOpen(false)} />
-                  <div className="absolute top-full left-0 mt-1 w-[220px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 p-2">
+                  <div className="absolute top-full left-0 mt-1 w-[220px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-[10000] p-2">
                     <Link
                       href="/denver/things-to-do"
                       onClick={() => setThingsOpen(false)}
@@ -295,6 +295,17 @@ export default function Nav() {
               className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
             >
               About
+            </Link>
+
+            {/* Search */}
+            <Link
+              href="/search"
+              className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              aria-label="Search"
+            >
+              <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </Link>
 
             <div className="w-px h-5 bg-white/20 mx-2" />
@@ -482,6 +493,16 @@ export default function Nav() {
               className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
             >
               About
+            </Link>
+            <Link
+              href="/search"
+              onClick={closeAll}
+              className="flex items-center gap-2 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              Search
             </Link>
             <div className="border-t border-white/10 pt-4 mt-3 px-4 flex gap-3">
               <a
