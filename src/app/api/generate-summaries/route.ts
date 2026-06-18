@@ -35,13 +35,25 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const batchSize = parseInt(url.searchParams.get("batch") ?? "50");
+  // refresh_tldr=true: re-generate summaries that exist but are missing the tldr field
+  const refreshTldr = url.searchParams.get("refresh_tldr") === "true";
 
-  // Fetch places without review_summary — oldest cached_at first so less popular
-  // places eventually get coverage too
-  const { data: places, error } = await supabaseAdmin
+  let query = supabaseAdmin
     .from("places")
-    .select("place_id, name, category_slug, reviews")
-    .is("review_summary", null)
+    .select("place_id, name, category_slug, reviews");
+
+  if (refreshTldr) {
+    // Target places that have a summary but no tldr yet — skip empty sentinels (consensus="")
+    query = query
+      .not("review_summary", "is", null)
+      .filter("review_summary->>tldr", "is", null)
+      .neq("review_summary->>consensus", "");
+  } else {
+    // Default: only places with no summary at all
+    query = query.is("review_summary", null);
+  }
+
+  const { data: places, error } = await query
     .order("cached_at", { ascending: true })
     .limit(batchSize);
 
@@ -60,6 +72,11 @@ export async function GET(request: Request) {
         // Use cached reviews if available, otherwise fetch from Google
         let reviews = place.reviews as any[] | null;
         if (!reviews?.length) {
+          if (refreshTldr) {
+            // In refresh mode, skip fetching Google — if reviews aren't cached, skip
+            noReviews++;
+            return;
+          }
           reviews = await fetchReviews(place.place_id);
           if (!reviews?.length) {
             noReviews++;
@@ -97,6 +114,7 @@ export async function GET(request: Request) {
 
   return NextResponse.json({
     processed: places.length,
+    mode: refreshTldr ? "refresh_tldr" : "new",
     summaries_generated: ok,
     no_reviews: noReviews,
     failed,
