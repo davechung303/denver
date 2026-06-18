@@ -16,6 +16,10 @@
     { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 15 * * 1" },
     { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 16 * * 1" },
     { "path": "/api/warm-photo-cache?batch=500", "schedule": "0 17 * * 1" },
-    { "path": "/api/revalidate-all",   "schedule": "0 20 1 * *" }
+    { "path": "/api/generate-summaries?batch=50", "schedule": "0 18 * * 1" },
+    { "path": "/api/generate-summaries?batch=50", "schedule": "0 19 * * 1" },
+    { "path": "/api/generate-summaries?batch=50", "schedule": "0 20 * * 1" },
+    { "path": "/api/generate-summaries?batch=50", "schedule": "0 21 * * 1" },
+    { "path": "/api/revalidate-all",   "schedule": "0 22 * * 1" }
   ]
 }
