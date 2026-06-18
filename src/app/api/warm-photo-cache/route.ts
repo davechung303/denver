@@ -61,17 +61,25 @@ export async function GET(request: Request) {
     cachePage++;
   }
 
-  // Get all photo names from places
+  // Get photo names from places — optionally limited to recently-refreshed rows
+  const onlyRecent = url.searchParams.get("only_recent") !== "0";
+  const recentCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
   let page = 0;
   const PAGE = 500;
   const uncached: string[] = [];
 
   while (true) {
-    const { data: places } = await supabaseAdmin
+    let query = supabaseAdmin
       .from("places")
       .select("photos")
-      .not("photos", "is", null)
-      .range(page * PAGE, (page + 1) * PAGE - 1);
+      .not("photos", "is", null);
+
+    if (onlyRecent) {
+      query = query.gte("cached_at", recentCutoff);
+    }
+
+    const { data: places } = await query.range(page * PAGE, (page + 1) * PAGE - 1);
 
     if (!places || places.length === 0) break;
 
