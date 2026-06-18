@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const STORAGE_BUCKET = "place-photos";
 
 // Only allow well-formed Places photo resource names — prevents this endpoint
 // from being used as an arbitrary Google API proxy by bots or attackers.
@@ -21,6 +23,10 @@ function placeholderResponse() {
   });
 }
 
+function storagePublicUrl(photoName: string): string {
+  return `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${photoName}`;
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const photoName = searchParams.get("name");
@@ -29,9 +35,7 @@ export async function GET(request: Request) {
     return new NextResponse("Invalid photo name", { status: 400 });
   }
 
-  // Check the persistent photo cache first — avoids hitting Google on every request.
-  // CDN cache is purged on every deploy, but Supabase persists across deploys.
-  // Use admin client to bypass RLS on photo_cache.
+  // Check photo_cache first — may hold a permanent Supabase Storage URL or a Google CDN URL.
   const { data: cached } = await supabaseAdmin
     .from("photo_cache")
     .select("cdn_url")
@@ -41,46 +45,64 @@ export async function GET(request: Request) {
   if (cached?.cdn_url) {
     return NextResponse.redirect(cached.cdn_url, {
       status: 301,
-      headers: {
-        "Cache-Control": "public, max-age=2592000, s-maxage=2592000",
-      },
+      headers: { "Cache-Control": "public, max-age=31536000, s-maxage=31536000, immutable" },
     });
   }
 
-  // Cache miss — fetch from Google, capture the redirect URL, store it.
+  // Check if the image is already in Supabase Storage (e.g. uploaded by warm-photo-cache)
+  // by probing the public URL before hitting Google.
+  const storageUrl = storagePublicUrl(photoName);
+  const storageCheck = await fetch(storageUrl, { method: "HEAD" });
+  if (storageCheck.ok) {
+    // Already in storage — write to cache and redirect
+    await supabaseAdmin
+      .from("photo_cache")
+      .upsert({ photo_name: photoName, cdn_url: storageUrl }, { onConflict: "photo_name" });
+    return NextResponse.redirect(storageUrl, {
+      status: 301,
+      headers: { "Cache-Control": "public, max-age=31536000, s-maxage=31536000, immutable" },
+    });
+  }
+
+  // Cache miss — fetch image bytes from Google.
   const googleUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=800&maxHeightPx=500&key=${PLACES_API_KEY}`;
 
   try {
-    // First pass: follow redirect manually to capture the CDN URL
-    const redirectRes = await fetch(googleUrl, { redirect: "manual" });
-    const cdnUrl = redirectRes.headers.get("location");
+    const res = await fetch(googleUrl);
+    if (!res.ok) return placeholderResponse();
 
-    if (cdnUrl) {
-      // Store in Supabase so future requests (including after deploys) are free
+    const buffer = await res.arrayBuffer();
+    const contentType = res.headers.get("content-type") ?? "image/jpeg";
+    const ext = contentType.includes("png") ? "png" : contentType.includes("webp") ? "webp" : "jpg";
+    const storagePath = `${photoName}.${ext}`;
+    const finalStorageUrl = storagePublicUrl(storagePath);
+
+    // Upload to Supabase Storage — permanent, never expires.
+    const { error: uploadError } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .upload(storagePath, Buffer.from(buffer), {
+        contentType,
+        upsert: true,
+        cacheControl: "31536000",
+      });
+
+    if (!uploadError) {
+      // Store the permanent URL in photo_cache
       await supabaseAdmin
         .from("photo_cache")
-        .upsert({ photo_name: photoName, cdn_url: cdnUrl }, { onConflict: "photo_name" });
+        .upsert({ photo_name: photoName, cdn_url: finalStorageUrl }, { onConflict: "photo_name" });
 
-      return NextResponse.redirect(cdnUrl, {
+      return NextResponse.redirect(finalStorageUrl, {
         status: 301,
-        headers: {
-          "Cache-Control": "public, max-age=2592000, s-maxage=2592000",
-        },
+        headers: { "Cache-Control": "public, max-age=31536000, s-maxage=31536000, immutable" },
       });
     }
 
-    // Google returned an error (e.g. 400 for an expired photo name) — return placeholder
-    if (!redirectRes.ok) return placeholderResponse();
-
-    // Fallback: follow redirect and return image bytes if redirect URL not captured
-    const res = await fetch(googleUrl);
-    if (!res.ok) return placeholderResponse();
-    const buffer = await res.arrayBuffer();
-    const contentType = res.headers.get("content-type") ?? "image/jpeg";
+    // Storage upload failed — serve bytes directly as fallback
     return new NextResponse(buffer, {
       headers: {
         "Content-Type": contentType,
-        "Cache-Control": "public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=86400",
+        "Cache-Control": "public, max-age=2592000, s-maxage=2592000",
       },
     });
   } catch {

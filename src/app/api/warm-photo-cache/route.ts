@@ -4,19 +4,34 @@ import { supabaseAdmin } from "@/lib/supabase";
 export const maxDuration = 300;
 
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const STORAGE_BUCKET = "place-photos";
 const VALID_PHOTO_NAME = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/;
 
-async function fetchAndCachePhoto(photoName: string): Promise<{ ok: boolean; error?: string; cdnUrl?: string }> {
+async function fetchAndStorePhoto(photoName: string): Promise<{ ok: boolean; error?: string }> {
   try {
     const googleUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=800&maxHeightPx=500&key=${PLACES_API_KEY}`;
-    const redirectRes = await fetch(googleUrl, { redirect: "manual" });
-    const cdnUrl = redirectRes.headers.get("location");
-    if (!cdnUrl) return { ok: false, error: `no_redirect status=${redirectRes.status}` };
-    const { error } = await supabaseAdmin
+    const res = await fetch(googleUrl);
+    if (!res.ok) return { ok: false, error: `google_status=${res.status}` };
+
+    const buffer = await res.arrayBuffer();
+    const contentType = res.headers.get("content-type") ?? "image/jpeg";
+    const ext = contentType.includes("png") ? "png" : contentType.includes("webp") ? "webp" : "jpg";
+    const storagePath = `${photoName}.${ext}`;
+
+    const { error: uploadError } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .upload(storagePath, Buffer.from(buffer), { contentType, upsert: true, cacheControl: "31536000" });
+
+    if (uploadError) return { ok: false, error: uploadError.message };
+
+    const storageUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${storagePath}`;
+    const { error: cacheError } = await supabaseAdmin
       .from("photo_cache")
-      .upsert({ photo_name: photoName, cdn_url: cdnUrl }, { onConflict: "photo_name" });
-    if (error) return { ok: false, error: error.message, cdnUrl };
-    return { ok: true, cdnUrl };
+      .upsert({ photo_name: photoName, cdn_url: storageUrl }, { onConflict: "photo_name" });
+
+    if (cacheError) return { ok: false, error: cacheError.message };
+    return { ok: true };
   } catch (e: any) {
     return { ok: false, error: e.message };
   }
@@ -85,7 +100,7 @@ export async function GET(request: Request) {
   const CONCURRENCY = 5;
   for (let i = 0; i < toWarm.length; i += CONCURRENCY) {
     const chunk = toWarm.slice(i, i + CONCURRENCY);
-    const results = await Promise.all(chunk.map(fetchAndCachePhoto));
+    const results = await Promise.all(chunk.map(fetchAndStorePhoto));
     warmed += results.filter((r) => r.ok).length;
     failed += results.filter((r) => !r.ok).length;
     if (i + CONCURRENCY < toWarm.length) {
