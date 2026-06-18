@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
@@ -366,7 +366,7 @@ IMPORTANT RULES:
 
     const photo = await getWeeklyPhoto(restaurantNames, enrichedArticles);
 
-    const { error } = await supabase.from("articles").upsert(
+    const { error } = await supabaseAdmin.from("articles").upsert(
       {
         video_id: null,
         slug,

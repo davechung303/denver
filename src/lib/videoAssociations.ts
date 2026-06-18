@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 import { NEIGHBORHOODS, CATEGORIES } from "./neighborhoods";
 import { fetchTranscript } from "./articles";
 
@@ -112,7 +112,7 @@ export async function associateVideosWithNeighborhoods(
       if (associations.length === 0) {
         skipped++;
       } else {
-        await supabase.from("video_page_associations").upsert(
+        await supabaseAdmin.from("video_page_associations").upsert(
           associations.map((a) => ({
             video_id: video.video_id,
             neighborhood_slug: a.neighborhood_slug,

@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 import { VOICE_GUIDE } from "./voiceGuide";
 import { expediaHotelUrl } from "./travelpayouts";
 import { injectInternalLinks } from "./internalLinks";
@@ -279,7 +279,7 @@ RULES:
 
     const articleText = await injectInternalLinks(raw);
 
-    const { error } = await supabase.from("articles").upsert(
+    const { error } = await supabaseAdmin.from("articles").upsert(
       {
         video_id: null,
         slug,

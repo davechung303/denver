@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 import { VOICE_GUIDE } from "./voiceGuide";
 import { expediaHotelUrl } from "./travelpayouts";
 import { injectInternalLinks } from "./internalLinks";
@@ -316,7 +316,7 @@ RULES:
       ? [{ photo_url: imageUrl, photo_credit: imageCredit, photo_credit_url: imageCreditUrl }]
       : [];
 
-    const { error } = await supabase.from("articles").upsert({
+    const { error } = await supabaseAdmin.from("articles").upsert({
       video_id: null,
       slug,
       title,

@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 
 const API_KEY = process.env.YOUTUBE_API_KEY!;
 const CHANNEL_HANDLE = "davechung";
@@ -245,7 +245,7 @@ export async function syncVideos(): Promise<{ synced: number; error?: string }> 
 
   // Upsert all videos without duration_seconds first (avoids overwriting valid cached values with null)
   const videosWithoutDuration = videos.map(({ duration_seconds, ...rest }) => rest);
-  const { error: upsertError } = await supabase
+  const { error: upsertError } = await supabaseAdmin
     .from("youtube_videos")
     .upsert(videosWithoutDuration, { onConflict: "video_id" });
   if (upsertError) console.error("[sync-videos] upsert error:", upsertError.message);
@@ -255,7 +255,7 @@ export async function syncVideos(): Promise<{ synced: number; error?: string }> 
   // title if the first upsert above failed to insert the row for any reason.
   const withDuration = videos.filter((v) => v.duration_seconds !== null);
   for (const v of withDuration) {
-    const { error: durError } = await supabase
+    const { error: durError } = await supabaseAdmin
       .from("youtube_videos")
       .update({ duration_seconds: v.duration_seconds })
       .eq("video_id", v.video_id);
@@ -271,7 +271,7 @@ export async function syncVideos(): Promise<{ synced: number; error?: string }> 
   );
 
   if (associations.length > 0) {
-    await supabase
+    await supabaseAdmin
       .from("video_page_associations")
       .upsert(associations, { onConflict: "video_id,neighborhood_slug,category_slug" });
   }

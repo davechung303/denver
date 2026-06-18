@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 import { expediaHotelUrl } from "./travelpayouts";
 
 const anthropic = new Anthropic({
@@ -65,7 +65,7 @@ export async function fetchTranscript(videoId: string): Promise<string | null> {
     if (!transcript) return null;
 
     // Cache in Supabase
-    await supabase.from("transcripts").upsert({
+    await supabaseAdmin.from("transcripts").upsert({
       video_id: videoId,
       transcript,
       fetched_at: new Date().toISOString(),
@@ -269,7 +269,7 @@ Return ONLY: the TITLE line, a blank line, and the article text. No other preamb
       : expediaHotelUrl("Denver Colorado");
 
     // Save to Supabase
-    const { error } = await supabase.from("articles").upsert({
+    const { error } = await supabaseAdmin.from("articles").upsert({
       video_id: videoId,
       slug,
       title: seoTitle,
