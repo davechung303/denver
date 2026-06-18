@@ -51,7 +51,52 @@ export async function GET(request: Request) {
 
   try {
     const res = await fetch(googleUrl);
-    if (!res.ok) return placeholderResponse();
+
+    // Photo name expired — try to heal: fetch fresh names from Google Places API,
+    // update the DB, then serve the fresh photo.
+    if (!res.ok) {
+      const placeId = photoName.split("/")[1]; // places/{PLACE_ID}/photos/...
+      if (placeId) {
+        const freshRes = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+          headers: { "X-Goog-Api-Key": PLACES_API_KEY, "X-Goog-FieldMask": "photos" },
+        });
+        if (freshRes.ok) {
+          const freshData = await freshRes.json();
+          const freshPhotos = freshData.photos?.slice(0, 3).map((p: any) => ({ name: p.name }));
+          if (freshPhotos?.length) {
+            // Update DB with fresh photo names (fire-and-forget)
+            supabaseAdmin
+              .from("places")
+              .update({ photos: freshPhotos, cached_at: new Date().toISOString() })
+              .eq("place_id", placeId);
+            // Try to serve the first fresh photo
+            const freshPhotoUrl = `https://places.googleapis.com/v1/${freshPhotos[0].name}/media?maxWidthPx=800&maxHeightPx=500&key=${PLACES_API_KEY}`;
+            const freshImgRes = await fetch(freshPhotoUrl);
+            if (freshImgRes.ok) {
+              const buffer = await freshImgRes.arrayBuffer();
+              const contentType = freshImgRes.headers.get("content-type") ?? "image/jpeg";
+              const ext = contentType.includes("png") ? "png" : contentType.includes("webp") ? "webp" : "jpg";
+              const storagePath = `${freshPhotos[0].name}.${ext}`;
+              const finalStorageUrl = `${STORAGE_BASE}/${storagePath}`;
+              supabaseAdmin.storage
+                .from(STORAGE_BUCKET)
+                .upload(storagePath, Buffer.from(buffer), { contentType, upsert: true, cacheControl: "31536000" })
+                .then(({ error }) => {
+                  if (!error) {
+                    supabaseAdmin
+                      .from("photo_cache")
+                      .upsert({ photo_name: freshPhotos[0].name, cdn_url: finalStorageUrl }, { onConflict: "photo_name" });
+                  }
+                });
+              return new NextResponse(buffer, {
+                headers: { "Content-Type": contentType, "Cache-Control": "public, max-age=2592000, s-maxage=2592000" },
+              });
+            }
+          }
+        }
+      }
+      return placeholderResponse();
+    }
 
     const buffer = await res.arrayBuffer();
     const contentType = res.headers.get("content-type") ?? "image/jpeg";
