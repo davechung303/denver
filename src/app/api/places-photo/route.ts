@@ -18,7 +18,7 @@ function placeholderResponse() {
   return new NextResponse(TRANSPARENT_GIF, {
     headers: {
       "Content-Type": "image/gif",
-      "Cache-Control": "public, max-age=86400",
+      "Cache-Control": "public, max-age=300, s-maxage=60",
     },
   });
 }
