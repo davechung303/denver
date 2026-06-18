@@ -48,12 +48,6 @@ export async function GET(request: Request) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   if (!places?.length) return NextResponse.json({ processed: 0, remaining: 0 });
 
-  // Count total remaining for progress reporting
-  const { count: remaining } = await supabaseAdmin
-    .from("places")
-    .select("*", { count: "exact", head: true })
-    .is("review_summary", null);
-
   let ok = 0;
   let failed = 0;
   let noReviews = 0;
@@ -106,6 +100,5 @@ export async function GET(request: Request) {
     summaries_generated: ok,
     no_reviews: noReviews,
     failed,
-    remaining: (remaining ?? 0) - places.length,
   });
 }
