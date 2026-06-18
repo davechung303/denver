@@ -77,28 +77,20 @@ export async function GET(request: Request) {
     const storagePath = `${photoName}.${ext}`;
     const finalStorageUrl = storagePublicUrl(storagePath);
 
-    // Upload to Supabase Storage — permanent, never expires.
-    const { error: uploadError } = await supabaseAdmin.storage
+    // Fire-and-forget: upload to Storage and cache the URL for future requests.
+    // We don't await this — the image is served immediately from Google bytes below.
+    supabaseAdmin.storage
       .from(STORAGE_BUCKET)
-      .upload(storagePath, Buffer.from(buffer), {
-        contentType,
-        upsert: true,
-        cacheControl: "31536000",
+      .upload(storagePath, Buffer.from(buffer), { contentType, upsert: true, cacheControl: "31536000" })
+      .then(({ error }) => {
+        if (!error) {
+          supabaseAdmin
+            .from("photo_cache")
+            .upsert({ photo_name: photoName, cdn_url: finalStorageUrl }, { onConflict: "photo_name" });
+        }
       });
 
-    if (!uploadError) {
-      // Store the permanent URL in photo_cache
-      await supabaseAdmin
-        .from("photo_cache")
-        .upsert({ photo_name: photoName, cdn_url: finalStorageUrl }, { onConflict: "photo_name" });
-
-      return NextResponse.redirect(finalStorageUrl, {
-        status: 301,
-        headers: { "Cache-Control": "public, max-age=31536000, s-maxage=31536000, immutable" },
-      });
-    }
-
-    // Storage upload failed — serve bytes directly as fallback
+    // Serve bytes immediately — fast first load, Storage redirect on subsequent requests.
     return new NextResponse(buffer, {
       headers: {
         "Content-Type": contentType,
