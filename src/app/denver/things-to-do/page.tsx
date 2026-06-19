@@ -104,7 +104,7 @@ function AttractionCard({ place }: { place: Place }) {
   return (
     <a href={href} className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:border-denver-amber hover:shadow-md transition-all duration-200">
       {photo ? (
-        <img src={photoUrl(photo.name, 200, 200)} alt={place.name} className="w-20 h-20 object-cover shrink-0" loading="lazy" />
+        <img src={photoUrl(photo)} alt={place.name} className="w-20 h-20 object-cover shrink-0" loading="lazy" />
       ) : (
         <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 shrink-0" />
       )}

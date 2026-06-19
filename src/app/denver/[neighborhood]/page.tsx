@@ -300,7 +300,7 @@ export default async function NeighborhoodPage({ params }: Props) {
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
                     {photo && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photoUrl(photo.name, 400, 225)} alt={place.name}
+                      <img src={photoUrl(photo)} alt={place.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />

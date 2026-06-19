@@ -40,7 +40,8 @@ export interface GoogleHours {
 }
 
 export interface GooglePhoto {
-  name: string; // resource name e.g. places/xxx/photos/yyy
+  name: string;    // resource name e.g. places/xxx/photos/yyy
+  cdn_url?: string; // permanent Supabase Storage URL — set by attachPhotoCdnUrls
 }
 
 export interface GoogleReview {
@@ -61,14 +62,41 @@ function slugify(name: string): string {
 
 const SITE_URL = "https://davelovesdenver.com";
 
-// Returns a proxy URL that keeps the API key server-side.
-// Use relative form in JSX img src; absolute form for og:image metadata.
-function photoUrl(photoName: string, _width = 600, _height = 400): string {
-  return `/api/places-photo?name=${encodeURIComponent(photoName)}`;
+// Returns the direct Supabase Storage URL when available (cdn_url set by attachPhotoCdnUrls),
+// falling back to the proxy only for unwarmed photos. Accepts a GooglePhoto object or a
+// raw name string for backward compatibility.
+function photoUrl(photo: GooglePhoto | string): string {
+  if (typeof photo === "string") return `/api/places-photo?name=${encodeURIComponent(photo)}`;
+  return photo.cdn_url ?? `/api/places-photo?name=${encodeURIComponent(photo.name)}`;
 }
 
-function photoAbsoluteUrl(photoName: string): string {
-  return `${SITE_URL}/api/places-photo?name=${encodeURIComponent(photoName)}`;
+function photoAbsoluteUrl(photo: GooglePhoto | string): string {
+  if (typeof photo === "string") return `${SITE_URL}/api/places-photo?name=${encodeURIComponent(photo)}`;
+  return photo.cdn_url ?? `${SITE_URL}/api/places-photo?name=${encodeURIComponent(photo.name)}`;
+}
+
+// Batch-fetch cdn_urls from photo_cache and attach them to place photos.
+// One query covers all photos across all places — baked into page HTML at render time
+// so browsers load images directly from Supabase Storage CDN, no proxy roundtrip.
+async function attachPhotoCdnUrls(places: Place[]): Promise<Place[]> {
+  const names: string[] = [];
+  for (const p of places) {
+    if (p.photos) for (const ph of p.photos) names.push(ph.name);
+  }
+  if (!names.length) return places;
+
+  const { data: cached } = await supabaseAdmin
+    .from("photo_cache")
+    .select("photo_name, cdn_url")
+    .in("photo_name", names);
+
+  if (!cached?.length) return places;
+  const cdnMap = new Map<string, string>(cached.map((c: { photo_name: string; cdn_url: string }) => [c.photo_name, c.cdn_url]));
+
+  return places.map((p) => ({
+    ...p,
+    photos: p.photos?.map((ph) => ({ ...ph, cdn_url: cdnMap.get(ph.name) })) ?? null,
+  }));
 }
 
 export { photoUrl, photoAbsoluteUrl };
@@ -323,7 +351,8 @@ export async function getPlace(
   // Row exists — generate summary if needed (fetches reviews lazily if missing)
   if (data) {
     const withSummary = await maybeGenerateSummary(data as Place);
-    return withSummary;
+    const [withCdn] = await attachPhotoCdnUrls([withSummary]);
+    return withCdn;
   }
 
   // Try any category (handles places cached under a compound subcategory slug)
@@ -336,7 +365,8 @@ export async function getPlace(
 
   if (anyCategory) {
     const withSummary = await maybeGenerateSummary(anyCategory as Place);
-    return withSummary;
+    const [withCdn] = await attachPhotoCdnUrls([withSummary]);
+    return withCdn;
   }
 
   // Not found in Supabase — return null. Google fetches only happen via refresh-places.
@@ -351,7 +381,9 @@ export async function getPlaceBySlug(slug: string): Promise<Place | null> {
     .eq("slug", slug)
     .limit(1)
     .single();
-  return (data as Place) ?? null;
+  if (!data) return null;
+  const [withCdn] = await attachPhotoCdnUrls([data as Place]);
+  return withCdn;
 }
 
 export async function getPlacesForSubcategory(
@@ -379,12 +411,13 @@ export async function getPlacesForSubcategory(
     .order("rating", { ascending: false });
 
   if (cached && cached.length > 0) {
-    const merged = [...filtered, ...(cached as Place[]).filter((c) => !filtered.some((f) => f.place_id === c.place_id))];
+    const cachedWithCdn = await attachPhotoCdnUrls(cached as Place[]);
+    const merged = [...filtered, ...cachedWithCdn.filter((c) => !filtered.some((f) => f.place_id === c.place_id))];
     return merged;
   }
 
   // No Google fallback — return whatever we have from the main category cache.
-  // Subcategory results improve automatically after the next monthly refresh-places run.
+  // Subcategory results improve automatically after the next weekly refresh-places run.
   return filtered;
 }
 
@@ -537,7 +570,8 @@ export async function getAllHiddenGems(): Promise<Place[]> {
     .order("rating", { ascending: false })
     .limit(300);
 
-  return ((data ?? []) as Place[])
+  const places = await attachPhotoCdnUrls((data ?? []) as Place[]);
+  return places
     .filter(isUsefulPlace)
     .sort((a, b) => qualityScore(b) - qualityScore(a));
 }
@@ -557,7 +591,7 @@ export async function getBestOfDenver(
     .order("rating", { ascending: false })
     .limit(150);
 
-  const places = (data ?? []) as Place[];
+  const places = await attachPhotoCdnUrls((data ?? []) as Place[]);
   return places
     .filter(isUsefulPlace)
     .filter((p) =>
@@ -638,7 +672,8 @@ export async function getTrendingPlaces(
 
   if (!places) return [];
 
-  const placeMap = new Map((places as Place[]).map((p) => [p.place_id, p]));
+  const withCdn = await attachPhotoCdnUrls(places as Place[]);
+  const placeMap = new Map(withCdn.map((p) => [p.place_id, p]));
 
   return velocities
     .filter((v) => placeMap.has(v.place_id))
@@ -681,7 +716,8 @@ export async function getRecentlyAddedPlaces(
   }
 
   const { data } = await query;
-  return (data ?? []) as unknown as (Place & { created_at: string })[];
+  const withCdn = await attachPhotoCdnUrls((data ?? []) as unknown as Place[]);
+  return withCdn as unknown as (Place & { created_at: string })[];
 }
 
 // Hotels with price_level <= 2 (or null — Google often omits it for hotels) and rating >= minRating.
@@ -699,7 +735,7 @@ export async function getBestValueHotels(
     .not("photos", "is", null)
     .order("rating", { ascending: false })
     .limit(limit);
-  return (data ?? []) as Place[];
+  return attachPhotoCdnUrls((data ?? []) as Place[]);
 }
 
 export async function getPlaces(
@@ -707,7 +743,7 @@ export async function getPlaces(
   categorySlug: string
 ): Promise<Place[]> {
   // Return whatever Supabase has — stale or fresh. Never call Google from a page render.
-  // Google fetches only happen via the /api/refresh-places admin route (monthly cron).
+  // Google fetches only happen via the /api/refresh-places admin route (weekly cron).
   // This prevents surprise API bills from ISR revalidation or build-time pre-rendering.
   const { data } = await supabase
     .from("places")
@@ -716,7 +752,7 @@ export async function getPlaces(
     .eq("category_slug", categorySlug)
     .order("rating", { ascending: false });
 
-  return (data ?? []) as Place[];
+  return attachPhotoCdnUrls((data ?? []) as Place[]);
 }
 
 // Searches for newly opened places in each neighborhood for the discovery cron.

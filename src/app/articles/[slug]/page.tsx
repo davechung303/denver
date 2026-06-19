@@ -141,7 +141,7 @@ function HotelCard({ hotel, fallbackUrl }: { hotel: Place; fallbackUrl: string }
       className="group flex flex-col rounded-xl overflow-hidden border border-white/10 hover:border-denver-amber transition-colors bg-white/5">
       <div className="aspect-[16/9] overflow-hidden bg-slate-800">
         {photo && (
-          <img src={photoUrl(photo.name, 400, 225)} alt={hotel.name}
+          <img src={photoUrl(photo)} alt={hotel.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         )}
       </div>

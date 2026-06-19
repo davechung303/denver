@@ -33,7 +33,7 @@ function GemCard({ place }: { place: Place }) {
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={photoUrl(photo.name, 160, 160)}
+            src={photoUrl(photo)}
             alt={place.name}
             className="w-full h-full object-cover"
             loading="lazy"

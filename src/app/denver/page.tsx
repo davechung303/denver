@@ -28,7 +28,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={photoUrl(photo.name, 600, 400)}
+      src={photoUrl(photo)}
       alt={place.name}
       className={`object-cover ${className}`}
       loading="lazy"
@@ -303,7 +303,7 @@ export default async function BestOfDenverPage() {
                     <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
                       {photo && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={photoUrl(photo.name, 200, 200)} alt={place.name}
+                        <img src={photoUrl(photo)} alt={place.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         />
@@ -361,7 +361,7 @@ export default async function BestOfDenverPage() {
                       {photo && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={photoUrl(photo.name, 400, 280)}
+                          src={photoUrl(photo)}
                           alt={place.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
   const photo = place.photos?.[0];
   if (!photo) return <div className={`bg-slate-100 dark:bg-slate-800 ${className}`} />;
-  return <img src={photoUrl(photo.name, 600, 400)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
+  return <img src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
 }
 
 function RatingBadge({ place }: { place: Place }) {

@@ -154,7 +154,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
       images: place.photos?.[0]
-        ? [{ url: photoAbsoluteUrl(place.photos[0].name) }]
+        ? [{ url: photoAbsoluteUrl(place.photos[0]) }]
         : [],
     },
     alternates: {
@@ -426,7 +426,7 @@ export default async function BusinessPage({ params }: Props) {
         worstRating: 1,
       },
     }),
-    ...(place.photos?.[0] && { image: photoAbsoluteUrl(place.photos[0].name) }),
+    ...(place.photos?.[0] && { image: photoAbsoluteUrl(place.photos[0]) }),
     ...(place.review_summary?.tldr
       ? { description: place.review_summary.tldr }
       : place.review_summary?.tagline
@@ -563,7 +563,7 @@ export default async function BusinessPage({ params }: Props) {
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={i}
-                src={photoUrl(photo.name, 800, 500)}
+                src={photoUrl(photo)}
                 alt={`${place.name} photo ${i + 1}`}
                 className={`w-full h-80 object-cover ${i === 0 && place.photos!.length === 1 ? "sm:col-span-3" : ""} ${i === 0 && place.photos!.length > 1 ? "sm:col-span-2" : ""}`}
                 loading={i === 0 ? "eager" : "lazy"}

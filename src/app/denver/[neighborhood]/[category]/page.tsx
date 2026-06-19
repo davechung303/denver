@@ -251,7 +251,7 @@ export default async function CategoryPage({ params }: Props) {
                           {photo ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
-                              src={photoUrl(photo.name, 600, 400)}
+                              src={photoUrl(photo)}
                               alt={place.name}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
