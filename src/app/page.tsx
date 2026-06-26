@@ -135,6 +135,25 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* As Heard On */}
+      <section className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-6">As heard on</p>
+          <div className="flex flex-wrap items-center justify-center gap-10 sm:gap-16">
+            <img
+              src="/logo-koa-radio.webp"
+              alt="KOA 850 AM 94.1 FM News Talk Sports"
+              className="h-12 sm:h-14 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+            />
+            <img
+              src="/logo-citycast-denver.avif"
+              alt="City Cast Denver"
+              className="h-10 sm:h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Latest Guides & Reviews — articles linking to internal pages */}
       {latestArticles.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
