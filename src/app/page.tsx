@@ -155,6 +155,11 @@ export default async function HomePage() {
               alt="Off the Clock with Jon Eks"
               className="h-12 sm:h-14 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity rounded-lg"
             />
+            <img
+              src="https://www.witness.org/wp-content/uploads/2014/07/boingboing-700-175.png"
+              alt="BoingBoing.net"
+              className="h-8 sm:h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+            />
           </div>
         </div>
       </section>
