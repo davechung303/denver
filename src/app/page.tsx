@@ -150,6 +150,11 @@ export default async function HomePage() {
               alt="City Cast Denver"
               className="h-10 sm:h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
             />
+            <img
+              src="https://i.scdn.co/image/ab6765630000ba8a2261e2b686f77054c4dd1686"
+              alt="Off the Clock with Jon Eks"
+              className="h-12 sm:h-14 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity rounded-lg"
+            />
           </div>
         </div>
       </section>
