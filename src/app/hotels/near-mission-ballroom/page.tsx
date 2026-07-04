@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
+import { getEventsForVenue } from "@/lib/ticketmaster";
+import EventCard from "@/components/EventCard";
 
 export const revalidate = 86400;
 
@@ -70,9 +72,10 @@ function HotelCard({ place }: { place: Place }) {
 }
 
 export default async function HotelsNearMissionBallroomPage() {
-  const [rinoPl, lodoPl] = await Promise.all([
+  const [rinoPl, lodoPl, events] = await Promise.all([
     getPlaces("rino", "hotels"),
     getPlaces("lodo", "hotels"),
+    getEventsForVenue("Mission Ballroom", 6),
   ]);
   const hotels = [...rinoPl, ...lodoPl]
     .filter(isRealHotel)
@@ -90,6 +93,12 @@ export default async function HotelsNearMissionBallroomPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels Near Mission Ballroom Denver",
+          description: "The best hotels near Mission Ballroom in Denver's RiNo neighborhood — walkable options steps from one of the best mid-size venues in the country.",
+          url: "https://davelovesdenver.com/hotels/near-mission-ballroom",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       <section className="bg-denver-navy text-white">
@@ -100,8 +109,8 @@ export default async function HotelsNearMissionBallroomPage() {
             <span className="text-white/80">Hotels Near Mission Ballroom</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">RiNo, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels Near Mission Ballroom Denver</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Mission Ballroom Denver</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Mission Ballroom is one of the best mid-size venues in the country — and it&apos;s in RiNo, Denver&apos;s best neighborhood. Staying nearby means the whole night is the event, not just the show.
           </p>
         </div>
@@ -123,7 +132,7 @@ export default async function HotelsNearMissionBallroomPage() {
               <h3 className="font-bold mb-1">Five Points &amp; Curtis Park (very close)</h3>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Directly east of RiNo — limited hotel options but extremely close to the venue. Worth checking if you find something.</p>
             </div>
-            <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic">
+            <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
               &ldquo;Mission Ballroom is the reason to stay in RiNo for a night. The venue is genuinely great — sound, sight lines, bar situation. Get dinner at one of the RiNo spots, walk to the show, walk back to a brewery after. It&apos;s the ideal Denver concert night.&rdquo;
               <footer className="mt-1 text-xs not-italic text-slate-400">— Dave</footer>
             </blockquote>
@@ -140,6 +149,22 @@ export default async function HotelsNearMissionBallroomPage() {
           </div>
         </div>
       </section>
+
+      {/* Upcoming Events at Mission Ballroom */}
+      {events.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <h2 className="text-xl font-bold">Upcoming Shows at Mission Ballroom</h2>
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=mission+ballroom+denver")} target="_blank" rel="noopener noreferrer"
+              className="text-sm text-denver-amber font-semibold hover:underline">
+              All shows &rarr;
+            </a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {events.map((event) => <EventCard key={event.event_id} event={event} />)}
+          </div>
+        </section>
+      )}
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-xl font-bold mb-6">Show Night Tips</h2>

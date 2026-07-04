@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
+import { getEventsForVenue } from "@/lib/ticketmaster";
+import EventCard from "@/components/EventCard";
 
 export const revalidate = 86400;
 
@@ -70,9 +72,10 @@ function HotelCard({ place }: { place: Place }) {
 }
 
 export default async function HotelsNearBallArenaPage() {
-  const [lodoPaces, jeffPaces] = await Promise.all([
+  const [lodoPaces, jeffPaces, events] = await Promise.all([
     getPlaces("lodo", "hotels"),
     getPlaces("jefferson-park", "hotels"),
+    getEventsForVenue("Ball Arena", 6),
   ]);
   const seen = new Set<string>();
   const hotels = [...lodoPaces, ...jeffPaces]
@@ -90,6 +93,12 @@ export default async function HotelsNearBallArenaPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels Near Ball Arena Denver",
+          description: "The best hotels near Ball Arena in Denver — walking distance options for Nuggets games, Avalanche games, and concerts. LoDo and Jefferson Park picks from a local.",
+          url: "https://davelovesdenver.com/hotels/near-ball-arena",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       <section className="bg-denver-navy text-white">
@@ -100,8 +109,8 @@ export default async function HotelsNearBallArenaPage() {
             <span className="text-white/80">Hotels Near Ball Arena</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">LoDo & Jefferson Park, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels Near Ball Arena</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Ball Arena</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Nuggets game. Avalanche game. Concert night. The best places to stay so you can walk in and walk back — no Uber surge, no parking headache.
           </p>
         </div>
@@ -120,7 +129,7 @@ export default async function HotelsNearBallArenaPage() {
               <h3 className="font-bold mb-1">Jefferson Park (closest, ~8 min walk)</h3>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Jefferson Park sits directly west of Ball Arena — slightly closer than LoDo, with some of the best skyline views in the city from the neighborhood bars. Fewer hotel options but worth checking for better prices.</p>
             </div>
-            <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic">
+            <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
               &ldquo;Ball Arena is one of the better venues in the NBA. The Nuggets in the playoffs are legitimately worth flying in for. Stay in LoDo — better food and bars — and walk back after the game along Wewatta. Easy night.&rdquo;
               <footer className="mt-1 text-xs not-italic text-slate-400">— Dave</footer>
             </blockquote>
@@ -137,6 +146,22 @@ export default async function HotelsNearBallArenaPage() {
           </div>
         </div>
       </section>
+
+      {/* Upcoming Events at Ball Arena */}
+      {events.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <h2 className="text-xl font-bold">Upcoming Events at Ball Arena</h2>
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ball+arena+denver")} target="_blank" rel="noopener noreferrer"
+              className="text-sm text-denver-amber font-semibold hover:underline">
+              All events &rarr;
+            </a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {events.map((event) => <EventCard key={event.event_id} event={event} />)}
+          </div>
+        </section>
+      )}
 
       {/* Full-width map */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">

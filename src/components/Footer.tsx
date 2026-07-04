@@ -50,6 +50,10 @@ const HOTEL_GUIDES = [
   { href: "/hotels/near-city-park", label: "Near City Park" },
   { href: "/hotels/near-botanic-gardens", label: "Near Botanic Gardens" },
   { href: "/hotels/near-cherry-creek", label: "Near Cherry Creek" },
+  { href: "/hotels/near-denver-zoo", label: "Near Denver Zoo" },
+  { href: "/hotels/near-elitch-gardens", label: "Near Elitch Gardens" },
+  { href: "/hotels/near-national-western", label: "Near National Western" },
+  { href: "/hotels/near-anschutz", label: "Near Anschutz" },
 ];
 
 export default function Footer() {

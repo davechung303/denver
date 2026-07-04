@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
+import { getEventsForVenue } from "@/lib/ticketmaster";
+import EventCard from "@/components/EventCard";
 
 export const revalidate = 86400;
 
@@ -74,8 +76,11 @@ function HotelCard({ place }: { place: Place }) {
 }
 
 export default async function HotelsNearRedRocksPage() {
-  const places = await getPlaces("denver-suburbs", "hotels");
-  const hotels = places.filter(isRealHotel).filter((p) => p.rating != null).slice(0, 6);
+  const [placesRaw, events] = await Promise.all([
+    getPlaces("denver-suburbs", "hotels"),
+    getEventsForVenue("Red Rocks", 6),
+  ]);
+  const hotels = placesRaw.filter(isRealHotel).filter((p) => p.rating != null).slice(0, 6);
 
   return (
     <>
@@ -87,6 +92,12 @@ export default async function HotelsNearRedRocksPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels Near Red Rocks Amphitheatre",
+          description: "The best hotels near Red Rocks Amphitheatre — Morrison, Lakewood, Golden, and downtown Denver options. Where to stay for a show at one of the best concert venues in the world.",
+          url: "https://davelovesdenver.com/hotels/near-red-rocks",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       <section className="bg-denver-navy text-white">
@@ -97,8 +108,8 @@ export default async function HotelsNearRedRocksPage() {
             <span className="text-white/80">Hotels Near Red Rocks</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Morrison, Colorado</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels Near Red Rocks Amphitheatre</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Red Rocks Amphitheatre</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Red Rocks is one of the greatest concert venues on earth. Here&apos;s where to stay — close to the venue or based in Denver with a short drive out.
           </p>
         </div>
@@ -121,7 +132,7 @@ export default async function HotelsNearRedRocksPage() {
               <h3 className="font-bold mb-1">Downtown Denver (30–35 min)</h3>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If you&apos;re spending multiple nights, downtown gives you the best food, bars, and access to the rest of the city with Red Rocks as a day trip. Shuttles run from Union Station on show nights — post-show surge can be brutal otherwise.</p>
             </div>
-            <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic">
+            <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
               &ldquo;Red Rocks is everything people say it is. I&apos;ve seen shows there in the rain, in perfect 70-degree weather, and in the cold — always worth it. If you&apos;re flying in for a show, stay downtown and take a shuttle. If you have a car, Lakewood is the move. Bring layers no matter what.&rdquo;
               <footer className="mt-1 text-xs not-italic text-slate-400">— Dave</footer>
             </blockquote>
@@ -147,6 +158,22 @@ export default async function HotelsNearRedRocksPage() {
             className="absolute inset-0 w-full h-full rounded-2xl" title="Hotels near Red Rocks Amphitheatre" loading="lazy" />
         </div>
       </section>
+
+      {/* Upcoming Events at Red Rocks */}
+      {events.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <h2 className="text-xl font-bold">Upcoming Shows at Red Rocks</h2>
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=red+rocks+amphitheatre")} target="_blank" rel="noopener noreferrer"
+              className="text-sm text-denver-amber font-semibold hover:underline">
+              All shows &rarr;
+            </a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {events.map((event) => <EventCard key={event.event_id} event={event} />)}
+          </div>
+        </section>
+      )}
 
       {/* Show night tips */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">

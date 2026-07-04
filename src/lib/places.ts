@@ -79,9 +79,11 @@ function photoAbsoluteUrl(photo: GooglePhoto | string): string {
 // One query covers all photos across all places — baked into page HTML at render time
 // so browsers load images directly from Supabase Storage CDN, no proxy roundtrip.
 async function attachPhotoCdnUrls(places: Place[]): Promise<Place[]> {
+  // Only look up the first photo per place — all card and listing views use photos[0] only.
+  // This keeps the .in() query small regardless of how many photos Google returned.
   const names: string[] = [];
   for (const p of places) {
-    if (p.photos) for (const ph of p.photos) names.push(ph.name);
+    if (p.photos?.[0]) names.push(p.photos[0].name);
   }
   if (!names.length) return places;
 

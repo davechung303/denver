@@ -40,10 +40,12 @@ export async function syncDenverEvents(): Promise<number> {
   for (let page = 0; page < 3; page++) {
     const params = new URLSearchParams({
       apikey: API_KEY,
-      city: "Denver",
-      stateCode: "CO",
-      radius: "20",
+      // lat/lng + radius covers all Denver metro venues including Red Rocks (Morrison)
+      // and Fiddler's Green (Greenwood Village) which are missed by city:"Denver"
+      latlong: "39.7392,-104.9903",
+      radius: "30",
       unit: "miles",
+      stateCode: "CO",
       size: "200",
       page: String(page),
       sort: "date,asc",
@@ -109,6 +111,23 @@ export async function syncDenverEvents(): Promise<number> {
   }
 
   return rows.length;
+}
+
+// Query events for a specific venue by partial name match.
+// Used by venue hub pages (near-red-rocks, near-ball-arena, etc.)
+export async function getEventsForVenue(
+  venueName: string,
+  limit = 6
+): Promise<DenverEvent[]> {
+  const now = new Date().toISOString();
+  const { data } = await supabase
+    .from("events")
+    .select("*")
+    .ilike("venue_name", `%${venueName}%`)
+    .gte("start_time", now)
+    .order("start_time", { ascending: true })
+    .limit(limit);
+  return (data ?? []) as DenverEvent[];
 }
 
 export async function getEventsForNeighborhood(

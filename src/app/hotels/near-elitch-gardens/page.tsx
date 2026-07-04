@@ -8,43 +8,43 @@ import EventCard from "@/components/EventCard";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Coors Field Denver — Best Places to Stay for Rockies Games | Dave Loves Denver",
+  title: "Hotels Near Elitch Gardens Denver — Best Places to Stay | Dave Loves Denver",
   description:
-    "The best hotels walking distance to Coors Field in Denver — LoDo, Union Station, and downtown options for Rockies games, concerts, and events.",
-  alternates: { canonical: "https://davelovesdenver.com/hotels/near-coors-field" },
+    "The best hotels near Elitch Gardens theme park in Denver — Jefferson Park and Sloan Lake options steps from the rides. A local's guide to staying close.",
+  alternates: { canonical: "https://davelovesdenver.com/hotels/near-elitch-gardens" },
   openGraph: {
-    title: "Hotels Near Coors Field Denver",
-    description: "Walking distance to Coors Field — the best LoDo and downtown Denver hotels for Rockies games and events.",
-    url: "https://davelovesdenver.com/hotels/near-coors-field",
+    title: "Hotels Near Elitch Gardens Denver",
+    description: "Hotels near Elitch Gardens — Jefferson Park and Sloan Lake options from a local.",
+    url: "https://davelovesdenver.com/hotels/near-elitch-gardens",
   },
 };
 
 const FAQS = [
   {
-    q: "What hotels are walking distance to Coors Field?",
-    a: "Several LoDo hotels are within easy walking distance. The Crawford Hotel inside Union Station is about a 7-minute walk. Most of LoDo puts you within 10–15 minutes of the ballpark gates.",
+    q: "What hotels are walking distance to Elitch Gardens?",
+    a: "Elitch Gardens sits between Jefferson Park and Sloan Lake, just west of downtown. Several hotels in Jefferson Park are within a 10-minute walk. LoDo hotels are about 20 minutes on foot across the South Platte.",
   },
   {
-    q: "What neighborhood is Coors Field in?",
-    a: "Coors Field sits on the edge of LoDo (Lower Downtown) and RiNo. The address is technically LoDo, but the surrounding blocks blend both neighborhoods. Either area works well as a base.",
+    q: "What neighborhood is Elitch Gardens in?",
+    a: "The park is technically near the Jefferson Park / Sloan Lake area on the west edge of downtown Denver. The location makes it extremely convenient if you're also attending events at Empower Field or Ball Arena nearby.",
   },
   {
-    q: "Is there parking near Coors Field?",
-    a: "Yes, but game-day parking fills up fast and prices spike. If you're staying in LoDo, you won't need to park at all — walk to the game and back. If you're driving in, arrive early or use SpotHero to lock in a rate in advance.",
+    q: "Is Elitch Gardens worth it for adults?",
+    a: "Yes, especially if you enjoy roller coasters — Elitch's has some solid ones. It's not a mega-park, but the views of the Denver skyline from inside the park are genuinely impressive. Worth a half-day, especially in the evening when it's cooler.",
   },
   {
-    q: "Are there hotels inside Union Station Denver?",
-    a: "Yes — The Crawford Hotel is located inside Union Station itself, about a 7-minute walk from Coors Field. It's one of the most unique hotel experiences in Denver, set inside the historic great hall. Rooms go fast on game days.",
+    q: "What is the best time to visit Elitch Gardens?",
+    a: "Weekday evenings in summer are ideal — shorter lines and cooler temperatures. The park has a water park section that's popular in July and August. Opening days and holiday weekends get very crowded.",
   },
   {
-    q: "How early should I arrive in LoDo before a Rockies game?",
-    a: "For a good pregame experience, arrive 1.5–2 hours early. Blake Street bars fill up fast, especially for weekend afternoon games. Being within walking distance means you can leave when you're ready without fighting for an Uber.",
+    q: "Is there parking at Elitch Gardens?",
+    a: "Yes, on-site paid parking is available. Rideshare from Jefferson Park or LoDo is often easier if you're staying nearby — drop-off is straightforward and avoids the parking cost.",
   },
 ];
 
 // eslint-disable-next-line @next/next/no-img-element
 function HotelCard({ place }: { place: Place }) {
-  const href = place.expedia_affiliate_url ?? expediaDenverHotelsUrl("LoDo Denver");
+  const href = place.expedia_affiliate_url ?? expediaDenverHotelsUrl("Jefferson Park Denver");
   const photo = place.photos?.[0];
   return (
     <a href={href} target="_blank" rel="noopener noreferrer"
@@ -71,27 +71,32 @@ function HotelCard({ place }: { place: Place }) {
   );
 }
 
-export default async function HotelsNearCoorsFieldPage() {
-  const [places, events] = await Promise.all([
-    getPlaces("lodo", "hotels"),
-    getEventsForVenue("Coors Field", 6),
+export default async function HotelsNearElitchGardensPage() {
+  const [jeffPl, sloanPl, events] = await Promise.all([
+    getPlaces("jefferson-park", "hotels"),
+    getPlaces("sloan-lake", "hotels"),
+    getEventsForVenue("Elitch Gardens", 6),
   ]);
-  const hotels = places.filter(isRealHotel).filter((p) => p.rating != null).slice(0, 6);
+  const seen = new Set<string>();
+  const hotels = [...jeffPl, ...sloanPl]
+    .filter(isRealHotel).filter((p) => p.rating != null)
+    .filter((p) => { if (seen.has(p.place_id)) return false; seen.add(p.place_id); return true; })
+    .slice(0, 6);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Coors Field", item: "https://davelovesdenver.com/hotels/near-coors-field" },
+          { "@type": "ListItem", position: 2, name: "Hotels Near Elitch Gardens", item: "https://davelovesdenver.com/hotels/near-elitch-gardens" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Coors Field Denver",
-          description: "The best hotels walking distance to Coors Field in Denver — LoDo, Union Station, and downtown options for Rockies games, concerts, and events.",
-          url: "https://davelovesdenver.com/hotels/near-coors-field",
+          name: "Hotels Near Elitch Gardens Denver",
+          description: "The best hotels near Elitch Gardens theme park in Denver — Jefferson Park and Sloan Lake options steps from the rides. A local's guide to staying close.",
+          url: "https://davelovesdenver.com/hotels/near-elitch-gardens",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
         },
       ])}} />
@@ -101,12 +106,12 @@ export default async function HotelsNearCoorsFieldPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Coors Field</span>
+            <span className="text-white/80">Hotels Near Elitch Gardens</span>
           </nav>
-          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">LoDo, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Coors Field</h1>
+          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Jefferson Park & Sloan Lake, Denver</p>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Elitch Gardens</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
-            The best places to stay for Rockies games and events — walking distance from the ballpark, in the middle of LoDo.
+            Elitch Gardens sits between Jefferson Park and Sloan Lake — Denver&apos;s best neighborhood for views of the city and the mountains. Stay close and skip the parking problem.
           </p>
         </div>
       </section>
@@ -117,50 +122,41 @@ export default async function HotelsNearCoorsFieldPage() {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Where to Stay</h2>
             <div>
-              <h3 className="font-bold mb-1">The Crawford at Union Station (~7 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The best-located hotel in LoDo — inside the historic Union Station building. The great hall lobby is one of the most impressive in Denver. Rooms go fast on game days so plan ahead.</p>
+              <h3 className="font-bold mb-1">Jefferson Park (closest, ~10 min)</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Directly adjacent to Elitch Gardens on the east side. Jefferson Park is a walkable neighborhood with great bars (Brewed, Stats) and one of the best skyline views in the city. Very limited hotel options but worth checking first.</p>
             </div>
             <div>
-              <h3 className="font-bold mb-1">LoDo Hotels (5–15 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The blocks around Coors Field have Marriott, Hyatt, and independent options that put you a short walk from the gates and Blake Street bars, which fill up for every home game.</p>
+              <h3 className="font-bold mb-1">Sloan Lake (10–15 min)</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just north of Jefferson Park around a beautiful lake. Sloan Lake has a growing restaurant scene and is extremely walkable. If you find a hotel here, you're perfectly positioned for Elitch Gardens and the wider west Denver area.</p>
             </div>
             <div>
-              <h3 className="font-bold mb-1">RiNo (10–15 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If LoDo is sold out or overpriced, RiNo is the next best option. You&apos;re a 15-minute walk to the ballpark and surrounded by far better restaurants and bars than LoDo proper.</p>
+              <h3 className="font-bold mb-1">LoDo (20 min walk or short rideshare)</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If Jefferson Park and Sloan Lake are sold out, LoDo is your next best option. Wider hotel selection and easy rideshare access to the park.</p>
             </div>
             <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
-              &ldquo;Coors Field is one of the best ballparks in the country. The Rockies in the background on a clear afternoon are genuinely hard to beat. Stay in LoDo, walk to Blake Street for pregame, walk into the park, walk back. That&apos;s a good day.&rdquo;
+              &ldquo;Jefferson Park is genuinely one of Denver&apos;s best neighborhoods and it&apos;s right next to Elitch Gardens — but most people don&apos;t realize that. You can walk to the park, walk to Empower Field, and get back to some excellent neighborhood bars afterward. It&apos;s an underrated part of the city.&rdquo;
               <footer className="mt-1 text-xs not-italic text-slate-400">— Dave</footer>
             </blockquote>
           </div>
 
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Top-Rated in LoDo</p>
+            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Jefferson Park & Sloan Lake</p>
             {hotels.map((hotel) => <HotelCard key={hotel.place_id} place={hotel} />)}
-            <a href={expediaDenverHotelsUrl("LoDo Denver")} target="_blank" rel="noopener noreferrer"
+            <a href={expediaDenverHotelsUrl("Jefferson Park Denver Elitch Gardens")} target="_blank" rel="noopener noreferrer"
               className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
             >
-              See all LoDo hotels &rarr;
+              See all nearby hotels &rarr;
             </a>
           </div>
         </div>
       </section>
 
-      {/* Full-width map */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
-        <h2 className="text-xl font-bold mb-4">Hotel Map — LoDo & Coors Field Area</h2>
-        <div className="relative w-full h-[480px]">
-          <iframe src="https://www.stay22.com/embed/69d053e731f2907978572a8b" frameBorder="0"
-            className="absolute inset-0 w-full h-full rounded-2xl" title="Hotels near Coors Field Denver" loading="lazy" />
-        </div>
-      </section>
-
-      {/* Upcoming Events at Coors Field */}
+      {/* Upcoming Events */}
       {events.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-            <h2 className="text-xl font-bold">Upcoming Events at Coors Field</h2>
-            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=coors+field+denver")} target="_blank" rel="noopener noreferrer"
+            <h2 className="text-xl font-bold">Upcoming Events at Elitch Gardens</h2>
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=elitch+gardens+denver")} target="_blank" rel="noopener noreferrer"
               className="text-sm text-denver-amber font-semibold hover:underline">
               All events &rarr;
             </a>
@@ -171,14 +167,14 @@ export default async function HotelsNearCoorsFieldPage() {
         </section>
       )}
 
-      {/* Game day tips */}
+      {/* Visit Tips */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
-        <h2 className="text-xl font-bold mb-6">Game Day Tips</h2>
+        <h2 className="text-xl font-bold mb-6">Visit Tips</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: "Pregame on Blake Street", body: "Blake Street runs alongside Coors Field and fills up for every home game. Show up 1.5 hours early and you'll have no trouble getting a bar seat." },
-            { title: "Skip the Parking", body: "Game-day parking in LoDo is expensive and stressful. Staying within walking distance removes the problem entirely. SpotHero if you must drive in." },
-            { title: "Sunday Afternoon Games", body: "Afternoon games with the Rockies in the background are one of Denver's best experiences. Sunday games often offer better value than Friday/Saturday nights." },
+            { title: "Go on a Weekday Evening", body: "Crowds thin out significantly on weekday evenings. Lines are shorter, temperatures drop, and the skyline view from inside the park is especially good at golden hour." },
+            { title: "Combine with Empower Field", body: "Elitch Gardens and Empower Field are basically adjacent — if you're in town for a Broncos game, add a park afternoon. Jefferson Park is walkable to both." },
+            { title: "Sloan Lake After", body: "Sloan Lake Park is a 10-minute walk from Elitch — walk the perimeter of the lake after the park closes. One of Denver's better evening strolls, especially with the mountain views." },
           ].map((tip) => (
             <div key={tip.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
               <h3 className="font-bold mb-2">{tip.title}</h3>
@@ -207,6 +203,9 @@ export default async function HotelsNearCoorsFieldPage() {
         <div className="flex flex-wrap gap-3">
           <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
             Full Denver hotel guide &rarr;
+          </Link>
+          <Link href="/hotels/near-empower-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+            Hotels near Empower Field &rarr;
           </Link>
           <Link href="/hotels/near-ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
             Hotels near Ball Arena &rarr;
