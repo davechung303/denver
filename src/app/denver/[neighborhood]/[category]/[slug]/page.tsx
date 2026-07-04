@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getPlace, getPlaceBySlug, getPlaces, getPlacesForSubcategory, isUsefulPlace, isRealHotel, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import { expediaHotelUrl, expediaDenverHotelsUrl } from "@/lib/travelpayouts";
@@ -120,7 +120,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const n = getNeighborhood(nSlug);
   const baseCSlug = cSlug.includes("-") ? cSlug.split("-")[0] : cSlug;
   const c = getCategory(baseCSlug) ?? getCategory(cSlug);
-  if (!n || !c) return {};
+  if (!n || !c) notFound();
 
   // Subcategory page
   const subcategory = getSubcategory(cSlug, slug);
@@ -135,13 +135,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  // Business page — try exact match first, then fall back to slug-only lookup
+  // Business page — try exact match first, then fall back to slug-only lookup.
+  // notFound()/permanentRedirect() are thrown here (not just in the page body) so search
+  // engines get the correct HTTP status; generateMetadata resolves before the page body streams.
   let place = await getPlace(nSlug, cSlug, slug);
   if (!place) {
+    // getPlace() failing here can mean the slug genuinely lives at a different neighborhood/
+    // category, OR that two different places share this slug (e.g. two branches of the same
+    // chain), which makes getPlace()'s exact-match query ambiguous. In the duplicate-slug case,
+    // getPlaceBySlug() may arbitrarily return a row whose neighborhood/category match this URL
+    // exactly — only redirect when the canonical URL actually differs, to avoid a self-redirect.
     const canonical = await getPlaceBySlug(slug);
-    if (canonical) place = canonical;
+    if (canonical && isUsefulPlace(canonical)) {
+      if (canonical.neighborhood_slug !== nSlug || canonical.category_slug !== cSlug) {
+        permanentRedirect(`/denver/${canonical.neighborhood_slug}/${canonical.category_slug}/${slug}`);
+      }
+      place = canonical;
+    }
+    if (!place) notFound();
   }
-  if (!place) return {};
+  if (cSlug !== place.category_slug && place.category_slug) {
+    permanentRedirect(`/denver/${place.neighborhood_slug}/${place.category_slug}/${slug}`);
+  }
+  if (!isUsefulPlace(place)) notFound();
 
   const title = `${place.name} — ${c.name} near ${n.name}, Denver`;
   const description = `${place.name} near ${n.name}, Denver. ${place.rating ? `Rated ${place.rating}/5` : ""} ${place.address ? `· ${place.address}` : ""}. Find hours, photos, and more on Dave Loves Denver.`;
@@ -294,22 +310,25 @@ export default async function BusinessPage({ params }: Props) {
   // ── Business detail page ────────────────────────────────────────────────
   let place = await getPlace(nSlug, cSlug, slug);
 
-  // If not found at this URL, try finding by slug only — then 301 redirect to correct canonical URL.
+  // If not found at this URL, try finding by slug only — then permanently redirect to canonical URL.
   // This fixes noindex pages caused by old URLs where neighborhood/category changed after refresh.
+  // (generateMetadata above already does this same check and normally redirects first.)
+  // Guard against self-redirects when two places share a slug — see comment in generateMetadata.
   if (!place) {
     const canonical = await getPlaceBySlug(slug);
     if (canonical && isUsefulPlace(canonical)) {
-      const canonicalCSlug = canonical.category_slug;
-      const canonicalNSlug = canonical.neighborhood_slug;
-      redirect(`/denver/${canonicalNSlug}/${canonicalCSlug}/${slug}`);
+      if (canonical.neighborhood_slug !== nSlug || canonical.category_slug !== cSlug) {
+        permanentRedirect(`/denver/${canonical.neighborhood_slug}/${canonical.category_slug}/${slug}`);
+      }
+      place = canonical;
     }
-    notFound();
+    if (!place) notFound();
   }
 
   // If found but URL uses compound category (e.g. bars-sports_bar) while place is under base category,
   // redirect to canonical base-category URL.
   if (cSlug !== place.category_slug && place.category_slug) {
-    redirect(`/denver/${place.neighborhood_slug}/${place.category_slug}/${slug}`);
+    permanentRedirect(`/denver/${place.neighborhood_slug}/${place.category_slug}/${slug}`);
   }
 
   if (!isUsefulPlace(place)) notFound();
@@ -468,8 +487,8 @@ export default async function BusinessPage({ params }: Props) {
     },
     reviewBody: [
       place.review_summary.consensus,
-      ...(place.review_summary.highlights.length > 0
-        ? [`Highlights: ${place.review_summary.highlights.join(". ")}.`]
+      ...((place.review_summary.highlights?.length ?? 0) > 0
+        ? [`Highlights: ${place.review_summary!.highlights.join(". ")}.`]
         : []),
     ].join(" "),
     ...(place.rating && {
@@ -624,7 +643,7 @@ export default async function BusinessPage({ params }: Props) {
                 <p className="text-lg font-medium leading-snug text-slate-800 dark:text-slate-100" data-speakable>
                   {place.review_summary.consensus}
                 </p>
-                {place.review_summary.highlights.length > 0 && (
+                {(place.review_summary.highlights?.length ?? 0) > 0 && (
                   <ul className="space-y-1">
                     {place.review_summary.highlights.map((h, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
@@ -634,7 +653,7 @@ export default async function BusinessPage({ params }: Props) {
                     ))}
                   </ul>
                 )}
-                {place.review_summary.lowlights.length > 0 && (
+                {(place.review_summary.lowlights?.length ?? 0) > 0 && (
                   <ul className="space-y-1">
                     {place.review_summary.lowlights.map((l, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">

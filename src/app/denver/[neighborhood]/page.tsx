@@ -25,7 +25,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { neighborhood: slug } = await params;
   const n = getNeighborhood(slug);
-  if (!n) return {};
+  if (!n) notFound();
 
   const title = `${n.name} Neighborhood Guide — Restaurants, Hotels & Things To Do`;
   const description = `The best restaurants, hotels, bars, and things to do in ${n.name} (${n.tagline}), Denver. ${n.description}`;

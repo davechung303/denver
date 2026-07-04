@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { neighborhood: nSlug, category: cSlug } = await params;
   const n = getNeighborhood(nSlug);
   const c = getCategory(cSlug);
-  if (!n || !c) return {};
+  if (!n || !c) notFound();
 
   const title = `Best ${c.name} near ${n.name}, Denver`;
   const description = `Find the best ${c.name.toLowerCase()} in ${n.name} (${n.tagline}), Denver. Local picks, Google ratings, and real recommendations from someone who actually lives here.`;
