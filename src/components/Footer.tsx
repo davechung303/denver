@@ -36,6 +36,18 @@ const EXPLORE = [
   { href: "/about", label: "About Dave" },
 ];
 
+const VENUE_EVENTS = [
+  { href: "/events/red-rocks", label: "Red Rocks" },
+  { href: "/events/ball-arena", label: "Ball Arena" },
+  { href: "/events/coors-field", label: "Coors Field" },
+  { href: "/events/empower-field", label: "Empower Field" },
+  { href: "/events/mission-ballroom", label: "Mission Ballroom" },
+  { href: "/events/fiddlers-green", label: "Fiddler's Green" },
+  { href: "/events/ogden-theatre", label: "Ogden Theatre" },
+  { href: "/events/paramount-theatre", label: "Paramount Theatre" },
+  { href: "/events/dicks-sporting-goods-park", label: "Dick's Sporting Goods Park" },
+];
+
 const HOTEL_GUIDES = [
   { href: "/denver/where-to-stay", label: "Where to Stay in Denver" },
   { href: "/hotels/best-value-denver", label: "Best Value Hotels" },
@@ -60,7 +72,7 @@ export default function Footer() {
   return (
     <footer className="bg-denver-navy text-white/70 mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-10">
 
           {/* Brand */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
@@ -119,6 +131,20 @@ export default function Footer() {
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Explore</p>
             <ul className="space-y-2">
               {EXPLORE.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Venue Events */}
+          <div className="col-span-1">
+            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Venue Events</p>
+            <ul className="space-y-2">
+              {VENUE_EVENTS.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm hover:text-white transition-colors">
                     {link.label}
