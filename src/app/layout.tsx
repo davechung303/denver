@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import PrefetchOnHover from "@/components/PrefetchOnHover";
+import ProgressBar from "@/components/ProgressBar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -78,6 +80,7 @@ export default function RootLayout({
             gtag('config', 'G-8SMNJJ2RQ8');
           `}
         </Script>
+        <Suspense><ProgressBar /></Suspense>
         <ScrollToTop />
         <PrefetchOnHover />
         <Nav />
