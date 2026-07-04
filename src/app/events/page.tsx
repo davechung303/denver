@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import type { DenverEvent } from "@/lib/ticketmaster";
 import { getFeverEvents, type FeverEvent } from "@/lib/fever";
@@ -51,6 +52,28 @@ export default async function EventsPage() {
           <p className="mt-3 text-white/40 text-sm">
             {events.length} upcoming events · {feverEvents.length} experiences
           </p>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-4">Browse by Venue</h2>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { href: "/events/red-rocks", label: "Red Rocks" },
+            { href: "/events/ball-arena", label: "Ball Arena" },
+            { href: "/events/coors-field", label: "Coors Field" },
+            { href: "/events/empower-field", label: "Empower Field" },
+            { href: "/events/mission-ballroom", label: "Mission Ballroom" },
+            { href: "/events/fiddlers-green", label: "Fiddler's Green" },
+            { href: "/events/ogden-theatre", label: "Ogden Theatre" },
+            { href: "/events/paramount-theatre", label: "Paramount Theatre" },
+            { href: "/events/dicks-sporting-goods-park", label: "Dick's Sporting Goods Park" },
+          ].map((v) => (
+            <Link key={v.href} href={v.href}
+              className="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">
+              {v.label}
+            </Link>
+          ))}
         </div>
       </section>
 
