@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getEventsForVenue } from "@/lib/ticketmaster";
+import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Dick's Sporting Goods Park Events & Rapids Schedule 2026 | Dave Loves Denver",
@@ -42,7 +42,7 @@ const FAQS = [
 ];
 
 export default async function EventsDicksSportingGoodsParkPage() {
-  const events = await getEventsForVenue("Sporting Goods Park", 20);
+  const events = await getEventsForVenueFromAPI("dicks-sporting-goods-park", 50);
 
   return (
     <>

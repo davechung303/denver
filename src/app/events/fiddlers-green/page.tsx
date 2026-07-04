@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getEventsForVenue } from "@/lib/ticketmaster";
+import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Fiddler's Green Amphitheatre Events & Concert Schedule 2026 | Dave Loves Denver",
@@ -42,7 +42,7 @@ const FAQS = [
 ];
 
 export default async function EventsFiddlersGreenPage() {
-  const events = await getEventsForVenue("Fiddler", 20);
+  const events = await getEventsForVenueFromAPI("fiddlers-green", 50);
 
   return (
     <>

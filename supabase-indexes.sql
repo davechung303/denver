@@ -42,3 +42,16 @@ CREATE INDEX IF NOT EXISTS idx_places_missing_tldr
   ON places (cached_at)
   WHERE review_summary IS NOT NULL
     AND (review_summary->>'tldr') IS NULL;
+
+-- -------------------------------------------------------
+-- EVENTS — enriched fields (added July 2026)
+-- Store genre, artist, Spotify/YouTube URLs, status, and
+-- price ranges from Ticketmaster API.
+-- -------------------------------------------------------
+ALTER TABLE events ADD COLUMN IF NOT EXISTS genre TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS artist_name TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS spotify_url TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS youtube_url TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS status_code TEXT DEFAULT 'onsale';
+ALTER TABLE events ADD COLUMN IF NOT EXISTS min_price NUMERIC;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS max_price NUMERIC;

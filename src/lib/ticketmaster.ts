@@ -17,9 +17,65 @@ export interface DenverEvent {
   neighborhood_slug: string | null;
   is_free: boolean;
   cached_at: string;
+  // Enriched fields (populated by sync and live API fetches)
+  genre: string | null;
+  artist_name: string | null;
+  spotify_url: string | null;
+  youtube_url: string | null;
+  status_code: string | null;
+  min_price: number | null;
+  max_price: number | null;
 }
 
+// Ticketmaster venue IDs for Denver area venues — stable, don't change
+export const VENUE_IDS: Record<string, string> = {
+  "red-rocks":                 "KovZpZAaeIvA",
+  "ball-arena":                "KovZpZAFaJeA",
+  "coors-field":               "KovZpZA6t7kA",
+  "empower-field":             "KovZpa3Wne",
+  "mission-ballroom":          "KovZ917AxRI",
+  "fiddlers-green":            "KovZpZAEkakA",
+  "ogden-theatre":             "KovZpZAJv67A",
+  "paramount-theatre":         "KovZpZAFa1nA",
+  "dicks-sporting-goods-park": "KovZpZAE7aJA",
+};
+
 const API_KEY = process.env.TICKETMASTER_API_KEY;
+
+function mapTicketmasterEvent(e: any): DenverEvent | null {
+  const venue = e._embedded?.venues?.[0];
+  const attraction = e._embedded?.attractions?.[0];
+  const lat = venue?.location?.latitude ? parseFloat(venue.location.latitude) : null;
+  const lng = venue?.location?.longitude ? parseFloat(venue.location.longitude) : null;
+  const image = e.images?.find((img: any) => img.ratio === "16_9" && img.width > 500) ?? e.images?.[0];
+  const startTime = e.dates?.start?.dateTime ?? (e.dates?.start?.localDate ? e.dates.start.localDate + "T00:00:00Z" : null);
+  if (!e.id || !e.name || !startTime || !e.url) return null;
+  const priceRange = e.priceRanges?.[0];
+  return {
+    id: e.id,
+    event_id: e.id,
+    name: e.name,
+    description: e.classifications?.[0]?.segment?.name ?? null,
+    start_time: startTime,
+    end_time: null,
+    url: e.url,
+    image_url: image?.url ?? null,
+    venue_name: venue?.name ?? null,
+    venue_address: venue?.address?.line1 ?? null,
+    venue_lat: lat,
+    venue_lng: lng,
+    neighborhood_slug: lat && lng ? assignNeighborhood(lat, lng) : null,
+    is_free: priceRange?.min === 0,
+    cached_at: new Date().toISOString(),
+    genre: e.classifications?.[0]?.genre?.name ?? null,
+    artist_name: attraction?.name ?? null,
+    spotify_url: attraction?.externalLinks?.spotify?.[0]?.url ?? null,
+    youtube_url: attraction?.externalLinks?.youtube?.[0]?.url ?? null,
+    status_code: e.dates?.status?.code ?? "onsale",
+    min_price: priceRange?.min ?? null,
+    max_price: priceRange?.max ?? null,
+  };
+}
 
 function assignNeighborhood(lat: number, lng: number): string | null {
   for (const [slug, [minLat, maxLat, minLng, maxLng]] of Object.entries(NEIGHBORHOOD_BOUNDS)) {
@@ -70,31 +126,9 @@ export async function syncDenverEvents(): Promise<number> {
   }
 
   const rows = allEvents
-    .map((e: any) => {
-      const venue = e._embedded?.venues?.[0];
-      const lat = venue?.location?.latitude ? parseFloat(venue.location.latitude) : null;
-      const lng = venue?.location?.longitude ? parseFloat(venue.location.longitude) : null;
-      const image = e.images?.find((img: any) => img.ratio === "16_9" && img.width > 500) ?? e.images?.[0];
-      const startTime = e.dates?.start?.dateTime ?? (e.dates?.start?.localDate ? e.dates.start.localDate + "T00:00:00Z" : null);
-
-      return {
-        event_id: e.id,
-        name: e.name ?? null,
-        description: e.classifications?.[0]?.segment?.name ?? null,
-        start_time: startTime,
-        end_time: null,
-        url: e.url ?? null,
-        image_url: image?.url ?? null,
-        venue_name: venue?.name ?? null,
-        venue_address: venue?.address?.line1 ?? null,
-        venue_lat: lat,
-        venue_lng: lng,
-        neighborhood_slug: lat && lng ? assignNeighborhood(lat, lng) : null,
-        is_free: e.priceRanges?.[0]?.min === 0,
-        cached_at: new Date().toISOString(),
-      };
-    })
-    .filter((e) => e.event_id && e.name && e.start_time && e.url);
+    .map(mapTicketmasterEvent)
+    .filter(Boolean)
+    .map((e) => ({ ...e, event_id: e!.event_id }));
 
   if (rows.length > 0) {
     await supabaseAdmin.from("events").delete().lt("start_time", now);
@@ -128,6 +162,42 @@ export async function getEventsForVenue(
     .order("start_time", { ascending: true })
     .limit(limit);
   return (data ?? []) as DenverEvent[];
+}
+
+// Fetch events for a specific venue directly from Ticketmaster API using stable venueId.
+// Used by venue event pages — bypasses the city-wide DB sync so we get all shows for that venue.
+// The fetch is cached for 1 hour via Next.js data cache (pages revalidate at 3600s).
+export async function getEventsForVenueFromAPI(
+  venueSlug: string,
+  limit = 50
+): Promise<DenverEvent[]> {
+  const venueId = VENUE_IDS[venueSlug];
+  if (!API_KEY || !venueId) return getEventsForVenue(venueSlug.replace(/-/g, " "), limit);
+
+  const now = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+  const params = new URLSearchParams({
+    apikey: API_KEY,
+    venueId,
+    size: String(Math.min(limit, 200)),
+    sort: "date,asc",
+    startDateTime: now,
+  });
+
+  try {
+    const res = await fetch(
+      `https://app.ticketmaster.com/discovery/v2/events.json?${params}`,
+      { next: { revalidate: 3600 } }
+    );
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    const events: DenverEvent[] = (data._embedded?.events ?? [])
+      .map(mapTicketmasterEvent)
+      .filter(Boolean) as DenverEvent[];
+    return events;
+  } catch (err) {
+    console.error(`[ticketmaster] live fetch failed for ${venueSlug}, falling back to DB:`, err);
+    return getEventsForVenue(venueSlug.replace(/-/g, " "), limit);
+  }
 }
 
 export async function getEventsForNeighborhood(
