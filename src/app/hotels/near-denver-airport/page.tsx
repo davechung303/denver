@@ -42,6 +42,18 @@ const FAQS = [
     q: "Should I stay near the airport or downtown Denver?",
     a: "Stay downtown unless you have a very early flight (before 7am) or a very late arrival (after midnight). DEN is far from the city — 30–45 minutes each way — and staying near the airport means either Ubering into Denver every day or missing the city almost entirely.",
   },
+  {
+    q: "Do any Denver Airport hotels have a 24-hour shuttle?",
+    a: "Several do, which matters most for red-eye arrivals and pre-dawn departures — but frequency drops overnight, so a shuttle that runs 24 hours may still only come once an hour at 3am. Always confirm the exact overnight schedule when you book, and if your flight is at an odd hour, the terminal-connected Westin removes the shuttle question entirely.",
+  },
+  {
+    q: "Which hotels near Denver Airport have a restaurant on site?",
+    a: "The larger full-service properties — the Westin at the terminal and the Gaylord Rockies especially — have multiple on-site restaurants and bars, which is worth prioritizing near DEN since there's little within walking distance. Many of the mid-range Peña Blvd hotels have a grill or bar too; confirm hours, as some kitchens close early.",
+  },
+  {
+    q: "What are the best and most luxurious hotels near Denver Airport?",
+    a: "The Westin Denver International Airport is the best for pure convenience — connected to the terminal with upscale rooms and a rooftop pool. For a resort experience, the Gaylord Rockies is the luxury pick, with an indoor water park, spa, and several restaurants. Between them they cover both 'I just need to make my flight' and 'make a weekend of it.'",
+  },
 ];
 
 // eslint-disable-next-line @next/next/no-img-element
@@ -87,6 +99,12 @@ export default async function HotelsNearDenverAirportPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels Near Denver Airport (DEN)",
+          description: "The best hotels near Denver International Airport — from the Westin connected to the terminal to the Gaylord Rockies and budget options along Peña Blvd. Honest picks for early flights and late arrivals.",
+          url: "https://davelovesdenver.com/hotels/near-denver-airport",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       {/* Hero */}
@@ -98,8 +116,8 @@ export default async function HotelsNearDenverAirportPage() {
             <span className="text-white/80">Hotels Near Denver Airport</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Denver International Airport</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels Near Denver Airport</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Denver Airport</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Early flight tomorrow. Late arrival tonight. Here&apos;s exactly where to stay near DEN — and what&apos;s actually worth booking.
           </p>
         </div>

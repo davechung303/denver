@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "What are the best hotels in Cherry Creek Denver?",
-    a: "Cherry Creek has Denver's nicest hotel concentration. The Halcyon is the standout boutique option — rooftop pool, bikes to borrow, and a great bar. The JW Marriott Cherry Creek and The Maven at Dairy Block are also excellent. Cherry Creek North is a short walk from all of them.",
+    a: "Cherry Creek has Denver's nicest hotel concentration. The Halcyon is the standout boutique option — rooftop pool, bikes to borrow, and a great bar. Hotel Clio (formerly the JW Marriott Cherry Creek) and the Jacquard, an Autograph Collection hotel, are the top full-service picks. Cherry Creek North is a short walk from all of them.",
   },
   {
     q: "Is Cherry Creek walkable?",
@@ -37,6 +37,18 @@ const FAQS = [
   {
     q: "Is Cherry Creek a good neighborhood for families?",
     a: "Yes — it's quieter than LoDo or RiNo, with wide sidewalks, good parks, and very walkable access to food and shopping. City Park and the Denver Zoo are a short drive east.",
+  },
+  {
+    q: "Are there Marriott hotels in Cherry Creek?",
+    a: "Yes — several Marriott-family hotels anchor the neighborhood, including Hotel Clio (a Luxury Collection property, formerly the JW Marriott), the Jacquard (Autograph Collection), and the Moxy Denver Cherry Creek for a more design-forward, mid-tier stay. Brand-loyalty travelers are well covered here.",
+  },
+  {
+    q: "Are there cheap hotels in Cherry Creek?",
+    a: "Cherry Creek skews upscale, so true budget options are limited. The Moxy is the most wallet-friendly stay actually in the neighborhood; for cheaper rates, look just south to Glendale or west to Capitol Hill, both a short drive from Cherry Creek North. Weekdays are noticeably cheaper than weekends.",
+  },
+  {
+    q: "What are the best boutique hotels in Cherry Creek?",
+    a: "The Halcyon is the signature boutique hotel — rooftop pool, a lively bar, and loaner bikes for the Cherry Creek Trail. The Jacquard leans design-luxury, and the Moxy is the playful, budget-conscious boutique option. All three sit within a short walk of Cherry Creek North.",
   },
 ];
 
@@ -83,6 +95,12 @@ export default async function HotelsNearCherryCreekPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels in Cherry Creek Denver",
+          description: "The best hotels in Cherry Creek, Denver — luxury and boutique options near Cherry Creek North shopping, top restaurants, and the Cherry Creek Trail.",
+          url: "https://davelovesdenver.com/hotels/near-cherry-creek",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       <section className="bg-denver-navy text-white">
@@ -93,8 +111,8 @@ export default async function HotelsNearCherryCreekPage() {
             <span className="text-white/80">Hotels in Cherry Creek</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Cherry Creek North, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels in Cherry Creek Denver</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels in Cherry Creek Denver</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Cherry Creek has the best luxury hotels in Denver. It&apos;s quieter than downtown, more local than LoDo, and surrounded by the best shopping and fine dining in the city.
           </p>
         </div>
@@ -130,6 +148,27 @@ export default async function HotelsNearCherryCreekPage() {
             >
               See all Cherry Creek hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels in Cherry Creek for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury</p>
+            <h3 className="font-bold mb-2">Hotel Clio &amp; the Jacquard</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The top full-service luxury picks — Hotel Clio (Luxury Collection, formerly the JW Marriott) and the design-led Jacquard, both steps from Cherry Creek North shopping and dining.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best boutique</p>
+            <h3 className="font-bold mb-2">The Halcyon</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The signature Cherry Creek boutique: rooftop pool, a great bar, and loaner bikes for the Cherry Creek Trail. The pick when the hotel is part of the experience.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best value</p>
+            <h3 className="font-bold mb-2">Moxy Denver Cherry Creek</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The most wallet-friendly stay actually in the neighborhood — playful, design-forward, and walkable to everything. For cheaper still, look just south to Glendale.</p>
           </div>
         </div>
       </section>

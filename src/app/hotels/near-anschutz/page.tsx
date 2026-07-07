@@ -8,7 +8,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Anschutz Medical Campus Denver — Best Places to Stay | Dave Loves Denver",
   description:
-    "The best hotels near Anschutz Medical Campus and UCHealth in Aurora, Colorado — convenient options for patients, families, and medical visitors.",
+    "The local's guide to hotels near Anschutz Medical Campus and UCHealth in Aurora, Colorado — the closest on-campus hotels, best-value extended stays for families, and budget options for medical visitors.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-anschutz" },
   openGraph: {
     title: "Hotels Near Anschutz Medical Campus Denver",
@@ -37,6 +37,18 @@ const FAQS = [
   {
     q: "Is parking available near Anschutz Medical Campus?",
     a: "Parking is available at the medical campus itself — UCHealth and Children's Hospital Colorado have parking garages on site. Rates can be significant for extended stays. Staying nearby and using the light rail is often more cost-effective for multi-day visits.",
+  },
+  {
+    q: "What are the closest hotels to Anschutz Medical Campus?",
+    a: "The closest options are on or right beside the campus — the SpringHill Suites Denver at Anschutz Medical Campus and the Benson Hotel and Faculty Club sit on campus, and a Comfort Suites is nearby. These are the most convenient for early appointments or visiting a patient, since you can reach the hospitals in minutes without driving.",
+  },
+  {
+    q: "Are there budget or extended-stay hotels near Anschutz for families?",
+    a: "Yes. Aurora has budget and extended-stay hotels within 5–15 minutes of the campus, many with kitchens and lower weekly rates — often the most practical and affordable choice for families managing a long treatment schedule. Ask hotels whether they offer a medical or hospital rate; many near the campus do.",
+  },
+  {
+    q: "Are there upscale or luxury hotels near Anschutz Medical Campus?",
+    a: "The immediate area is practical rather than luxurious. For a nicer full-service stay, look toward downtown Denver or Cherry Creek — both a 20–30 minute drive or a light rail ride — where you'll find upscale hotels plus better dining for when you're not at the hospital.",
   },
 ];
 
@@ -137,6 +149,28 @@ export default async function HotelsNearAnschutzPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Best for every trip — closest / extended-stay / downtown */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near Anschutz for Every Visit</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Closest to the hospitals</p>
+            <h3 className="font-bold mb-2">On-campus hotels</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The SpringHill Suites at Anschutz and the Benson Hotel sit on campus — minutes on foot to UCHealth and Children&apos;s Hospital. The easiest choice for early appointments or visiting a patient.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best value for long stays</p>
+            <h3 className="font-bold mb-2">Aurora extended-stay</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Extended-stay hotels nearby offer kitchens and lower weekly rates — often the most practical and affordable base for families through a longer treatment schedule. Ask about a hospital rate.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for time in the city</p>
+            <h3 className="font-bold mb-2">Downtown Denver</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If you want a nicer stay and a break from the hospital, base downtown and take the light rail in — 20–30 minutes, with the city&apos;s best dining for the hours you&apos;re not on campus.</p>
           </div>
         </div>
       </section>

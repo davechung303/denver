@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Fiddler's Green Amphitheatre — Best Places to Stay for Shows | Dave Loves Denver",
   description:
-    "Where to stay for a show at Fiddler's Green Amphitheatre in Greenwood Village — nearby DTC hotels and downtown Denver options explained.",
+    "The local's guide to hotels near Fiddler's Green Amphitheatre in Greenwood Village — the Denver Tech Center chain-hotel cluster, plus the best budget and full-service picks for a show, from a local.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-fiddlers-green" },
   openGraph: {
     title: "Hotels Near Fiddler's Green Amphitheatre",
@@ -39,6 +39,14 @@ const FAQS = [
   {
     q: "Is there parking at Fiddler's Green?",
     a: "Yes, ample parking on-site. Rideshare pickups after shows can get crowded, so walking a couple blocks from the venue before summoning helps.",
+  },
+  {
+    q: "What chain hotels are near Fiddler's Green in the Denver Tech Center?",
+    a: "The DTC and Greenwood Village have a dense cluster of chain hotels within a couple miles of the venue — Marriott-family select-service and extended-stay options (think SpringHill Suites and Residence Inn), Hyatt House and the full-service Hyatt Regency Denver Tech Center, and Wyndham brands like Wingate. It's one of the best-covered hotel clusters in the metro for brand-loyalty travelers, and it's away from I-25 show traffic.",
+  },
+  {
+    q: "Are there cheap hotels near Fiddler's Green?",
+    a: "Yes — head just south to Englewood and Centennial, or pick a non-premium show date. The DTC's select-service and extended-stay chains are already better value than downtown, and midweek shows are cheaper still.",
   },
 ];
 
@@ -141,6 +149,28 @@ export default async function HotelsNearFiddlersGreenPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Best for every trip — chain cluster / cheap / full-service */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near Fiddler&apos;s Green for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a show night</p>
+            <h3 className="font-bold mb-2">The DTC chain cluster</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Denver Tech Center packs Marriott, Hyatt, and Wyndham brands within a couple miles of the venue — SpringHill Suites, Residence Inn, Hyatt House, Wingate, and more. Closest to the gates and off the I-25 traffic.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Englewood &amp; Centennial</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just south of the DTC, generally lower rates with short rideshare times to the venue. Pair with a midweek show and it&apos;s the cheapest way to catch a night at Fiddler&apos;s Green.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best full-service &amp; splurge</p>
+            <h3 className="font-bold mb-2">Hyatt Regency DTC — or downtown</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Hyatt Regency Denver Tech Center is the closest full-service option. If the show is one night of a longer trip, base downtown for the food and nightlife and make the drive south just for the concert.</p>
           </div>
         </div>
       </section>

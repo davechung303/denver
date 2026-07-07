@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Ball Arena Denver — Best Places to Stay for Nuggets, Avalanche & Concerts | Dave Loves Denver",
   description:
-    "The best hotels near Ball Arena in Denver — walking distance options for Nuggets games, Avalanche games, and concerts. LoDo and Jefferson Park picks from a local.",
+    "The local's guide to hotels near Ball Arena in Denver — which hotels are truly walking distance, where to park on event nights, plus the best budget, downtown, and brand-name picks for Nuggets, Avalanche, and concerts.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-ball-arena" },
   openGraph: {
     title: "Hotels Near Ball Arena Denver",
@@ -39,6 +39,18 @@ const FAQS = [
   {
     q: "What's near Ball Arena after a game?",
     a: "LoDo has the best post-game bar and restaurant scene. The Highlands neighborhood across the South Platte has excellent restaurants and is a short Uber or longer walk from the arena.",
+  },
+  {
+    q: "Where do you park at Ball Arena for an event?",
+    a: "Ball Arena has large attached lots (the lettered lots around the arena) plus surface lots nearby, but event-night rates surge and the post-game exit onto I-25 and Speer is genuinely slow. If you're driving, reserve a lot ahead on SpotHero. Better yet, stay in walking-distance LoDo and skip the traffic entirely.",
+  },
+  {
+    q: "Are there cheap hotels near Ball Arena?",
+    a: "The best value is usually a block or two out from the closest LoDo hotels, or across into the Jefferson Park side. Event nights — especially Nuggets or Avs playoff games — spike prices citywide, so midweek stays and non-event nights are dramatically cheaper. Book early when a big game or concert is on the calendar.",
+  },
+  {
+    q: "Are there Marriott or Hilton hotels near Ball Arena?",
+    a: "Yes — downtown Denver and LoDo have several Marriott-family and Hilton-family hotels within a 10–20 minute walk of the arena, so brand-loyalty travelers have plenty of options. Use the map below to see which flags sit closest, then check live rates.",
   },
 ];
 
@@ -143,6 +155,69 @@ export default async function HotelsNearBallArenaPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* How walkable is it, really */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-2">How Walkable Is It, Really?</h2>
+        <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-2xl mb-6" data-speakable>
+          Ball Arena sits on the western edge of downtown, so &ldquo;walking distance&rdquo; depends a lot on which side you&apos;re coming from. Here&apos;s the honest breakdown for walking back after a Nuggets or Avs game.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { label: "Easy walk (under 12 min)", tone: "text-green-600 dark:text-green-400", body: "Western LoDo along Wewatta and Chestnut, plus the Jefferson Park edge directly across from the arena. This is the sweet spot — flat and quick." },
+            { label: "Doable (12–20 min)", tone: "text-denver-amber", body: "The rest of LoDo, Union Station, and central downtown along the 16th Street corridor. An easy walk on a nice night, a bit of a haul in winter." },
+            { label: "Just take an Uber", tone: "text-slate-500 dark:text-slate-400", body: "RiNo, the Highlands across the river, Cherry Creek, and Capitol Hill. The map looks close, but the walk crosses I-25, the river, or Speer. Not after a night game." },
+          ].map((row) => (
+            <div key={row.label} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+              <h3 className={`font-bold mb-2 ${row.tone}`}>{row.label}</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{row.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Best for every trip — cheap / best / luxury */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near Ball Arena for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a game night</p>
+            <h3 className="font-bold mb-2">Western LoDo</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Stay on the arena side of LoDo and you get the shortest walk plus the best pre- and post-game food and bars. Walk in along Wewatta, walk back when you&apos;re ready.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Jefferson Park side</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The residential Jefferson Park side is close to the arena but often cheaper than prime LoDo. Pair it with a midweek or non-event night and you&apos;ll pay a fraction of playoff-weekend rates.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best splurge</p>
+            <h3 className="font-bold mb-2">The Crawford at Union Station</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If you want the trip to feel like an occasion, the historic Union Station hotel is a 15-minute walk to the arena and the nicest lobby downtown. Make a night of it.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Parking near Ball Arena */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Parking Near Ball Arena</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-speakable>
+              Ball Arena has some of the largest attached parking in the city — the lettered lots wrap around the venue — plus surface lots along Auraria Parkway and the western downtown edge. The problem isn&apos;t finding a space; it&apos;s the price on event nights and the crawl to get out afterward onto I-25 and Speer.
+            </p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+              If you&apos;re driving in, reserve a lot ahead on SpotHero to lock a rate. Check whether your hotel&apos;s parking is in-house or a nearby garage — a reserved lot near the arena can beat a downtown hotel&apos;s overnight valet fee.
+            </p>
+          </div>
+          <div className="bg-denver-navy text-white rounded-2xl p-6 lg:p-8">
+            <h3 className="font-bold text-lg mb-2">The move: don&apos;t park at all</h3>
+            <p className="text-white/70 text-sm leading-relaxed">
+              The post-game exit from Ball Arena is the single best reason to stay within walking distance. Skip the lot, walk back to LoDo along Wewatta, and you&apos;re at a bar while everyone else is still idling in the garage ramp.
+            </p>
           </div>
         </div>
       </section>

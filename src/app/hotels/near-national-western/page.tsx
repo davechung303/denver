@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near National Western Complex Denver — Best Places to Stay | Dave Loves Denver",
   description:
-    "The best hotels near National Western Complex in Denver — RiNo and Five Points options for the Stock Show, concerts, and events at one of Denver's largest event venues.",
+    "The local's guide to hotels near National Western Complex in Denver — RiNo and Five Points picks, how the N Line rail and Stock Show shuttles work, plus parking and the best budget options.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-national-western" },
   openGraph: {
     title: "Hotels Near National Western Complex Denver",
@@ -39,6 +39,18 @@ const FAQS = [
   {
     q: "How far is National Western from downtown Denver?",
     a: "About 2 miles northeast of LoDo — roughly a 10-minute drive or 15-minute rideshare. Not walking distance from downtown, but a short ride.",
+  },
+  {
+    q: "Is there a shuttle or train to National Western Complex?",
+    a: "Yes — RTD's N Line commuter rail has a station serving the National Western Center, so you can ride in from Union Station and skip driving. During the Stock Show, expect additional park-and-ride and event shuttle options too; confirm the current routes on the RTD and Stock Show sites, as they change year to year.",
+  },
+  {
+    q: "Is there parking at National Western Complex?",
+    a: "Yes, the complex has on-site lots, but they fill and prices climb during the Stock Show and big events, and the post-event exit can be slow. If you're driving, arrive early; otherwise the N Line, a rideshare from RiNo, or a Stock Show park-and-ride is usually the cleaner call.",
+  },
+  {
+    q: "Are there cheap hotels near National Western Complex?",
+    a: "The best value is typically Five Points or the RiNo edge a block or two out, on a non-event date — Stock Show in January spikes rates across the whole metro. Book early for the Stock Show and you'll pay far less than a last-minute rate.",
   },
 ];
 
@@ -147,6 +159,28 @@ export default async function HotelsNearNationalWesternPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Best for every trip — closest / cheap / Stock Show */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near National Western for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best overall</p>
+            <h3 className="font-bold mb-2">RiNo</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest neighborhood with real options, next door along the Platte, and Denver&apos;s best food and brewery scene for before and after. Short walk or rideshare to the complex.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Five Points &amp; the RiNo edge</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A block or two out and a non-event date is the value sweet spot. Still a short ride to the complex, well under prime RiNo or downtown pricing.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for the Stock Show</p>
+            <h3 className="font-bold mb-2">Downtown, booked early</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The January Stock Show fills hotels metro-wide. Lock a downtown base months ahead, then take the N Line or a park-and-ride in — the whole city is your after-hours when you&apos;re not at the show.</p>
           </div>
         </div>
       </section>

@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Denver Zoo — Best Places to Stay in City Park | Dave Loves Denver",
   description:
-    "The best hotels near the Denver Zoo in City Park — walkable options in Uptown, Five Points, and Capitol Hill. A local's guide to staying close to one of Denver's best attractions.",
+    "The local's guide to hotels near the Denver Zoo in City Park — the closest walkable neighborhoods, family hotels with a pool, and the best budget picks in Uptown, Five Points, and Capitol Hill.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-denver-zoo" },
   openGraph: {
     title: "Hotels Near Denver Zoo Denver",
@@ -39,6 +39,18 @@ const FAQS = [
   {
     q: "Is parking easy at the Denver Zoo?",
     a: "There's a large parking lot on site. On busy weekends it can fill up — arrive early or use the overflow lots nearby. Street parking around City Park is also an option.",
+  },
+  {
+    q: "Are there hotels with a pool near the Denver Zoo?",
+    a: "Yes — for a pool to cool off in after a day at the zoo, look at the larger full-service hotels downtown and in Uptown rather than the smaller boutique properties, which often skip a pool. Use the map and filters below to spot which nearby hotels have one before you book — it's the amenity most worth confirming for a family trip.",
+  },
+  {
+    q: "Which hotels are best for families visiting the Denver Zoo?",
+    a: "Uptown is the family sweet spot — closest to the zoo, walkable through City Park, and lined with easy restaurants on 17th and 18th. Pick a hotel with a pool and you've got a built-in reward for the kids after a few hours of walking the exhibits.",
+  },
+  {
+    q: "What are the cheapest hotels near the Denver Zoo?",
+    a: "Capitol Hill has the most budget-friendly and boutique options within 10–15 minutes of the zoo. Weekdays are cheaper than weekends, and staying a neighborhood out from LoDo generally beats downtown rates while keeping you close to City Park.",
   },
 ];
 
@@ -147,6 +159,28 @@ export default async function HotelsNearDenverZooPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Best for every trip — family / budget / pool */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Denver Zoo for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for families</p>
+            <h3 className="font-bold mb-2">Uptown</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest to the zoo, walkable through City Park, and full of easy restaurants on 17th and 18th. The simplest base for a family day at the zoo and museum.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Capitol Hill</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The most budget-friendly and boutique options within 10–15 minutes of the zoo. Weekdays beat weekends, and you&apos;re still an easy hop to City Park.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best with a pool</p>
+            <h3 className="font-bold mb-2">Downtown full-service</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Want a pool to reward the kids after the exhibits? The larger full-service hotels downtown and in Uptown are your best bet — confirm the pool on the map before booking, since smaller boutiques often skip it.</p>
           </div>
         </div>
       </section>

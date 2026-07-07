@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Coors Field Denver — Best Places to Stay for Rockies Games | Dave Loves Denver",
   description:
-    "The best hotels walking distance to Coors Field in Denver — LoDo, Union Station, and downtown options for Rockies games, concerts, and events.",
+    "The local's guide to hotels near Coors Field in Denver — which blocks are truly walkable, where to park on game day, plus the best budget and luxury picks for Rockies games and events.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-coors-field" },
   openGraph: {
     title: "Hotels Near Coors Field Denver",
@@ -39,6 +39,18 @@ const FAQS = [
   {
     q: "How early should I arrive in LoDo before a Rockies game?",
     a: "For a good pregame experience, arrive 1.5–2 hours early. Blake Street bars fill up fast, especially for weekend afternoon games. Being within walking distance means you can leave when you're ready without fighting for an Uber.",
+  },
+  {
+    q: "Where do you park near Coors Field for a game?",
+    a: "There are surface lots and garages all around the ballpark, mostly along Park Avenue West, Wazee, and the blocks north of 20th. Game-day rates surge and the closest lots sell out early, so reserve ahead on SpotHero if you're driving. The simplest move is to skip parking entirely: stay in LoDo, walk to the game, and walk back.",
+  },
+  {
+    q: "Which hotels near Coors Field are best on a budget?",
+    a: "The best value isn't always the closest hotel. Rates in LoDo spike on home-game weekends, so look one neighborhood out — RiNo or the Ballpark district edge — where you're still a 10–15 minute walk but paying weekday-style prices. Midweek games are dramatically cheaper than Friday and Saturday nights.",
+  },
+  {
+    q: "What's the most luxurious place to stay near Coors Field?",
+    a: "The Crawford Hotel inside Union Station is the standout splurge — a historic setting, a great-hall lobby, and a 7-minute walk to the gates. It's the pick when the trip itself is the occasion, not just the game.",
   },
 ];
 
@@ -142,6 +154,69 @@ export default async function HotelsNearCoorsFieldPage() {
             >
               See all LoDo hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* How walkable is it, really */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-2">How Walkable Is It, Really?</h2>
+        <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-2xl mb-6" data-speakable>
+          &ldquo;Walking distance&rdquo; gets thrown around loosely by booking sites. Here&apos;s the honest breakdown of what you can actually walk after a night game — and what will have you waiting on an Uber.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { label: "Easy walk (under 10 min)", tone: "text-green-600 dark:text-green-400", body: "LoDo proper — Blake, Market, and Wazee between Union Station and the ballpark. Flat, well-lit, and busy after games. This is the sweet spot." },
+            { label: "Doable (10–15 min)", tone: "text-denver-amber", body: "Union Station's far side, the lower RiNo edge across the tracks, and the Ballpark district north of the stadium. Fine on a nice night; you'll feel it in the cold or the rain." },
+            { label: "Just take an Uber", tone: "text-slate-500 dark:text-slate-400", body: "Deep RiNo, the Highlands across the river, and anything past Broadway. The map looks close, but the walk crosses highways and rail yards. Not worth it after dark." },
+          ].map((row) => (
+            <div key={row.label} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
+              <h3 className={`font-bold mb-2 ${row.tone}`}>{row.label}</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{row.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Best for every trip — cheap / best / luxury */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near Coors Field for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a game night</p>
+            <h3 className="font-bold mb-2">The Crawford at Union Station</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest walk that still feels special. You roll out of Union Station, grab a pregame drink in the great hall, and you&apos;re at the gates in seven minutes. Book early — game weekends sell out.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Stay one neighborhood out</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">LoDo rates spike for home games. Book the RiNo or Ballpark-district edge instead — still a 10–15 minute walk, often half the price. Midweek games beat Friday and Saturday nights by a mile.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best splurge</p>
+            <h3 className="font-bold mb-2">The Crawford, again</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">When the trip is the occasion and not just the game, the historic Union Station setting is the one worth paying up for. Nothing else near the ballpark matches the lobby.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Parking near Coors Field */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Parking Near Coors Field</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-speakable>
+              Game-day parking is the biggest headache for visitors driving in — and the easiest problem to design around. Surface lots and garages ring the ballpark, mostly along Park Avenue West, Wazee, and the blocks north of 20th. The catch: the closest lots fill first and rates surge on home-game days, especially weekend afternoons.
+            </p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+              If you&apos;re driving in, reserve a spot ahead on SpotHero to lock a rate and guarantee a space instead of circling. Ask your hotel whether parking is in-house valet or a nearby garage — some LoDo hotels charge a steep overnight rate for their own garage, so a reserved lot down the block can be cheaper.
+            </p>
+          </div>
+          <div className="bg-denver-navy text-white rounded-2xl p-6 lg:p-8">
+            <h3 className="font-bold text-lg mb-2">The move: don&apos;t park at all</h3>
+            <p className="text-white/70 text-sm leading-relaxed">
+              This is the whole reason to stay in LoDo. Walk to the game, walk to Blake Street for pregame, walk back when you&apos;re ready — no surge parking, no post-game exit gridlock, no Uber surge. The hotels a few blocks out are almost always cheaper than a game-day parking spot plus a rideshare each way.
+            </p>
           </div>
         </div>
       </section>

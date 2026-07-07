@@ -8,7 +8,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Denver Botanic Gardens — Best Places to Stay | Dave Loves Denver",
   description:
-    "The best hotels near Denver Botanic Gardens — walkable options in Capitol Hill and Congress Park, plus downtown Denver for easy access.",
+    "The local's guide to hotels near Denver Botanic Gardens — walkable Capitol Hill and Congress Park picks, the best luxury options like The Art Hotel and Cherry Creek, plus budget choices for a garden visit.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-botanic-gardens" },
   openGraph: {
     title: "Hotels Near Denver Botanic Gardens",
@@ -37,6 +37,14 @@ const FAQS = [
   {
     q: "Are there concerts at the Denver Botanic Gardens?",
     a: "Yes — the Botanic Gardens Summer Concert Series runs from June through August on the outdoor stage. Past performers include major national acts. Tickets go fast for big names. The garden setting makes it one of the most unique concert venues in Denver.",
+  },
+  {
+    q: "What are the best luxury hotels near the Denver Botanic Gardens?",
+    a: "For upscale stays, look just west to the Golden Triangle — The Art Hotel is the standout, a design-led luxury property near the Denver Art Museum and a short ride from the gardens. A little further east, Cherry Creek has Denver's densest luxury cluster (the Halcyon and Hotel Clio) with an easy 10-minute Uber to the gardens.",
+  },
+  {
+    q: "Are there cheap hotels near the Denver Botanic Gardens?",
+    a: "Capitol Hill, the closest neighborhood, also has the most budget-friendly and boutique options — many within a 10-minute walk. It's the best mix of price and proximity; weekdays are cheaper than concert or Blossoms of Light weekends.",
   },
 ];
 
@@ -90,6 +98,12 @@ export default async function HotelsNearBotanicGardensPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels Near Denver Botanic Gardens",
+          description: "The local's guide to hotels near Denver Botanic Gardens — walkable Capitol Hill and Congress Park picks, the best luxury options like The Art Hotel and Cherry Creek, plus budget choices for a garden visit.",
+          url: "https://davelovesdenver.com/hotels/near-botanic-gardens",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       <section className="bg-denver-navy text-white">
@@ -100,8 +114,8 @@ export default async function HotelsNearBotanicGardensPage() {
             <span className="text-white/80">Hotels Near Botanic Gardens</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Denver, Colorado</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels Near Denver Botanic Gardens</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Denver Botanic Gardens</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             One of the top botanic gardens in the country, year-round. Whether you&apos;re visiting for summer concerts, Blossoms of Light, or just the gardens themselves, here&apos;s where to stay.
           </p>
         </div>
@@ -137,6 +151,27 @@ export default async function HotelsNearBotanicGardensPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Botanic Gardens for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for value &amp; proximity</p>
+            <h3 className="font-bold mb-2">Capitol Hill</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The closest neighborhood with hotels and the most budget-friendly options — many within a 10-minute walk of the gardens, with plenty of character on Colfax.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury</p>
+            <h3 className="font-bold mb-2">The Art Hotel &amp; Cherry Creek</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Art Hotel in the Golden Triangle is the design-led luxury pick nearby; Cherry Creek&apos;s Halcyon and Hotel Clio are a short ride east for the city&apos;s densest upscale cluster.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for dining &amp; comfort</p>
+            <h3 className="font-bold mb-2">Uptown</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A step up from Cap Hill on comfort, with 17th Avenue restaurants and solid mid-range hotels. A 15-minute walk or quick Uber to the gardens.</p>
           </div>
         </div>
       </section>
