@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated hotel data artifacts (from scripts/*-expedia-*.mjs)
+hotels-missing-expedia-link.csv
+expedia-links*.csv
