@@ -8,7 +8,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near City Park Denver — Best Places to Stay for the Zoo & Museum | Dave Loves Denver",
   description:
-    "The best hotels near City Park in Denver — walkable options for Denver Zoo, Denver Museum of Nature & Science, and Jazz in the Park.",
+    "The local's guide to hotels near City Park in Denver — the best walkable picks for the Denver Zoo and museum, plus budget options and where the Catbird design hotel fits in.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-city-park" },
   openGraph: {
     title: "Hotels Near City Park Denver",
@@ -37,6 +37,14 @@ const FAQS = [
   {
     q: "Is Denver Zoo worth visiting?",
     a: "Yes — it's one of the better zoos in the country and significantly more engaging than the average city zoo. Allow 3–4 hours. Early morning on weekdays has the best crowd situation.",
+  },
+  {
+    q: "What are the best hotels near City Park?",
+    a: "Uptown is the best base — closest to the park's west entrance, walkable to the zoo and museum, and lined with 17th Avenue restaurants. For a design-forward stay, the Catbird in nearby RiNo is a popular apartment-style hotel a short ride away. Downtown works too if City Park is one stop on a bigger Denver trip.",
+  },
+  {
+    q: "Are there cheap hotels near City Park?",
+    a: "Capitol Hill, just south, has the most budget-friendly and boutique options within 10–15 minutes of the park. Weekdays beat weekends, and staying a neighborhood out from LoDo generally undercuts downtown rates while keeping you close to the zoo.",
   },
 ];
 
@@ -90,6 +98,12 @@ export default async function HotelsNearCityParkPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels Near City Park Denver",
+          description: "The local's guide to hotels near City Park in Denver — the best walkable picks for the Denver Zoo and museum, plus budget options and where the Catbird design hotel fits in.",
+          url: "https://davelovesdenver.com/hotels/near-city-park",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       <section className="bg-denver-navy text-white">
@@ -100,8 +114,8 @@ export default async function HotelsNearCityParkPage() {
             <span className="text-white/80">Hotels Near City Park</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Denver, Colorado</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels Near City Park Denver</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near City Park Denver</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             City Park is home to the Denver Zoo, the Museum of Nature &amp; Science, and some of the best skyline views in the city. Here&apos;s where to stay to make the most of it.
           </p>
         </div>
@@ -137,6 +151,27 @@ export default async function HotelsNearCityParkPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near City Park for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for the zoo &amp; museum</p>
+            <h3 className="font-bold mb-2">Uptown</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest walkable base, right by the park&apos;s west entrance, with 17th Avenue dining. The simplest choice for a day at the zoo and the Museum of Nature &amp; Science.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Capitol Hill</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The most budget-friendly and boutique options within 10–15 minutes of the park. Weekdays beat weekends, and you&apos;re still close to City Park and downtown.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best design stay</p>
+            <h3 className="font-bold mb-2">Catbird, RiNo</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A short ride northwest, the Catbird is an apartment-style design hotel with a rooftop — a fun base if you want to pair the zoo with RiNo&apos;s food and brewery scene.</p>
           </div>
         </div>
       </section>

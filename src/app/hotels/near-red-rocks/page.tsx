@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Red Rocks Amphitheatre — Best Places to Stay for Shows | Dave Loves Denver",
   description:
-    "The best hotels near Red Rocks Amphitheatre — Morrison, Lakewood, Golden, and downtown Denver options. Where to stay for a show at one of the best concert venues in the world.",
+    "The local's guide to hotels near Red Rocks Amphitheatre — the closest hotels, which shuttle from downtown, plus the best budget, luxury, and brand-name picks in Morrison, Lakewood, Golden, and Denver for a show.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-red-rocks" },
   openGraph: {
     title: "Hotels Near Red Rocks Amphitheatre",
@@ -43,6 +43,18 @@ const FAQS = [
   {
     q: "What should I wear to Red Rocks at night?",
     a: "Red Rocks sits at 6,450 feet and gets significantly colder after sunset — even in summer. A jacket or sweatshirt is always a good idea. The temperature can drop 20+ degrees between doors opening and the end of the show. Layers are the move.",
+  },
+  {
+    q: "What's the closest hotel to Red Rocks Amphitheatre?",
+    a: "The Origin Hotel Red Rocks, on the Golden/Morrison side, is the closest branded hotel to the venue — a short drive to the gates. Beyond that, Morrison itself has very limited lodging, so most concert-goers base in Lakewood or Golden and drive or take a shuttle in.",
+  },
+  {
+    q: "Are there cheap hotels near Red Rocks?",
+    a: "The best value is the west-metro budget and midscale chains in Lakewood and along the Golden corridor — close enough for a short drive, far cheaper than downtown. Show nights for big-name concerts push prices up everywhere, so book early once your date is set.",
+  },
+  {
+    q: "Are there Marriott or Hilton hotels near Red Rocks?",
+    a: "Yes — Lakewood and Golden, between the venue and Denver, have several Marriott-family and Hilton-family hotels, so brand-loyalty travelers have solid options within a 15–20 minute drive. Use the map below to see which flags sit closest to the amphitheatre.",
   },
 ];
 
@@ -146,6 +158,28 @@ export default async function HotelsNearRedRocksPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Best for every trip — closest / cheap / luxury */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near Red Rocks for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Closest to the venue</p>
+            <h3 className="font-bold mb-2">The Origin Hotel Red Rocks</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">On the Golden/Morrison side, this is the closest branded hotel to the amphitheatre — a short drive to the gates and the easiest option if you want to be right by the venue on show night.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Lakewood &amp; the Golden corridor</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">West-metro midscale chains 15–20 minutes out are the value sweet spot — close enough to avoid the worst traffic, far cheaper than downtown. Book early for big-name shows.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best splurge &amp; shuttle</p>
+            <h3 className="font-bold mb-2">Downtown Denver + a show shuttle</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Base at a downtown luxury hotel, make a weekend of the city, and take a pre-booked shuttle from Union Station on show night — no driving, no post-show surge, and the best food and bars the rest of the trip.</p>
           </div>
         </div>
       </section>

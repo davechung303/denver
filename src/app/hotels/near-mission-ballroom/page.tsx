@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Mission Ballroom Denver — Best Places to Stay for Shows | Dave Loves Denver",
   description:
-    "The best hotels near Mission Ballroom in Denver's RiNo neighborhood — walkable options steps from one of the best mid-size venues in the country.",
+    "The local's guide to hotels near Mission Ballroom in Denver's RiNo neighborhood — the walkable Catbird hotel, where to park on show nights, plus the best budget picks and how Airbnbs compare.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-mission-ballroom" },
   openGraph: {
     title: "Hotels Near Mission Ballroom Denver",
@@ -39,6 +39,22 @@ const FAQS = [
   {
     q: "What should I do before a Mission Ballroom show in RiNo?",
     a: "RiNo is the right answer to this. Grab dinner at Señor Bear, Zeppelin Station, or any of a dozen other great spots. Hit a brewery beforehand — TRVE, Ratio, Odell Denver, and Great Divide are all close. The pre-show neighborhood experience is part of why Mission Ballroom is one of the best venues in the country.",
+  },
+  {
+    q: "Is the Catbird Hotel close to Mission Ballroom?",
+    a: "Yes — the Catbird is one of the closest hotels to the venue, right in RiNo about a 10-minute walk away. It's an apartment-style design hotel with a rooftop, so it's a natural pick for a show night: walk to the venue, walk back, and you're steps from RiNo's restaurants and breweries the whole time.",
+  },
+  {
+    q: "Where do you park for Mission Ballroom?",
+    a: "Parking is limited and RiNo's industrial-transitional streets fill fast on show nights. There's paid parking near the venue, but the cleaner options are a reserved spot booked ahead on SpotHero, a rideshare, or the RTD train — the 38th & Blake station is a short walk away. Staying somewhere walkable removes the problem entirely.",
+  },
+  {
+    q: "Are there cheap hotels near Mission Ballroom?",
+    a: "RiNo skews trendy and prices climb on show nights, so the best value is usually the LoDo edge a bit north, or a non-show, midweek date. Book early when your show is announced — the closest RiNo rooms go first and cost the most last-minute.",
+  },
+  {
+    q: "Should I book a hotel or an Airbnb near Mission Ballroom?",
+    a: "RiNo does have short-term rentals, but Denver's rules limit them to hosts' primary residences, so there are fewer true Airbnbs than you'd expect and availability is inconsistent — especially for a single show night. For one night around a concert, a walkable RiNo hotel is usually simpler and easier to cancel; an Airbnb makes more sense for a longer multi-night stay.",
   },
 ];
 
@@ -146,6 +162,28 @@ export default async function HotelsNearMissionBallroomPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Best for every trip — show night / budget / closest design */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near Mission Ballroom for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a show night</p>
+            <h3 className="font-bold mb-2">RiNo, walkable</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Stay in RiNo and the whole night is walkable — dinner, the show, and a brewery after, all without a car. The closest thing to a perfect Denver concert night.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">The LoDo edge</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just north toward LoDo and Union Station you&apos;ll find better rates and more familiar brands, with a 20-minute walk or quick rideshare to the venue. Midweek shows are cheaper still.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Closest design hotel</p>
+            <h3 className="font-bold mb-2">The Catbird</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">One of the closest hotels to the venue — an apartment-style design hotel with a rooftop, roughly a 10-minute walk in RiNo. Ideal if you want to walk to the show and back.</p>
           </div>
         </div>
       </section>

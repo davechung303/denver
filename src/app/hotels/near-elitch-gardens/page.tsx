@@ -10,7 +10,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Elitch Gardens Denver — Best Places to Stay | Dave Loves Denver",
   description:
-    "The best hotels near Elitch Gardens theme park in Denver — Jefferson Park and Sloan Lake options steps from the rides. A local's guide to staying close.",
+    "The local's guide to hotels near Elitch Gardens theme park in Denver — the closest Jefferson Park and Sloan Lake picks, family hotels with a pool, and the best budget options steps from the rides.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-elitch-gardens" },
   openGraph: {
     title: "Hotels Near Elitch Gardens Denver",
@@ -39,6 +39,14 @@ const FAQS = [
   {
     q: "Is there parking at Elitch Gardens?",
     a: "Yes, on-site paid parking is available. Rideshare from Jefferson Park or LoDo is often easier if you're staying nearby — drop-off is straightforward and avoids the parking cost.",
+  },
+  {
+    q: "Are there hotels with a pool near Elitch Gardens?",
+    a: "For a pool to cool off in after a day at the park — a natural pairing with Elitch's water park — the larger full-service hotels in nearby LoDo and downtown are your best bet, since the smaller neighborhood spots often skip one. Use the map and filters to confirm a pool before booking; it's the amenity most worth checking for a family trip.",
+  },
+  {
+    q: "Are there cheap hotels near Elitch Gardens?",
+    a: "The best value is usually across the river in LoDo a block or two out, or a non-weekend date — Elitch's busiest days (weekends and holidays) push nearby rates up. Jefferson Park is closest but thin on options, so booking early is key.",
   },
 ];
 
@@ -127,7 +135,7 @@ export default async function HotelsNearElitchGardensPage() {
             </div>
             <div>
               <h3 className="font-bold mb-1">Sloan Lake (10–15 min)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just north of Jefferson Park around a beautiful lake. Sloan Lake has a growing restaurant scene and is extremely walkable. If you find a hotel here, you're perfectly positioned for Elitch Gardens and the wider west Denver area.</p>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just north of Jefferson Park around a beautiful lake. Sloan Lake has a growing restaurant scene and is extremely walkable. If you find a hotel here, you&apos;re perfectly positioned for Elitch Gardens and the wider west Denver area.</p>
             </div>
             <div>
               <h3 className="font-bold mb-1">LoDo (20 min walk or short rideshare)</h3>
@@ -147,6 +155,28 @@ export default async function HotelsNearElitchGardensPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Best for every trip — family / budget / pool */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near Elitch Gardens for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for families</p>
+            <h3 className="font-bold mb-2">Jefferson Park &amp; LoDo</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Jefferson Park is closest for a quick walk to the gates; LoDo across the river has the most family-friendly hotels and an easy rideshare. Both skip the on-site parking hassle.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">LoDo, a block or two out</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Step just outside prime LoDo and pick a non-weekend date to dodge the peak-day surge. Closest walkable value to the park without paying front-gate prices.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best with a pool</p>
+            <h3 className="font-bold mb-2">Downtown full-service</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A perfect pairing with Elitch&apos;s water park — the larger downtown and LoDo hotels are your best bet for a pool. Confirm it on the map before booking, since smaller spots often skip one.</p>
           </div>
         </div>
       </section>

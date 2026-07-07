@@ -8,7 +8,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hotels Near Colorado Convention Center Denver — Best Conference Hotel Options | Dave Loves Denver",
   description:
-    "The best hotels near the Colorado Convention Center in downtown Denver — walkable options for conferences, conventions, and events.",
+    "The local's guide to hotels near the Colorado Convention Center in downtown Denver — the connected Hyatt Regency, Marriott-family options, plus the best luxury, budget, and walkable picks for conferences.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-convention-center" },
   openGraph: {
     title: "Hotels Near Colorado Convention Center Denver",
@@ -37,6 +37,18 @@ const FAQS = [
   {
     q: "Is the Colorado Convention Center easy to reach from Denver Airport?",
     a: "Yes — the A-Line commuter train runs from DEN directly to Union Station in about 37 minutes for a flat $10.50. From Union Station, it's a 15-minute walk or a $10 Uber to the convention center.",
+  },
+  {
+    q: "Are there Marriott hotels near the Colorado Convention Center?",
+    a: "Yes — several Marriott-family hotels are within a few blocks, including the Sheraton Denver Downtown and the Westin Denver Downtown, plus other Marriott brands along the 16th Street corridor. The Hyatt Regency is the Hyatt option and the only one connected to the center directly. Brand-loyalty travelers have strong choices in every flag downtown.",
+  },
+  {
+    q: "Are there cheap hotels near the Colorado Convention Center?",
+    a: "The best value is the Golden Triangle just south or a step out from the 16th Street core, both a short walk or free mall-shuttle ride to the center. Rates spike downtown during large conventions, so booking early — before your event's room block fills — is where the savings are.",
+  },
+  {
+    q: "What is the Colorado Convention Center's address?",
+    a: "The Colorado Convention Center is at 700 14th Street, Denver, CO 80202, in the heart of downtown. The Big Blue Bear (I See What You Mean) sculpture peering into the windows on 14th Street is the easiest landmark to find the main entrance.",
   },
 ];
 
@@ -90,6 +102,12 @@ export default async function HotelsNearConventionCenterPage() {
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
+        { "@context": "https://schema.org", "@type": "WebPage",
+          name: "Hotels Near Colorado Convention Center Denver",
+          description: "The local's guide to hotels near the Colorado Convention Center in downtown Denver — the connected Hyatt Regency, Marriott-family options, plus the best luxury, budget, and walkable picks for conferences.",
+          url: "https://davelovesdenver.com/hotels/near-convention-center",
+          speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+        },
       ])}} />
 
       <section className="bg-denver-navy text-white">
@@ -100,8 +118,8 @@ export default async function HotelsNearConventionCenterPage() {
             <span className="text-white/80">Hotels Near Convention Center</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Downtown Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">Hotels Near Colorado Convention Center</h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Colorado Convention Center</h1>
+          <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             The Colorado Convention Center is right in the heart of downtown Denver, surrounded by good hotels and an easy walk to Larimer Square, the Golden Triangle museums, and everything LoDo has to offer.
           </p>
         </div>
@@ -137,6 +155,27 @@ export default async function HotelsNearConventionCenterPage() {
             >
               See all nearby hotels &rarr;
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Convention Center for Every Trip</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for attendees</p>
+            <h3 className="font-bold mb-2">Hyatt Regency (connected)</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The only hotel joined to the center by skywalk — room to session without stepping outside. Worth the premium for a full multi-day conference.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
+            <h3 className="font-bold mb-2">Golden Triangle</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Quieter hotels a few blocks south at better value, with the Art Museum and History Colorado on your doorstep for downtime. A short walk or mall-shuttle ride to the center.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury &amp; brand-name</p>
+            <h3 className="font-bold mb-2">Sheraton, Westin &amp; LoDo</h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Full-service Marriott-family flags like the Sheraton and Westin sit within a few blocks, with the best dining and nightlife toward Larimer Square and LoDo for evenings off.</p>
           </div>
         </div>
       </section>
