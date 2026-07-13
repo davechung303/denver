@@ -211,6 +211,9 @@ export default async function HotelsNearCoorsFieldPage() {
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
               If you&apos;re driving in, reserve a spot ahead on SpotHero to lock a rate and guarantee a space instead of circling. Ask your hotel whether parking is in-house valet or a nearby garage — some LoDo hotels charge a steep overnight rate for their own garage, so a reserved lot down the block can be cheaper.
             </p>
+            <Link href="/denver/coors-field-parking" className="inline-flex items-center gap-1 text-sm font-semibold text-denver-amber hover:underline">
+              Full breakdown: Coors Field parking guide &rarr;
+            </Link>
           </div>
           <div className="bg-denver-navy text-white rounded-2xl p-6 lg:p-8">
             <h3 className="font-bold text-lg mb-2">The move: don&apos;t park at all</h3>

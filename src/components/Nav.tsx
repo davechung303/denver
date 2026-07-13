@@ -275,6 +275,13 @@ export default function Nav() {
             </div>
 
             <Link
+              href="/hotels"
+              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/hotels" || pathname.startsWith("/hotels/") ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+            >
+              Hotels
+            </Link>
+
+            <Link
               href="/events"
               className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/events" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
             >
@@ -470,6 +477,13 @@ export default function Nav() {
               className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Things To Do
+            </Link>
+            <Link
+              href="/hotels"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+            >
+              Hotels
             </Link>
             <Link
               href="/events"
