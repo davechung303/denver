@@ -159,8 +159,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   if (!isUsefulPlace(place)) notFound();
 
-  const title = `${place.name} — ${c.name} near ${n.name}, Denver`;
-  const description = `${place.name} near ${n.name}, Denver. ${place.rating ? `Rated ${place.rating}/5` : ""} ${place.address ? `· ${place.address}` : ""}. Find hours, photos, and more on Dave Loves Denver.`;
+  const isHotelPage = cSlug === "hotels";
+  const title = isHotelPage
+    ? `${place.name} — Rates, Reviews & Map`
+    : `${place.name} — ${c.name} near ${n.name}, Denver`;
+  const description = isHotelPage
+    ? `${place.name} in ${n.name}, Denver.${place.rating ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.` : ""} See photos, the map, and nearby restaurants and things to do — then check live rates on Expedia.`
+    : `${place.name} near ${n.name}, Denver. ${place.rating ? `Rated ${place.rating}/5` : ""} ${place.address ? `· ${place.address}` : ""}. Find hours, photos, and more on Dave Loves Denver.`;
 
   return {
     title,

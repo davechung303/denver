@@ -252,6 +252,45 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Where to Stay */}
+      <section className="border-t border-slate-200 dark:border-slate-800 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="flex items-end justify-between mb-10 flex-wrap gap-3">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold">Where to Stay in Denver</h2>
+            <p className="mt-2 text-slate-500 dark:text-slate-400 text-lg">
+              Coming for a game, a show, or a conference? Here&apos;s where a local would book.
+            </p>
+          </div>
+          <Link href="/hotels" className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline">
+            All hotel guides &rarr;
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {[
+            { href: "/hotels/near-coors-field", label: "Coors Field" },
+            { href: "/hotels/near-ball-arena", label: "Ball Arena" },
+            { href: "/hotels/near-empower-field", label: "Empower Field" },
+            { href: "/hotels/near-red-rocks", label: "Red Rocks" },
+            { href: "/hotels/near-denver-airport", label: "Denver Airport" },
+            { href: "/hotels/near-convention-center", label: "Convention Center" },
+            { href: "/hotels/near-cherry-creek", label: "Cherry Creek" },
+            { href: "/hotels/near-mission-ballroom", label: "Mission Ballroom" },
+            { href: "/hotels/near-denver-zoo", label: "Denver Zoo" },
+            { href: "/hotels/near-fiddlers-green", label: "Fiddler's Green" },
+            { href: "/denver/where-to-stay", label: "By Neighborhood" },
+            { href: "/hotels/best-value-denver", label: "Best Value" },
+          ].map((h) => (
+            <Link key={h.href} href={h.href}
+              className="flex items-center justify-center text-center px-3 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold hover:border-denver-amber hover:text-denver-amber transition-colors leading-snug">
+              {h.label}
+            </Link>
+          ))}
+        </div>
+        <div className="mt-6 sm:hidden text-center">
+          <Link href="/hotels" className="text-sm font-semibold text-denver-amber hover:underline">All hotel guides &rarr;</Link>
+        </div>
+      </section>
+
       {/* YouTube Section */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

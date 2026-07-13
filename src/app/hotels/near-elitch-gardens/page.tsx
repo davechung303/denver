@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
+import { getPlaces, isRealHotel } from "@/lib/places";
+import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
@@ -50,34 +51,6 @@ const FAQS = [
   },
 ];
 
-// eslint-disable-next-line @next/next/no-img-element
-function HotelCard({ place }: { place: Place }) {
-  const href = place.expedia_affiliate_url ?? expediaDenverHotelsUrl("Jefferson Park Denver");
-  const photo = place.photos?.[0];
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer"
-      className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200"
-    >
-      <div className="relative w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
-        {photo ? (
-          <img src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-        ) : (
-          <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
-        )}
-      </div>
-      <div className="flex flex-col justify-center gap-0.5 min-w-0 flex-1">
-        <h3 className="font-semibold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
-        {place.rating && (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
-            ★ {place.rating.toFixed(1)}
-            {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
-          </span>
-        )}
-        <span className="text-xs text-denver-amber font-medium">Book on Expedia &rarr;</span>
-      </div>
-    </a>
-  );
-}
 
 export default async function HotelsNearElitchGardensPage() {
   const [jeffPl, sloanPl, events] = await Promise.all([
@@ -149,7 +122,7 @@ export default async function HotelsNearElitchGardensPage() {
 
           <div className="flex flex-col gap-2">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Jefferson Park & Sloan Lake</p>
-            {hotels.map((hotel) => <HotelCard key={hotel.place_id} place={hotel} />)}
+            {hotels.map((hotel) => <VenueHotelCard key={hotel.place_id} place={hotel} />)}
             <a href={expediaDenverHotelsUrl("Jefferson Park Denver Elitch Gardens")} target="_blank" rel="noopener noreferrer"
               className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
             >
