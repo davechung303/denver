@@ -179,7 +179,10 @@ export default async function HotelsNearDenverAirportPage() {
         <h2 className="text-lg font-bold mb-3">Staying Longer? Find a Better Base.</h2>
         <p className="text-slate-500 dark:text-slate-400 mb-5 text-sm max-w-xl">If you&apos;re spending more than a night in Denver, you&apos;ll be much better off staying closer to the city.</p>
         <div className="flex flex-wrap gap-3">
-          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/denver/denver-airport-shuttle" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+            Airport shuttle &amp; transport guide &rarr;
+          </Link>
+          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
             Full Denver hotel guide &rarr;
           </Link>
           <Link href="/hotels/near-coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">

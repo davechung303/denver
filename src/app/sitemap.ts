@@ -93,6 +93,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/denver/where-to-stay`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/hotels`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.9 },
     { url: `${BASE_URL}/denver/coors-field-parking`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.75 },
+    { url: `${BASE_URL}/denver/red-rocks-shuttle`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.75 },
+    { url: `${BASE_URL}/denver/denver-airport-shuttle`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.75 },
     { url: `${BASE_URL}/hotels/near-red-rocks`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/hotels/near-empower-field`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/hotels/near-coors-field`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
