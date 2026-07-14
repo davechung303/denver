@@ -137,6 +137,16 @@ export default function HotelsHubPage() {
             <h3 className="font-bold group-hover:text-denver-amber transition-colors">Coors Field Parking Guide</h3>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Where to park for a Rockies game, what it costs, and how to skip the hassle entirely.</p>
           </Link>
+          <Link href="/denver/red-rocks-shuttle"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Red Rocks Shuttle Guide</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">How to get to a show without driving — shuttles from downtown, costs, and why locals skip the car.</p>
+          </Link>
+          <Link href="/denver/denver-airport-shuttle"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Denver Airport Shuttle Guide</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">DEN to downtown, your hotel, or the mountains — the train, shuttles, and rideshare compared.</p>
+          </Link>
           <Link href="/events"
             className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
             <h3 className="font-bold group-hover:text-denver-amber transition-colors">Denver Events Calendar</h3>
