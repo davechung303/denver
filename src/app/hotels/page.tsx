@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 
 export const revalidate = 86400;
 
@@ -15,50 +16,66 @@ export const metadata: Metadata = {
   },
 };
 
-type Venue = { href: string; name: string; blurb: string };
+type Venue = { href: string; name: string; blurb: string; nb: string };
 type Group = { title: string; venues: Venue[] };
 
 const GROUPS: Group[] = [
   {
     title: "Sports & Big Events",
     venues: [
-      { href: "/hotels/near-coors-field", name: "Coors Field", blurb: "Rockies games — walkable LoDo hotels." },
-      { href: "/hotels/near-ball-arena", name: "Ball Arena", blurb: "Nuggets, Avalanche & concerts." },
-      { href: "/hotels/near-empower-field", name: "Empower Field at Mile High", blurb: "Broncos games & stadium shows." },
-      { href: "/hotels/near-national-western", name: "National Western Complex", blurb: "The Stock Show, rodeos & events." },
+      { href: "/hotels/near-coors-field", name: "Coors Field", blurb: "Rockies games — walkable LoDo hotels.", nb: "lodo" },
+      { href: "/hotels/near-ball-arena", name: "Ball Arena", blurb: "Nuggets, Avalanche & concerts.", nb: "lodo" },
+      { href: "/hotels/near-empower-field", name: "Empower Field at Mile High", blurb: "Broncos games & stadium shows.", nb: "jefferson-park" },
+      { href: "/hotels/near-national-western", name: "National Western Complex", blurb: "The Stock Show, rodeos & events.", nb: "rino" },
     ],
   },
   {
     title: "Concerts & Amphitheaters",
     venues: [
-      { href: "/hotels/near-red-rocks", name: "Red Rocks Amphitheatre", blurb: "Morrison, Lakewood & shuttle options." },
-      { href: "/hotels/near-mission-ballroom", name: "Mission Ballroom", blurb: "RiNo's best mid-size venue." },
-      { href: "/hotels/near-fiddlers-green", name: "Fiddler's Green Amphitheatre", blurb: "The DTC chain-hotel cluster." },
+      { href: "/hotels/near-red-rocks", name: "Red Rocks Amphitheatre", blurb: "Morrison, Lakewood & shuttle options.", nb: "denver-suburbs" },
+      { href: "/hotels/near-mission-ballroom", name: "Mission Ballroom", blurb: "RiNo's best mid-size venue.", nb: "rino" },
+      { href: "/hotels/near-fiddlers-green", name: "Fiddler's Green Amphitheatre", blurb: "The DTC chain-hotel cluster.", nb: "denver-suburbs" },
     ],
   },
   {
     title: "Attractions & Family",
     venues: [
-      { href: "/hotels/near-denver-zoo", name: "Denver Zoo", blurb: "City Park — family-friendly Uptown stays." },
-      { href: "/hotels/near-city-park", name: "City Park", blurb: "Zoo, museum & Jazz in the Park." },
-      { href: "/hotels/near-botanic-gardens", name: "Denver Botanic Gardens", blurb: "Cap Hill & Cherry Creek options." },
-      { href: "/hotels/near-elitch-gardens", name: "Elitch Gardens", blurb: "Theme-park stays with a pool." },
+      { href: "/hotels/near-denver-zoo", name: "Denver Zoo", blurb: "City Park — family-friendly Uptown stays.", nb: "uptown" },
+      { href: "/hotels/near-city-park", name: "City Park", blurb: "Zoo, museum & Jazz in the Park.", nb: "uptown" },
+      { href: "/hotels/near-botanic-gardens", name: "Denver Botanic Gardens", blurb: "Cap Hill & Cherry Creek options.", nb: "capitol-hill" },
+      { href: "/hotels/near-elitch-gardens", name: "Elitch Gardens", blurb: "Theme-park stays with a pool.", nb: "jefferson-park" },
     ],
   },
   {
     title: "Business, Airport & Medical",
     venues: [
-      { href: "/hotels/near-convention-center", name: "Colorado Convention Center", blurb: "Walkable downtown conference hotels." },
-      { href: "/hotels/near-denver-airport", name: "Denver Airport (DEN)", blurb: "Early flights, late arrivals & shuttles." },
-      { href: "/hotels/near-anschutz", name: "Anschutz Medical Campus", blurb: "Convenient stays for medical visits." },
-      { href: "/hotels/near-cherry-creek", name: "Cherry Creek", blurb: "Denver's nicest luxury & boutique hotels." },
+      { href: "/hotels/near-convention-center", name: "Colorado Convention Center", blurb: "Walkable downtown conference hotels.", nb: "downtown" },
+      { href: "/hotels/near-denver-airport", name: "Denver Airport (DEN)", blurb: "Early flights, late arrivals & shuttles.", nb: "airport" },
+      { href: "/hotels/near-anschutz", name: "Anschutz Medical Campus", blurb: "Convenient stays for medical visits.", nb: "denver-suburbs" },
+      { href: "/hotels/near-cherry-creek", name: "Cherry Creek", blurb: "Denver's nicest luxury & boutique hotels.", nb: "cherry-creek" },
     ],
   },
 ];
 
 const ALL_HREFS = GROUPS.flatMap((g) => g.venues.map((v) => v.href));
 
-export default function HotelsHubPage() {
+// Fetch one representative hotel photo per neighborhood used above, so venue cards
+// are image-backed (like the homepage). Falls back to a gradient where none exists.
+async function getNeighborhoodPhotos(): Promise<Record<string, string>> {
+  const nbs = Array.from(new Set(GROUPS.flatMap((g) => g.venues.map((v) => v.nb))));
+  const entries = await Promise.all(
+    nbs.map(async (nb) => {
+      const hotels = (await getPlaces(nb, "hotels")).filter(isRealHotel);
+      const withPhoto = hotels.find((h) => h.photos?.[0]);
+      return [nb, withPhoto?.photos?.[0] ? photoUrl(withPhoto.photos[0]) : ""] as const;
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
+export default async function HotelsHubPage() {
+  const photos = await getNeighborhoodPhotos();
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
@@ -90,22 +107,32 @@ export default function HotelsHubPage() {
         </div>
       </section>
 
-      {/* Venue groups */}
+      {/* Venue groups — image-backed cards */}
       {GROUPS.map((group) => (
         <section key={group.title} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
           <h2 className="text-2xl font-bold mb-6">{group.title}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {group.venues.map((v) => (
-              <Link key={v.href} href={v.href}
-                className="group flex flex-col justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber hover:shadow-md transition-all duration-200"
-              >
-                <div>
-                  <h3 className="font-bold group-hover:text-denver-amber transition-colors">Hotels near {v.name}</h3>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{v.blurb}</p>
-                </div>
-                <span className="mt-4 inline-flex items-center text-xs font-semibold text-denver-amber">View hotels &rarr;</span>
-              </Link>
-            ))}
+            {group.venues.map((v) => {
+              const img = photos[v.nb];
+              return (
+                <Link key={v.href} href={v.href}
+                  className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col justify-end p-5 text-white hover:scale-[1.02] transition-transform duration-200"
+                >
+                  {img ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={img} alt={`Hotels near ${v.name}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-denver-navy to-slate-700" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10 group-hover:from-black/75 transition-all" />
+                  <div className="relative z-10">
+                    <h3 className="text-lg font-bold leading-tight">Hotels near {v.name}</h3>
+                    <p className="mt-1 text-sm text-white/80 leading-snug line-clamp-2">{v.blurb}</p>
+                    <span className="mt-2 inline-flex items-center text-xs font-semibold text-denver-amber">View hotels &rarr;</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       ))}
