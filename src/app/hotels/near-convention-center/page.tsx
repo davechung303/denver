@@ -135,21 +135,21 @@ export default async function HotelsNearConventionCenterPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Convention Center for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for attendees</p>
             <h3 className="font-bold mb-2">Hyatt Regency (connected)</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The only hotel joined to the center by skywalk — room to session without stepping outside. Worth the premium for a full multi-day conference.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Golden Triangle</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Quieter hotels a few blocks south at better value, with the Art Museum and History Colorado on your doorstep for downtime. A short walk or mall-shuttle ride to the center.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury &amp; brand-name</p>
             <h3 className="font-bold mb-2">Sheraton, Westin &amp; LoDo</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Full-service Marriott-family flags like the Sheraton and Westin sit within a few blocks, with the best dining and nightlife toward Larimer Square and LoDo for evenings off.</p>
-          </div>
+          </a>
         </div>
       </section>
 

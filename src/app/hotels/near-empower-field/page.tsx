@@ -139,21 +139,21 @@ export default async function HotelsNearEmpowerFieldPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Empower Field for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a game day</p>
             <h3 className="font-bold mb-2">LoDo &amp; Union Station</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Walk across the river to the stadium, walk back to Larimer Square for dinner, or hop one light rail stop. The best mix of proximity, food, and pre-game atmosphere.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Jefferson Park &amp; the Highlands edge</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A step out from prime LoDo, still walkable, usually cheaper. Pair with a midweek concert or a non-premium game date and you&apos;ll pay far less than a peak Sunday-home-game rate.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best 4-star &amp; splurge</p>
             <h3 className="font-bold mb-2">Downtown full-service</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The 4-star and luxury flags cluster downtown around Union Station — full-service hotels a short walk or one train stop from the stadium, with the city&apos;s best dining on the doorstep.</p>
-          </div>
+          </a>
         </div>
       </section>
 

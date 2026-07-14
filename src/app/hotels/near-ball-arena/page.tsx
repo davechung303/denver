@@ -156,21 +156,21 @@ export default async function HotelsNearBallArenaPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Ball Arena for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a game night</p>
             <h3 className="font-bold mb-2">Western LoDo</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Stay on the arena side of LoDo and you get the shortest walk plus the best pre- and post-game food and bars. Walk in along Wewatta, walk back when you&apos;re ready.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Jefferson Park side</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The residential Jefferson Park side is close to the arena but often cheaper than prime LoDo. Pair it with a midweek or non-event night and you&apos;ll pay a fraction of playoff-weekend rates.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best splurge</p>
             <h3 className="font-bold mb-2">The Crawford at Union Station</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If you want the trip to feel like an occasion, the historic Union Station hotel is a 15-minute walk to the arena and the nicest lobby downtown. Make a night of it.</p>
-          </div>
+          </a>
         </div>
       </section>
 

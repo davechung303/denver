@@ -155,21 +155,21 @@ export default async function HotelsNearCoorsFieldPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Coors Field for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a game night</p>
             <h3 className="font-bold mb-2">The Crawford at Union Station</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest walk that still feels special. You roll out of Union Station, grab a pregame drink in the great hall, and you&apos;re at the gates in seven minutes. Book early — game weekends sell out.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Stay one neighborhood out</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">LoDo rates spike for home games. Book the RiNo or Ballpark-district edge instead — still a 10–15 minute walk, often half the price. Midweek games beat Friday and Saturday nights by a mile.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best splurge</p>
             <h3 className="font-bold mb-2">The Crawford, again</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">When the trip is the occasion and not just the game, the historic Union Station setting is the one worth paying up for. Nothing else near the ballpark matches the lobby.</p>
-          </div>
+          </a>
         </div>
       </section>
 

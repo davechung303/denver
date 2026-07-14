@@ -131,21 +131,21 @@ export default async function HotelsNearBotanicGardensPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Botanic Gardens for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for value &amp; proximity</p>
             <h3 className="font-bold mb-2">Capitol Hill</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The closest neighborhood with hotels and the most budget-friendly options — many within a 10-minute walk of the gardens, with plenty of character on Colfax.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury</p>
             <h3 className="font-bold mb-2">The Art Hotel &amp; Cherry Creek</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Art Hotel in the Golden Triangle is the design-led luxury pick nearby; Cherry Creek&apos;s Halcyon and Hotel Clio are a short ride east for the city&apos;s densest upscale cluster.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for dining &amp; comfort</p>
             <h3 className="font-bold mb-2">Uptown</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A step up from Cap Hill on comfort, with 17th Avenue restaurants and solid mid-range hotels. A 15-minute walk or quick Uber to the gardens.</p>
-          </div>
+          </a>
         </div>
       </section>
 

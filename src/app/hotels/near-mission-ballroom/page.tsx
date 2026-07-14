@@ -143,21 +143,21 @@ export default async function HotelsNearMissionBallroomPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Mission Ballroom for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a show night</p>
             <h3 className="font-bold mb-2">RiNo, walkable</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Stay in RiNo and the whole night is walkable — dinner, the show, and a brewery after, all without a car. The closest thing to a perfect Denver concert night.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">The LoDo edge</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just north toward LoDo and Union Station you&apos;ll find better rates and more familiar brands, with a 20-minute walk or quick rideshare to the venue. Midweek shows are cheaper still.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Closest design hotel</p>
             <h3 className="font-bold mb-2">The Catbird</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">One of the closest hotels to the venue — an apartment-style design hotel with a rooftop, roughly a 10-minute walk in RiNo. Ideal if you want to walk to the show and back.</p>
-          </div>
+          </a>
         </div>
       </section>
 

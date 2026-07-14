@@ -136,21 +136,21 @@ export default async function HotelsNearElitchGardensPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Elitch Gardens for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for families</p>
             <h3 className="font-bold mb-2">Jefferson Park &amp; LoDo</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Jefferson Park is closest for a quick walk to the gates; LoDo across the river has the most family-friendly hotels and an easy rideshare. Both skip the on-site parking hassle.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">LoDo, a block or two out</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Step just outside prime LoDo and pick a non-weekend date to dodge the peak-day surge. Closest walkable value to the park without paying front-gate prices.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best with a pool</p>
             <h3 className="font-bold mb-2">Downtown full-service</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A perfect pairing with Elitch&apos;s water park — the larger downtown and LoDo hotels are your best bet for a pool. Confirm it on the map before booking, since smaller spots often skip one.</p>
-          </div>
+          </a>
         </div>
       </section>
 

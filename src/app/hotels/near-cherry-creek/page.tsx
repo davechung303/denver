@@ -128,21 +128,21 @@ export default async function HotelsNearCherryCreekPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels in Cherry Creek for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury</p>
             <h3 className="font-bold mb-2">Hotel Clio &amp; the Jacquard</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The top full-service luxury picks — Hotel Clio (Luxury Collection, formerly the JW Marriott) and the design-led Jacquard, both steps from Cherry Creek North shopping and dining.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best boutique</p>
             <h3 className="font-bold mb-2">The Halcyon</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The signature Cherry Creek boutique: rooftop pool, a great bar, and loaner bikes for the Cherry Creek Trail. The pick when the hotel is part of the experience.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best value</p>
             <h3 className="font-bold mb-2">Moxy Denver Cherry Creek</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The most wallet-friendly stay actually in the neighborhood — playful, design-forward, and walkable to everything. For cheaper still, look just south to Glendale.</p>
-          </div>
+          </a>
         </div>
       </section>
 

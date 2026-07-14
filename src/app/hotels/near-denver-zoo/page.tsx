@@ -140,21 +140,21 @@ export default async function HotelsNearDenverZooPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Denver Zoo for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for families</p>
             <h3 className="font-bold mb-2">Uptown</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest to the zoo, walkable through City Park, and full of easy restaurants on 17th and 18th. The simplest base for a family day at the zoo and museum.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Capitol Hill</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The most budget-friendly and boutique options within 10–15 minutes of the zoo. Weekdays beat weekends, and you&apos;re still an easy hop to City Park.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best with a pool</p>
             <h3 className="font-bold mb-2">Downtown full-service</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Want a pool to reward the kids after the exhibits? The larger full-service hotels downtown and in Uptown are your best bet — confirm the pool on the map before booking, since smaller boutiques often skip it.</p>
-          </div>
+          </a>
         </div>
       </section>
 

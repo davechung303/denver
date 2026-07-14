@@ -139,21 +139,21 @@ export default async function HotelsNearRedRocksPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Red Rocks for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Closest to the venue</p>
             <h3 className="font-bold mb-2">The Origin Hotel Red Rocks</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">On the Golden/Morrison side, this is the closest branded hotel to the amphitheatre — a short drive to the gates and the easiest option if you want to be right by the venue on show night.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Lakewood &amp; the Golden corridor</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">West-metro midscale chains 15–20 minutes out are the value sweet spot — close enough to avoid the worst traffic, far cheaper than downtown. Book early for big-name shows.</p>
-          </div>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+          </a>
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best splurge &amp; shuttle</p>
             <h3 className="font-bold mb-2">Downtown Denver + a show shuttle</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Base at a downtown luxury hotel, make a weekend of the city, and take a pre-booked shuttle from Union Station on show night — no driving, no post-show surge, and the best food and bars the rest of the trip.</p>
-          </div>
+          </a>
         </div>
       </section>
 
