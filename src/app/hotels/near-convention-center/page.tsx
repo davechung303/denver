@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel } from "@/lib/places";
+import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 
@@ -64,6 +64,7 @@ export default async function HotelsNearConventionCenterPage() {
     .filter((p) => p.rating != null)
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 6);
+  const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (
     <>
@@ -83,8 +84,13 @@ export default async function HotelsNearConventionCenterPage() {
         },
       ])}} />
 
-      <section className="bg-denver-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="relative bg-denver-navy text-white overflow-hidden">
+        {heroPhoto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-denver-navy via-denver-navy/85 to-denver-navy/40" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
@@ -135,21 +141,24 @@ export default async function HotelsNearConventionCenterPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Convention Center for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/downtown/hotels/hyatt-regency-denver-at-colorado-convention-center" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for attendees</p>
             <h3 className="font-bold mb-2">Hyatt Regency (connected)</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The only hotel joined to the center by skywalk — room to session without stepping outside. Worth the premium for a full multi-day conference.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">See the hotel &rarr;</span>
+          </Link>
+          <Link href="/denver/golden-triangle/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Golden Triangle</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Quieter hotels a few blocks south at better value, with the Art Museum and History Colorado on your doorstep for downtime. A short walk or mall-shuttle ride to the center.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
+          <Link href="/denver/downtown/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury &amp; brand-name</p>
             <h3 className="font-bold mb-2">Sheraton, Westin &amp; LoDo</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Full-service Marriott-family flags like the Sheraton and Westin sit within a few blocks, with the best dining and nightlife toward Larimer Square and LoDo for evenings off.</p>
-          </a>
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
         </div>
       </section>
 
@@ -166,6 +175,16 @@ export default async function HotelsNearConventionCenterPage() {
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{tip.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-xl font-bold mb-4">Explore Downtown</h2>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/denver/downtown" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown guide</Link>
+          <Link href="/denver/downtown/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown restaurants</Link>
+          <Link href="/denver/golden-triangle" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Golden Triangle</Link>
+          <Link href="/events" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Denver events</Link>
         </div>
       </section>
 

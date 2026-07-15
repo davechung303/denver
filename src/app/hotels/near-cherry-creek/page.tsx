@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel } from "@/lib/places";
+import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 
@@ -57,6 +57,7 @@ const FAQS = [
 export default async function HotelsNearCherryCreekPage() {
   const places = await getPlaces("cherry-creek", "hotels");
   const hotels = places.filter(isRealHotel).filter((p) => p.rating != null).slice(0, 6);
+  const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (
     <>
@@ -76,8 +77,13 @@ export default async function HotelsNearCherryCreekPage() {
         },
       ])}} />
 
-      <section className="bg-denver-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="relative bg-denver-navy text-white overflow-hidden">
+        {heroPhoto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-denver-navy via-denver-navy/85 to-denver-navy/40" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
@@ -128,21 +134,24 @@ export default async function HotelsNearCherryCreekPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels in Cherry Creek for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/cherry-creek/hotels/hotel-clio-a-luxury-collection-hotel-denver-cherry-creek" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury</p>
             <h3 className="font-bold mb-2">Hotel Clio &amp; the Jacquard</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The top full-service luxury picks — Hotel Clio (Luxury Collection, formerly the JW Marriott) and the design-led Jacquard, both steps from Cherry Creek North shopping and dining.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">See the hotel &rarr;</span>
+          </Link>
+          <Link href="/denver/cherry-creek/hotels/halcyon-a-hotel-in-cherry-creek-denver" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best boutique</p>
             <h3 className="font-bold mb-2">The Halcyon</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The signature Cherry Creek boutique: rooftop pool, a great bar, and loaner bikes for the Cherry Creek Trail. The pick when the hotel is part of the experience.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">See the hotel &rarr;</span>
+          </Link>
+          <Link href="/denver/baker/hotels/moxy-denver-cherry-creek" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best value</p>
             <h3 className="font-bold mb-2">Moxy Denver Cherry Creek</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The most wallet-friendly stay actually in the neighborhood — playful, design-forward, and walkable to everything. For cheaper still, look just south to Glendale.</p>
-          </a>
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">See the hotel &rarr;</span>
+          </Link>
         </div>
       </section>
 
@@ -159,6 +168,16 @@ export default async function HotelsNearCherryCreekPage() {
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{tip.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-xl font-bold mb-4">Explore Cherry Creek</h2>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/denver/cherry-creek" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cherry Creek guide</Link>
+          <Link href="/denver/cherry-creek/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cherry Creek dining</Link>
+          <Link href="/denver/cherry-creek/bars" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cherry Creek bars</Link>
+          <Link href="/denver/cherry-creek/coffee" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cherry Creek coffee</Link>
         </div>
       </section>
 

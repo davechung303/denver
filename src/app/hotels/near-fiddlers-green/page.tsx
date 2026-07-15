@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel } from "@/lib/places";
+import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import { getEventsForVenue } from "@/lib/ticketmaster";
@@ -58,6 +58,7 @@ export default async function HotelsNearFiddlersGreenPage() {
     getEventsForVenue("Fiddler", 6),
   ]);
   const hotels = places.filter(isRealHotel).filter((p) => p.rating != null).slice(0, 6);
+  const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (
     <>
@@ -77,8 +78,13 @@ export default async function HotelsNearFiddlersGreenPage() {
         },
       ])}} />
 
-      <section className="bg-denver-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="relative bg-denver-navy text-white overflow-hidden">
+        {heroPhoto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-denver-navy via-denver-navy/85 to-denver-navy/40" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
@@ -130,21 +136,24 @@ export default async function HotelsNearFiddlersGreenPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Fiddler&apos;s Green for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/denver-suburbs/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a show night</p>
             <h3 className="font-bold mb-2">The DTC chain cluster</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Denver Tech Center packs Marriott, Hyatt, and Wyndham brands within a couple miles of the venue — SpringHill Suites, Residence Inn, Hyatt House, Wingate, and more. Closest to the gates and off the I-25 traffic.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
+          <Link href="/denver/denver-suburbs/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Englewood &amp; Centennial</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just south of the DTC, generally lower rates with short rideshare times to the venue. Pair with a midweek show and it&apos;s the cheapest way to catch a night at Fiddler&apos;s Green.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
+          <Link href="/denver/denver-suburbs/hotels/hyatt-regency-denver-tech-center" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best full-service &amp; splurge</p>
             <h3 className="font-bold mb-2">Hyatt Regency DTC — or downtown</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Hyatt Regency Denver Tech Center is the closest full-service option. If the show is one night of a longer trip, base downtown for the food and nightlife and make the drive south just for the concert.</p>
-          </a>
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">See the hotel &rarr;</span>
+          </Link>
         </div>
       </section>
 
@@ -177,6 +186,15 @@ export default async function HotelsNearFiddlersGreenPage() {
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{tip.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-xl font-bold mb-4">Plan Your Fiddler&apos;s Green Night</h2>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/events/fiddlers-green" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Fiddler&apos;s Green shows</Link>
+          <Link href="/denver/where-to-stay" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Where to stay</Link>
+          <Link href="/hotels" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">All hotel guides</Link>
         </div>
       </section>
 

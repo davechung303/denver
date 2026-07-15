@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel } from "@/lib/places";
+import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import { getEventsForVenue } from "@/lib/ticketmaster";
@@ -67,6 +67,7 @@ export default async function HotelsNearNationalWesternPage() {
     .filter(isRealHotel).filter((p) => p.rating != null)
     .filter((p) => { if (seen.has(p.place_id)) return false; seen.add(p.place_id); return true; })
     .slice(0, 6);
+  const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (
     <>
@@ -86,8 +87,13 @@ export default async function HotelsNearNationalWesternPage() {
         },
       ])}} />
 
-      <section className="bg-denver-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="relative bg-denver-navy text-white overflow-hidden">
+        {heroPhoto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-denver-navy via-denver-navy/85 to-denver-navy/40" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
@@ -140,21 +146,24 @@ export default async function HotelsNearNationalWesternPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near National Western for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/rino/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best overall</p>
             <h3 className="font-bold mb-2">RiNo</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest neighborhood with real options, next door along the Platte, and Denver&apos;s best food and brewery scene for before and after. Short walk or rideshare to the complex.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
+          <Link href="/denver/five-points/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Five Points &amp; the RiNo edge</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A block or two out and a non-event date is the value sweet spot. Still a short ride to the complex, well under prime RiNo or downtown pricing.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
+          <Link href="/denver/downtown/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for the Stock Show</p>
             <h3 className="font-bold mb-2">Downtown, booked early</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The January Stock Show fills hotels metro-wide. Lock a downtown base months ahead, then take the N Line or a park-and-ride in — the whole city is your after-hours when you&apos;re not at the show.</p>
-          </a>
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
         </div>
       </section>
 
@@ -192,6 +201,16 @@ export default async function HotelsNearNationalWesternPage() {
       </section>
 
       {/* FAQ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-xl font-bold mb-4">Explore RiNo & Five Points</h2>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/denver/rino" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">RiNo guide</Link>
+          <Link href="/denver/rino/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">RiNo restaurants</Link>
+          <Link href="/denver/five-points" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Five Points</Link>
+          <Link href="/hotels/near-coors-field" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Hotels near Coors Field</Link>
+        </div>
+      </section>
+
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold mb-8">Frequently Asked Questions</h2>

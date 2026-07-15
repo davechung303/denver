@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel } from "@/lib/places";
+import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 
@@ -60,6 +60,7 @@ export default async function HotelsNearBotanicGardensPage() {
     .filter((p) => p.rating != null)
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 6);
+  const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (
     <>
@@ -79,8 +80,13 @@ export default async function HotelsNearBotanicGardensPage() {
         },
       ])}} />
 
-      <section className="bg-denver-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="relative bg-denver-navy text-white overflow-hidden">
+        {heroPhoto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-denver-navy via-denver-navy/85 to-denver-navy/40" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
@@ -131,21 +137,24 @@ export default async function HotelsNearBotanicGardensPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near the Botanic Gardens for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/capitol-hill/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for value &amp; proximity</p>
             <h3 className="font-bold mb-2">Capitol Hill</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The closest neighborhood with hotels and the most budget-friendly options — many within a 10-minute walk of the gardens, with plenty of character on Colfax.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
+          <Link href="/denver/golden-triangle/hotels/the-art-hotel-denver-curio-collection-by-hilton" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best luxury</p>
             <h3 className="font-bold mb-2">The Art Hotel &amp; Cherry Creek</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Art Hotel in the Golden Triangle is the design-led luxury pick nearby; Cherry Creek&apos;s Halcyon and Hotel Clio are a short ride east for the city&apos;s densest upscale cluster.</p>
-          </a>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">See the hotel &rarr;</span>
+          </Link>
+          <Link href="/denver/uptown/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for dining &amp; comfort</p>
             <h3 className="font-bold mb-2">Uptown</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A step up from Cap Hill on comfort, with 17th Avenue restaurants and solid mid-range hotels. A 15-minute walk or quick Uber to the gardens.</p>
-          </a>
+            <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
+          </Link>
         </div>
       </section>
 
@@ -162,6 +171,16 @@ export default async function HotelsNearBotanicGardensPage() {
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{tip.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-xl font-bold mb-4">Explore the Area</h2>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/denver/capitol-hill" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Capitol Hill guide</Link>
+          <Link href="/denver/capitol-hill/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cap Hill restaurants</Link>
+          <Link href="/hotels/near-cherry-creek" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Hotels in Cherry Creek</Link>
+          <Link href="/hotels/near-city-park" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Hotels near City Park</Link>
         </div>
       </section>
 
