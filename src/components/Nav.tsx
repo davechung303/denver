@@ -51,7 +51,7 @@ export default function Nav() {
             {/* Denver dropdown */}
             <div className="relative">
               <button
-                onClick={() => setDenverOpen(!denverOpen)}
+                onClick={() => { setDenverOpen(!denverOpen); setNeighborhoodsOpen(false); setThingsOpen(false); }}
                 className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver" || pathname === "/denver/where-to-stay" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
               >
                 Denver
@@ -174,7 +174,7 @@ export default function Nav() {
             {/* Neighborhoods dropdown */}
             <div className="relative">
               <button
-                onClick={() => setNeighborhoodsOpen(!neighborhoodsOpen)}
+                onClick={() => { setNeighborhoodsOpen(!neighborhoodsOpen); setDenverOpen(false); setThingsOpen(false); }}
                 className="flex items-center gap-1 px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
               >
                 Neighborhoods
@@ -224,7 +224,7 @@ export default function Nav() {
             {/* Things To Do dropdown */}
             <div className="relative">
               <button
-                onClick={() => setThingsOpen(!thingsOpen)}
+                onClick={() => { setThingsOpen(!thingsOpen); setDenverOpen(false); setNeighborhoodsOpen(false); }}
                 className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname.startsWith("/denver/things-to-do") || pathname === "/denver/experiences" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
               >
                 Things To Do
