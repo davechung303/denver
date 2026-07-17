@@ -5,6 +5,27 @@ import { getPopularDenverVideos } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { supabase } from "@/lib/supabase";
+import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+
+const STAY_VENUES = [
+  { href: "/hotels/near-coors-field", label: "Coors Field", sub: "Rockies games in LoDo", nb: "lodo" },
+  { href: "/hotels/near-ball-arena", label: "Ball Arena", sub: "Nuggets, Avs & concerts", nb: "lodo" },
+  { href: "/hotels/near-empower-field", label: "Empower Field", sub: "Broncos & stadium shows", nb: "jefferson-park" },
+  { href: "/hotels/near-red-rocks", label: "Red Rocks", sub: "Shows in the foothills", nb: "denver-suburbs" },
+  { href: "/hotels/near-denver-airport", label: "Denver Airport", sub: "Early flights & layovers", nb: "airport" },
+  { href: "/hotels/near-cherry-creek", label: "Cherry Creek", sub: "Denver's nicest hotels", nb: "cherry-creek" },
+];
+
+async function getStayPhotos(): Promise<Record<string, string>> {
+  try {
+    const nbs = Array.from(new Set(STAY_VENUES.map((v) => v.nb)));
+    const entries = await Promise.all(nbs.map(async (nb) => {
+      const withPhoto = (await getPlaces(nb, "hotels")).filter(isRealHotel).find((h) => h.photos?.[0]);
+      return [nb, withPhoto?.photos?.[0] ? photoUrl(withPhoto.photos[0]) : ""] as const;
+    }));
+    return Object.fromEntries(entries);
+  } catch { return {}; }
+}
 
 export const revalidate = 86400;
 
@@ -58,6 +79,7 @@ export default async function HomePage() {
     .map((id) => pinnedRaw.find((v: any) => v.video_id === id))
     .filter(Boolean);
   const videos = [...pinned, ...popular].slice(0, 6);
+  const stayPhotos = await getStayPhotos();
   return (
     <>
       <SchemaMarkup
@@ -265,23 +287,39 @@ export default async function HomePage() {
             All hotel guides &rarr;
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {STAY_VENUES.map((v) => {
+            const img = stayPhotos[v.nb];
+            return (
+              <Link key={v.href} href={v.href}
+                className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col justify-end p-5 text-white hover:scale-[1.02] transition-transform duration-200"
+              >
+                {img ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={img} alt={`Hotels near ${v.label}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-denver-navy to-slate-700" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10 group-hover:from-black/75 transition-all" />
+                <div className="relative z-10">
+                  <h3 className="text-lg font-bold leading-tight">Hotels near {v.label}</h3>
+                  <p className="mt-0.5 text-sm text-white/80 leading-snug">{v.sub}</p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+        <div className="mt-5 flex flex-wrap gap-2">
           {[
-            { href: "/hotels/near-coors-field", label: "Coors Field" },
-            { href: "/hotels/near-ball-arena", label: "Ball Arena" },
-            { href: "/hotels/near-empower-field", label: "Empower Field" },
-            { href: "/hotels/near-red-rocks", label: "Red Rocks" },
-            { href: "/hotels/near-denver-airport", label: "Denver Airport" },
-            { href: "/hotels/near-convention-center", label: "Convention Center" },
-            { href: "/hotels/near-cherry-creek", label: "Cherry Creek" },
             { href: "/hotels/near-mission-ballroom", label: "Mission Ballroom" },
+            { href: "/hotels/near-convention-center", label: "Convention Center" },
             { href: "/hotels/near-denver-zoo", label: "Denver Zoo" },
             { href: "/hotels/near-fiddlers-green", label: "Fiddler's Green" },
             { href: "/denver/where-to-stay", label: "By Neighborhood" },
             { href: "/hotels/best-value-denver", label: "Best Value" },
           ].map((h) => (
             <Link key={h.href} href={h.href}
-              className="flex items-center justify-center text-center px-3 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold hover:border-denver-amber hover:text-denver-amber transition-colors leading-snug">
+              className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">
               {h.label}
             </Link>
           ))}
