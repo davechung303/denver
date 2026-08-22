@@ -6,6 +6,7 @@ import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { supabase } from "@/lib/supabase";
 import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import BookYourTrip from "@/components/BookYourTrip";
 
 const STAY_VENUES = [
   { href: "/hotels/near-coors-field", label: "Coors Field", sub: "Rockies games in LoDo", nb: "lodo" },
@@ -16,14 +17,22 @@ const STAY_VENUES = [
   { href: "/hotels/near-cherry-creek", label: "Cherry Creek", sub: "Denver's nicest hotels", nb: "cherry-creek" },
 ];
 
+// Returns a distinct hotel photo per venue (keyed by href). Venues that share a
+// neighborhood get different hotels (top-rated to the first, next to the second, …)
+// so no two cards show the same image.
 async function getStayPhotos(): Promise<Record<string, string>> {
   try {
-    const nbs = Array.from(new Set(STAY_VENUES.map((v) => v.nb)));
-    const entries = await Promise.all(nbs.map(async (nb) => {
-      const withPhoto = (await getPlaces(nb, "hotels")).filter(isRealHotel).find((h) => h.photos?.[0]);
-      return [nb, withPhoto?.photos?.[0] ? photoUrl(withPhoto.photos[0]) : ""] as const;
+    const byNb: Record<string, typeof STAY_VENUES> = {};
+    for (const v of STAY_VENUES) (byNb[v.nb] ??= []).push(v);
+    const out: Record<string, string> = {};
+    await Promise.all(Object.entries(byNb).map(async ([nb, venues]) => {
+      const photos = (await getPlaces(nb, "hotels"))
+        .filter(isRealHotel)
+        .filter((h) => h.photos?.[0])
+        .map((h) => photoUrl(h.photos![0]));
+      venues.forEach((v, i) => { out[v.href] = photos[i] ?? photos[0] ?? ""; });
     }));
-    return Object.fromEntries(entries);
+    return out;
   } catch { return {}; }
 }
 
@@ -289,7 +298,7 @@ export default async function HomePage() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {STAY_VENUES.map((v) => {
-            const img = stayPhotos[v.nb];
+            const img = stayPhotos[v.href];
             return (
               <Link key={v.href} href={v.href}
                 className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col justify-end p-5 text-white hover:scale-[1.02] transition-transform duration-200"
@@ -328,6 +337,13 @@ export default async function HomePage() {
           <Link href="/hotels" className="text-sm font-semibold text-denver-amber hover:underline">All hotel guides &rarr;</Link>
         </div>
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="home"
+        heading="Coming to Denver?"
+        blurb="Pick your dates and compare hotel and flight prices in one search — then dig into the neighborhood guides below to decide where to base yourself."
+      />
 
       {/* YouTube Section */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-20">

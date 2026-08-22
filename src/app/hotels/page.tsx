@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -59,22 +60,26 @@ const GROUPS: Group[] = [
 
 const ALL_HREFS = GROUPS.flatMap((g) => g.venues.map((v) => v.href));
 
-// Fetch one representative hotel photo per neighborhood used above, so venue cards
-// are image-backed (like the homepage). Falls back to a gradient where none exists.
-async function getNeighborhoodPhotos(): Promise<Record<string, string>> {
-  const nbs = Array.from(new Set(GROUPS.flatMap((g) => g.venues.map((v) => v.nb))));
-  const entries = await Promise.all(
-    nbs.map(async (nb) => {
-      const hotels = (await getPlaces(nb, "hotels")).filter(isRealHotel);
-      const withPhoto = hotels.find((h) => h.photos?.[0]);
-      return [nb, withPhoto?.photos?.[0] ? photoUrl(withPhoto.photos[0]) : ""] as const;
-    })
-  );
-  return Object.fromEntries(entries);
+// Fetch a distinct hotel photo per venue (keyed by href) so cards are image-backed
+// and no two venues sharing a neighborhood show the same image. Falls back to a
+// gradient where none exists.
+async function getVenuePhotos(): Promise<Record<string, string>> {
+  const all = GROUPS.flatMap((g) => g.venues);
+  const byNb: Record<string, typeof all> = {};
+  for (const v of all) (byNb[v.nb] ??= []).push(v);
+  const out: Record<string, string> = {};
+  await Promise.all(Object.entries(byNb).map(async ([nb, venues]) => {
+    const photos = (await getPlaces(nb, "hotels"))
+      .filter(isRealHotel)
+      .filter((h) => h.photos?.[0])
+      .map((h) => photoUrl(h.photos![0]));
+    venues.forEach((v, i) => { out[v.href] = photos[i] ?? photos[0] ?? ""; });
+  }));
+  return out;
 }
 
 export default async function HotelsHubPage() {
-  const photos = await getNeighborhoodPhotos();
+  const photos = await getVenuePhotos();
 
   return (
     <>
@@ -107,13 +112,20 @@ export default async function HotelsHubPage() {
         </div>
       </section>
 
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="hotels-hub"
+        heading="Have your dates?"
+        blurb="Run a live price check across Denver hotels and flights first — then use the guides below to pick the right area."
+      />
+
       {/* Venue groups — image-backed cards */}
       {GROUPS.map((group) => (
         <section key={group.title} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
           <h2 className="text-2xl font-bold mb-6">{group.title}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {group.venues.map((v) => {
-              const img = photos[v.nb];
+              const img = photos[v.href];
               return (
                 <Link key={v.href} href={v.href}
                   className="group relative overflow-hidden rounded-2xl aspect-[4/3] flex flex-col justify-end p-5 text-white hover:scale-[1.02] transition-transform duration-200"
