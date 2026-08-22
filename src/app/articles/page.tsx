@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import ArticleThumb from "@/components/ArticleThumb";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -123,6 +124,14 @@ export default async function ArticlesPage() {
           </div>
         )}
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="articles-index"
+        heading="Planning the trip itself?"
+        blurb="Pick your dates and compare Denver hotels and flights in one search."
+      />
+
     </>
   );
 }

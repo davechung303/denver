@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import type { DenverEvent } from "@/lib/ticketmaster";
 import { getFeverEvents, type FeverEvent } from "@/lib/fever";
 import EventsClient from "./EventsClient";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -78,6 +79,14 @@ export default async function EventsPage() {
       </section>
 
       <EventsClient events={events} feverEvents={feverEvents} />
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="events-hub"
+        eyebrow="Make a Night of It"
+        heading="Coming in for an event?"
+        blurb="Put your event dates in once and compare Denver hotels and flights together."
+      />
     </>
   );
 }

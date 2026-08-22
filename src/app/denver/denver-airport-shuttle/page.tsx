@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -83,6 +84,14 @@ export default function DenverAirportShuttleGuide() {
           </p>
         </div>
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="den-airport-shuttle"
+        eyebrow="Getting Here"
+        heading="Still need to book the flight?"
+        blurb="Search flights into DEN and a hotel in the same go, then use the shuttle options below to get into town."
+      />
 
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
         <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">

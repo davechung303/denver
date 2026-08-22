@@ -12,6 +12,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import MapWrapper from "@/components/MapWrapper";
 import PlaceCard from "@/components/PlaceCard";
 import { getPlaceTag } from "@/lib/neighborhoods";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up new videos, articles, and fresh photo names
 // No generateStaticParams — pages render on first visit and are ISR-cached.
@@ -364,6 +365,14 @@ export default async function NeighborhoodPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* Expedia stays + flights search — sits right under the hotel map, where the
+          visitor has just been comparing where to stay in this neighborhood */}
+      <BookYourTrip
+        pubref={`nbhd-${n.slug}`}
+        heading={`Staying in ${n.name}?`}
+        blurb={`Put your dates in to compare live rates around ${n.name} — and price the flight at the same time.`}
+      />
 
       {/* Viator Tours & Experiences */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">

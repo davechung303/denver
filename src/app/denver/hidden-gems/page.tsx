@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NEIGHBORHOODS, CATEGORIES, isInNeighborhood } from "@/lib/neighborhoods";
 import { getAllHiddenGems, isRealCoffeeShop, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -186,6 +187,13 @@ export default async function HiddenGemsPage() {
           </section>
         ))}
       </div>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="hidden-gems"
+        heading="Coming to Denver?"
+        blurb="Want to actually explore these? Price your dates and give yourself a couple of days."
+      />
 
       {/* CTA */}
       <section className="bg-denver-navy text-white">

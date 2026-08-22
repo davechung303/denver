@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -152,6 +153,13 @@ export default async function BestMexicanFoodPage() {
           </div>
         </section>
       )}
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="best-mexican-food"
+        heading="Coming to Denver?"
+        blurb="Planning a Denver food trip? Price your dates and stay near the good stuff."
+      />
 
       <section className="bg-denver-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">

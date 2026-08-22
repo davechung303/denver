@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getBestValueHotels, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -148,6 +149,13 @@ export default async function BestValueDenverHotelsPage() {
           </p>
         </div>
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="hotels-best-value"
+        heading="Have your dates?"
+        blurb="Value hotels swing the most by date — price your exact nights before you book one of the picks below."
+      />
 
       {/* Neighborhood sections */}
       {featuredSections.map(({ slug, hotels: sectionHotels }) => {

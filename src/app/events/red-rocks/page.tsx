@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 3600;
 
@@ -120,6 +121,14 @@ export default async function EventsRedRocksPage() {
           </div>
         )}
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="events-red-rocks"
+        eyebrow="Make a Night of It"
+        heading="Coming in for a show?"
+        blurb="Rooms near Red Rocks tighten up on event nights. Put your dates in and compare hotels and flights in one search."
+      />
 
       {/* About */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">

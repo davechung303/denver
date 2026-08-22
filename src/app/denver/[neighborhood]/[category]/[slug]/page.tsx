@@ -9,6 +9,7 @@ import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import BookYourTripCard from "@/components/BookYourTripCard";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up fresh photo names after monthly refresh
 export const dynamicParams = true; // generate on-demand for any slug not pre-built
@@ -894,6 +895,23 @@ export default async function BusinessPage({ params }: Props) {
                 &larr; More {c.name} near {n.name}
               </Link>
             </div>
+
+            {/* Expedia stays + flights search — deliberately below the pre-filled
+                "Reserve on Expedia" button, which is the higher-converting unit for
+                someone who already wants this specific hotel. This one is for the
+                visitor still comparing, so the copy says exactly that. */}
+            {(isHotel || isThingsToDo) && (
+              <BookYourTripCard
+                pubref={`place-${cSlug}-${place.slug}`}
+                heading={isHotel ? "Comparing a few hotels?" : "Visiting Denver?"}
+                blurb={
+                  isHotel
+                    ? "Check your dates across every hotel in the area before you lock this one in."
+                    : `Put your dates in to compare hotels near ${n.name} — and price the flight at the same time.`
+                }
+              />
+
+            )}
 
             {/* Plan Your Day — things-to-do (sidebar) */}
             {isThingsToDo && (nearbyDining[0] || nearbyBar || nearbyHotelForEvening) && (

@@ -10,6 +10,7 @@ import { searchViatorProducts } from "@/lib/viator";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import VideoCard from "@/components/VideoCard";
 import ViatorProductCard from "@/components/ViatorProductCard";
+import ExpediaSearchWidget from "@/components/ExpediaSearchWidget";
 
 export const revalidate = 86400;
 
@@ -459,6 +460,15 @@ export default async function ArticlePage({ params }: Props) {
                 Search flights
               </a>
             </div>
+          </div>
+
+          {/* Dated search — sits after the curated hotel and flight links, which are
+              pre-filled for Denver and convert better for anyone ready to click. This
+              is for the reader who is still choosing dates. */}
+          <div className="px-6 py-5 border-t border-white/10">
+            <p className="text-sm font-bold text-white mb-1">📅 Know your dates?</p>
+            <p className="text-xs text-slate-400 mb-4">Price hotels and flights together for your exact nights.</p>
+            <ExpediaSearchWidget pubref={`article-${slug}`} />
           </div>
 
           <p className="text-xs text-slate-500 px-6 pb-5">Affiliate links — booking supports this site at no extra cost to you.</p>

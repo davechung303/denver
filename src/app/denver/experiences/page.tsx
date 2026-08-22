@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { searchViatorProducts } from "@/lib/viator";
 import ViatorProductCard from "@/components/ViatorProductCard";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -185,6 +186,13 @@ export default async function ExperiencesPage() {
           </div>
         </div>
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="experiences"
+        heading="Coming to Denver?"
+        blurb="Most of these are easier with a base in town. Compare hotels and flights for your dates."
+      />
 
       {/* Neighborhood grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

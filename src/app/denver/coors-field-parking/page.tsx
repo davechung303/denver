@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -83,6 +84,14 @@ export default function CoorsFieldParkingGuide() {
           </p>
         </div>
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="coors-field-parking"
+        eyebrow="Make a Night of It"
+        heading="In town for the series?"
+        blurb="If you're driving in for a game, compare a downtown room for your dates — often easier than parking twice."
+      />
 
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
         {/* TL;DR */}

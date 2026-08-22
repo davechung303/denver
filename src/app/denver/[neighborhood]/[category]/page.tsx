@@ -9,6 +9,7 @@ import { getVideosForPage } from "@/lib/youtube";
 import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up fresh photo names after monthly refresh
 export const dynamicParams = true; // still render unknown combinations on-demand
@@ -331,6 +332,13 @@ export default async function CategoryPage({ params }: Props) {
           </>
         )}
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref={`cat-${nSlug}-${cSlug}`}
+        heading="Coming to Denver?"
+        blurb={`Visiting rather than local? Price your dates and compare hotels near ${n.name} along with the flight.`}
+      />
 
       {/* YouTube Section */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">

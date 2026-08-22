@@ -5,6 +5,7 @@ import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -137,6 +138,13 @@ export default async function HotelsNearBallArenaPage() {
           </div>
         </div>
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="hotels-near-ball-arena"
+        heading="Have your dates?"
+        blurb="Rates near Ball Arena swing hard by date. Run a live price check for your exact nights before you pick a hotel below."
+      />
 
       {/* How walkable is it, really */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">

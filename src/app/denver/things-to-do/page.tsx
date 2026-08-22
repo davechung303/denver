@@ -9,6 +9,7 @@ import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import type { DenverEvent } from "@/lib/ticketmaster";
 import type { FeverEvent } from "@/lib/fever";
 import ViatorProductCard from "@/components/ViatorProductCard";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -227,6 +228,14 @@ export default async function ThingsToDoPage() {
         )}
 
       </div>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="things-to-do"
+        heading="Building an itinerary?"
+        blurb="Lock in the dates first — hotel and flight prices for Denver move fastest as your trip gets closer."
+      />
+
     </>
   );
 }

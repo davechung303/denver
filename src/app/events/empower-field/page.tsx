@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 3600;
 
@@ -111,6 +112,14 @@ export default async function EventsEmpowerFieldPage() {
           </div>
         )}
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="events-empower-field"
+        eyebrow="Make a Night of It"
+        heading="Coming in for a game?"
+        blurb="Rooms near Empower Field tighten up on event nights. Put your dates in and compare hotels and flights in one search."
+      />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">

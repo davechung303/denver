@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -131,6 +132,13 @@ export default async function HotelsNearAnschutzPage() {
           </div>
         </div>
       </section>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="hotels-near-anschutz"
+        heading="Have your dates?"
+        blurb="Rates near Anschutz Medical Campus swing hard by date. Run a live price check for your exact nights before you pick a hotel below."
+      />
 
       {/* Best for every trip — closest / extended-stay / downtown */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">

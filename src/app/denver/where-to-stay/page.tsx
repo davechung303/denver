@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -208,6 +209,13 @@ export default async function WhereToStayPage() {
         </div>
       </section>
 
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="where-to-stay"
+        heading="Know your dates?"
+        blurb="Rates move a lot night to night. Price your exact stay before you commit to a neighborhood below."
+      />
+
       {/* Quick nav strip */}
       <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -271,6 +279,7 @@ export default async function WhereToStayPage() {
                     alt={n.name}
                     className="w-full h-full object-cover"
                   />
+
                   <div className={`absolute inset-0 bg-gradient-to-br ${n.gradient} opacity-40`} />
                 </div>
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{n.tagline}</span>

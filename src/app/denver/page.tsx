@@ -5,6 +5,7 @@ import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { getBestOfDenver, getRecentlyAddedPlaces, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
 
@@ -618,6 +619,13 @@ export default async function BestOfDenverPage() {
           </div>
         </section>
       </div>
+
+      {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <BookYourTrip
+        pubref="denver-hub"
+        heading="Coming to Denver?"
+        blurb="Pick your dates and compare hotels and flights in one search."
+      />
     </>
   );
 }
