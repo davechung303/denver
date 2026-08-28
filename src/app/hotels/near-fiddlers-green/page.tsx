@@ -10,13 +10,13 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Fiddler's Green Amphitheatre — Best Places to Stay for Shows | Dave Loves Denver",
+  title: "Where to Stay for a Fiddler's Green Show — DTC Hotels",
   description:
-    "The local's guide to hotels near Fiddler's Green Amphitheatre in Greenwood Village — the Denver Tech Center chain-hotel cluster, plus the best budget and full-service picks for a show, from a local.",
+    "A local's guide to where to stay for a show at Fiddler's Green Amphitheatre in Greenwood Village — the Denver Tech Center chain-hotel cluster, plus the best budget and full-service picks.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-fiddlers-green" },
   openGraph: {
-    title: "Hotels Near Fiddler's Green Amphitheatre",
-    description: "DTC, Centennial, and downtown Denver hotel options for Fiddler's Green shows.",
+    title: "Where to Stay for a Fiddler's Green Show",
+    description: "DTC, Centennial and downtown Denver hotel options for Fiddler's Green shows.",
     url: "https://davelovesdenver.com/hotels/near-fiddlers-green",
   },
 };
@@ -66,13 +66,13 @@ export default async function HotelsNearFiddlersGreenPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Fiddler's Green", item: "https://davelovesdenver.com/hotels/near-fiddlers-green" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for a Fiddler's Green Show", item: "https://davelovesdenver.com/hotels/near-fiddlers-green" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Fiddler's Green Amphitheatre",
+          name: "Where to Stay for a Fiddler's Green Show",
           description: "Where to stay for a show at Fiddler's Green Amphitheatre in Greenwood Village — nearby DTC hotels and downtown Denver options explained.",
           url: "https://davelovesdenver.com/hotels/near-fiddlers-green",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -89,10 +89,10 @@ export default async function HotelsNearFiddlersGreenPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Fiddler&apos;s Green</span>
+            <span className="text-white/80">Where to Stay for a Fiddler&apos;s Green Show</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Greenwood Village, Colorado</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Fiddler&apos;s Green Amphitheatre</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for a Fiddler&apos;s Green Show</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Fiddler&apos;s Green is the mid-size outdoor venue between downtown Denver and the mountains. Here&apos;s where to stay for shows — whether you want to be close to the venue or based in the city.
           </p>

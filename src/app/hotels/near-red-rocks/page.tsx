@@ -10,13 +10,13 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Red Rocks Amphitheatre — Best Places to Stay for Shows | Dave Loves Denver",
+  title: "Where to Stay for a Red Rocks Concert — Hotels & Shuttles",
   description:
-    "The local's guide to hotels near Red Rocks Amphitheatre — the closest hotels, which shuttle from downtown, plus the best budget, luxury, and brand-name picks in Morrison, Lakewood, Golden, and Denver for a show.",
+    "A local's guide to where to stay for a Red Rocks show — the closest hotels, which ones shuttle from downtown, plus budget, luxury and brand-name picks in Morrison, Lakewood, Golden and Denver.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-red-rocks" },
   openGraph: {
-    title: "Hotels Near Red Rocks Amphitheatre",
-    description: "Where to stay for a Red Rocks show — Morrison, Lakewood, and downtown Denver options explained.",
+    title: "Where to Stay for a Red Rocks Concert",
+    description: "Where to stay for a Red Rocks show — Morrison, Lakewood, Golden and downtown Denver options explained.",
     url: "https://davelovesdenver.com/hotels/near-red-rocks",
   },
 };
@@ -74,13 +74,13 @@ export default async function HotelsNearRedRocksPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Red Rocks", item: "https://davelovesdenver.com/hotels/near-red-rocks" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for a Red Rocks Concert", item: "https://davelovesdenver.com/hotels/near-red-rocks" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Red Rocks Amphitheatre",
+          name: "Where to Stay for a Red Rocks Concert",
           description: "The best hotels near Red Rocks Amphitheatre — Morrison, Lakewood, Golden, and downtown Denver options. Where to stay for a show at one of the best concert venues in the world.",
           url: "https://davelovesdenver.com/hotels/near-red-rocks",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -97,10 +97,10 @@ export default async function HotelsNearRedRocksPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Red Rocks</span>
+            <span className="text-white/80">Where to Stay for a Red Rocks Concert</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Morrison, Colorado</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Red Rocks Amphitheatre</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for a Red Rocks Concert</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Red Rocks is one of the greatest concert venues on earth. Here&apos;s where to stay — close to the venue or based in Denver with a short drive out.
           </p>

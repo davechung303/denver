@@ -10,13 +10,13 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Ball Arena Denver — Best Places to Stay for Nuggets, Avalanche & Concerts | Dave Loves Denver",
+  title: "Where to Stay for a Nuggets or Avalanche Game — Ball Arena",
   description:
-    "The local's guide to hotels near Ball Arena in Denver — which hotels are truly walking distance, where to park on event nights, plus the best budget, downtown, and brand-name picks for Nuggets, Avalanche, and concerts.",
+    "A local's guide to where to stay for a Nuggets, Avalanche or concert night at Ball Arena — which hotels are truly walking distance, where to park, plus budget and downtown picks.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-ball-arena" },
   openGraph: {
-    title: "Hotels Near Ball Arena Denver",
-    description: "Walking distance hotels for Nuggets, Avalanche, and concerts at Ball Arena.",
+    title: "Where to Stay for a Nuggets or Avalanche Game at Ball Arena",
+    description: "Walking distance hotels for Nuggets, Avalanche and concerts at Ball Arena.",
     url: "https://davelovesdenver.com/hotels/near-ball-arena",
   },
 };
@@ -75,13 +75,13 @@ export default async function HotelsNearBallArenaPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Ball Arena", item: "https://davelovesdenver.com/hotels/near-ball-arena" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for a Nuggets or Avalanche Game at Ball Arena", item: "https://davelovesdenver.com/hotels/near-ball-arena" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Ball Arena Denver",
+          name: "Where to Stay for a Nuggets or Avalanche Game at Ball Arena",
           description: "The best hotels near Ball Arena in Denver — walking distance options for Nuggets games, Avalanche games, and concerts. LoDo and Jefferson Park picks from a local.",
           url: "https://davelovesdenver.com/hotels/near-ball-arena",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -98,10 +98,10 @@ export default async function HotelsNearBallArenaPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Ball Arena</span>
+            <span className="text-white/80">Where to Stay for a Nuggets or Avalanche Game at Ball Arena</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">LoDo & Jefferson Park, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Ball Arena</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for a Nuggets or Avalanche Game at Ball Arena</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Nuggets game. Avalanche game. Concert night. The best places to stay so you can walk in and walk back — no Uber surge, no parking headache.
           </p>

@@ -10,12 +10,12 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Mission Ballroom Denver — Best Places to Stay for Shows | Dave Loves Denver",
+  title: "Where to Stay for a Mission Ballroom Show — RiNo Hotels",
   description:
-    "The local's guide to hotels near Mission Ballroom in Denver's RiNo neighborhood — the walkable Catbird hotel, where to park on show nights, plus the best budget picks and how Airbnbs compare.",
+    "A local's guide to where to stay for a Mission Ballroom show in RiNo — the walkable Catbird hotel, where to park on show nights, plus the best budget picks and how Airbnbs compare.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-mission-ballroom" },
   openGraph: {
-    title: "Hotels Near Mission Ballroom Denver",
+    title: "Where to Stay for a Mission Ballroom Show",
     description: "Walkable RiNo and LoDo hotel options for Mission Ballroom shows.",
     url: "https://davelovesdenver.com/hotels/near-mission-ballroom",
   },
@@ -79,13 +79,13 @@ export default async function HotelsNearMissionBallroomPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Mission Ballroom", item: "https://davelovesdenver.com/hotels/near-mission-ballroom" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for a Mission Ballroom Show", item: "https://davelovesdenver.com/hotels/near-mission-ballroom" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Mission Ballroom Denver",
+          name: "Where to Stay for a Mission Ballroom Show",
           description: "The best hotels near Mission Ballroom in Denver's RiNo neighborhood — walkable options steps from one of the best mid-size venues in the country.",
           url: "https://davelovesdenver.com/hotels/near-mission-ballroom",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -102,10 +102,10 @@ export default async function HotelsNearMissionBallroomPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Mission Ballroom</span>
+            <span className="text-white/80">Where to Stay for a Mission Ballroom Show</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">RiNo, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Mission Ballroom Denver</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for a Mission Ballroom Show</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Mission Ballroom is one of the best mid-size venues in the country — and it&apos;s in RiNo, Denver&apos;s best neighborhood. Staying nearby means the whole night is the event, not just the show.
           </p>

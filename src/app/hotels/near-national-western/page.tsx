@@ -10,13 +10,13 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near National Western Complex Denver — Best Places to Stay | Dave Loves Denver",
+  title: "Where to Stay for the National Western Stock Show in Denver",
   description:
-    "The local's guide to hotels near National Western Complex in Denver — RiNo and Five Points picks, how the N Line rail and Stock Show shuttles work, plus parking and the best budget options.",
+    "Where to stay for the National Western Stock Show and other events at the National Western Complex — RiNo and Five Points picks, how the N Line rail and Stock Show shuttles work, plus parking and the best budget options.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-national-western" },
   openGraph: {
-    title: "Hotels Near National Western Complex Denver",
-    description: "Hotels near National Western Complex — RiNo and Five Points options for the Stock Show and events.",
+    title: "Where to Stay for the National Western Stock Show & Events",
+    description: "RiNo and Five Points hotel options for the Stock Show and other National Western events.",
     url: "https://davelovesdenver.com/hotels/near-national-western",
   },
 };
@@ -75,13 +75,13 @@ export default async function HotelsNearNationalWesternPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near National Western Complex", item: "https://davelovesdenver.com/hotels/near-national-western" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for the National Western Stock Show & Events", item: "https://davelovesdenver.com/hotels/near-national-western" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near National Western Complex Denver",
+          name: "Where to Stay for the National Western Stock Show & Events",
           description: "The best hotels near National Western Complex in Denver — RiNo and Five Points options for the Stock Show, concerts, and events at one of Denver's largest event venues.",
           url: "https://davelovesdenver.com/hotels/near-national-western",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -98,10 +98,10 @@ export default async function HotelsNearNationalWesternPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near National Western Complex</span>
+            <span className="text-white/80">Where to Stay for the National Western Stock Show &amp; Events</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">RiNo & Five Points, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near National Western Complex</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for the National Western Stock Show &amp; Events</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             The Stock Show. Concerts. Rodeos. National Western Complex hosts some of Denver&apos;s biggest events — here&apos;s where to stay close by.
           </p>

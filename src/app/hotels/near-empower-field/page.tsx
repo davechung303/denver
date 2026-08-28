@@ -10,12 +10,12 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Empower Field at Mile High — Best Places to Stay for Broncos Games | Dave Loves Denver",
+  title: "Where to Stay for a Broncos Game — Hotels Near Empower Field",
   description:
-    "The local's guide to hotels near Empower Field at Mile High — which hotels are truly walkable, how the light rail beats game-day parking, plus the best budget, 4-star, and luxury picks for Broncos games and concerts.",
+    "A local's guide to where to stay for a Broncos game at Empower Field — which hotels are truly walkable, how the light rail beats game-day parking, plus budget, 4-star and luxury picks.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-empower-field" },
   openGraph: {
-    title: "Hotels Near Empower Field at Mile High",
+    title: "Where to Stay for a Broncos Game at Empower Field",
     description: "Where to stay for a Broncos game or concert at Mile High — walkable LoDo and Jefferson Park options.",
     url: "https://davelovesdenver.com/hotels/near-empower-field",
   },
@@ -75,13 +75,13 @@ export default async function HotelsNearEmpowerFieldPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Empower Field", item: "https://davelovesdenver.com/hotels/near-empower-field" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for a Broncos Game at Empower Field", item: "https://davelovesdenver.com/hotels/near-empower-field" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Empower Field at Mile High",
+          name: "Where to Stay for a Broncos Game at Empower Field",
           description: "The best hotels near Empower Field at Mile High — walkable options in LoDo, Jefferson Park, and Highlands for Broncos games and concerts.",
           url: "https://davelovesdenver.com/hotels/near-empower-field",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -98,10 +98,10 @@ export default async function HotelsNearEmpowerFieldPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Empower Field</span>
+            <span className="text-white/80">Where to Stay for a Broncos Game at Empower Field</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Denver, Colorado</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Empower Field at Mile High</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for a Broncos Game at Empower Field</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Mile High is one of the best football environments in the NFL. Whether you&apos;re here for the Broncos, a stadium concert, or just want to say you&apos;ve been — here&apos;s where to stay.
           </p>

@@ -8,12 +8,12 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Colorado Convention Center Denver — Best Conference Hotel Options | Dave Loves Denver",
+  title: "Where to Stay for a Colorado Convention Center Conference",
   description:
-    "The local's guide to hotels near the Colorado Convention Center in downtown Denver — the connected Hyatt Regency, Marriott-family options, plus the best luxury, budget, and walkable picks for conferences.",
+    "A local's guide to where to stay for a conference at the Colorado Convention Center — the connected Hyatt Regency, Marriott-family options, plus the best luxury, budget and genuinely walkable picks.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-convention-center" },
   openGraph: {
-    title: "Hotels Near Colorado Convention Center Denver",
+    title: "Where to Stay for a Convention Center Conference",
     description: "Walkable downtown Denver hotels for conventions and conferences at the Colorado Convention Center.",
     url: "https://davelovesdenver.com/hotels/near-convention-center",
   },
@@ -72,13 +72,13 @@ export default async function HotelsNearConventionCenterPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Convention Center", item: "https://davelovesdenver.com/hotels/near-convention-center" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for a Convention Center Conference", item: "https://davelovesdenver.com/hotels/near-convention-center" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Colorado Convention Center Denver",
+          name: "Where to Stay for a Convention Center Conference",
           description: "The local's guide to hotels near the Colorado Convention Center in downtown Denver — the connected Hyatt Regency, Marriott-family options, plus the best luxury, budget, and walkable picks for conferences.",
           url: "https://davelovesdenver.com/hotels/near-convention-center",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -95,10 +95,10 @@ export default async function HotelsNearConventionCenterPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Convention Center</span>
+            <span className="text-white/80">Where to Stay for a Convention Center Conference</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Downtown Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Colorado Convention Center</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for a Convention Center Conference</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             The Colorado Convention Center is right in the heart of downtown Denver, surrounded by good hotels and an easy walk to Larimer Square, the Golden Triangle museums, and everything LoDo has to offer.
           </p>

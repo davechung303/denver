@@ -8,13 +8,13 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Denver Airport (DEN) — Best Options for Every Budget | Dave Loves Denver",
+  title: "Where to Stay Near Denver Airport (DEN) — Early Flights",
   description:
-    "The best hotels near Denver International Airport — from the Westin connected to the terminal to the Gaylord Rockies and budget options along Peña Blvd. Honest picks for early flights and late arrivals.",
+    "Where to stay for an early flight, late arrival or layover at Denver International (DEN) — from the Westin connected to the terminal to the Gaylord Rockies and budget options along Peña Blvd.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-denver-airport" },
   openGraph: {
-    title: "Hotels Near Denver Airport (DEN)",
-    description: "From the Westin inside the terminal to the Gaylord Rockies — the best airport hotels for early flights, late arrivals, and layovers.",
+    title: "Where to Stay Near Denver Airport (DEN)",
+    description: "From the Westin inside the terminal to the Gaylord Rockies — the best airport hotels for early flights, late arrivals and layovers.",
     url: "https://davelovesdenver.com/hotels/near-denver-airport",
   },
 };
@@ -69,13 +69,13 @@ export default async function HotelsNearDenverAirportPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Denver Airport", item: "https://davelovesdenver.com/hotels/near-denver-airport" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay Near Denver Airport (DEN)", item: "https://davelovesdenver.com/hotels/near-denver-airport" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Denver Airport (DEN)",
+          name: "Where to Stay Near Denver Airport (DEN)",
           description: "The best hotels near Denver International Airport — from the Westin connected to the terminal to the Gaylord Rockies and budget options along Peña Blvd. Honest picks for early flights and late arrivals.",
           url: "https://davelovesdenver.com/hotels/near-denver-airport",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -93,10 +93,10 @@ export default async function HotelsNearDenverAirportPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Denver Airport</span>
+            <span className="text-white/80">Where to Stay Near Denver Airport (DEN)</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Denver International Airport</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Denver Airport</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay Near Denver Airport (DEN)</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Early flight tomorrow. Late arrival tonight. Here&apos;s exactly where to stay near DEN — and what&apos;s actually worth booking.
           </p>

@@ -8,13 +8,13 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Anschutz Medical Campus Denver — Best Places to Stay | Dave Loves Denver",
+  title: "Where to Stay Near Anschutz Medical Campus (Aurora)",
   description:
-    "The local's guide to hotels near Anschutz Medical Campus and UCHealth in Aurora, Colorado — the closest on-campus hotels, best-value extended stays for families, and budget options for medical visitors.",
+    "Where to stay near Anschutz Medical Campus and UCHealth in Aurora — the closest on-campus hotels, best-value extended stays for families, and budget options for a long medical visit.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-anschutz" },
   openGraph: {
-    title: "Hotels Near Anschutz Medical Campus Denver",
-    description: "Hotels near Anschutz Medical Campus and UCHealth — Aurora and Denver options for medical visitors.",
+    title: "Where to Stay Near Anschutz Medical Campus",
+    description: "Hotels near Anschutz Medical Campus and UCHealth — Aurora and Denver options for patients and their families.",
     url: "https://davelovesdenver.com/hotels/near-anschutz",
   },
 };
@@ -65,13 +65,13 @@ export default async function HotelsNearAnschutzPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Anschutz Medical Campus", item: "https://davelovesdenver.com/hotels/near-anschutz" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay Near Anschutz Medical Campus", item: "https://davelovesdenver.com/hotels/near-anschutz" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Anschutz Medical Campus Denver",
+          name: "Where to Stay Near Anschutz Medical Campus",
           description: "The best hotels near Anschutz Medical Campus and UCHealth in Aurora, Colorado — convenient options for patients, families, and medical visitors.",
           url: "https://davelovesdenver.com/hotels/near-anschutz",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -88,10 +88,10 @@ export default async function HotelsNearAnschutzPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Anschutz Medical Campus</span>
+            <span className="text-white/80">Where to Stay Near Anschutz Medical Campus</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Aurora, Colorado</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Anschutz Medical Campus</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay Near Anschutz Medical Campus</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             Visiting a patient or attending an appointment at UCHealth or Children&apos;s Hospital Colorado? Here are the most convenient places to stay near the Anschutz Medical Campus.
           </p>

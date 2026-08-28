@@ -10,12 +10,12 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Coors Field Denver — Best Places to Stay for Rockies Games | Dave Loves Denver",
+  title: "Where to Stay for a Rockies Game — Hotels Near Coors Field",
   description:
-    "The local's guide to hotels near Coors Field in Denver — which blocks are truly walkable, where to park on game day, plus the best budget and luxury picks for Rockies games and events.",
+    "A local's guide to where to stay for a Rockies game at Coors Field — which blocks are truly walkable, where to park on game day, plus the best budget and luxury picks.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-coors-field" },
   openGraph: {
-    title: "Hotels Near Coors Field Denver",
+    title: "Where to Stay for a Rockies Game at Coors Field",
     description: "Walking distance to Coors Field — the best LoDo and downtown Denver hotels for Rockies games and events.",
     url: "https://davelovesdenver.com/hotels/near-coors-field",
   },
@@ -70,13 +70,13 @@ export default async function HotelsNearCoorsFieldPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-          { "@type": "ListItem", position: 2, name: "Hotels Near Coors Field", item: "https://davelovesdenver.com/hotels/near-coors-field" },
+          { "@type": "ListItem", position: 2, name: "Where to Stay for a Rockies Game at Coors Field", item: "https://davelovesdenver.com/hotels/near-coors-field" },
         ]},
         { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((f) => ({
           "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a },
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
-          name: "Hotels Near Coors Field Denver",
+          name: "Where to Stay for a Rockies Game at Coors Field",
           description: "The best hotels walking distance to Coors Field in Denver — LoDo, Union Station, and downtown options for Rockies games, concerts, and events.",
           url: "https://davelovesdenver.com/hotels/near-coors-field",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
@@ -93,10 +93,10 @@ export default async function HotelsNearCoorsFieldPage() {
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-white/80">Hotels Near Coors Field</span>
+            <span className="text-white/80">Where to Stay for a Rockies Game at Coors Field</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">LoDo, Denver</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Hotels Near Coors Field</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay for a Rockies Game at Coors Field</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
             The best places to stay for Rockies games and events — walking distance from the ballpark, in the middle of LoDo.
           </p>
