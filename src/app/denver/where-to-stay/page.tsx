@@ -271,9 +271,19 @@ export default async function WhereToStayPage() {
                   <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.cost}</p>
                 </div>
                 <div>
+                  <h3 className="text-base font-bold mb-1.5">Where to book in {n.name}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.hotels}</p>
+                </div>
+                <div>
                   <h3 className="text-base font-bold mb-1.5">Getting around</h3>
                   <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.transit}</p>
                 </div>
+                {hn.changing && (
+                  <div>
+                    <h3 className="text-base font-bold mb-1.5">What&apos;s changing here</h3>
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.changing}</p>
+                  </div>
+                )}
                 <div className="rounded-xl bg-slate-50 dark:bg-slate-900 p-5">
                   <h3 className="text-base font-bold mb-1.5">Who should skip {n.name}</h3>
                   <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.skip}</p>
