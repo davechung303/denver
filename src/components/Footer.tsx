@@ -170,7 +170,15 @@ export default function Footer() {
 
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-16 pt-8 border-t border-white/10">
+          <p className="text-xs text-white/50 leading-relaxed max-w-3xl">
+            Some links on this site &mdash; hotel bookings, event tickets and tours &mdash; are affiliate links.
+            If you book through one, I earn a commission at no extra cost to you. It never changes what I recommend
+            or how I rank it.
+          </p>
+        </div>
+
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/30">
             &copy; {new Date().getFullYear()} Dave Loves Denver. All rights reserved.
           </p>
