@@ -14,6 +14,8 @@ interface VideoItem {
 interface ArticleItem {
   title: string;
   slug: string;
+  /** Absolute URL. Falls back to /articles/<slug> for the article template. */
+  url?: string;
   publishedAt: string | null;
   updatedAt: string;
   imageUrl?: string | null;
@@ -83,7 +85,7 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, artic
       "@context": "https://schema.org",
       "@type": "Article",
       headline: article.title,
-      url: `https://davelovesdenver.com/articles/${article.slug}`,
+      url: article.url ?? `https://davelovesdenver.com/articles/${article.slug}`,
       datePublished: article.publishedAt ?? article.updatedAt,
       dateModified: article.updatedAt,
       author: DAVE_PERSON,

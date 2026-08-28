@@ -4,13 +4,15 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
+import SchemaMarkup from "@/components/SchemaMarkup";
+import { STAY_AREAS, QUICK_PICKS, STAY_FAQS } from "@/lib/stayGuide";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Where to Stay in Denver, CO — Best Neighborhoods for Hotels | Dave Loves Denver",
+  title: "Where to Stay in Denver — A Local's Neighborhood Guide",
   description:
-    "The honest guide to where to stay in Denver — LoDo, RiNo, Highlands, Cherry Creek, and every neighborhood, broken down by who they actually suit.",
+    "Which Denver neighborhood to book, and who each one is wrong for. LoDo, RiNo, Cherry Creek, Cap Hill and more — with walk times, real costs and honest disqualifiers.",
   openGraph: {
     title: "Where to Stay in Denver — Best Neighborhoods for Hotels",
     description:
@@ -29,65 +31,10 @@ export const metadata: Metadata = {
   },
 };
 
-const HOTEL_NEIGHBORHOODS = [
-  {
-    slug: "lodo",
-    bestFor: "First-timers & sports fans",
-    dave: "LoDo is the easiest place to stay in Denver if it's your first time. Union Station is one of the best train stations in the country — it's also a hotel, a food hall, and a hangout spot. You're walking distance from Coors Field, Ball Arena, and basically everything downtown. It costs more than staying elsewhere, but you won't need Uber as much.",
-    venueLinks: [
-      { href: "/hotels/near-coors-field", label: "Hotels near Coors Field" },
-      { href: "/hotels/near-ball-arena", label: "Hotels near Ball Arena" },
-    ],
-  },
-  {
-    slug: "rino",
-    bestFor: "Food & art lovers",
-    dave: "RiNo is where I'd stay if I were visiting Denver right now. The restaurant density is the best in the city, the breweries are world-class, and there's always something happening. It's a 10-minute walk from downtown and well-positioned for getting around. The only downside is it can get loud on weekends — pick a hotel on the quieter end of the neighborhood if that matters to you.",
-  },
-  {
-    slug: "highlands",
-    bestFor: "Couples & weekend trips",
-    dave: "The best views of the Denver skyline are from Highlands. The restaurant scene on 32nd Ave and LoHi is excellent. It's slightly removed from downtown — you'll probably Uber to Coors Field — but if you're here for a good time rather than a specific event, Highlands is hard to beat for a weekend stay.",
-  },
-  {
-    slug: "cherry-creek",
-    bestFor: "Luxury travelers & shoppers",
-    dave: "Cherry Creek has the nicest hotels in Denver. If you want a spa, a rooftop pool, or a room that doesn't face a parking garage, this is your neighborhood. The Cherry Creek Shopping Center is here, but so is some of Denver's best fine dining. It's a short Uber to downtown.",
-  },
-  {
-    slug: "downtown",
-    bestFor: "Convenience & walkability",
-    dave: "Downtown gets a bad reputation from locals, but for visitors it makes a lot of sense. You're central to everything, and the 16th Street Mall connects you to LoDo quickly. Larimer Square alone is worth the visit. If you want to minimize logistics, stay downtown.",
-  },
-  {
-    slug: "capitol-hill",
-    bestFor: "Budget travelers & nightlife",
-    dave: "Cap Hill has some of the most affordable hotels close to downtown Denver. You're a 20-minute walk from LoDo and surrounded by bars, live music venues, and late-night food. It's got an edge to it — but if you want to stay somewhere with actual character, Cap Hill delivers.",
-  },
-  {
-    slug: "uptown",
-    bestFor: "Foodies",
-    dave: "Uptown doesn't get enough credit as a place to stay. 17th Avenue is one of the best restaurant strips in Denver, and you're close to both downtown and City Park. Hotels here tend to be mid-range and good value. If eating well is your main priority, this is a smart base.",
-  },
-  {
-    slug: "washington-park",
-    bestFor: "Families & outdoor enthusiasts",
-    dave: "Wash Park is a great choice if you're traveling with kids or you want to actually slow down. The park is beautiful, the neighborhood is safe and walkable, and the coffee shops are legitimately good. You'll Uber downtown but that's fine — this is the kind of neighborhood that makes Denver feel like a real city.",
-  },
-  {
-    slug: "golden-triangle",
-    bestFor: "Culture & museum lovers",
-    dave: "The Golden Triangle is walking distance to the Denver Art Museum, the Clyfford Still Museum, and the History Colorado Center. If museums and culture are high on your list, staying here means you're walking to all of it. Quiet neighborhood, well-located.",
-  },
-  {
-    slug: "airport",
-    bestFor: "Early flights & late arrivals",
-    dave: "If you have a 6am flight or a midnight arrival, staying near DEN makes more sense than spending $80 on an Uber to downtown. There are solid options at every price point out here, and the Gaylord Rockies is worth knowing about if you want something more than just a sleep-and-fly.",
-    venueLinks: [
-      { href: "/hotels/near-denver-airport", label: "Hotels near Denver Airport (DEN)" },
-    ],
-  },
-];
+const UPDATED = "2026-08-28";
+const UPDATED_LABEL = "August 28, 2026";
+
+const HOTEL_NEIGHBORHOODS = STAY_AREAS;
 
 // eslint-disable-next-line @next/next/no-img-element
 function HotelCardStacked({ place }: { place: Place }) {
@@ -121,28 +68,7 @@ function HotelCardStacked({ place }: { place: Place }) {
   );
 }
 
-const FAQS = [
-  {
-    q: "What is the best neighborhood to stay in Denver?",
-    a: "It depends on what you're after. LoDo is the easiest choice for first-timers — central, walkable, close to everything. RiNo is the best choice if food and nightlife are priorities. Cherry Creek is where to go if you want luxury. Highlands is great for couples on a weekend trip.",
-  },
-  {
-    q: "Is downtown Denver safe for tourists?",
-    a: "Yes, with the usual awareness you'd apply anywhere. The 16th Street Mall has had some issues in recent years, but the core of downtown — LoDo, Larimer Square, Union Station — is active, well-trafficked, and fine. Stick to the main streets at night and you'll be comfortable.",
-  },
-  {
-    q: "How far is Cherry Creek from downtown Denver?",
-    a: "About 2 miles — a 10-minute Uber or a 30-minute walk along the Cherry Creek Trail. It feels further than it is. Most Cherry Creek visitors Uber downtown rather than walk, but the trail is a genuinely nice option if the weather is good.",
-  },
-  {
-    q: "Where should I stay in Denver for the best food?",
-    a: "RiNo or Uptown. RiNo has the highest concentration of great restaurants in the city. Uptown's 17th Avenue corridor is underrated and has been quietly excellent for years. Both neighborhoods give you walkable access to multiple great meals without needing a car.",
-  },
-  {
-    q: "Is it worth staying near Denver International Airport?",
-    a: "Only if you have an early flight or a very late arrival. DEN is about 30-45 minutes from downtown, so staying near the airport adds significant travel time to everything else you want to do. The exception: the Gaylord Rockies Resort, which is a destination on its own.",
-  },
-];
+const FAQS = STAY_FAQS;
 
 export default async function WhereToStayPage() {
   // Fetch hotels for all neighborhoods in parallel
@@ -159,38 +85,22 @@ export default async function WhereToStayPage() {
 
   return (
     <>
-      {/* BreadcrumbList schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
-              { "@type": "ListItem", position: 2, name: "Denver", item: "https://davelovesdenver.com/denver" },
-              { "@type": "ListItem", position: 3, name: "Where to Stay", item: "https://davelovesdenver.com/denver/where-to-stay" },
-            ],
-          }),
+      <SchemaMarkup
+        breadcrumbs={[
+          { name: "Home", url: "https://davelovesdenver.com" },
+          { name: "Denver", url: "https://davelovesdenver.com/denver" },
+          { name: "Where to Stay in Denver", url: "https://davelovesdenver.com/denver/where-to-stay" },
+        ]}
+        article={{
+          title: "Where to Stay in Denver",
+          slug: "denver/where-to-stay",
+          url: "https://davelovesdenver.com/denver/where-to-stay",
+          publishedAt: UPDATED,
+          updatedAt: UPDATED,
+          description: "Which Denver neighborhood to book, and who each one is wrong for.",
         }}
+        faqs={FAQS.map((f) => ({ question: f.q, answer: f.a }))}
       />
-
-      {/* FAQPage schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: FAQS.map((f) => ({
-              "@type": "Question",
-              name: f.q,
-              acceptedAnswer: { "@type": "Answer", text: f.a },
-            })),
-          }),
-        }}
-      />
-
       {/* Hero */}
       <section className="bg-denver-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -204,8 +114,18 @@ export default async function WhereToStayPage() {
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Denver, Colorado</p>
           <h1 className="text-5xl md:text-6xl font-bold leading-tight">Where to Stay in Denver</h1>
           <p className="mt-5 text-xl text-white/70 max-w-2xl leading-relaxed">
-            Denver&apos;s neighborhoods are genuinely different from each other. The right one depends on why you&apos;re here — so here&apos;s an honest breakdown of where to stay and who each neighborhood actually suits.
+            Stay in LoDo if it&apos;s your first visit and you want to walk everywhere. Stay in RiNo if you care more about
+            where you&apos;ll eat. Cap Hill is the best value close in, Cherry Creek has the nicest rooms, and the airport
+            district is only worth it for a 6am flight. Below: what each neighborhood costs, what you can walk to, and
+            who should skip it.
           </p>
+          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/60">
+            <span>
+              By <Link href="/about" className="text-denver-amber hover:underline font-medium">Dave Chung</Link>
+            </span>
+            <span aria-hidden="true">&middot;</span>
+            <span>Updated <time dateTime={UPDATED}>{UPDATED_LABEL}</time></span>
+          </div>
         </div>
       </section>
 
@@ -215,6 +135,41 @@ export default async function WhereToStayPage() {
         heading="Know your dates?"
         blurb="Rates move a lot night to night. Price your exact stay before you commit to a neighborhood below."
       />
+
+      {/* Quick answer table — written to stand alone if an answer engine lifts it. */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <h2 className="text-2xl font-bold mb-2">Which Denver neighborhood should you book?</h2>
+        <p className="text-slate-500 dark:text-slate-400 mb-6">The short version. Each one is covered in full below.</p>
+        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-900">
+              <tr>
+                <th className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs">Neighborhood</th>
+                <th className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs">Book it if</th>
+              </tr>
+            </thead>
+            <tbody>
+              {QUICK_PICKS.map((q) => (
+                <tr key={q.slug} className="border-t border-slate-100 dark:border-slate-800">
+                  <td className="px-4 py-3 font-medium whitespace-nowrap align-top">
+                    <a href={`#${q.slug}`} className="hover:text-denver-amber transition-colors">{q.area}</a>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{q.verdict}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-6 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          Two logistics pages worth reading before you book:{" "}
+          <Link href="/denver/hotel-costs" className="text-denver-amber hover:underline">what a Denver hotel actually costs</Link>{" "}
+          once tax and parking are in, and{" "}
+          <Link href="/denver/airport-train" className="text-denver-amber hover:underline">the A Line from the airport</Link>,
+          which decides whether you need a car at all. If you’re coming from sea level, {" "}
+          <Link href="/denver/altitude" className="text-denver-amber hover:underline">what’s actually true about Denver’s altitude</Link>{" "}
+          is shorter and more useful than the version you’ve been told.
+        </p>
+      </section>
 
       {/* Quick nav strip */}
       <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-16 z-30">
@@ -226,7 +181,7 @@ export default async function WhereToStayPage() {
                 href={`#${hn.slug}`}
                 className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap"
               >
-                {hn.bestFor}
+                {NEIGHBORHOODS.find((nb) => nb.slug === hn.slug)?.name ?? hn.slug}
               </a>
             ))}
             <Link href="/hotels/near-red-rocks" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
@@ -285,17 +240,47 @@ export default async function WhereToStayPage() {
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{n.tagline}</span>
               </div>
 
-              <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">
-                Best for: {hn.bestFor}
-              </p>
-
               <h2 className="text-3xl font-bold mb-2">{n.name}</h2>
               <p className="text-slate-500 dark:text-slate-400 mb-6">{n.description}</p>
 
               <blockquote className="border-l-4 border-denver-amber pl-5 py-1 mb-8 text-slate-600 dark:text-slate-400 text-lg leading-relaxed italic">
-                &ldquo;{hn.dave}&rdquo;
+                &ldquo;{hn.take}&rdquo;
                 <footer className="mt-2 text-sm not-italic text-slate-400 dark:text-slate-500">— Dave</footer>
               </blockquote>
+
+              <div className="mb-8 flex flex-wrap gap-2 text-sm">
+                <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 font-medium">
+                  Best for: {hn.bestFor}
+                </span>
+                <span className="px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 font-medium">
+                  Not for: {hn.notFor}
+                </span>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-base font-bold mb-1.5">What you can walk to from {n.name}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.walk}</p>
+                </div>
+                <div>
+                  <h3 className="text-base font-bold mb-1.5">Where you&apos;ll eat</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.eat}</p>
+                </div>
+                <div>
+                  <h3 className="text-base font-bold mb-1.5">What it costs</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.cost}</p>
+                </div>
+                <div>
+                  <h3 className="text-base font-bold mb-1.5">Getting around</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.transit}</p>
+                </div>
+                <div className="rounded-xl bg-slate-50 dark:bg-slate-900 p-5">
+                  <h3 className="text-base font-bold mb-1.5">Who should skip {n.name}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.skip}</p>
+                </div>
+              </div>
+
+              <div className="mt-8">
 
               <a
                 href={expediaDenverHotelsUrl(n.name)}
@@ -305,6 +290,7 @@ export default async function WhereToStayPage() {
               >
                 Browse hotels in {n.name} &rarr;
               </a>
+              </div>
               {hn.venueLinks && (
                 <div className="mt-4 flex flex-wrap gap-2">
                   {hn.venueLinks.map((v) => (

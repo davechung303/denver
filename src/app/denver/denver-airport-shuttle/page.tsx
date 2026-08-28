@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "Is there a shuttle from Denver Airport to downtown?",
-    a: "The best 'shuttle' to downtown is actually the train: RTD's A Line runs from inside the DEN terminal to Union Station in about 37 minutes for a flat fare (around $10.50). From Union Station you're in the heart of LoDo and a short walk or rideshare from most downtown hotels. It's cheaper and often faster than a car during rush hour.",
+    a: "The best 'shuttle' to downtown is actually the train: RTD's A Line runs from inside the DEN terminal to Union Station in about 37 minutes for $10 — an Airport Day Pass that also covers your return trip that day. From Union Station you're in the heart of LoDo and a short walk or rideshare from most downtown hotels. It's cheaper and often faster than a car during rush hour.",
   },
   {
     q: "Do hotels near Denver Airport have free shuttles?",
@@ -31,7 +31,7 @@ const FAQS = [
   },
   {
     q: "How much is a taxi or Uber from Denver Airport to downtown?",
-    a: "Rideshare and taxi runs roughly $40–$65 to downtown depending on traffic and surge, versus about $10.50 on the A Line train. Rideshare makes sense if you're carrying a lot of luggage, traveling as a group, arriving at an odd hour, or heading somewhere the train doesn't serve well. For a solo traveler headed to LoDo or RiNo, the train usually wins.",
+    a: "Rideshare and taxi runs roughly $40–$65 to downtown depending on traffic and surge, versus $10 for an A Line Airport Day Pass. Rideshare makes sense if you're carrying a lot of luggage, traveling as a group, arriving at an odd hour, or heading somewhere the train doesn't serve well. For a solo traveler headed to LoDo or RiNo, the train usually wins.",
   },
   {
     q: "How far is Denver Airport from downtown?",
@@ -39,7 +39,7 @@ const FAQS = [
   },
   {
     q: "What's the cheapest way from DEN to Denver?",
-    a: "The A Line train at roughly $10.50 is by far the cheapest way into the city, and RTD's wider bus and rail network connects from Union Station. If your hotel is near the airport, its free shuttle is effectively $0. Rideshare and taxis are the most expensive option for a solo trip downtown.",
+    a: "The A Line train at $10 for an Airport Day Pass is by far the cheapest way into the city, and RTD's wider bus and rail network connects from Union Station. If your hotel is near the airport, its free shuttle is effectively $0. Rideshare and taxis are the most expensive option for a solo trip downtown.",
   },
   {
     q: "Should I stay near the airport or downtown?",
@@ -97,7 +97,7 @@ export default function DenverAirportShuttleGuide() {
         <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
           <h2 className="text-lg font-bold mb-3">The short version</h2>
           <ul className="space-y-2 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-            <li>• <strong>Going downtown?</strong> Take the A Line train — ~37 min to Union Station, ~$10.50, straight from the terminal.</li>
+            <li>• <strong>Going downtown?</strong> Take the A Line train — ~37 min to Union Station, $10 for a day pass, straight from the terminal.</li>
             <li>• <strong>Staying by the airport?</strong> Most nearby hotels run free shuttles every 20–30 min — confirm overnight hours.</li>
             <li>• <strong>Headed to the mountains?</strong> Book a shared-ride mountain shuttle to the ski towns in advance.</li>
             <li>• <strong>Lots of bags or a group?</strong> Rideshare is ~$40–65 downtown — worth it sometimes, but the train usually wins solo.</li>
@@ -115,7 +115,7 @@ export default function DenverAirportShuttleGuide() {
           <div>
             <h3 className="font-bold text-lg mb-1">1. To downtown Denver — the A Line train</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-              The commuter train boards right at the terminal and runs to Union Station in about 37 minutes for a flat fare (around $10.50), every 15 minutes for most of the day. It drops you in the middle of LoDo, walkable or a short rideshare to most downtown hotels. For a solo traveler or couple without a mountain of luggage headed to LoDo or RiNo, it&apos;s the cheapest and often the fastest option.
+              The commuter train boards right at the terminal and runs to Union Station in about 37 minutes for $10 — an Airport Day Pass that also covers your return trip that day, every 15 minutes for most of the day. It drops you in the middle of LoDo, walkable or a short rideshare to most downtown hotels. Fares, frequencies and which hotels sit on the line are covered in full in the <Link href="/denver/airport-train" className="text-denver-amber hover:underline">A Line guide</Link>. For a solo traveler or couple without a mountain of luggage headed to LoDo or RiNo, it&apos;s the cheapest and often the fastest option.
             </p>
           </div>
           <div>
