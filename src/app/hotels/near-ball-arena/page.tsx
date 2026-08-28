@@ -130,7 +130,7 @@ export default async function HotelsNearBallArenaPage() {
           <div className="flex flex-col gap-2">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">LoDo & Jefferson Park</p>
             {hotels.map((hotel) => <VenueHotelCard key={hotel.place_id} place={hotel} />)}
-            <a href={expediaDenverHotelsUrl("LoDo Denver")} target="_blank" rel="noopener noreferrer"
+            <a href={expediaDenverHotelsUrl("LoDo Denver")} target="_blank" rel="noopener noreferrer sponsored"
               className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
             >
               See all nearby hotels &rarr;
@@ -217,7 +217,7 @@ export default async function HotelsNearBallArenaPage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
             <h2 className="text-xl font-bold">Upcoming Events at Ball Arena</h2>
-            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ball+arena+denver")} target="_blank" rel="noopener noreferrer"
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ball+arena+denver")} target="_blank" rel="noopener noreferrer sponsored"
               className="text-sm text-denver-amber font-semibold hover:underline">
               All events &rarr;
             </a>

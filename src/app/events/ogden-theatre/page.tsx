@@ -97,7 +97,7 @@ export default async function EventsOgdenTheatrePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <h2 className="text-xl font-bold">{events.length > 0 ? `${events.length} Upcoming Shows` : "Upcoming Shows"}</h2>
-          <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ogden+theatre+denver")} target="_blank" rel="noopener noreferrer"
+          <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ogden+theatre+denver")} target="_blank" rel="noopener noreferrer sponsored"
             className="text-sm text-denver-amber font-semibold hover:underline">All shows on Ticketmaster &rarr;</a>
         </div>
         {events.length > 0 ? (
@@ -107,7 +107,7 @@ export default async function EventsOgdenTheatrePage() {
         ) : (
           <div className="py-12 text-center text-slate-500">
             <p className="text-lg font-medium mb-2">No upcoming events found right now.</p>
-            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ogden+theatre+denver")} target="_blank" rel="noopener noreferrer"
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ogden+theatre+denver")} target="_blank" rel="noopener noreferrer sponsored"
               className="text-denver-amber font-semibold hover:underline text-sm">Check Ticketmaster for the full schedule &rarr;</a>
           </div>
         )}

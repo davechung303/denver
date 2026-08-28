@@ -131,7 +131,7 @@ export default async function HotelsNearDenverAirportPage() {
           <div className="flex flex-col gap-2">
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Top-Rated Options</p>
             {hotels.map((hotel) => <VenueHotelCard key={hotel.place_id} place={hotel} />)}
-            <a href={expediaDenverHotelsUrl("Denver Airport")} target="_blank" rel="noopener noreferrer"
+            <a href={expediaDenverHotelsUrl("Denver Airport")} target="_blank" rel="noopener noreferrer sponsored"
               className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
             >
               See all Denver Airport hotels &rarr;

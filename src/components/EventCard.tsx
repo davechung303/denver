@@ -51,7 +51,7 @@ export default function EventCard({ event }: Props) {
       <a
         href={ticketmasterAffiliateUrl(event.url)}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer sponsored"
         className="absolute inset-0 rounded-xl"
         aria-label={cleanName}
       />

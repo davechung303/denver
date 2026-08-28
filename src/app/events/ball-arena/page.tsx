@@ -100,7 +100,7 @@ export default async function EventsBallArenaPage() {
           <h2 className="text-xl font-bold">
             {events.length > 0 ? `${events.length} Upcoming Events` : "Upcoming Events"}
           </h2>
-          <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ball+arena+denver")} target="_blank" rel="noopener noreferrer"
+          <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ball+arena+denver")} target="_blank" rel="noopener noreferrer sponsored"
             className="text-sm text-denver-amber font-semibold hover:underline">
             All events on Ticketmaster &rarr;
           </a>
@@ -112,7 +112,7 @@ export default async function EventsBallArenaPage() {
         ) : (
           <div className="py-12 text-center text-slate-500">
             <p className="text-lg font-medium mb-2">No upcoming events found right now.</p>
-            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ball+arena+denver")} target="_blank" rel="noopener noreferrer"
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=ball+arena+denver")} target="_blank" rel="noopener noreferrer sponsored"
               className="text-denver-amber font-semibold hover:underline text-sm">
               Check Ticketmaster for the full schedule &rarr;
             </a>

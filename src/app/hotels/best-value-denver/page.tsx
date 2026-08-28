@@ -48,7 +48,7 @@ function HotelCard({ place }: { place: Place }) {
   const photo = place.photos?.[0];
   const neighborhood = NEIGHBORHOODS.find((n) => n.slug === place.neighborhood_slug);
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer"
+    <a href={href} target="_blank" rel="noopener noreferrer sponsored"
       className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200"
     >
       <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -198,7 +198,7 @@ export default async function BestValueDenverHotelsPage() {
             <h2 className="text-xl font-bold mb-1">See all available Denver hotels</h2>
             <p className="text-white/70 text-sm">Compare prices and availability on Expedia — filters, maps, and real-time rates.</p>
           </div>
-          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer"
+          <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored"
             className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
           >
             Browse Expedia Denver hotels &rarr;

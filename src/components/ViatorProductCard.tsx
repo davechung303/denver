@@ -12,7 +12,7 @@ export default function ViatorProductCard({ product }: { product: ViatorProduct 
     <a
       href={bookingUrl}
       target="_blank"
-      rel="noopener noreferrer"
+      rel="noopener noreferrer sponsored"
       className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
     >
       {/* Thumbnail */}

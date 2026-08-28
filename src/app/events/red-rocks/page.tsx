@@ -102,7 +102,7 @@ export default async function EventsRedRocksPage() {
           <h2 className="text-xl font-bold">
             {events.length > 0 ? `${events.length} Upcoming Shows` : "Upcoming Shows"}
           </h2>
-          <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=red+rocks+amphitheatre")} target="_blank" rel="noopener noreferrer"
+          <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=red+rocks+amphitheatre")} target="_blank" rel="noopener noreferrer sponsored"
             className="text-sm text-denver-amber font-semibold hover:underline">
             All events on Ticketmaster &rarr;
           </a>
@@ -114,7 +114,7 @@ export default async function EventsRedRocksPage() {
         ) : (
           <div className="py-12 text-center text-slate-500">
             <p className="text-lg font-medium mb-2">No upcoming events found right now.</p>
-            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=red+rocks+amphitheatre")} target="_blank" rel="noopener noreferrer"
+            <a href={ticketmasterAffiliateUrl("https://www.ticketmaster.com/search?q=red+rocks+amphitheatre")} target="_blank" rel="noopener noreferrer sponsored"
               className="text-denver-amber font-semibold hover:underline text-sm">
               Check Ticketmaster for the full schedule &rarr;
             </a>

@@ -166,7 +166,7 @@ export default function EventsClient({ events, feverEvents }: Props) {
                     key={event.event_id}
                     href={ticketmasterAffiliateUrl(event.url)}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer sponsored"
                     className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 hover:border-denver-amber hover:shadow-md transition-all duration-200"
                   >
                     {event.image_url && (
