@@ -64,8 +64,8 @@ export default function VideoCard({ video, neighborhood, category, short }: Prop
           {video.title}
         </h3>
         <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
-          {video.view_count && <span>{formatViews(video.view_count)}</span>}
-          {video.view_count && video.published_at && <span>·</span>}
+          {video.view_count != null && video.view_count > 0 && <span>{formatViews(video.view_count)}</span>}
+          {video.view_count != null && video.view_count > 0 && video.published_at && <span>·</span>}
           {video.published_at && <span>{formatDate(video.published_at)}</span>}
         </div>
       </div>

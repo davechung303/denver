@@ -140,7 +140,9 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, artic
   // VideoObject schema
   if (videos && videos.length > 0) {
     for (const video of videos) {
-      if (!video.thumbnailUrl) continue;
+      // uploadDate is required on VideoObject, so a video without one is
+      // skipped rather than marked up with a null.
+      if (!video.thumbnailUrl || !video.uploadDate) continue;
       schemas.push({
         "@context": "https://schema.org",
         "@type": "VideoObject",
@@ -167,7 +169,7 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, artic
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
         />
       ))}
     </>

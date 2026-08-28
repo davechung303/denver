@@ -6,6 +6,9 @@ import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { STAY_AREAS, QUICK_PICKS, STAY_FAQS } from "@/lib/stayGuide";
+import { assignStayVideos, flattenStayVideos } from "@/lib/stayVideos";
+import { getAllVideos } from "@/lib/youtube";
+import VideoCard from "@/components/VideoCard";
 
 export const revalidate = 86400;
 
@@ -71,8 +74,16 @@ function HotelCardStacked({ place }: { place: Place }) {
 const FAQS = STAY_FAQS;
 
 export default async function WhereToStayPage() {
+  // Only areas with a NEIGHBORHOODS entry render, so only those get videos —
+  // otherwise VideoObject schema could describe a section that never appears.
+  const areaSlugs = HOTEL_NEIGHBORHOODS.filter((a) =>
+    NEIGHBORHOODS.some((nb) => nb.slug === a.slug)
+  ).map((a) => a.slug);
+
   // Fetch hotels for all neighborhoods in parallel
-  const hotelsByNeighborhood = await Promise.all(
+  const [allVideos, hotelsByNeighborhood] = await Promise.all([
+    getAllVideos(),
+    Promise.all(
     HOTEL_NEIGHBORHOODS.map(async (hn) => {
       const places = await getPlaces(hn.slug, "hotels");
       const real = places.filter(isRealHotel).filter((p) => p.rating != null);
@@ -80,7 +91,12 @@ export default async function WhereToStayPage() {
       const hotels = (real.length >= 4 ? real : places.filter((p) => p.rating != null)).slice(0, 4);
       return { slug: hn.slug, hotels };
     })
-  );
+    ),
+  ]);
+
+  // Assigned in page order against a shared used-set, so no video repeats.
+  const areaVideos = assignStayVideos(allVideos, areaSlugs, 2);
+  const pageVideos = flattenStayVideos(areaVideos, areaSlugs);
   const hotelMap = new Map(hotelsByNeighborhood.map((h) => [h.slug, h.hotels]));
 
   return (
@@ -100,6 +116,13 @@ export default async function WhereToStayPage() {
           description: "Which Denver neighborhood to book, and who each one is wrong for.",
         }}
         faqs={FAQS.map((f) => ({ question: f.q, answer: f.a }))}
+        videos={pageVideos.map((v) => ({
+          name: v.title,
+          description: v.description,
+          thumbnailUrl: v.thumbnail_url,
+          uploadDate: v.published_at,
+          videoId: v.video_id,
+        }))}
       />
       {/* Hero */}
       <section className="bg-denver-navy text-white">
@@ -342,6 +365,25 @@ export default async function WhereToStayPage() {
                 </div>
               );
             })()}
+
+            {/* Related videos from the channel. There are no hotel-guide videos
+                yet, so these are framed as related Denver watching rather than
+                as coverage of this neighborhood. */}
+            {(areaVideos[hn.slug]?.videos.length ?? 0) > 0 && (
+              <div className="mt-10 max-w-3xl">
+                <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
+                  Related Denver videos
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                  From Dave&apos;s channel &mdash; worth a watch while you&apos;re planning.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {areaVideos[hn.slug].videos.map((v) => (
+                    <VideoCard key={v.video_id} video={v} />
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
         );
       })}
