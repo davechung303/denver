@@ -78,6 +78,22 @@ const MIN_REVIEWS = 100;
 const EXCLUDE_TYPES = new Set(["hostel", "bed_and_breakfast", "campground", "rv_park"]);
 
 /**
+ * Properties whose review profile doesn't reflect room stays.
+ *
+ * The Acoma House is a genuine 12-suite aparthotel and a fine booking, but it
+ * carries a 5.0 across 1,299 reviews — a volume that belongs to its wedding and
+ * event business, not to people who slept there. No amount of scoring math
+ * fixes bad input: it topped the Golden Triangle column and, worse, the
+ * Downtown column on a page arguing the case for downtown against Cherry
+ * Creek, above the Four Seasons and the Brown Palace.
+ *
+ * These are ranked out of the area modules only. They keep their affiliate
+ * link, their detail page and their place in neighborhood listings — this is
+ * about not letting them lead a "best rooms here" list.
+ */
+const NOT_ROOM_RANKED = new Set(["the-acoma-house"]);
+
+/**
  * Ranking by raw rating puts a 4.5 with 122 reviews above a 4.5 with 2,114,
  * which is both wrong and worse for booking. This is the standard shrink
  * toward a prior: a property needs volume before its rating moves it much.
@@ -124,7 +140,8 @@ function candidates(pool: Place[]): Place[] {
     .filter((p) => p.lat != null && p.lng != null)
     .filter((p) => p.expedia_affiliate_url)
     .filter((p) => p.rating != null)
-    .filter((p) => !p.types?.some((t) => EXCLUDE_TYPES.has(t)));
+    .filter((p) => !p.types?.some((t) => EXCLUDE_TYPES.has(t)))
+    .filter((p) => !NOT_ROOM_RANKED.has(p.slug));
 }
 
 function rank(near: { p: Place; d: number }[], limit: number): Place[] {
