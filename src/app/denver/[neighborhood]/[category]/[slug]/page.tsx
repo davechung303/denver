@@ -669,7 +669,43 @@ export default async function BusinessPage({ params }: Props) {
                     ))}
                   </ul>
                 )}
-                <p className="text-xs text-slate-400">Based on Google reviews · AI summarized</p>
+                <p className="text-xs text-slate-400">
+                  AI-summarized from Google reviews.{" "}
+                  <a
+                    href={`https://search.google.com/local/reviews?placeid=${place.place_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-denver-amber transition-colors"
+                  >
+                    Read the reviews on Google Maps
+                  </a>
+                </p>
+              </div>
+            )}
+
+            {/* Planning links — connects the ~391 hotel detail pages into the
+                lodging cluster. Previously these pages linked to none of it. */}
+            {isHotel && (
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                <h2 className="text-lg font-semibold mb-2">Planning a Denver stay?</h2>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                  How {n.name} compares to the rest of the city, what a Denver hotel actually costs once tax and
+                  parking are in, and whether you need a car at all.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Link href={`/denver/where-to-stay#${nSlug}`} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                    Staying in {n.name} &rarr;
+                  </Link>
+                  <Link href="/denver/hotel-costs" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                    What it really costs &rarr;
+                  </Link>
+                  <Link href="/denver/airport-train" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                    Getting in from DEN &rarr;
+                  </Link>
+                  <Link href="/hotels" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                    Guides by venue &rarr;
+                  </Link>
+                </div>
               </div>
             )}
 
@@ -804,7 +840,17 @@ export default async function BusinessPage({ params }: Props) {
             {/* Google Reviews */}
             {place.reviews && place.reviews.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold mb-4">What Visitors Say</h2>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
+                  <h2 className="text-lg font-semibold">What Visitors Say</h2>
+                  <a
+                    href={`https://search.google.com/local/reviews?placeid=${place.place_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-slate-400 underline hover:text-denver-amber transition-colors"
+                  >
+                    All reviews on Google Maps
+                  </a>
+                </div>
                 <div className="space-y-4">
                   {place.reviews.filter((r) => r.text?.text).slice(0, 4).map((review, i) => (
                     <div key={i} className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-4 space-y-2">
