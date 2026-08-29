@@ -10,6 +10,7 @@ import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTripCard from "@/components/BookYourTripCard";
+import { nearestVenues } from "@/lib/venueProximity";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up fresh photo names after monthly refresh
 export const dynamicParams = true; // generate on-demand for any slug not pre-built
@@ -669,17 +670,23 @@ export default async function BusinessPage({ params }: Props) {
                     ))}
                   </ul>
                 )}
-                <p className="text-xs text-slate-400">
-                  AI-summarized from Google reviews.{" "}
-                  <a
-                    href={`https://search.google.com/local/reviews?placeid=${place.place_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:text-denver-amber transition-colors"
-                  >
-                    Read the reviews on Google Maps
-                  </a>
-                </p>
+                <div className="pt-3 border-t border-amber-200/60 dark:border-amber-800/60">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <strong className="font-semibold text-slate-600 dark:text-slate-300">How this is written:</strong>{" "}
+                    we run the full set of recent Google reviews through AI to pull out what guests consistently
+                    say &mdash; including the complaints, which is why there&apos;s a downsides list rather than
+                    only the good bits. It&apos;s rewritten as new reviews come in, so it describes the hotel as it
+                    is now, not as it was whenever someone last got round to writing a paragraph about it.{" "}
+                    <a
+                      href={`https://search.google.com/local/reviews?placeid=${place.place_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-denver-amber transition-colors"
+                    >
+                      Read the reviews yourself on Google Maps
+                    </a>.
+                  </p>
+                </div>
               </div>
             )}
 
@@ -702,9 +709,11 @@ export default async function BusinessPage({ params }: Props) {
                   <Link href="/denver/airport-train" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
                     Getting in from DEN &rarr;
                   </Link>
-                  <Link href="/hotels" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
-                    Guides by venue &rarr;
-                  </Link>
+                  {nearestVenues(place.lat, place.lng, 2).map((v) => (
+                    <Link key={v.href} href={v.href} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                      Staying for {v.label} &rarr;
+                    </Link>
+                  ))}
                 </div>
               </div>
             )}
