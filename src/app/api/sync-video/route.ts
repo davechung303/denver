@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import { generateArticle } from "@/lib/articles";
 import { associateVideosWithNeighborhoods } from "@/lib/videoAssociations";
 
@@ -61,8 +61,9 @@ export async function GET(request: Request) {
     cached_at: new Date().toISOString(),
   };
 
-  // Upsert into youtube_videos
-  const { error: upsertError } = await supabase
+  // Upsert into youtube_videos. Must be the admin client: this is a server-side
+  // write, and once RLS is on the anon key is read-only.
+  const { error: upsertError } = await supabaseAdmin
     .from("youtube_videos")
     .upsert(videoRow, { onConflict: "video_id" });
   if (upsertError) {

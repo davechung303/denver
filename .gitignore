@@ -43,3 +43,7 @@ next-env.d.ts
 # generated hotel data artifacts (from scripts/*-expedia-*.mjs)
 hotels-missing-expedia-link.csv
 expedia-links*.csv
+
+# Scratch this session could not delete (the sandbox cannot remove files under a
+# mounted folder). Safe to delete by hand; ignored so it can never be committed.
+_to_delete/
