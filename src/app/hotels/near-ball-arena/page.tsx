@@ -14,11 +14,11 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Nuggets or Avalanche Game — Ball Arena",
   description:
-    "A local's guide to where to stay for a Nuggets, Avalanche or concert night at Ball Arena — which hotels are truly walking distance, where to park, plus budget and downtown picks.",
+    "Routed walk times from 29 downtown hotels to Ball Arena — real pavements, not straight lines. Which are genuinely walkable for a Nuggets or Avs game.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-ball-arena" },
   openGraph: {
     title: "Where to Stay for a Nuggets or Avalanche Game at Ball Arena",
-    description: "Walking distance hotels for Nuggets, Avalanche and concerts at Ball Arena.",
+    description: "Real routed walk times from 29 downtown Denver hotels to Ball Arena — not straight-line guesses.",
     url: "https://davelovesdenver.com/hotels/near-ball-arena",
   },
 };
