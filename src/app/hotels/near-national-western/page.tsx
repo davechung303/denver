@@ -14,7 +14,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for the National Western Stock Show in Denver",
   description:
-    "Routed walking distances from 45 hotels to National Western Complex. Nothing is a real walk — the closest is 0.8 miles. Where to stay for the Stock Show.",
+    "Routed walking distances from 41 hotels to National Western Complex. Nothing is a real walk — the closest is 0.8 miles. Where to stay for the Stock Show.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-national-western" },
   openGraph: {
     title: "Where to Stay for the National Western Stock Show & Events",

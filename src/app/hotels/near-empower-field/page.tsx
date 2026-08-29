@@ -14,11 +14,11 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Broncos Game — Hotels Near Empower Field",
   description:
-    "Routed walking distances from 45 hotels to Empower Field. Almost nothing downtown is a real walk — what's close, what needs wheels, what needs a car.",
+    "Routed walking distances from 41 hotels to Empower Field. Almost nothing downtown is a real walk — what's close, what needs wheels, what needs a car.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-empower-field" },
   openGraph: {
     title: "Where to Stay for a Broncos Game at Empower Field",
-    description: "Routed walking distances to Empower Field from 45 Denver hotels, plus where to actually stay for a Broncos game.",
+    description: "Routed walking distances to Empower Field from 41 Denver hotels, plus where to actually stay for a Broncos game.",
     url: "https://davelovesdenver.com/hotels/near-empower-field",
   },
 };

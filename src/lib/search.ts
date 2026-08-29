@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { supabase } from "./supabase";
 import { CATEGORIES, NEIGHBORHOODS } from "./neighborhoods";
 import type { Place } from "./places";
+import { isExcludedPlace } from "@/lib/excludedPlaces";
 
 export interface SearchIntent {
   category_slug: string | null;   // e.g. "restaurants", "hotels"
@@ -110,9 +111,12 @@ export async function searchPlaces(q: string): Promise<SearchResults> {
       .limit(20),
   ]);
 
-  const nameMatches: Place[] = (nameMatchResult.data ?? []) as Place[];
-  const filtered: Place[] = (filteredResult.data ?? []) as Place[];
-  const fallbackPlaces: Place[] = (fallbackResult.data ?? []) as Place[];
+  // Search queries the table directly rather than going through places.ts, so
+  // the exclusion filter has to be repeated here.
+  const open = (rows: unknown) => ((rows ?? []) as Place[]).filter((r) => !isExcludedPlace(r.slug));
+  const nameMatches: Place[] = open(nameMatchResult.data);
+  const filtered: Place[] = open(filteredResult.data);
+  const fallbackPlaces: Place[] = open(fallbackResult.data);
 
   // Build top results: name matches + high-rated filtered results
   const seenIds = new Set<string>();

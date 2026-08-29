@@ -14,11 +14,11 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Mission Ballroom Show — RiNo Hotels",
   description:
-    "Routed walking distances from 45 hotels to Mission Ballroom. Two sit under a quarter mile; most of downtown is a rideshare. Where to book in RiNo.",
+    "Routed walking distances from 41 hotels to Mission Ballroom. Two sit under a quarter mile; most of downtown is a rideshare. Where to book in RiNo.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-mission-ballroom" },
   openGraph: {
     title: "Where to Stay for a Mission Ballroom Show",
-    description: "Routed walking distances to Mission Ballroom from 45 Denver hotels, plus where to stay for a show night in RiNo.",
+    description: "Routed walking distances to Mission Ballroom from 41 Denver hotels, plus where to stay for a show night in RiNo.",
     url: "https://davelovesdenver.com/hotels/near-mission-ballroom",
   },
 };

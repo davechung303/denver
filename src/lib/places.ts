@@ -1,6 +1,7 @@
 import { supabase, supabaseAdmin } from "./supabase";
 import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES } from "./neighborhoods";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
+import { isExcludedPlace } from "@/lib/excludedPlaces";
 
 // Use server-side key (no referrer restrictions) for API calls
 // NEXT_PUBLIC_ key is for client-side map embeds only
@@ -75,10 +76,16 @@ function photoAbsoluteUrl(photo: GooglePhoto | string): string {
   return photo.cdn_url ?? `${SITE_URL}/api/places-photo?name=${encodeURIComponent(photo.name)}`;
 }
 
-// Batch-fetch cdn_urls from photo_cache and attach them to place photos.
-// One query covers all photos across all places — baked into page HTML at render time
-// so browsers load images directly from Supabase Storage CDN, no proxy roundtrip.
-async function attachPhotoCdnUrls(places: Place[]): Promise<Place[]> {
+// Hydrate rows on their way out of the database: drop anything we must not
+// recommend, then batch-fetch cdn_urls from photo_cache and attach them to place
+// photos. One query covers all photos across all places — baked into page HTML
+// at render time so browsers load images directly from Supabase Storage CDN, no
+// proxy roundtrip.
+//
+// Every read path in this file funnels through here, which is the point: the
+// exclusion filter has to be somewhere a new getter cannot forget to call.
+async function hydratePlaces(input: Place[]): Promise<Place[]> {
+  const places = input.filter((p) => !isExcludedPlace(p.slug));
   // Only look up the first photo per place — all card and listing views use photos[0] only.
   // This keeps the .in() query small regardless of how many photos Google returned.
   const names: string[] = [];
@@ -342,6 +349,7 @@ export async function getPlace(
   categorySlug: string,
   slug: string
 ): Promise<Place | null> {
+  if (isExcludedPlace(slug)) return null;
   const { data } = await supabase
     .from("places")
     .select("*")
@@ -353,7 +361,7 @@ export async function getPlace(
   // Row exists — generate summary if needed (fetches reviews lazily if missing)
   if (data) {
     const withSummary = await maybeGenerateSummary(data as Place);
-    const [withCdn] = await attachPhotoCdnUrls([withSummary]);
+    const [withCdn] = await hydratePlaces([withSummary]);
     return withCdn;
   }
 
@@ -367,7 +375,7 @@ export async function getPlace(
 
   if (anyCategory) {
     const withSummary = await maybeGenerateSummary(anyCategory as Place);
-    const [withCdn] = await attachPhotoCdnUrls([withSummary]);
+    const [withCdn] = await hydratePlaces([withSummary]);
     return withCdn;
   }
 
@@ -377,6 +385,7 @@ export async function getPlace(
 
 // Find a place by slug alone (ignoring neighborhood/category) — used for redirect resolution
 export async function getPlaceBySlug(slug: string): Promise<Place | null> {
+  if (isExcludedPlace(slug)) return null;
   const { data } = await supabase
     .from("places")
     .select(LISTING_COLUMNS)
@@ -384,7 +393,7 @@ export async function getPlaceBySlug(slug: string): Promise<Place | null> {
     .limit(1)
     .single();
   if (!data) return null;
-  const [withCdn] = await attachPhotoCdnUrls([data as Place]);
+  const [withCdn] = await hydratePlaces([data as Place]);
   return withCdn;
 }
 
@@ -413,7 +422,7 @@ export async function getPlacesForSubcategory(
     .order("rating", { ascending: false });
 
   if (cached && cached.length > 0) {
-    const cachedWithCdn = await attachPhotoCdnUrls(cached as Place[]);
+    const cachedWithCdn = await hydratePlaces(cached as Place[]);
     const merged = [...filtered, ...cachedWithCdn.filter((c) => !filtered.some((f) => f.place_id === c.place_id))];
     return merged;
   }
@@ -572,7 +581,7 @@ export async function getAllHiddenGems(): Promise<Place[]> {
     .order("rating", { ascending: false })
     .limit(300);
 
-  const places = await attachPhotoCdnUrls((data ?? []) as Place[]);
+  const places = await hydratePlaces((data ?? []) as Place[]);
   return places
     .filter(isUsefulPlace)
     .sort((a, b) => qualityScore(b) - qualityScore(a));
@@ -593,7 +602,7 @@ export async function getBestOfDenver(
     .order("rating", { ascending: false })
     .limit(150);
 
-  const places = await attachPhotoCdnUrls((data ?? []) as Place[]);
+  const places = await hydratePlaces((data ?? []) as Place[]);
   return places
     .filter(isUsefulPlace)
     .filter((p) =>
@@ -674,7 +683,7 @@ export async function getTrendingPlaces(
 
   if (!places) return [];
 
-  const withCdn = await attachPhotoCdnUrls(places as Place[]);
+  const withCdn = await hydratePlaces(places as Place[]);
   const placeMap = new Map(withCdn.map((p) => [p.place_id, p]));
 
   return velocities
@@ -718,7 +727,7 @@ export async function getRecentlyAddedPlaces(
   }
 
   const { data } = await query;
-  const withCdn = await attachPhotoCdnUrls((data ?? []) as unknown as Place[]);
+  const withCdn = await hydratePlaces((data ?? []) as unknown as Place[]);
   return withCdn as unknown as (Place & { created_at: string })[];
 }
 
@@ -737,7 +746,7 @@ export async function getBestValueHotels(
     .not("photos", "is", null)
     .order("rating", { ascending: false })
     .limit(limit);
-  return attachPhotoCdnUrls((data ?? []) as Place[]);
+  return hydratePlaces((data ?? []) as Place[]);
 }
 
 export async function getPlaces(
@@ -754,7 +763,7 @@ export async function getPlaces(
     .eq("category_slug", categorySlug)
     .order("rating", { ascending: false });
 
-  return attachPhotoCdnUrls((data ?? []) as Place[]);
+  return hydratePlaces((data ?? []) as Place[]);
 }
 
 // Searches for newly opened places in each neighborhood for the discovery cron.
@@ -871,5 +880,5 @@ export async function getHotelPool(): Promise<Place[]> {
     .order("review_count", { ascending: false })
     .limit(400);
   const rows = (data ?? []) as Place[];
-  return attachPhotoCdnUrls(rows.filter(isRealHotel));
+  return hydratePlaces(rows.filter(isRealHotel));
 }

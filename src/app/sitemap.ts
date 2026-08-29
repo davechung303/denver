@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { SUBCATEGORIES } from "@/lib/subcategories";
 import { supabase } from "@/lib/supabase";
+import { isExcludedPlace } from "@/lib/excludedPlaces";
 
 const BASE_URL = "https://davelovesdenver.com";
 
@@ -67,6 +68,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .range(from, from + PAGE_SIZE - 1);
     if (!data || data.length === 0) break;
     for (const p of data) {
+      // An excluded business should not be in the index at all — its detail page
+      // now 404s, and a sitemap entry pointing at a 404 is a crawl error.
+      if (isExcludedPlace(p.slug)) continue;
       placePages.push({
         url: `${BASE_URL}/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}`,
         lastModified: p.cached_at ? new Date(p.cached_at) : now,

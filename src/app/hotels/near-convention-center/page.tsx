@@ -11,7 +11,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Colorado Convention Center Conference",
   description:
-    "45 Denver hotels routed on foot to the Colorado Convention Center: 25 are under 0.75 miles, the nearest 130 yards. Plus which are actually worth booking.",
+    "41 Denver hotels routed on foot to the Colorado Convention Center: 25 are under 0.75 miles, the nearest 130 yards. Plus which are actually worth booking.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-convention-center" },
   openGraph: {
     title: "Where to Stay for a Convention Center Conference",
