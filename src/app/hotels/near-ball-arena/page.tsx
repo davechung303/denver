@@ -255,7 +255,7 @@ export default async function HotelsNearBallArenaPage() {
         venueName={"Ball Arena"}
         venueHref={"/hotels/near-ball-arena"}
         hotels={hotelPool}
-        transitNote={"Ball Arena has its own light rail station on the E and W lines."}
+        transitNote={"Ball Arena does have its own station on the E and W lines, so the train works if your hotel sits near a stop on those lines too. Most downtown hotels don't, which is why a rideshare is usually the simpler answer."}
       />
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">

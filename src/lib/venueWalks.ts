@@ -78,27 +78,27 @@ export function walkMinutes(metres: number): number {
   return Math.round((metresToMiles(metres) / WALK_MPH) * 60);
 }
 
-export type WalkBand = "short" | "real" | "train";
+export type WalkBand = "short" | "real" | "far";
 
 /** Bands on routed distance — the number people actually walk. */
 export function walkBand(metres: number): WalkBand {
   const mi = metresToMiles(metres);
   if (mi <= 0.75) return "short";
-  if (mi <= 1.1) return "real";
-  return "train";
+  if (mi <= 1.25) return "real";
+  return "far";
 }
 
 export const WALK_BANDS: Record<WalkBand, { label: string; note: string }> = {
   short: {
-    label: "Genuinely a short walk",
-    note: "Under three-quarters of a mile on foot — about fifteen minutes at a normal pace. Walk it and don't think about parking.",
+    label: "Walk it",
+    note: "Under 0.75 miles on foot, about fifteen minutes at a normal pace. Walk it and don't think about parking.",
   },
   real: {
     label: "A real walk, not a stroll",
-    note: "Three-quarters of a mile to about one and a tenth — roughly fifteen to twenty-two minutes each way. Fine before a game. Less fun at eleven at night in February, in the wrong shoes, after a few beers.",
+    note: "0.75 to 1.25 miles — fifteen to twenty-five minutes each way, so thirty to fifty round trip. Fine before a game on a decent evening. Less fun at eleven at night in February, in the wrong shoes, after a few beers.",
   },
-  train: {
-    label: "Take the train",
-    note: "Over one and a tenth miles on foot, which is more than twenty minutes each way and about forty round trip.",
+  far: {
+    label: "Don't plan on walking",
+    note: "Over 1.25 miles, which is twenty-five minutes or more each way. Take a rideshare. Light rail only helps if your hotel is near a station too — Denver's system is good along a few corridors and no use off them, so check your specific hotel rather than assuming downtown means connected.",
   },
 };
