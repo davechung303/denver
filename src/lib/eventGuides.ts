@@ -67,8 +67,8 @@ export const EVENT_GUIDES: EventGuide[] = [
     pubref: "event-stock-show",
     lodging: [
       {
-        neighborhood: "five-points",
-        heading: "RiNo and Five Points — closest with real options",
+        neighborhood: "rino",
+        heading: "RiNo — closest with real options",
         blurb:
           "The nearest hotels to the complex, and the best food and brewery scene in the city for the evening afterwards. Routed on foot the closest of them is 0.83 miles from the grounds, so figure seventeen to twenty-five minutes walking or a few minutes by car — which in January is not really a choice.",
       },

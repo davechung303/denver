@@ -3,6 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import VenueHotelCard from "@/components/VenueHotelCard";
+import { getHotelPool } from "@/lib/places";
+import { hotelsInArea } from "@/lib/areaHotels";
 import { COMPARISONS, getComparison } from "@/lib/stayComparisons";
 
 export const revalidate = 86400;
@@ -48,6 +52,16 @@ export default async function ComparisonPage({
 
   const url = `https://davelovesdenver.com/denver/where-to-stay/${c.slug}`;
   const others = COMPARISONS.filter((o) => o.slug !== c.slug);
+
+  // This page does the whole decision and originally gave the reader nothing to
+  // act on but a widget below the FAQs. The hotels are the point: a visitor who
+  // has just been told to book Cherry Creek should see Cherry Creek rooms, each
+  // with its own affiliate link, not a generic "browse Denver hotels".
+  const pool = await getHotelPool();
+  const sides = [
+    { name: c.aName, area: c.aArea, hotels: hotelsInArea(pool, c.aArea) },
+    { name: c.bName, area: c.bArea, hotels: hotelsInArea(pool, c.bArea) },
+  ].filter((side) => side.hotels.length > 0);
 
   return (
     <main>
@@ -165,8 +179,45 @@ export default async function ComparisonPage({
         </div>
       </section>
 
+      {/* The hotels themselves, immediately after the comparison table — this is
+          the point on the page where the reader has decided and wants a room. */}
+      {sides.length > 0 && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <h2 className="text-2xl font-bold mb-2">The rooms on each side</h2>
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl mb-6">
+            Best-rated first, by real guest reviews. Hotel names go to our own write-up of each property;
+            the rate links go to Expedia, which pays us a commission at no extra cost to you.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {sides.map((side) => (
+              <div key={side.area}>
+                <h3 className="font-bold mb-3">{side.name}</h3>
+                <div className="space-y-2">
+                  {side.hotels.map((h) => (
+                    <VenueHotelCard key={h.place_id} place={h} />
+                  ))}
+                </div>
+                <Link
+                  href={`/denver/${side.area}/hotels`}
+                  className="mt-3 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
+                >
+                  All {side.name} hotels &rarr;
+                </Link>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <BookYourTrip
+        pubref={`compare-${c.slug}`}
+        eyebrow="Compare rates"
+        heading={`${c.aName} or ${c.bName}?`}
+        blurb="Put your dates in and see what each side actually costs this week — the answer moves a long way with the calendar, and on some weekends it flips the recommendation above."
+      />
+
       {/* The argument. */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         {c.sections.map((s) => (
           <div key={s.h} className="mb-10">
             <h2 className="text-2xl font-bold mb-4">{s.h}</h2>
@@ -233,12 +284,37 @@ export default async function ComparisonPage({
         </p>
       </section>
 
-      <BookYourTrip
-        pubref={`compare-${c.slug}`}
-        eyebrow="Compare rates"
-        heading={`${c.aName} or ${c.bName}?`}
-        blurb="Put your dates in and see what each side actually costs this week — the answer changes a lot with the calendar."
-      />
+      <section className="bg-denver-navy text-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h2 className="text-2xl font-bold mb-3">Decided?</h2>
+          <p className="text-slate-300 leading-relaxed mb-5">
+            Rates in both of these move with the calendar rather than with the weekend, so check your own dates
+            before you commit to either side.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {sides.map((side) => (
+              <Link
+                key={side.area}
+                href={`/denver/${side.area}/hotels`}
+                className="inline-flex items-center px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+              >
+                {side.name} hotels &rarr;
+              </Link>
+            ))}
+            <a
+              href={expediaDenverHotelsUrl()}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="inline-flex items-center px-5 py-2.5 border border-white/25 hover:border-denver-amber text-sm font-semibold rounded-full transition-colors"
+            >
+              Search all Denver hotels &rarr;
+            </a>
+          </div>
+          <p className="text-xs text-slate-400 mt-4">
+            Affiliate links — booking through them supports this site at no extra cost to you.
+          </p>
+        </div>
+      </section>
     </main>
   );
 }

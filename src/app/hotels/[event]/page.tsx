@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPlaces, isRealHotel, type Place } from "@/lib/places";
+import { getHotelPool } from "@/lib/places";
+import { hotelsInArea } from "@/lib/areaHotels";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import BookYourTrip from "@/components/BookYourTrip";
 import { EVENT_GUIDES, getEventGuide } from "@/lib/eventGuides";
@@ -55,15 +56,10 @@ export default async function EventGuidePage({
   if (!g) notFound();
 
   const url = `https://davelovesdenver.com/hotels/${g.slug}`;
-  const pools = await Promise.all(g.lodging.map((l) => getPlaces(l.neighborhood, "hotels")));
-  const modules = g.lodging.map((l, i) => ({
-    ...l,
-    hotels: (pools[i] as Place[])
-      .filter(isRealHotel)
-      .filter((p) => p.rating != null)
-      .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-      .slice(0, 4),
-  }));
+  const pool = await getHotelPool();
+  const modules = g.lodging
+    .map((l) => ({ ...l, hotels: hotelsInArea(pool, l.neighborhood, { limit: 4 }) }))
+    .filter((m) => m.hotels.length > 0);
 
   const schema: Record<string, unknown>[] = [
     {

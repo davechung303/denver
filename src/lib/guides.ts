@@ -17,6 +17,24 @@ export interface GuideSection {
   list?: string[];
 }
 
+/**
+ * Booking module for a guide page.
+ *
+ * These pages were shipped as pure link magnets and carried no way to book at
+ * all — which is a strange thing to do on a page about what a hotel costs.
+ * Each guide now names the neighborhoods its reader is actually choosing
+ * between, and the template renders real properties with per-hotel affiliate
+ * links rather than a generic "browse Denver hotels" dead end.
+ */
+export interface GuideBooking {
+  /** Sub-ID reported to Expedia so revenue can be attributed to this page. */
+  pubref: string;
+  heading: string;
+  blurb: string;
+  /** Omit for pages where showing specific hotels would be arbitrary. */
+  areas?: { slug: string; label: string; note: string }[];
+}
+
 export interface Guide {
   slug: string;
   title: string;
@@ -28,6 +46,7 @@ export interface Guide {
   lede: string;
   sections: GuideSection[];
   faqs: { q: string; a: string }[];
+  booking?: GuideBooking;
   updated: string;
 }
 
@@ -139,6 +158,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "Not since 1 January 2024, when RTD simplified and in most cases lowered its fares. Fare news from 2026 concerns Access-on-Demand paratransit, not the trains or buses.",
       },
     ],
+    booking: {
+      pubref: "guide-airport-train",
+      heading: "Book where the train actually stops",
+      blurb: "The A Line only saves you money if your hotel is near one of its stations. These two clusters are the ones it genuinely serves — Union Station at the end of the line, and the airport district for a pre-dawn departure.",
+      areas: [
+        { slug: "lodo", label: "LoDo & Union Station", note: "You get off the train and walk to the front desk. The most expensive sleep in Denver, and the only one where the A Line does all the work." },
+        { slug: "airport", label: "Near DEN", note: "For a flight before about 7am, when working backwards through the timetable makes a downtown room a bad night's sleep." },
+      ],
+    },
   },
 
   "hotel-costs": {
@@ -227,6 +255,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "Generally yes, and often free at airport-area and suburban hotels. Whether that saves money depends on how many rideshares into the city it costs you — two a day will usually erase the difference.",
       },
     ],
+    booking: {
+      pubref: "guide-hotel-costs",
+      heading: "See what your dates actually cost",
+      blurb: "Rates on this page move with the convention and Rockies calendars rather than with weekends, so the only number worth comparing is the one for your dates. Here are the two clusters most visitors end up choosing between.",
+      areas: [
+        { slug: "downtown", label: "Downtown", note: "Priced off the Colorado Convention Center calendar. A citywide can double a Tuesday rate, and the weeks either side price nothing like it." },
+        { slug: "rino", label: "RiNo", note: "Cheaper than LoDo and it does not follow the ballpark, which is why the gap widens exactly on the weekends you were going to pay most." },
+      ],
+    },
   },
 
   altitude: {
@@ -307,6 +344,11 @@ export const GUIDES: Record<string, Guide> = {
         a: "That is a decision for your doctor, and acetazolamide is generally discussed for rapid ascent to genuinely high altitude rather than for a trip to a city at 5,280 feet.",
       },
     ],
+    booking: {
+      pubref: "guide-altitude",
+      heading: "Coming from sea level?",
+      blurb: "Denver itself is the easy part — 5,280 feet, below the threshold where altitude illness starts. Book your dates here, and read the mountain section above before you plan a day trip up I-70.",
+    },
   },
   "is-downtown-denver-safe": {
     slug: "is-downtown-denver-safe",
@@ -398,6 +440,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "Broadly yes, with the usual big-city caveats and one Denver-specific one: keep nothing in your car. Overall Denver crime was roughly flat in the first half of 2026 and down about 8% against its three-year average, homicides hit their lowest per-capita rate since 1990 in 2025, and auto theft fell 26.8% year over year. Book a hotel on a busy block, use a car late at night, and downtown is straightforward.",
       },
     ],
+    booking: {
+      pubref: "guide-downtown-safe",
+      heading: "Book the busy end",
+      blurb: "The practical version of everything above: stay where there are people on the street into the evening. These are the two clusters that stay busy, and the ones the city's own foot patrols and the new 16th and Arapahoe police kiosk cover.",
+      areas: [
+        { slug: "lodo", label: "LoDo & Union Station", note: "The busiest blocks in the city into the evening, and the ones where RTD cut security calls by nearly 60% between 2022 and 2025." },
+        { slug: "downtown", label: "Downtown & 16th Street", note: "Foot traffic up 11% year to date since the reopening, with 16 more minutes of average dwell time. Book toward the 16th Street end rather than out toward the Capitol." },
+      ],
+    },
   },
   "hotel-parking": {
     slug: "hotel-parking",
@@ -505,6 +556,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "Not if you are staying downtown, in LoDo, at Union Station or in RiNo and spending your time in the city — the A Line from the airport, the free 16th Street FreeRide and short walks cover it. You need one for the mountains, for Red Rocks, and for anything in the suburbs. Renting for the days you need it often beats paying for parking on the days you don't.",
       },
     ],
+    booking: {
+      pubref: "guide-hotel-parking",
+      heading: "Price the room and the parking together",
+      blurb: "A $45 to $70 nightly parking charge is a third night on a three-night stay, and it is almost never shown beside the room rate. Compare these with the parking number from the table above already in your head.",
+      areas: [
+        { slug: "downtown", label: "Downtown", note: "Where the $57 self-park and $67 valet rates cluster. Worth checking whether in-and-out privileges are included if you are driving daily." },
+        { slug: "airport", label: "Near DEN", note: "Published parking runs about $12 to $20 a night out here. Check the shuttle separately — some charge for it while the parking is cheap." },
+      ],
+    },
   },
   "resort-fees": {
     slug: "resort-fees",
@@ -587,6 +647,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "Almost never in Denver. They are separate charges and parking is the larger of the two. Assume you are paying both unless the hotel's own page says otherwise.",
       },
     ],
+    booking: {
+      pubref: "guide-resort-fees",
+      heading: "Compare the total, not the nightly rate",
+      blurb: "Since 2025 the advertised price has to include mandatory fees, which finally makes the booking total the honest comparison across properties. Run your dates and compare those, not the headline rate.",
+      areas: [
+        { slug: "downtown", label: "Downtown", note: "Several of the big downtown flags publish no destination fee at all — only parking. The Hilton City Center, The Curtis and The Brown Palace are all in that group." },
+        { slug: "lodo", label: "LoDo", note: "Where Denver's destination fees actually cluster: The Crawford at $30 plus tax, The Maven and The Rally at $28. Still modest by US standards, but budget for it." },
+      ],
+    },
   },
   "ski-basecamp": {
     slug: "ski-basecamp",
@@ -687,6 +756,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "Before 7am on a weekend. CDOT's own forecast has westbound I-70 building from 9am and peaking between 10:30am and 3pm, so leaving at 6:30 or 7 puts you ahead of it. Coming back, the choice is to leave the hill by about 2pm or to eat dinner in the mountains and drive after 7pm — anything in between is the Sunday eastbound backup.",
       },
     ],
+    booking: {
+      pubref: "guide-ski-basecamp",
+      heading: "Book the basecamp",
+      blurb: "The whole plan rests on leaving by about 7am, so book somewhere you can get out of quickly — and, if you are taking the ski train or the Snowstang bus, somewhere near Union Station where both of them start.",
+      areas: [
+        { slug: "lodo", label: "LoDo & Union Station", note: "Where the Winter Park Express and the Snowstang buses depart. If you are skiing without a car, this is the only base that makes sense." },
+        { slug: "downtown", label: "Downtown", note: "Cheaper than LoDo, still a straight run onto I-25 and west onto I-70, and a better dinner when you get back down." },
+      ],
+    },
   },
   "den-layover": {
     slug: "den-layover",
@@ -780,6 +858,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "More than most. DEN's public art collection is among the largest at any airport in the world, with Colorado-specific exhibitions alongside it, and both security checkpoints now run seventeen lanes with technology that lets you keep liquids and laptops in your bag. For a layover under four hours that is a better use of the time than a round trip on the train.",
       },
     ],
+    booking: {
+      pubref: "guide-den-layover",
+      heading: "Long layover, or an overnight?",
+      blurb: "The cut-off is roughly a 7am onward flight. Earlier than that, book at the airport and walk to your gate. Later, take the train and sleep somewhere with a decent dinner attached.",
+      areas: [
+        { slug: "airport", label: "Near DEN", note: "The Westin is attached to the terminal, so you walk to security. Everything else out here runs a shuttle whose frequency varies a lot — confirm the first departure of the morning." },
+        { slug: "lodo", label: "LoDo & Union Station", note: "The A Line drops you inside Union Station, so an overnight downtown costs you 37 minutes each way and buys a much better evening." },
+      ],
+    },
   },
   "red-rocks-what-to-know": {
     slug: "red-rocks-what-to-know",
@@ -882,6 +969,15 @@ export const GUIDES: Record<string, Guide> = {
         a: "The amphitheater is at 18300 W Alameda Pkwy in Morrison — officially about seven miles from Golden and less than two miles from the town of Morrison. Red Rocks does not publish a distance from downtown Denver, and there is no scheduled RTD or Bustang service to the venue, so the realistic options are driving, a rideshare, or one of the show-night shuttles that run from downtown.",
       },
     ],
+    booking: {
+      pubref: "guide-red-rocks-rules",
+      heading: "Most people base in Denver and ride out",
+      blurb: "There is no scheduled transit to Red Rocks and nothing to do in Morrison after a show, so the usual answer is a downtown hotel and a show-night shuttle. Book the room, then book the shuttle.",
+      areas: [
+        { slug: "lodo", label: "LoDo & Union Station", note: "Where most of the show-night shuttles pick up, which removes the parking lot, the Jurassic overflow walk and the drive home in one decision." },
+        { slug: "downtown", label: "Downtown", note: "Same shuttle access a few blocks further in, usually for less money, with more to do before doors." },
+      ],
+    },
   },
 };
 

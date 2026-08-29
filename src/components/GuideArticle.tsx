@@ -1,5 +1,9 @@
 import Link from "next/link";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import BookYourTrip from "@/components/BookYourTrip";
+import VenueHotelCard from "@/components/VenueHotelCard";
+import { getHotelPool } from "@/lib/places";
+import { hotelsInArea } from "@/lib/areaHotels";
 import type { Guide } from "@/lib/guides";
 
 function formatUpdated(iso: string) {
@@ -11,8 +15,19 @@ function formatUpdated(iso: string) {
   });
 }
 
-export default function GuideArticle({ guide }: { guide: Guide }) {
+export default async function GuideArticle({ guide }: { guide: Guide }) {
   const url = `https://davelovesdenver.com/denver/${guide.slug}`;
+
+  // These pages shipped as pure link magnets with no way to book anything on
+  // them — including, absurdly, the ones about what a hotel costs. Each guide
+  // now names the areas its reader is choosing between, and we render real
+  // properties: every card carries that hotel's own affiliate link rather than
+  // handing a high-intent click to a generic Denver search.
+  const areas = guide.booking?.areas ?? [];
+  const pool = areas.length > 0 ? await getHotelPool() : [];
+  const areaHotels = areas
+    .map((a) => ({ ...a, hotels: hotelsInArea(pool, a.slug, { limit: 4 }) }))
+    .filter((a) => a.hotels.length > 0);
 
   return (
     <main>
@@ -121,6 +136,35 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
           </section>
         ))}
 
+        {/* Booking. Placed after the argument and before the FAQ — the reader has
+            the answer by here, and this is the first point on the page where
+            showing them a room is useful rather than an interruption. */}
+        {areaHotels.length > 0 && (
+          <section className="mb-14 border-t border-slate-200 dark:border-slate-800 pt-12">
+            <h2 className="text-2xl font-bold mb-3 leading-snug">{guide.booking?.heading}</h2>
+            <p className="leading-relaxed text-slate-600 dark:text-slate-400 mb-8">{guide.booking?.blurb}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {areaHotels.map((a) => (
+                <div key={a.slug}>
+                  <h3 className="font-bold mb-1">{a.label}</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{a.note}</p>
+                  <div className="space-y-2">
+                    {a.hotels.map((h) => (
+                      <VenueHotelCard key={h.place_id} place={h} />
+                    ))}
+                  </div>
+                  <Link
+                    href={`/denver/${a.slug}/hotels`}
+                    className="mt-3 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
+                  >
+                    All {a.label} hotels &rarr;
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* FAQ */}
         <section className="border-t border-slate-200 dark:border-slate-800 pt-12">
           <h2 className="text-2xl font-bold mb-8">Common questions</h2>
@@ -149,6 +193,15 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
           </Link>
         </section>
       </div>
+
+      {guide.booking && (
+        <BookYourTrip
+          pubref={guide.booking.pubref}
+          eyebrow="Check your dates"
+          heading="What will it cost on your dates?"
+          blurb="Denver rates move with the convention and Rockies calendars rather than with weekends, so the headline number is close to meaningless until you put real dates in."
+        />
+      )}
     </main>
   );
 }
