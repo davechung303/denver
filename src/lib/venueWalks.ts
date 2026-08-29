@@ -4,7 +4,7 @@
 // These are street-network WALKING distances produced by OSRM pedestrian
 // routing over OpenStreetMap data (routing.openstreetmap.de, foot profile),
 // measured from each hotel's stored coordinates to the venue entrance. They
-// follow real pavements and crossings, so they account for the things that
+// follow real sidewalks and crossings, so they account for the things that
 // make straight-line distance useless in Denver: the Consolidated Main Line
 // rail corridor, Speer Boulevard, Cherry Creek and the Platte, which
 // pedestrians cross only at specific bridges.

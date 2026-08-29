@@ -62,7 +62,7 @@ export default function VenueDistanceTable({
         How far is each hotel from {venueName}, on foot?
       </h2>
       <p className="text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
-        {rows.length} hotels, routed along real pavements and crossings rather than measured as the crow flies.
+        {rows.length} hotels, routed along real sidewalks and crossings rather than measured as the crow flies.
         The difference matters here: straight-line distance runs 23&ndash;82% short in this part of Denver, because
         the rail corridor and Speer force detours you cannot see on a map pin.
       </p>
@@ -139,7 +139,7 @@ export default function VenueDistanceTable({
         </p>
         <p className="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
           These are <strong>routed, not walked</strong> &mdash; nobody has stood there with a stopwatch. They follow
-          real pavements and crossings, which is why they run so much longer than the straight-line figures other
+          real sidewalks and crossings, which is why they run so much longer than the straight-line figures other
           guides publish, but they cannot know about a closed sidewalk or a queue at a crossing on the night.
         </p>
         <p className="mt-3 text-xs text-slate-400">

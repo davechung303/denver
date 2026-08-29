@@ -14,7 +14,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Nuggets or Avalanche Game — Ball Arena",
   description:
-    "Routed walk times from 29 downtown hotels to Ball Arena — real pavements, not straight lines. Which are genuinely walkable for a Nuggets or Avs game.",
+    "Routed walk times from 29 downtown hotels to Ball Arena — real sidewalks, not straight lines. Which are genuinely walkable for a Nuggets or Avs game.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-ball-arena" },
   openGraph: {
     title: "Where to Stay for a Nuggets or Avalanche Game at Ball Arena",

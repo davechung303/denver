@@ -14,7 +14,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Rockies Game — Hotels Near Coors Field",
   description:
-    "Routed walk times from 29 downtown hotels to Coors Field — real pavements, not straight lines. The Rally is 2 minutes, the Slate is 27. Plus game-day parking.",
+    "Routed walk times from 29 downtown hotels to Coors Field — real sidewalks, not straight lines. The Rally is 2 minutes, the Slate is 27. Plus game-day parking.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-coors-field" },
   openGraph: {
     title: "Where to Stay for a Rockies Game at Coors Field",

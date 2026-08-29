@@ -6,6 +6,7 @@ import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { STAY_AREAS, QUICK_PICKS, STAY_FAQS } from "@/lib/stayGuide";
+import { COMPARISONS } from "@/lib/stayComparisons";
 import { assignStayVideos, flattenStayVideos } from "@/lib/stayVideos";
 import { getAllVideos } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
@@ -192,6 +193,31 @@ export default async function WhereToStayPage() {
           <Link href="/denver/altitude" className="text-denver-amber hover:underline">what’s actually true about Denver’s altitude</Link>{" "}
           is shorter and more useful than the version you’ve been told.
         </p>
+      </section>
+
+      {/* Head-to-head pages. Most people arrive already down to two areas. */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <h2 className="text-2xl font-bold mb-2">Already down to two?</h2>
+        <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl mb-6">
+          Most people arrive at this page having narrowed it to a pair and wanting someone to break the tie.
+          Each of these answers in the first paragraph, then shows the rates, the walk times and the reason
+          you might want to ignore the answer.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {COMPARISONS.map((c) => (
+            <Link
+              key={c.slug}
+              href={`/denver/where-to-stay/${c.slug}`}
+              className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors"
+            >
+              <h3 className="font-bold mb-1">
+                {c.aName} vs {c.bName}
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{c.metaDescription}</p>
+              <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Read the comparison &rarr;</span>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* Quick nav strip */}

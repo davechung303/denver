@@ -175,7 +175,7 @@ export const STAY_AREAS: StayArea[] = [
     cost:
       "Reliable rather than cheap, and it doesn't spike the way LoDo does for baseball. That makes it the sensible fallback on a home-game weekend when downtown rates go silly and RiNo has filled up.",
     transit:
-      "Walkable to downtown, buses along the main avenues, no light rail. For a trip centred on food and the park museums you won't miss it. For anything at Empower Field or the airport, you'll want to start from Union Station.",
+      "Walkable to downtown, buses along the main avenues, no light rail. For a trip centerd on food and the park museums you won't miss it. For anything at Empower Field or the airport, you'll want to start from Union Station.",
     skip:
       "Skip Uptown if the trip is built around Coors Field or Ball Arena — you'll walk 25 minutes or pay for rides both ways. Skip it too if you want a hotel with a pool and a view, because that isn't what's here. It's a neighborhood you stay in to eat well and spend nothing on the room.",
     venueLinks: [
@@ -213,7 +213,7 @@ export const STAY_AREAS: StayArea[] = [
     eat:
       "Thinner than the neighborhoods either side, and that's the trade. Cuba Cuba, in a pair of converted houses, is the long-standing local pick. Leven Deli covers lunch. Fire, at The Art Hotel, has a patio facing the museum. Capitol Hill and downtown are both a short walk for dinner, so you're never stuck — you just won't stumble into anything.",
     hotels:
-      "Populus opened at 14th and Colfax in October 2024 — 265 rooms, one of Denver's four Michelin Keys, and a building whose facade you'll recognise from photographs before you arrive. It changed both what this neighborhood costs and what it's known for. The Art Hotel is the other design-led option, hung with real work and connected to the museum campus by a short walk. Below those, several extended-stay and Marriott-family properties sit along the eastern edge at rates well under Cherry Creek.",
+      "Populus opened at 14th and Colfax in October 2024 — 265 rooms, one of Denver's four Michelin Keys, and a building whose facade you'll recognize from photographs before you arrive. It changed both what this neighborhood costs and what it's known for. The Art Hotel is the other design-led option, hung with real work and connected to the museum campus by a short walk. Below those, several extended-stay and Marriott-family properties sit along the eastern edge at rates well under Cherry Creek.",
     cost:
       "Mid-range with a high ceiling. Populus prices like a destination hotel because it is one; everything else in the neighborhood sits comfortably below downtown. Rates here follow the convention calendar more than the sports one.",
     transit:
@@ -228,7 +228,7 @@ export const STAY_AREAS: StayArea[] = [
     take:
       "If you have a 6am flight or a midnight arrival, staying near DEN makes more sense than spending $80 on an Uber to downtown. There are solid options at every price point out here, and the Gaylord Rockies is worth knowing about if you want something more than just a sleep-and-fly.",
     walk:
-      "Nothing, and pretending otherwise does nobody any favours. This is a car-and-shuttle district built on former prairie. The Westin is the exception: it's attached to the terminal, so you walk to your gate, which is the whole reason to pay for it.",
+      "Nothing, and pretending otherwise does nobody any favors. This is a car-and-shuttle district built on former prairie. The Westin is the exception: it's attached to the terminal, so you walk to your gate, which is the whole reason to pay for it.",
     eat:
       "Hotel restaurants and chains along Tower Road and Peña Boulevard. The Gaylord Rockies has enough inside it — restaurants, a water park, a seasonal ICE! exhibition at Christmas — to make an evening of, which is the argument for choosing it over a cheaper room nearby rather than treating it as an airport hotel at all.",
     hotels:
