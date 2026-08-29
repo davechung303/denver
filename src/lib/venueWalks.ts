@@ -78,14 +78,15 @@ export function walkMinutes(metres: number): number {
   return Math.round((metresToMiles(metres) / WALK_MPH) * 60);
 }
 
-export type WalkBand = "short" | "real" | "far";
+export type WalkBand = "short" | "real" | "wheels" | "ride";
 
 /** Bands on routed distance — the number people actually walk. */
 export function walkBand(metres: number): WalkBand {
   const mi = metresToMiles(metres);
   if (mi <= 0.75) return "short";
-  if (mi <= 1.25) return "real";
-  return "far";
+  if (mi <= 1.5) return "real";
+  if (mi <= 2) return "wheels";
+  return "ride";
 }
 
 export const WALK_BANDS: Record<WalkBand, { label: string; note: string }> = {
@@ -95,10 +96,14 @@ export const WALK_BANDS: Record<WalkBand, { label: string; note: string }> = {
   },
   real: {
     label: "A real walk, not a stroll",
-    note: "0.75 to 1.25 miles — fifteen to twenty-five minutes each way, so thirty to fifty round trip. Fine before a game on a decent evening. Less fun at eleven at night in February, in the wrong shoes, after a few beers.",
+    note: "0.75 to 1.5 miles — fifteen to thirty minutes each way. Fine before a game on a decent evening. Less fun at eleven at night in February, in the wrong shoes, after a few beers.",
   },
-  far: {
-    label: "Don't plan on walking",
-    note: "Over 1.25 miles, which is twenty-five minutes or more each way. Take a rideshare. Light rail only helps if your hotel is near a station too — Denver's system is good along a few corridors and no use off them, so check your specific hotel rather than assuming downtown means connected.",
+  wheels: {
+    label: "Grab a scooter or a bike",
+    note: "1.5 to 2 miles. That's a long walk and a very short ride. Lime and Bird scooters are thick on the ground across downtown and LoDo, and the B-cycle docks cover most of this ground too — five minutes and a couple of dollars instead of half an hour on foot.",
+  },
+  ride: {
+    label: "Uber or Lyft",
+    note: "Over 2 miles. Just get a car. Light rail only helps if your hotel is near a station too, and Denver's system is good along a few corridors and no use off them — so check your specific hotel rather than assuming downtown means connected.",
   },
 };

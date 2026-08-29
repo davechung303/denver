@@ -44,7 +44,7 @@ export default function VenueDistanceTable({
   if (rows.length === 0) return null;
 
   const dated = VENUE_WALK_DATED[venueHref];
-  const groups = (["short", "real", "far"] as WalkBand[])
+  const groups = (["short", "real", "wheels", "ride"] as WalkBand[])
     .map((b) => ({ band: b, rows: rows.filter((r) => walkBand(r.m) === b) }))
     .filter((g) => g.rows.length > 0);
 
@@ -65,7 +65,7 @@ export default function VenueDistanceTable({
             <h3 className="text-base font-bold">{WALK_BANDS[g.band].label}</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 mb-4 max-w-3xl leading-relaxed">
               {WALK_BANDS[g.band].note}
-              {g.band === "far" && transitNote ? ` ${transitNote}` : ""}
+              {g.band === "ride" && transitNote ? ` ${transitNote}` : ""}
             </p>
             <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
               <table className="w-full text-sm">
