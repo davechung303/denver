@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels in Cherry Creek Denver — Best Places to Stay Near Cherry Creek North | Dave Loves Denver",
+  title: "Hotels in Cherry Creek Denver — Best Places to Stay Near Cherry Creek North",
   description:
     "The best hotels in Cherry Creek, Denver — luxury and boutique options near Cherry Creek North shopping, top restaurants, and the Cherry Creek Trail.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-cherry-creek" },

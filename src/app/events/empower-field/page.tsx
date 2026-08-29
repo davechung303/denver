@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Empower Field at Mile High Events & Broncos Schedule 2026 | Dave Loves Denver",
+  title: "Empower Field at Mile High Events & Broncos Schedule 2026",
   description:
     "Full schedule of Denver Broncos games and events at Empower Field at Mile High. Buy tickets and find nearby hotels in LoDo and Jefferson Park.",
   alternates: { canonical: "https://davelovesdenver.com/events/empower-field" },

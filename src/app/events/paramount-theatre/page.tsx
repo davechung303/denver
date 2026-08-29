@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Paramount Theatre Denver Events & Show Schedule 2026 | Dave Loves Denver",
+  title: "Paramount Theatre Denver Events & Show Schedule 2026",
   description:
     "Full schedule of upcoming shows at the Paramount Theatre in downtown Denver. A landmark 2,000-capacity venue — browse shows and buy tickets.",
   alternates: { canonical: "https://davelovesdenver.com/events/paramount-theatre" },

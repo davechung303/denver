@@ -10,7 +10,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Denver Zoo — Best Places to Stay in City Park | Dave Loves Denver",
+  title: "Hotels Near Denver Zoo — Best Places to Stay in City Park",
   description:
     "The local's guide to hotels near the Denver Zoo in City Park — the closest walkable neighborhoods, family hotels with a pool, and the best budget picks in Uptown, Five Points, and Capitol Hill.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-denver-zoo" },

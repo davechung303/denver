@@ -14,7 +14,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Things To Do in Denver — Events, Tours & Experiences | Dave Loves Denver",
+  title: "Things To Do in Denver — Events, Tours & Experiences",
   description:
     "Everything worth doing in Denver: upcoming concerts and shows, bookable experiences, top-rated tours, and the best attractions — all in one place.",
   alternates: { canonical: "https://davelovesdenver.com/denver/things-to-do" },

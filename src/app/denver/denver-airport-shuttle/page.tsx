@@ -5,7 +5,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver Airport Shuttle Guide — DEN to Downtown, Hotels & the Mountains | Dave Loves Denver",
+  title: "Denver Airport Shuttle Guide — DEN to Downtown, Hotels & the Mountains",
   description:
     "How to get from Denver International Airport (DEN) to where you're going: the A Line train to downtown, free hotel shuttles, shared-ride shuttles to the ski towns, and rideshare — what each costs and when to use it.",
   alternates: { canonical: "https://davelovesdenver.com/denver/denver-airport-shuttle" },

@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Fiddler's Green Amphitheatre Events & Concert Schedule 2026 | Dave Loves Denver",
+  title: "Fiddler's Green Amphitheatre Events & Concert Schedule 2026",
   description:
     "Full schedule of upcoming concerts and shows at Fiddler's Green Amphitheatre in Greenwood Village. Browse events, buy tickets, and find nearby hotels.",
   alternates: { canonical: "https://davelovesdenver.com/events/fiddlers-green" },

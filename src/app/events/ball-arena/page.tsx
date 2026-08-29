@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Ball Arena Denver Events, Games & Concert Schedule 2026 | Dave Loves Denver",
+  title: "Ball Arena Denver Events, Games & Concert Schedule 2026",
   description:
     "Full schedule of upcoming Nuggets games, Avalanche games, and concerts at Ball Arena in downtown Denver. Buy tickets and find nearby hotels.",
   alternates: { canonical: "https://davelovesdenver.com/events/ball-arena" },

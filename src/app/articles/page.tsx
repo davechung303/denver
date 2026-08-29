@@ -7,7 +7,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver Guides & Articles | Dave Loves Denver",
+  title: "Denver Guides & Articles",
   description: "Local Denver guides, restaurant reviews, hotel picks, and neighborhood explainers from Dave Chung — Denver's most watched local YouTube creator.",
   alternates: { canonical: "https://davelovesdenver.com/articles" },
 };

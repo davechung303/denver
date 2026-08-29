@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Denver Botanic Gardens — Best Places to Stay | Dave Loves Denver",
+  title: "Hotels Near Denver Botanic Gardens — Best Places to Stay",
   description:
     "The local's guide to hotels near Denver Botanic Gardens — walkable Capitol Hill and Congress Park picks, the best luxury options like The Art Hotel and Cherry Creek, plus budget choices for a garden visit.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-botanic-gardens" },

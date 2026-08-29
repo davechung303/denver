@@ -6,7 +6,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Where to Stay in Denver — Hotels by Venue & Neighborhood | Dave Loves Denver",
+  title: "Where to Stay in Denver — Hotels by Venue & Neighborhood",
   description:
     "A local's index of where to stay in Denver — the best hotels near every major venue (Coors Field, Ball Arena, Red Rocks, the airport and more), plus neighborhood guides and game-day parking tips.",
   alternates: { canonical: "https://davelovesdenver.com/hotels" },

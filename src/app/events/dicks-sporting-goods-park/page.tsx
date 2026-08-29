@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Dick's Sporting Goods Park Events & Rapids Schedule 2026 | Dave Loves Denver",
+  title: "Dick's Sporting Goods Park Events & Rapids Schedule 2026",
   description:
     "Full schedule of Colorado Rapids games and events at Dick's Sporting Goods Park in Commerce City. Buy tickets and plan your visit to Denver's soccer stadium.",
   alternates: { canonical: "https://davelovesdenver.com/events/dicks-sporting-goods-park" },

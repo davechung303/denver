@@ -2,6 +2,19 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 
+// Static one-off routes. ISR cache survives a deploy, so anything whose copy
+// changed has to be revalidated explicitly or it keeps serving the old build.
+const HOTEL_PAGES = [
+  "best-value-denver", "near-anschutz", "near-ball-arena", "near-botanic-gardens",
+  "near-cherry-creek", "near-city-park", "near-convention-center", "near-coors-field",
+  "near-denver-airport", "near-denver-zoo", "near-elitch-gardens", "near-empower-field",
+  "near-fiddlers-green", "near-mission-ballroom", "near-national-western", "near-red-rocks",
+];
+const EVENT_PAGES = [
+  "ball-arena", "coors-field", "dicks-sporting-goods-park", "empower-field",
+  "fiddlers-green", "mission-ballroom", "ogden-theatre", "paramount-theatre", "red-rocks",
+];
+
 export async function GET(req: Request) {
   const auth = req.headers.get("Authorization");
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -22,6 +35,16 @@ export async function GET(req: Request) {
   revalidatePath("/denver/best-coffee");
   revalidatePath("/denver/best-mexican-food");
   revalidatePath("/denver/for-foodies");
+  revalidatePath("/denver/airport-train");
+  revalidatePath("/denver/hotel-costs");
+  revalidatePath("/denver/altitude");
+  revalidatePath("/denver/denver-airport-shuttle");
+  revalidatePath("/denver/red-rocks-shuttle");
+  revalidatePath("/denver/coors-field-parking");
+  revalidatePath("/denver/things-to-do");
+  revalidatePath("/hotels");
+  for (const slug of HOTEL_PAGES) revalidatePath(`/hotels/${slug}`);
+  for (const slug of EVENT_PAGES) revalidatePath(`/events/${slug}`);
   revalidatePath("/articles");
   revalidatePath("/articles/[slug]", "page");
   revalidatePath("/videos");

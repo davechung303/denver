@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Ogden Theatre Denver Events & Show Schedule 2026 | Dave Loves Denver",
+  title: "Ogden Theatre Denver Events & Show Schedule 2026",
   description:
     "Full schedule of upcoming shows at the Ogden Theatre in Denver's Capitol Hill neighborhood. One of Denver's historic music venues — browse shows and buy tickets.",
   alternates: { canonical: "https://davelovesdenver.com/events/ogden-theatre" },

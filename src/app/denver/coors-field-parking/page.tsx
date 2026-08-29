@@ -5,7 +5,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Coors Field Parking Guide — Where to Park for a Rockies Game (From a Local) | Dave Loves Denver",
+  title: "Coors Field Parking Guide — Where to Park for a Rockies Game (From a Local)",
   description:
     "Everything you need to know about parking at Coors Field for a Rockies game: official lots vs. nearby garages, what game-day parking actually costs, how to reserve ahead, free and cheap options, and the light-rail move that skips it all.",
   alternates: { canonical: "https://davelovesdenver.com/denver/coors-field-parking" },

@@ -5,7 +5,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Red Rocks Shuttle Guide — How to Get to a Show Without Driving (From a Local) | Dave Loves Denver",
+  title: "Red Rocks Shuttle Guide — How to Get to a Show Without Driving (From a Local)",
   description:
     "Every way to shuttle to a Red Rocks concert: round-trip bar and event shuttles from downtown Denver, RTD event service, hotel options, and why a shuttle beats driving or Ubering to the show. What it costs and how to book.",
   alternates: { canonical: "https://davelovesdenver.com/denver/red-rocks-shuttle" },

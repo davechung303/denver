@@ -10,7 +10,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near Elitch Gardens Denver — Best Places to Stay | Dave Loves Denver",
+  title: "Hotels Near Elitch Gardens Denver — Best Places to Stay",
   description:
     "The local's guide to hotels near Elitch Gardens theme park in Denver — the closest Jefferson Park and Sloan Lake picks, family hotels with a pool, and the best budget options steps from the rides.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-elitch-gardens" },

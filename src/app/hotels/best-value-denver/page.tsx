@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Value Hotels in Denver — Affordable with Great Reviews (4.3+) | Dave Loves Denver",
+  title: "Best Value Hotels in Denver — Affordable with Great Reviews (4.3+)",
   description:
     "The best affordable hotels in Denver with excellent ratings — handpicked options under $$ with 4.3+ stars, organized by neighborhood. No overpriced mediocrity.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/best-value-denver" },

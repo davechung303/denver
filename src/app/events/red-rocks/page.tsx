@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Red Rocks Amphitheatre Events & Concert Schedule 2026 | Dave Loves Denver",
+  title: "Red Rocks Amphitheatre Events & Concert Schedule 2026",
   description:
     "Full schedule of upcoming concerts and shows at Red Rocks Amphitheatre in Morrison, CO. Browse events, buy tickets, and find hotels nearby.",
   alternates: { canonical: "https://davelovesdenver.com/events/red-rocks" },

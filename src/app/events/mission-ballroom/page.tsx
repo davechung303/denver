@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Mission Ballroom Denver Events & Show Schedule 2026 | Dave Loves Denver",
+  title: "Mission Ballroom Denver Events & Show Schedule 2026",
   description:
     "Full schedule of upcoming shows at Mission Ballroom in Denver's RiNo neighborhood. One of the best mid-size venues in the country — browse shows and buy tickets.",
   alternates: { canonical: "https://davelovesdenver.com/events/mission-ballroom" },

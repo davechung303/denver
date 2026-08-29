@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Coors Field Events & Rockies Game Schedule 2026 | Dave Loves Denver",
+  title: "Coors Field Events & Rockies Game Schedule 2026",
   description:
     "Full schedule of Colorado Rockies games and events at Coors Field in LoDo Denver. Buy tickets, plan your visit, and find nearby hotels.",
   alternates: { canonical: "https://davelovesdenver.com/events/coors-field" },

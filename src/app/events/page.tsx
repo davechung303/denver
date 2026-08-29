@@ -9,7 +9,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver Events & Experiences | Dave Loves Denver",
+  title: "Denver Events & Experiences",
   description: "Upcoming concerts, shows, sports, and experiences in Denver — live events from Ticketmaster plus curated experiences from Fever.",
   alternates: { canonical: "https://davelovesdenver.com/events" },
 };

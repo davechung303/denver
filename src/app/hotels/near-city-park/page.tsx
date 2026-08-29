@@ -8,7 +8,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Hotels Near City Park Denver — Best Places to Stay for the Zoo & Museum | Dave Loves Denver",
+  title: "Hotels Near City Park Denver — Best Places to Stay for the Zoo & Museum",
   description:
     "The local's guide to hotels near City Park in Denver — the best walkable picks for the Denver Zoo and museum, plus budget options and where the Catbird design hotel fits in.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-city-park" },
