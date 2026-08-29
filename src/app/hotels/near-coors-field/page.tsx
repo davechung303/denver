@@ -14,7 +14,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Rockies Game — Hotels Near Coors Field",
   description:
-    "A local's guide to where to stay for a Rockies game at Coors Field — which blocks are truly walkable, where to park on game day, plus the best budget and luxury picks.",
+    "Routed walk times from 29 downtown hotels to Coors Field — real pavements, not straight lines. The Rally is 2 minutes, the Slate is 27. Plus game-day parking.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-coors-field" },
   openGraph: {
     title: "Where to Stay for a Rockies Game at Coors Field",
@@ -275,7 +275,7 @@ export default async function HotelsNearCoorsFieldPage() {
         venueName={"Coors Field"}
         venueHref={"/hotels/near-coors-field"}
         hotels={hotelPool}
-        transitNote={"Union Station is a short walk from the ballpark and connects to everything."}
+        transitNote={"Union Station is a short walk from the ballpark and connects to the airport and both other stadiums, so a hotel near the station beats a hotel that is merely downtown."}
       />
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">

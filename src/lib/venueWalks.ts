@@ -24,6 +24,37 @@
 
 /** Metres, routed on foot. Keyed by venue guide href, then hotel slug. */
 export const VENUE_WALK_METRES: Record<string, Record<string, number>> = {
+  "/hotels/near-coors-field": {
+    "the-rally-hotel-at-mcgregor-square": 198,
+    "the-maven-hotel-at-dairy-block": 412,
+    "limelight-denver": 825,
+    "hotel-indigo-denver-downtown-union-station-by-ihg": 853,
+    "the-westin-denver-downtown": 963,
+    "hyatt-centric-downtown-denver": 1101,
+    "residence-inn-by-marriott-denver-city-center": 1123,
+    "renaissance-denver-downtown-city-center-hotel": 1238,
+    "hilton-denver-city-center": 1282,
+    "courtyard-by-marriott-denver-downtown": 1286,
+    "hotel-teatro": 1408,
+    "four-seasons-hotel-denver": 1408,
+    "springhill-suites-by-marriott-denver-downtown": 1454,
+    "the-curtis-denver---a-doubletree-by-hilton-hotel": 1485,
+    "holiday-inn-express-denver-downtown-by-ihg": 1522,
+    "home2-by-hilton-denver-downtown-convention-center": 1543,
+    "tru-by-hilton-denver-downtown-convention-center": 1544,
+    "aloft-by-marriott-denver-downtown": 1582,
+    "warwick-denver": 1727,
+    "embassy-suites-by-hilton-denver-downtown-convention-center": 1749,
+    "homewood-suites-by-hilton-denver-downtown-convention-center": 1794,
+    "hampton-inn-suites-denver-downtown-convention-center": 1799,
+    "hyatt-regency-denver-at-colorado-convention-center": 1837,
+    "sheraton-denver-downtown-hotel": 1891,
+    "hilton-garden-inn-denver-downtown": 1908,
+    "sonesta-denver-downtown": 1914,
+    "hyatt-place-denverdowntown": 1968,
+    "hyatt-house-denverdowntown": 1970,
+    "the-slate-hotel-denver-downtown-tapestry-by-hilton": 2155,
+  },
   "/hotels/near-ball-arena": {
     "springhill-suites-by-marriott-denver-downtown": 586,
     "limelight-denver": 936,
@@ -59,6 +90,7 @@ export const VENUE_WALK_METRES: Record<string, Record<string, number>> = {
 
 /** When each venue's routing was last run. Shown on the page. */
 export const VENUE_WALK_DATED: Record<string, string> = {
+  "/hotels/near-coors-field": "2026-08-29",
   "/hotels/near-ball-arena": "2026-08-29",
 };
 
