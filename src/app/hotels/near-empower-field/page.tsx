@@ -14,11 +14,11 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Broncos Game — Hotels Near Empower Field",
   description:
-    "A local's guide to where to stay for a Broncos game at Empower Field — which hotels are truly walkable, how the light rail beats game-day parking, plus budget, 4-star and luxury picks.",
+    "Routed walking distances from 45 hotels to Empower Field. Almost nothing downtown is a real walk — what's close, what needs wheels, what needs a car.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-empower-field" },
   openGraph: {
     title: "Where to Stay for a Broncos Game at Empower Field",
-    description: "Where to stay for a Broncos game or concert at Mile High — walkable LoDo and Jefferson Park options.",
+    description: "Routed walking distances to Empower Field from 45 Denver hotels, plus where to actually stay for a Broncos game.",
     url: "https://davelovesdenver.com/hotels/near-empower-field",
   },
 };
@@ -26,11 +26,11 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "Can you walk from downtown Denver hotels to Empower Field?",
-    a: "Yes — from LoDo and Union Station it's about a mile walk west across the South Platte River. It takes 15–20 minutes and is very doable. On game days, the walk is half the experience: thousands of people in orange heading the same direction.",
+    a: "You can, but it is further than almost every guide says. Routed on foot, Union Station hotels sit 1.6 to 1.9 miles from the stadium and LoDo is much the same — roughly 33 to 38 minutes each way, not the fifteen you usually read. The walk crosses the South Platte and the rail corridor and there is no shortcut. On a warm September Sunday it is genuinely good, thousands of people in orange going the same way. In December, at night, coming back, most people order a car.",
   },
   {
     q: "What is the closest neighborhood to Empower Field?",
-    a: "Jefferson Park is directly east of the stadium — the neighborhood overlooks the field from a hill and has a handful of walkable bars and restaurants. LoDo and LoHi are both within easy walking distance and have far more hotel options.",
+    a: "Jefferson Park is directly east of the stadium and overlooks the field from a hill, with a handful of good neighborhood bars. The catch is hotels: the Courtyard Denver Downtown West is the one real property on that side, and at 0.55 miles routed on foot it is the only hotel in this whole set that is a genuinely short walk to the stadium. Everything else means crossing the river.",
   },
   {
     q: "Is there parking near Empower Field?",
@@ -42,7 +42,7 @@ const FAQS = [
   },
   {
     q: "Is it worth staying in Jefferson Park vs downtown for a game?",
-    a: "Jefferson Park is closer and has some great bars (Brewed, Stats), but the hotel selection is thin. Most people stay in LoDo or downtown and walk — you get better food options before and after the game.",
+    a: "Jefferson Park is closer and has some great bars (Brewed, Stats), but the hotel selection is thin — essentially the Courtyard Downtown West. Most people stay in LoDo or downtown anyway and accept a 33-plus minute walk or a five-minute car, because the food and the pre-game are better there.",
   },
   {
     q: "Is there a shuttle or train to Empower Field at Mile High?",
@@ -54,7 +54,7 @@ const FAQS = [
   },
   {
     q: "Are there 4-star or luxury hotels near Empower Field?",
-    a: "Yes — the full-service and upscale hotels are concentrated in downtown Denver and around Union Station, roughly a 15–20 minute walk (or one light rail stop) from the stadium. That's where you'll find the 4-star and luxury flags, plus the best dining for before and after the game.",
+    a: "Yes — the full-service and upscale flags are concentrated downtown and around Union Station. Be clear-eyed about the distance: routed on foot that is 33 to 40 minutes, or a short ride. What you are buying is the dining and the pre-game, not proximity.",
   },
 ];
 
@@ -85,7 +85,7 @@ export default async function HotelsNearEmpowerFieldPage() {
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
           name: "Where to Stay for a Broncos Game at Empower Field",
-          description: "The best hotels near Empower Field at Mile High — walkable options in LoDo, Jefferson Park, and Highlands for Broncos games and concerts.",
+          description: "Hotels near Empower Field at Mile High with routed walking distances — what is actually close and what is a ride, for Broncos games and concerts.",
           url: "https://davelovesdenver.com/hotels/near-empower-field",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
         },
@@ -116,19 +116,19 @@ export default async function HotelsNearEmpowerFieldPage() {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Your Options</h2>
             <div>
-              <h3 className="font-bold mb-1">LoDo &amp; Union Station (~15 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The best base for a game. You can walk to Empower Field across the South Platte, then walk back to LoDo for dinner and drinks. Union Station, Larimer Square, and dozens of bars are right there. This is where most Broncos visitors end up, and for good reason.</p>
+              <h3 className="font-bold mb-1">LoDo &amp; Union Station (33&ndash;38 min walk)</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Where most Broncos visitors end up, and rightly &mdash; but book it for the dinner and the pre-game, not the proximity. Routed on foot it is 1.6 to 1.9 miles across the South Platte, so plan on a bit over half an hour each way or a short ride. Union Station, Larimer Square and dozens of bars are right there when you get back.</p>
             </div>
             <div>
-              <h3 className="font-bold mb-1">Jefferson Park (closest, ~5 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Directly east of the stadium and technically the closest neighborhood. Hotel options are limited, but if you find one, you&apos;re walking distance to the game and to some genuinely good neighborhood spots. Jefferson Park has views of the stadium and the city.</p>
+              <h3 className="font-bold mb-1">Jefferson Park (closest &mdash; 11 min walk)</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Directly east of the stadium and the only side where a hotel is a short walk: the Courtyard Denver Downtown West routes at 0.55 miles, about eleven minutes. That is the single closest property in this whole set. Beyond it the options thin out fast, but you get stadium and skyline views and a few genuinely good neighborhood bars.</p>
             </div>
             <div>
-              <h3 className="font-bold mb-1">LoHi / Highlands (~20 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">North of the stadium across I-25. Strong restaurant and bar scene — great for pre-game if you don&apos;t mind a bit more of a walk. Highland Bridge connects to the stadium area. A solid option if you&apos;re spending multiple days.</p>
+              <h3 className="font-bold mb-1">LoHi &amp; Speer (22&ndash;24 min walk)</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">North of the stadium across I-25, and quietly the best compromise: the Hampton Inn &amp; Suites Speer and the Fairfield Downtown both route at about 1.1 miles, closer than anything in LoDo. Strong restaurant and bar scene, and a solid base if you are here for more than the game.</p>
             </div>
             <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
-              &ldquo;Game days at Mile High are legitimately fun even if you&apos;re not a Broncos fan. Stay in LoDo, walk over, and walk back to catch dinner on Larimer Square. The stadium atmosphere at altitude is something you notice — 5,280 feet hits different by the fourth quarter.&rdquo;
+              &ldquo;Game days at Mile High are legitimately fun even if you&apos;re not a Broncos fan. Stay in LoDo and walk over if the weather is decent &mdash; just know it is a real 35 minutes, not the fifteen everyone tells you. Walk or ride back for dinner on Larimer Square. The altitude is something you notice: 5,280 feet hits different by the fourth quarter.&rdquo;
               <footer className="mt-1 text-xs not-italic text-slate-400">— Dave</footer>
             </blockquote>
           </div>
@@ -159,19 +159,19 @@ export default async function HotelsNearEmpowerFieldPage() {
           <Link href="/denver/lodo/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a game day</p>
             <h3 className="font-bold mb-2">LoDo &amp; Union Station</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Walk across the river to the stadium, walk back to Larimer Square for dinner, or hop one light rail stop. The best mix of proximity, food, and pre-game atmosphere.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Walk across the river to the stadium if the weather is with you, ride if it is not, then Larimer Square for dinner afterwards. The best mix of food and pre-game atmosphere, even though it is not the closest ground.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
           </Link>
           <Link href="/denver/jefferson-park/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Jefferson Park &amp; the Highlands edge</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A step out from prime LoDo, still walkable, usually cheaper. Pair with a midweek concert or a non-premium game date and you&apos;ll pay far less than a peak Sunday-home-game rate.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">A step out from prime LoDo and usually cheaper, with much the same walk. Pair it with a midweek concert or a non-premium game date and you&apos;ll pay far less than a peak Sunday-home-game rate.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
           </Link>
           <Link href="/denver/downtown/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best 4-star &amp; splurge</p>
             <h3 className="font-bold mb-2">Downtown full-service</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The 4-star and luxury flags cluster downtown around Union Station — full-service hotels a short walk or one train stop from the stadium, with the city&apos;s best dining on the doorstep.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The 4-star and luxury flags cluster downtown around Union Station &mdash; full-service hotels a little over half an hour on foot from the stadium, or a few minutes by car, with the city&apos;s best dining on the doorstep.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
           </Link>
         </div>
@@ -197,7 +197,7 @@ export default async function HotelsNearEmpowerFieldPage() {
         <h2 className="text-xl font-bold mb-6">Game Day Tips</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: "Walk Over, Rideshare Back", body: "Walking to Mile High from LoDo is straightforward. After the game, Uber surges hard — walking east 10 minutes before summoning a car saves money and time." },
+            { title: "Walk Over, Rideshare Back", body: "The walk from LoDo is a real 1.6 to 1.9 miles, so treat it as part of the day rather than a hop. Afterwards, Uber surges hard right at the stadium — walking ten minutes east before you summon a car reliably saves money and time." },
             { title: "The Altitude is Real", body: "Empower Field sits at 5,280 feet. If you're flying in from sea level, pace yourself on the alcohol — the altitude amplifies everything, especially in the hot sun of a September game." },
             { title: "Pre-Game on Larimer Square", body: "The blocks around Larimer Square and LoDo fill with orange before every home game. It's genuinely one of the better pre-game atmospheres in the NFL. Get there early enough to enjoy it." },
           ].map((tip) => (

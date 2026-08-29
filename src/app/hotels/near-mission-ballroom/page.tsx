@@ -14,11 +14,11 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Mission Ballroom Show — RiNo Hotels",
   description:
-    "A local's guide to where to stay for a Mission Ballroom show in RiNo — the walkable Catbird hotel, where to park on show nights, plus the best budget picks and how Airbnbs compare.",
+    "Routed walking distances from 45 hotels to Mission Ballroom. Two sit under a quarter mile; most of downtown is a rideshare. Where to book in RiNo.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-mission-ballroom" },
   openGraph: {
     title: "Where to Stay for a Mission Ballroom Show",
-    description: "Walkable RiNo and LoDo hotel options for Mission Ballroom shows.",
+    description: "Routed walking distances to Mission Ballroom from 45 Denver hotels, plus where to stay for a show night in RiNo.",
     url: "https://davelovesdenver.com/hotels/near-mission-ballroom",
   },
 };
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "Can you walk from hotels to Mission Ballroom?",
-    a: "Yes — Mission Ballroom is in RiNo, and there are several hotels within walking distance. LoDo hotels are about a 20-minute walk north. The neighborhood has plenty to do before and after shows.",
+    a: "From RiNo, yes, and barely a walk at all: the AC Hotel RiNo routes at 0.16 miles and the Source Hotel at 0.19 — three or four minutes. From LoDo and Union Station it is a different question. Routed on foot those hotels are 1.6 to 1.9 miles away, better than half an hour each way, so most people ride one direction at least. The A Line helps if your hotel is near Union Station: 38th &amp; Blake is one stop out and a short walk from the venue.",
   },
   {
     q: "What neighborhood is Mission Ballroom in?",
@@ -89,7 +89,7 @@ export default async function HotelsNearMissionBallroomPage() {
         }))},
         { "@context": "https://schema.org", "@type": "WebPage",
           name: "Where to Stay for a Mission Ballroom Show",
-          description: "The best hotels near Mission Ballroom in Denver's RiNo neighborhood — walkable options steps from one of the best mid-size venues in the country.",
+          description: "Hotels near Mission Ballroom in Denver's RiNo, with routed walking distances — which are genuinely steps away and which are a ride.",
           url: "https://davelovesdenver.com/hotels/near-mission-ballroom",
           speakableSpecification: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
         },
@@ -124,8 +124,8 @@ export default async function HotelsNearMissionBallroomPage() {
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The ideal base. Hotels in RiNo put you steps from Mission Ballroom and surrounded by the best restaurant and brewery density in Denver. You&apos;re 10 minutes from downtown but you honestly might not need to leave the neighborhood.</p>
             </div>
             <div>
-              <h3 className="font-bold mb-1">LoDo / Union Station (~20 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">More hotel options and a slightly higher density of familiar brands. The walk to Mission Ballroom takes you through the edges of RiNo, which is an experience in itself. Easy rideshare if you don&apos;t want to walk after the show.</p>
+              <h3 className="font-bold mb-1">LoDo &amp; Union Station (one A Line stop, or 35 min on foot)</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">More hotel options and a higher density of familiar brands. Routed on foot it is 1.6 to 1.9 miles, so the walk out through the edges of RiNo is an experience worth having in daylight and a slog at midnight. The A Line from Union Station to 38th &amp; Blake is one stop, and rideshare after the show is cheap and quick.</p>
             </div>
             <div>
               <h3 className="font-bold mb-1">Five Points &amp; Curtis Park (very close)</h3>
@@ -169,7 +169,7 @@ export default async function HotelsNearMissionBallroomPage() {
           <Link href="/denver/lodo/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">The LoDo edge</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just north toward LoDo and Union Station you&apos;ll find better rates and more familiar brands, with a 20-minute walk or quick rideshare to the venue. Midweek shows are cheaper still.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Southwest toward LoDo and Union Station you&apos;ll find better rates and more familiar brands, with one A Line stop or a quick rideshare to the venue &mdash; call it 35 minutes if you insist on walking. Midweek shows are cheaper still.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse LoDo hotels &rarr;</span>
           </Link>
           <Link href="/denver/cole/hotels/catbird-hotel" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">

@@ -44,14 +44,22 @@ export default function VenueDistanceTable({
   if (rows.length === 0) return null;
 
   const dated = VENUE_WALK_DATED[venueHref];
+  // Some venues sit a long way from every hotel in the set — National Western
+  // has forty-odd properties in the rideshare band alone. Listing all of them
+  // buries the useful rows, so each band shows the nearest few and says how
+  // many it left out rather than pretending the rest don't exist.
+  const PER_BAND = 12;
   const groups = (["short", "real", "wheels", "ride"] as WalkBand[])
-    .map((b) => ({ band: b, rows: rows.filter((r) => walkBand(r.m) === b) }))
+    .map((b) => {
+      const all = rows.filter((r) => walkBand(r.m) === b);
+      return { band: b, rows: all.slice(0, PER_BAND), hidden: all.length - Math.min(all.length, PER_BAND) };
+    })
     .filter((g) => g.rows.length > 0);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800">
       <h2 className="text-2xl font-bold mb-2">
-        How far is each downtown hotel from {venueName}, on foot?
+        How far is each hotel from {venueName}, on foot?
       </h2>
       <p className="text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
         {rows.length} hotels, routed along real pavements and crossings rather than measured as the crow flies.
@@ -66,6 +74,9 @@ export default function VenueDistanceTable({
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 mb-4 max-w-3xl leading-relaxed">
               {WALK_BANDS[g.band].note}
               {g.band === "ride" && transitNote ? ` ${transitNote}` : ""}
+              {g.hidden > 0
+                ? ` Showing the ${g.rows.length} closest; ${g.hidden} more fall in this band and get further out from here.`
+                : ""}
             </p>
             <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
               <table className="w-full text-sm">

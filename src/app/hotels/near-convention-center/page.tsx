@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import { getPlaces, getHotelPool, isRealHotel, photoUrl } from "@/lib/places";
+import VenueDistanceTable from "@/components/VenueDistanceTable";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import BookYourTrip from "@/components/BookYourTrip";
@@ -10,7 +11,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for a Colorado Convention Center Conference",
   description:
-    "A local's guide to where to stay for a conference at the Colorado Convention Center — the connected Hyatt Regency, Marriott-family options, plus the best luxury, budget and genuinely walkable picks.",
+    "45 Denver hotels routed on foot to the Colorado Convention Center: 25 are under 0.75 miles, the nearest 130 yards. Plus which are actually worth booking.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-convention-center" },
   openGraph: {
     title: "Where to Stay for a Convention Center Conference",
@@ -56,9 +57,10 @@ const FAQS = [
 
 
 export default async function HotelsNearConventionCenterPage() {
-  const [downtownPl, goldenPl] = await Promise.all([
+  const [downtownPl, goldenPl, hotelPool] = await Promise.all([
     getPlaces("downtown", "hotels"),
     getPlaces("golden-triangle", "hotels"),
+    getHotelPool(),
   ]);
   const hotels = [...downtownPl, ...goldenPl]
     .filter(isRealHotel)
@@ -169,6 +171,13 @@ export default async function HotelsNearConventionCenterPage() {
           </Link>
         </div>
       </section>
+
+      <VenueDistanceTable
+        venueName={"the Colorado Convention Center"}
+        venueHref={"/hotels/near-convention-center"}
+        hotels={hotelPool}
+        transitNote={"The Convention Center light rail station is on the D, H and L lines, which is useful if your hotel happens to sit on one of them and no use at all if it doesn't."}
+      />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-xl font-bold mb-6">Conference Tips</h2>

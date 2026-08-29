@@ -14,7 +14,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Where to Stay for the National Western Stock Show in Denver",
   description:
-    "Where to stay for the National Western Stock Show and other events at the National Western Complex — RiNo and Five Points picks, how the N Line rail and Stock Show shuttles work, plus parking and the best budget options.",
+    "Routed walking distances from 45 hotels to National Western Complex. Nothing is a real walk — the closest is 0.8 miles. Where to stay for the Stock Show.",
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-national-western" },
   openGraph: {
     title: "Where to Stay for the National Western Stock Show & Events",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "What hotels are closest to National Western Complex?",
-    a: "National Western Complex sits just north of RiNo along the South Platte River. RiNo hotels are the closest with real options, about a 10–15 minute walk or short rideshare. Five Points and downtown have more hotel density further away.",
+    a: "National Western Complex sits just north of RiNo along the South Platte. Nothing here is a short walk. Routed on foot, the closest hotel in our set is the AC Hotel RiNo at 0.83 miles, about seventeen minutes; the Source Hotel is 1.13 miles. Downtown and Five Points run 2.5 to 3.5 miles, which is a car or the N Line, not a walk.",
   },
   {
     q: "When is the National Western Stock Show?",
@@ -42,7 +42,7 @@ const FAQS = [
   },
   {
     q: "How far is National Western from downtown Denver?",
-    a: "About 2 miles northeast of LoDo — roughly a 10-minute drive or 15-minute rideshare. Not walking distance from downtown, but a short ride.",
+    a: "About 2.5 miles northeast of LoDo — roughly a 10-minute drive, a little longer in Stock Show traffic. Routed on foot it is closer to three miles from most downtown hotels, so treat it as a ride rather than a walk.",
   },
   {
     q: "Is there a shuttle or train to National Western Complex?",
@@ -117,11 +117,11 @@ export default async function HotelsNearNationalWesternPage() {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Where to Stay</h2>
             <div>
-              <h3 className="font-bold mb-1">RiNo (closest with options, 10–15 min)</h3>
+              <h3 className="font-bold mb-1">RiNo (closest with options &mdash; 17&ndash;25 min on foot)</h3>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The River North Art District is right next door to National Western Complex along the South Platte. RiNo is Denver&apos;s best neighborhood for restaurants and breweries — staying here means you&apos;re close to the complex and surrounded by great food and drink options.</p>
             </div>
             <div>
-              <h3 className="font-bold mb-1">Five Points (15–20 min)</h3>
+              <h3 className="font-bold mb-1">Five Points (a short ride, not a walk)</h3>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just south of the complex, Five Points is historically Denver&apos;s jazz neighborhood with a strong restaurant scene. A short rideshare from National Western and central to the rest of the city.</p>
             </div>
             <div>
@@ -129,7 +129,7 @@ export default async function HotelsNearNationalWesternPage() {
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If you&apos;re spending multiple days in Denver, downtown is the right base. National Western is a 10-minute drive or rideshare, and you&apos;ll have everything else at your doorstep. For Stock Show, book downtown hotels 6+ months in advance — they fill up entirely.</p>
             </div>
             <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
-              &ldquo;The National Western Stock Show is one of those only-in-Denver things — January, ice on the roads, and thousands of people in cowboy hats and Carhartt. It&apos;s genuinely fun even if ranching is not your world. Stay in RiNo and walk over, or book downtown early.&rdquo;
+              &ldquo;The National Western Stock Show is one of those only-in-Denver things &mdash; January, ice on the roads, and thousands of people in cowboy hats and Carhartt. It&apos;s genuinely fun even if ranching is not your world. Stay in RiNo if you want the option of walking over; in January, honestly, most people don&apos;t. Book downtown early and plan on a car.&rdquo;
               <footer className="mt-1 text-xs not-italic text-slate-400">— Dave</footer>
             </blockquote>
           </div>
@@ -160,7 +160,7 @@ export default async function HotelsNearNationalWesternPage() {
           <Link href="/denver/rino/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best overall</p>
             <h3 className="font-bold mb-2">RiNo</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest neighborhood with real options, next door along the Platte, and Denver&apos;s best food and brewery scene for before and after. Short walk or rideshare to the complex.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Closest neighborhood with real options, next door along the Platte, and Denver&apos;s best food and brewery scene for before and after. Figure 17 to 25 minutes on foot from the RiNo hotels, or a few minutes by car.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
           </Link>
           <Link href="/denver/five-points/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
@@ -200,7 +200,7 @@ export default async function HotelsNearNationalWesternPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: "Stock Show: Book Early", body: "The National Western Stock Show in January is one of the largest in the world. Denver hotels fill up entirely — book 6 months out if you're planning to attend. Prices spike significantly during the two-week run." },
-            { title: "RiNo Before and After", body: "RiNo's restaurants and breweries are walking distance from the complex — one of the better pre-event dining situations for any venue in Denver. Odell Denver, Ratio Beerworks, and dozens of restaurants are right there." },
+            { title: "RiNo Before and After", body: "The RiNo restaurant and brewery strip is about a mile south of the complex — a walk in decent weather, a two-minute ride in January. Odell Denver, Ratio Beerworks and dozens of restaurants sit within a few blocks of each other, which is the best pre-event dining of any Denver venue." },
             { title: "Rideshare Is Easiest", body: "Parking at National Western exists but can be chaotic around major events. Rideshare from RiNo or LoDo is usually the cleaner option — drop-off is direct and you avoid the post-event lot." },
           ].map((tip) => (
             <div key={tip.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
