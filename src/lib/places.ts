@@ -853,3 +853,23 @@ export async function refreshPlacesFromGoogle(
 
   return fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
 }
+
+/**
+ * Every rated hotel in the database that has coordinates, in one query.
+ *
+ * Used by the venue distance tables, which need a citywide pool rather than the
+ * one or two neighborhoods a venue page normally fetches.
+ */
+export async function getHotelPool(): Promise<Place[]> {
+  const { data } = await supabase
+    .from("places")
+    .select(LISTING_COLUMNS)
+    .eq("category_slug", "hotels")
+    .not("lat", "is", null)
+    .not("lng", "is", null)
+    .not("rating", "is", null)
+    .order("review_count", { ascending: false })
+    .limit(400);
+  const rows = (data ?? []) as Place[];
+  return attachPhotoCdnUrls(rows.filter(isRealHotel));
+}

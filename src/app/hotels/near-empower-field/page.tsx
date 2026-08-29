@@ -6,6 +6,8 @@ import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpa
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import VenueDistanceTable from "@/components/VenueDistanceTable";
+import { getHotelPool } from "@/lib/places";
 
 export const revalidate = 86400;
 
@@ -58,7 +60,8 @@ const FAQS = [
 
 
 export default async function HotelsNearEmpowerFieldPage() {
-  const [lodoPl, jeffPl, events] = await Promise.all([
+  const [hotelPool, lodoPl, jeffPl, events] = await Promise.all([
+    getHotelPool(),
     getPlaces("lodo", "hotels"),
     getPlaces("jefferson-park", "hotels"),
     getEventsForVenue("Empower Field", 6),
@@ -215,6 +218,13 @@ export default async function HotelsNearEmpowerFieldPage() {
           <Link href="/events/empower-field" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Broncos & events</Link>
         </div>
       </section>
+
+            <VenueDistanceTable
+        venueName={"Empower Field"}
+        venueHref={"/hotels/near-empower-field"}
+        hotels={hotelPool}
+        transitNote={"Empower Field is two stops from Union Station on the E or W line."}
+      />
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

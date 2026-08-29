@@ -6,6 +6,8 @@ import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpa
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import VenueDistanceTable from "@/components/VenueDistanceTable";
+import { getHotelPool } from "@/lib/places";
 
 export const revalidate = 86400;
 
@@ -62,7 +64,8 @@ const FAQS = [
 
 
 export default async function HotelsNearMissionBallroomPage() {
-  const [rinoPl, lodoPl, events] = await Promise.all([
+  const [hotelPool, rinoPl, lodoPl, events] = await Promise.all([
+    getHotelPool(),
     getPlaces("rino", "hotels"),
     getPlaces("lodo", "hotels"),
     getEventsForVenue("Mission Ballroom", 6),
@@ -227,6 +230,13 @@ export default async function HotelsNearMissionBallroomPage() {
           ))}
         </div>
       </section>
+
+            <VenueDistanceTable
+        venueName={"Mission Ballroom"}
+        venueHref={"/hotels/near-mission-ballroom"}
+        hotels={hotelPool}
+        transitNote={"Mission Ballroom sits by the 38th & Blake A Line station, one stop from Union Station."}
+      />
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

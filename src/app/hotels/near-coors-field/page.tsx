@@ -6,6 +6,8 @@ import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpa
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import VenueDistanceTable from "@/components/VenueDistanceTable";
+import { getHotelPool } from "@/lib/places";
 
 export const revalidate = 86400;
 
@@ -58,7 +60,8 @@ const FAQS = [
 
 
 export default async function HotelsNearCoorsFieldPage() {
-  const [places, events] = await Promise.all([
+  const [hotelPool, places, events] = await Promise.all([
+    getHotelPool(),
     getPlaces("lodo", "hotels"),
     getEventsForVenue("Coors Field", 6),
   ]);
@@ -267,6 +270,13 @@ export default async function HotelsNearCoorsFieldPage() {
           <Link href="/events/coors-field" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Rockies schedule</Link>
         </div>
       </section>
+
+            <VenueDistanceTable
+        venueName={"Coors Field"}
+        venueHref={"/hotels/near-coors-field"}
+        hotels={hotelPool}
+        transitNote={"Union Station is a short walk from the ballpark and connects to everything."}
+      />
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

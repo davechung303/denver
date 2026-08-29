@@ -65,3 +65,79 @@ export function nearestVenues(
     .slice(0, limit)
     .map((x) => x.v);
 }
+
+// ---------------------------------------------------------------------------
+// Distance tables for the venue lodging guides.
+//
+// Read the method note before changing anything here. These are STRAIGHT-LINE
+// distances from stored coordinates. They are not walking distances and not
+// walk times, and the pages that render them say so in the same breath.
+//
+// The distinction is load-bearing in Denver: the Consolidated Main Line rail
+// corridor, Speer Boulevard, Cherry Creek and the Platte all sit between the
+// downtown hotel clusters and several of these venues, and pedestrians cross
+// them only at specific bridges. Real routes run longer than the straight line
+// by varying amounts, and the ORDER can change — a hotel closer as the crow
+// flies can be further on foot if it is on the wrong side of a crossing.
+// ---------------------------------------------------------------------------
+
+export const MI_PER_KM = 0.621371;
+
+export function straightLineMi(
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+  venue: { lat: number; lng: number }
+): number | null {
+  if (lat == null || lng == null) return null;
+  return haversineKm(lat, lng, venue.lat, venue.lng) * MI_PER_KM;
+}
+
+export type Band = "close" | "walkable" | "train";
+
+export function band(mi: number): Band {
+  if (mi <= 0.5) return "close";
+  if (mi <= 0.9) return "walkable";
+  return "train";
+}
+
+export const BANDS: Record<Band, { label: string; note: string }> = {
+  close: {
+    label: "Genuinely close",
+    note: "Under half a mile in a straight line. A short walk on any sensible route.",
+  },
+  walkable: {
+    label: "Walkable — but the crossing decides",
+    note: "Half a mile to nine-tenths. Fine on foot in daylight, though this is the band where the rail corridor and Speer decide whether it is a 15-minute walk or a 25-minute one.",
+  },
+  train: {
+    label: "Take the train",
+    note: "Nine-tenths of a mile and up in a straight line, which usually means comfortably over a mile on foot.",
+  },
+};
+
+export interface RankedHotel<T> {
+  place: T;
+  mi: number;
+  band: Band;
+}
+
+/** Hotels nearest a venue, closest first. Ties break on name so builds are stable. */
+export function rankHotelsByVenue<T extends { name: string; lat: number | null; lng: number | null }>(
+  places: T[],
+  venue: { lat: number; lng: number },
+  limit = 20
+): RankedHotel<T>[] {
+  return places
+    .map((place) => {
+      const mi = straightLineMi(place.lat, place.lng, venue);
+      return mi == null ? null : { place, mi, band: band(mi) };
+    })
+    .filter((x): x is RankedHotel<T> => x !== null)
+    .sort((a, b) => a.mi - b.mi || (a.place.name < b.place.name ? -1 : 1))
+    .slice(0, limit);
+}
+
+/** Look up a venue's coordinates by its guide href. */
+export function venueByHref(href: string): Venue | undefined {
+  return VENUES.find((v) => v.href === href);
+}
