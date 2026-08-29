@@ -26,6 +26,7 @@ const GROUPS: Group[] = [
   {
     title: "Sports & Big Events",
     venues: [
+      { href: "/hotels/great-american-beer-festival", name: "Great American Beer Festival", blurb: "GABF 2026 moved to Ruby Hill — new venue, new plan.", nb: "baker" },
       { href: "/hotels/near-coors-field", name: "Coors Field", blurb: "Rockies games — walkable LoDo hotels.", nb: "lodo" },
       { href: "/hotels/near-ball-arena", name: "Ball Arena", blurb: "Nuggets, Avalanche & concerts.", nb: "lodo" },
       { href: "/hotels/near-empower-field", name: "Empower Field at Mile High", blurb: "Broncos games & stadium shows.", nb: "jefferson-park" },

@@ -5,7 +5,7 @@ import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 // Static one-off routes. ISR cache survives a deploy, so anything whose copy
 // changed has to be revalidated explicitly or it keeps serving the old build.
 const HOTEL_PAGES = [
-  "best-value-denver", "near-anschutz", "near-ball-arena", "near-botanic-gardens",
+  "great-american-beer-festival", "best-value-denver", "near-anschutz", "near-ball-arena", "near-botanic-gardens",
   "near-cherry-creek", "near-city-park", "near-convention-center", "near-coors-field",
   "near-denver-airport", "near-denver-zoo", "near-elitch-gardens", "near-empower-field",
   "near-fiddlers-green", "near-mission-ballroom", "near-national-western", "near-red-rocks",

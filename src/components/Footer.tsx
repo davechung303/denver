@@ -53,6 +53,7 @@ const HOTEL_GUIDES = [
   { href: "/denver/airport-train", label: "Airport to Downtown by Train" },
   { href: "/denver/hotel-costs", label: "What a Denver Hotel Costs" },
   { href: "/denver/altitude", label: "Denver Altitude Explained" },
+  { href: "/hotels/great-american-beer-festival", label: "GABF 2026" },
   { href: "/hotels/best-value-denver", label: "Best Value Hotels" },
   { href: "/hotels/near-red-rocks", label: "Red Rocks Concert" },
   { href: "/hotels/near-empower-field", label: "Broncos Game" },
