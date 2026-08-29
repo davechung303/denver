@@ -62,6 +62,28 @@ const DEFAULT_RADIUS_MILES = 1.0;
 /** Below this, a rating is a handful of friends rather than a signal. */
 const MIN_REVIEWS = 100;
 
+/**
+ * Formats that don't belong in a "here are the rooms" module even when they
+ * rate well. A hostel with a 4.5 is a good hostel, not an answer to "LoDo or
+ * the Golden Triangle" — and putting one at the top of a module that sits
+ * under copy recommending Populus reads as a broken widget.
+ */
+const EXCLUDE_TYPES = new Set(["hostel", "bed_and_breakfast", "campground", "rv_park"]);
+
+/**
+ * Ranking by raw rating puts a 4.5 with 122 reviews above a 4.5 with 2,114,
+ * which is both wrong and worse for booking. This is the standard shrink
+ * toward a prior: a property needs volume before its rating moves it much.
+ */
+const PRIOR_WEIGHT = 400;
+const PRIOR_RATING = 4.1;
+
+function score(p: Place): number {
+  const v = p.review_count ?? 0;
+  const r = p.rating ?? PRIOR_RATING;
+  return (v / (v + PRIOR_WEIGHT)) * r + (PRIOR_WEIGHT / (v + PRIOR_WEIGHT)) * PRIOR_RATING;
+}
+
 export interface AreaHotelOptions {
   limit?: number;
   /** Override the radius when a page needs a wider or tighter net. */
@@ -83,25 +105,66 @@ export function hotelsInArea(
   if (!area) return [];
   const radius = radiusMiles ?? RADIUS_MILES[areaSlug] ?? DEFAULT_RADIUS_MILES;
 
-  const near = pool
-    .filter((p) => p.lat != null && p.lng != null)
-    .filter((p) => p.expedia_affiliate_url)
-    .filter((p) => p.rating != null)
+  const near = candidates(pool)
     .map((p) => ({ p, d: haversineMiles(p.lat as number, p.lng as number, area.lat, area.lng) }))
     .filter((x) => x.d <= radius);
 
+  return rank(near, limit);
+}
+
+function candidates(pool: Place[]): Place[] {
+  return pool
+    .filter((p) => p.lat != null && p.lng != null)
+    .filter((p) => p.expedia_affiliate_url)
+    .filter((p) => p.rating != null)
+    .filter((p) => !p.types?.some((t) => EXCLUDE_TYPES.has(t)));
+}
+
+function rank(near: { p: Place; d: number }[], limit: number): Place[] {
   // Prefer properties with enough reviews to mean something, but don't return
   // nothing in a thin area just to hold the line on review count.
   const wellReviewed = near.filter((x) => (x.p.review_count ?? 0) >= MIN_REVIEWS);
   const pick = wellReviewed.length >= 3 ? wellReviewed : near;
 
   return pick
-    .sort(
-      (a, b) =>
-        (b.p.rating ?? 0) - (a.p.rating ?? 0) ||
-        (b.p.review_count ?? 0) - (a.p.review_count ?? 0) ||
-        a.d - b.d
-    )
+    .sort((a, b) => score(b.p) - score(a.p) || a.d - b.d)
     .slice(0, limit)
     .map((x) => x.p);
+}
+
+/**
+ * Hotels for two or more areas shown side by side, with no property appearing
+ * twice.
+ *
+ * On a page whose whole argument is Union Station versus RiNo, listing The
+ * Rally Hotel under RiNo — it is 0.86 miles from RiNo's center and 0.2 from
+ * LoDo's — makes the comparison look like it doesn't know its own city. Each
+ * candidate is assigned to whichever of the given areas it is actually closest
+ * to, then ranked within it.
+ */
+export function hotelsInAreas(
+  pool: Place[],
+  areaSlugs: string[],
+  { limit = 5 }: AreaHotelOptions = {}
+): Record<string, Place[]> {
+  const centers = areaSlugs
+    .map((slug) => ({ slug, area: getNeighborhood(slug) }))
+    .filter((x): x is { slug: string; area: NonNullable<ReturnType<typeof getNeighborhood>> } => !!x.area);
+
+  const buckets = new Map<string, { p: Place; d: number }[]>(centers.map((c) => [c.slug, []]));
+
+  for (const p of candidates(pool)) {
+    let best: { slug: string; d: number } | null = null;
+    for (const c of centers) {
+      const d = haversineMiles(p.lat as number, p.lng as number, c.area.lat, c.area.lng);
+      if (!best || d < best.d) best = { slug: c.slug, d };
+    }
+    if (!best) continue;
+    const radius = RADIUS_MILES[best.slug] ?? DEFAULT_RADIUS_MILES;
+    if (best.d <= radius) buckets.get(best.slug)!.push({ p, d: best.d });
+  }
+
+  const out: Record<string, Place[]> = {};
+  for (const [slug, list] of buckets) out[slug] = rank(list, limit);
+  return out;
 }

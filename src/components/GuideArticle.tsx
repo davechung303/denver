@@ -3,7 +3,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { getHotelPool } from "@/lib/places";
-import { hotelsInArea } from "@/lib/areaHotels";
+import { hotelsInAreas } from "@/lib/areaHotels";
 import type { Guide } from "@/lib/guides";
 
 function formatUpdated(iso: string) {
@@ -25,8 +25,9 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
   // handing a high-intent click to a generic Denver search.
   const areas = guide.booking?.areas ?? [];
   const pool = areas.length > 0 ? await getHotelPool() : [];
+  const byArea = hotelsInAreas(pool, areas.map((a) => a.slug), { limit: 4 });
   const areaHotels = areas
-    .map((a) => ({ ...a, hotels: hotelsInArea(pool, a.slug, { limit: 4 }) }))
+    .map((a) => ({ ...a, hotels: byArea[a.slug] ?? [] }))
     .filter((a) => a.hotels.length > 0);
 
   return (

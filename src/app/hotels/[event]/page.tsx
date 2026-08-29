@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getHotelPool } from "@/lib/places";
-import { hotelsInArea } from "@/lib/areaHotels";
+import { hotelsInAreas } from "@/lib/areaHotels";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import BookYourTrip from "@/components/BookYourTrip";
 import { EVENT_GUIDES, getEventGuide } from "@/lib/eventGuides";
@@ -57,8 +57,9 @@ export default async function EventGuidePage({
 
   const url = `https://davelovesdenver.com/hotels/${g.slug}`;
   const pool = await getHotelPool();
+  const byArea = hotelsInAreas(pool, g.lodging.map((l) => l.neighborhood), { limit: 4 });
   const modules = g.lodging
-    .map((l) => ({ ...l, hotels: hotelsInArea(pool, l.neighborhood, { limit: 4 }) }))
+    .map((l) => ({ ...l, hotels: byArea[l.neighborhood] ?? [] }))
     .filter((m) => m.hotels.length > 0);
 
   const schema: Record<string, unknown>[] = [

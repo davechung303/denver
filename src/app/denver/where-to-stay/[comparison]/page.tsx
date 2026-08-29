@@ -6,7 +6,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { getHotelPool } from "@/lib/places";
-import { hotelsInArea } from "@/lib/areaHotels";
+import { hotelsInAreas } from "@/lib/areaHotels";
 import { COMPARISONS, getComparison } from "@/lib/stayComparisons";
 
 export const revalidate = 86400;
@@ -58,9 +58,10 @@ export default async function ComparisonPage({
   // has just been told to book Cherry Creek should see Cherry Creek rooms, each
   // with its own affiliate link, not a generic "browse Denver hotels".
   const pool = await getHotelPool();
+  const byArea = hotelsInAreas(pool, [c.aArea, c.bArea]);
   const sides = [
-    { name: c.aName, area: c.aArea, hotels: hotelsInArea(pool, c.aArea) },
-    { name: c.bName, area: c.bArea, hotels: hotelsInArea(pool, c.bArea) },
+    { name: c.aName, area: c.aArea, hotels: byArea[c.aArea] ?? [] },
+    { name: c.bName, area: c.bArea, hotels: byArea[c.bArea] ?? [] },
   ].filter((side) => side.hotels.length > 0);
 
   return (
