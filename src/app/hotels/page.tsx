@@ -6,13 +6,15 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Where to Stay in Denver — Hotels by Venue & Neighborhood",
+  // Deliberately NOT "Where to Stay in Denver" — that is the pillar's query.
+  // This page is the directory that feeds it.
+  title: "Denver Hotel Guides by Venue & Neighborhood",
   description:
-    "A local's index of where to stay in Denver — the best hotels near every major venue (Coors Field, Ball Arena, Red Rocks, the airport and more), plus neighborhood guides and game-day parking tips.",
+    "An index of every Denver hotel guide on the site — one for each major venue (Coors Field, Ball Arena, Red Rocks, the airport and more), plus the neighborhood breakdown and game-day parking.",
   alternates: { canonical: "https://davelovesdenver.com/hotels" },
   openGraph: {
-    title: "Where to Stay in Denver — Hotels by Venue & Neighborhood",
-    description: "The best hotels near every major Denver venue, plus neighborhood guides — from a local.",
+    title: "Denver Hotel Guides by Venue & Neighborhood",
+    description: "Every Denver hotel guide on the site, indexed by venue and by neighborhood.",
     url: "https://davelovesdenver.com/hotels",
   },
 };
@@ -105,9 +107,10 @@ export default async function HotelsHubPage() {
             <span className="text-white/80">Hotels</span>
           </nav>
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">Where to Stay</p>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Where to Stay in Denver</h1>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight" data-speakable>Denver Hotel Guides</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl" data-speakable>
-            Whatever brought you to Denver — a Rockies game, a Red Rocks show, a conference, or an early flight — here&apos;s where a local would actually book, organized by what you&apos;re here for.
+            Every hotel guide on the site, organised by what brought you here — a Rockies game, a Red Rocks show, a conference, an early flight. If you&apos;re still choosing an area rather than an event, start with{" "}
+            <Link href="/denver/where-to-stay" className="text-denver-amber hover:underline">where to stay in Denver</Link>.
           </p>
         </div>
       </section>
