@@ -37,9 +37,16 @@ function haversineMiles(aLat: number, aLng: number, bLat: number, bLng: number):
  * scattered along Tower Road and Peña and needs a wide one.
  */
 const RADIUS_MILES: Record<string, number> = {
-  lodo: 0.7,
+  // LoDo's real hotels all sit inside half a mile of Union Station. At 0.7 the
+  // bucket starts collecting 16th Street and Convention Center properties,
+  // which are downtown by any honest reading.
+  lodo: 0.5,
   downtown: 0.7,
-  "golden-triangle": 0.7,
+  // Tight, because the downtown core is only a few blocks north and outranks
+  // everything actually in the museum district on review volume. At 0.7 this
+  // module returned six downtown hotels and no Art Hotel, on a page about
+  // where to stay for the museums.
+  "golden-triangle": 0.45,
   // Tight enough that Union Station's hotels don't get filed under RiNo, which
   // they would at 1.1 — The Crawford sits exactly 1.10 miles from RiNo's center.
   rino: 0.9,
