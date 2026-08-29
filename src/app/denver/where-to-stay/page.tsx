@@ -195,6 +195,37 @@ export default async function WhereToStayPage() {
         </p>
       </section>
 
+      {/* The logistics pages. Sourced, specific, and the reason people link to us. */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <h2 className="text-2xl font-bold mb-2">The questions that actually decide it</h2>
+        <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl mb-6">
+          Every figure on these pages is sourced, and anything we could not verify from a primary source
+          was left out rather than estimated. That is the whole point of them.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { href: "/denver/is-downtown-denver-safe", title: "Is downtown Denver safe?", blurb: "Police district data, what changed at Union Station, and why the hour matters more than the block." },
+            { href: "/denver/hotel-parking", title: "What hotel parking costs", blurb: "$45 to $70 a night downtown, published hotel by hotel — and the public garage charging $23." },
+            { href: "/denver/resort-fees", title: "Do Denver hotels charge resort fees?", blurb: "Some do, most downtown flags don’t, and the law changed in 2025 and again in 2026." },
+            { href: "/denver/hotel-costs", title: "What a Denver hotel really costs", blurb: "Rate, tax and parking together, which is the only number worth comparing." },
+            { href: "/denver/airport-train", title: "The A Line from the airport", blurb: "37 minutes for $10 — and the $10 is a day pass, not a one-way." },
+            { href: "/denver/den-layover", title: "Leaving DEN on a layover", blurb: "About three and a half hours of overhead. Here’s the layover length that makes it worth it." },
+            { href: "/denver/ski-basecamp", title: "Denver as a ski basecamp", blurb: "Verified distances, the ski train, the Snowstang bus, and when I-70 actually jams." },
+            { href: "/denver/altitude", title: "The altitude, honestly", blurb: "Denver is 5,280 feet. The CDC's threshold for altitude illness is 8,000." },
+            { href: "/denver/coors-field-parking", title: "Coors Field parking", blurb: "Where to leave the car on a game night without paying the lot price." },
+          ].map((g) => (
+            <Link
+              key={g.href}
+              href={g.href}
+              className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors"
+            >
+              <h3 className="font-bold mb-1 text-sm">{g.title}</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{g.blurb}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Head-to-head pages. Most people arrive already down to two areas. */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <h2 className="text-2xl font-bold mb-2">Already down to two?</h2>
