@@ -42,11 +42,11 @@ const FAQS = [
   },
   {
     q: "What should I do before a Mission Ballroom show in RiNo?",
-    a: "RiNo is the right answer to this. Grab dinner at Señor Bear, Zeppelin Station, or any of a dozen other great spots. Hit a brewery beforehand — TRVE, Ratio, Odell Denver, and Great Divide are all close. The pre-show neighborhood experience is part of why Mission Ballroom is one of the best venues in the country.",
+    a: "RiNo is the right answer to this. Grab dinner at Cart-Driver, Dio Mio or Temaki Den, all a few blocks from the venue. Hit a brewery beforehand — Ratio, Odell Denver, Bierstadt Lagerhaus and Great Divide's RiNo barrel bar are all close. The pre-show neighborhood experience is part of why Mission Ballroom is one of the best venues in the country.",
   },
   {
     q: "Is the Catbird Hotel close to Mission Ballroom?",
-    a: "Yes — the Catbird is one of the closest hotels to the venue, right in RiNo about a 10-minute walk away. It's an apartment-style design hotel with a rooftop, so it's a natural pick for a show night: walk to the venue, walk back, and you're steps from RiNo's restaurants and breweries the whole time.",
+    a: "Yes — the Catbird sits in RiNo within walking distance of the venue. It's an apartment-style design hotel with a rooftop, so it's a natural pick for a show night: walk to the venue, walk back, and you're steps from RiNo's restaurants and breweries the whole time.",
   },
   {
     q: "Where do you park for Mission Ballroom?",
@@ -129,7 +129,7 @@ export default async function HotelsNearMissionBallroomPage() {
             </div>
             <div>
               <h3 className="font-bold mb-1">Five Points &amp; Curtis Park (very close)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Directly east of RiNo — limited hotel options but extremely close to the venue. Worth checking if you find something.</p>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just southwest of RiNo — limited hotel options, and further out than the map suggests: the Curtis Park Club routes at 1.4 miles from the venue, about twenty-eight minutes on foot. Worth checking if the RiNo rooms have gone.</p>
             </div>
             <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
               &ldquo;Mission Ballroom is the reason to stay in RiNo for a night. The venue is genuinely great — sound, sight lines, bar situation. Get dinner at one of the RiNo spots, walk to the show, walk back to a brewery after. It&apos;s the ideal Denver concert night.&rdquo;
@@ -175,7 +175,7 @@ export default async function HotelsNearMissionBallroomPage() {
           <Link href="/denver/cole/hotels/catbird-hotel" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Closest design hotel</p>
             <h3 className="font-bold mb-2">The Catbird</h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">One of the closest hotels to the venue — an apartment-style design hotel with a rooftop, roughly a 10-minute walk in RiNo. Ideal if you want to walk to the show and back.</p>
+            <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">An apartment-style design hotel with a rooftop, in RiNo within walking distance of the venue. Ideal if you want to walk to the show and back.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">See the Catbird &rarr;</span>
           </Link>
         </div>
@@ -219,9 +219,9 @@ export default async function HotelsNearMissionBallroomPage() {
         <h2 className="text-xl font-bold mb-6">Show Night Tips</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: "Eat in RiNo First", body: "RiNo has some of Denver's best restaurants within walking distance of Mission Ballroom. Book early — popular spots fill up on show nights. Zeppelin Station, Señor Bear, and Dio Mio are all close." },
+            { title: "Eat in RiNo First", body: "RiNo has some of Denver's best restaurants within walking distance of Mission Ballroom. Book early — popular spots fill up on show nights. Cart-Driver, Dio Mio and Temaki Den are all close." },
             { title: "The Venue Opens Early", body: "Mission Ballroom typically opens doors 90 minutes before showtime. Getting there early means you can actually hear the opener and get a good spot before the room fills." },
-            { title: "Brewery Crawl After", body: "After the show, Ratio, TRVE, Odell Denver, and several other breweries are walking distance. It's one of the better post-show neighborhood situations of any music venue in the country." },
+            { title: "Brewery Crawl After", body: "After the show, Ratio, Odell Denver, Bierstadt Lagerhaus and several other breweries are walking distance. It's one of the better post-show neighborhood situations of any music venue in the country." },
           ].map((tip) => (
             <div key={tip.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
               <h3 className="font-bold mb-2">{tip.title}</h3>

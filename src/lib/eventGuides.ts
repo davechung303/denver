@@ -89,7 +89,7 @@ export const EVENT_GUIDES: EventGuide[] = [
       {
         h2: "When is the National Western Stock Show?",
         answer:
-          "Sixteen days in mid-to-late January. The 2027 show runs January 9 to 24; the 2026 show ran January 10 to 25 and was the 120th. The kick-off parade is the day before opening — Thursday, January 8, 2027, at noon.",
+          "Sixteen days in mid-to-late January. The 2027 show runs January 9 to 24; the 2026 show ran January 10 to 25 and was the 120th. The kick-off parade is the day before opening — Thursday, January 7, 2027, at noon.",
         body: [
           "The pattern across recent years is a sixteen-day run starting on the second Saturday of January, which puts the Martin Luther King Jr. holiday weekend inside it. That is not published as a rule by the organizers, so treat it as a reliable shape rather than a guarantee, and check the official dates before booking a non-refundable room.",
           "The parade is worth planning around even if you never go to the grounds. It starts at Union Station, runs twelve blocks down 17th Street and finishes at 17th and Glenarm, with more than thirty Longhorn cattle walking through downtown Denver alongside horses, marching bands and tractors. It has run every January since the 1960s.",
@@ -128,7 +128,7 @@ export const EVENT_GUIDES: EventGuide[] = [
           "A great deal. The National Western Center's first two construction phases completed in the fourth quarter of 2025. Open now: the Stockyards Event Center, a 46,000 square foot LEED Gold building; The Yards, fourteen acres of hardscaped event space; six acres of riverfront open space along the South Platte; the Livestock Center, completed December 2025; CSU Spur; and the Stock Show's own Legacy Building.",
         body: [
           "The 51st Avenue Bridge is open to cars, pedestrians and bikes, carrying the People's Bridge of the Sun installation by Denver artist David Ocelotl Garcia.",
-          "What is not built is the planned equestrian center, hotel and parking garage. That project sits outside the first two phases and is at the procurement stage with two shortlisted partners; the official completion date is listed as to be determined. If you read somewhere that a hotel is opening on the campus, no date for one exists.",
+          "What is not built is the planned equestrian center and hotel. That project sits outside the first two phases and is at the procurement stage with two shortlisted partners; the official completion date is listed as to be determined. If you read somewhere that a hotel is opening on the campus, no date for one exists.",
         ],
       },
       {
@@ -137,14 +137,14 @@ export const EVENT_GUIDES: EventGuide[] = [
           "Early. The Stock Show runs an official Marriott room-block program, and for 2027 the twelve participating hotels listed rates from $109 to $169 a night with booking cutoffs falling between December 18 and 25, 2026. Those cutoffs are the honest deadline rather than a marketing one.",
         body: [
           "We are not going to tell you the city sells out, because no official source says that and plenty of guides assert it. What is verifiably true is that this is Denver's largest January event by a wide margin, that attendance has topped 700,000 in recent years, and that the official room block has a hard December cutoff. Book by early December and the question does not arise.",
-          "The block spans downtown Denver, Broomfield, Golden, Aurora and the airport area, so read the location before the rate — a $109 room in Broomfield is a thirty-minute drive each way in January weather.",
+          "The block spans downtown Denver, Broomfield, Golden, Aurora and the airport area, so read the location before the rate — the $109 rate is the Marriott out in Golden, which is a long drive each way in January weather.",
         ],
       },
     ],
     faqs: [
       {
         q: "When is the National Western Stock Show 2027?",
-        a: "January 9 to 24, 2027 — sixteen days, as it runs every year. The kick-off parade is Thursday January 8 at noon, starting at Union Station and running twelve blocks down 17th Street to Glenarm, with more than thirty Longhorn cattle walking through downtown.",
+        a: "January 9 to 24, 2027 — sixteen days, as it runs every year. The kick-off parade is Thursday January 7 at noon, starting at Union Station and running twelve blocks down 17th Street to Glenarm, with more than thirty Longhorn cattle walking through downtown.",
       },
       {
         q: "Where should you stay for the Stock Show?",
@@ -248,7 +248,7 @@ export const EVENT_GUIDES: EventGuide[] = [
       {
         h2: "Which roads close, and which stay open?",
         answer:
-          "Closures run 5am to 1pm on a rolling basis — each street reopens once the runners are past. The organizers publish the open corridors, and they are the most useful thing on the whole website: I-25 stays open north-south, as does Colorado Boulevard and everything east of it, and Kipling and everything west of it. Traveling east-west, stay south of Colfax on 14th or lower, or north of 29th on 30th or higher.",
+          "Closures run 5am to 1pm on a rolling basis — each street reopens once the runners are past. The organizers publish the open corridors, and they are the most useful thing on the whole website: I-25 stays open north-south, as does Colorado Boulevard and everything east of it — with the exception of Colorado southbound between 29th and 17th — plus Kipling and everything west of it. Traveling east-west, stay south of Colfax on 14th or lower, or north of 29th on 30th or higher.",
         body: [
           "This is why the hotel choice matters more here than for any other Denver event. A car trip that looks like ten minutes on a map becomes a detour through the open corridors, at five in the morning, with a start time you cannot move. Booking somewhere you can walk from removes the entire problem.",
           "It also means spectators need a plan. Pick one or two points on the course, get there before 5am or walk, and stay put — hopping between mile markers by car does not work on this course.",
@@ -257,7 +257,7 @@ export const EVENT_GUIDES: EventGuide[] = [
       {
         h2: "What is the course actually like?",
         answer:
-          "It runs through Denver and Lakewood along Colfax Avenue, the longest main street in America, which is the whole reason the race exists — it was created by the cities of Denver, Lakewood and Aurora to mark it. The marathon passes through Empower Field at Mile High twice and runs through Denver Fire Station Number 1.",
+          "It runs through Denver and Lakewood along Colfax Avenue, which the organizers describe as the longest main street in America and which is the whole reason the race exists — by their account it was created by the cities of Denver, Lakewood and Aurora to mark it. The marathon passes through Empower Field at Mile High twice and runs through Denver Fire Station Number 1.",
         body: [
           "Beyond those, the route takes in the State Capitol, Civic Center Park, 16th Street, the Cherry Creek bike path, Confluence Park, Sloan's Lake, the Denver Zoo and Elitch Gardens, with roughly seven miles alongside rivers, lakes and bridges. The half marathon is billed as the only half in the country that runs through a fire station.",
           "One thing worth taking seriously as a visiting runner: Denver sits at 5,280 feet. That is below the threshold at which altitude illness becomes a concern, but it is high enough to matter over 26.2 miles if you arrived from sea level two days earlier. Adjust your target, not your training.",
@@ -266,7 +266,7 @@ export const EVENT_GUIDES: EventGuide[] = [
       {
         h2: "How big is the field?",
         answer:
-          "More than 28,000 runners across the weekend, including over 1,100 relay teams — the organizers describe it as the largest marathon weekend in the Rockies and the relay as the largest in the United States. Nearly 6,000 of those runners are in the corporate and government relay divisions.",
+          "More than 28,000 runners across the weekend, including over 1,100 relay teams — the organizers describe it as the largest marathon weekend in the Rockies and the second largest marathon relay in the United States. Nearly 6,000 of those runners are in the corporate and government relay divisions.",
         body: [
           "The relay is a five-person, five-leg format with corporate, government, public school and open divisions, and it is what gives the event its atmosphere: a large share of the field is running as a team from a Denver employer rather than chasing a time.",
         ],
@@ -295,7 +295,7 @@ export const EVENT_GUIDES: EventGuide[] = [
       },
       {
         q: "What roads close for the Colfax Marathon?",
-        a: "Closures run from 5am to 1pm and reopen on a rolling basis as runners pass. The organizers publish the corridors that stay open: I-25 north-south, Colorado Boulevard and everything east of it, Kipling and everything west of it, and east-west travel south of Colfax on 14th or lower or north of 29th on 30th or higher.",
+        a: "Closures run from 5am to 1pm and reopen on a rolling basis as runners pass. The organizers publish the corridors that stay open: I-25 north-south, Colorado Boulevard and everything east of it apart from the southbound stretch between 29th and 17th, Kipling and everything west of it, and east-west travel south of Colfax on 14th or lower or north of 29th on 30th or higher.",
       },
       {
         q: "Is the Colfax Marathon hard because of the altitude?",
@@ -303,7 +303,7 @@ export const EVENT_GUIDES: EventGuide[] = [
       },
       {
         q: "How many people run the Colfax Marathon?",
-        a: "More than 28,000 across the weekend, including over 1,100 relay teams. The organizers call it the largest marathon weekend in the Rockies, and the five-person relay the largest relay in the United States.",
+        a: "More than 28,000 across the weekend, including over 1,100 relay teams. The organizers call it the largest marathon weekend in the Rockies, and the five-person relay the second largest in the United States.",
       },
     ],
     event: {

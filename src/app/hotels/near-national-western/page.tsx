@@ -30,7 +30,7 @@ const FAQS = [
   },
   {
     q: "When is the National Western Stock Show?",
-    a: "The National Western Stock Show runs for about two weeks in January — typically starting mid-January. It's the largest event at the complex and one of the largest stock shows in the world. Hotels nearby book up fast during Stock Show; book well in advance.",
+    a: "Sixteen days in January — the 2027 show runs January 9 to 24, and 2026 ran January 10 to 25. It is the largest event at the complex by a wide margin: 750,039 people attended in 2026, an all-time record. The official Marriott room block has a cutoff in late December, which is the deadline that actually matters if you want a specific hotel.",
   },
   {
     q: "What other events happen at National Western Complex?",
@@ -126,7 +126,7 @@ export default async function HotelsNearNationalWesternPage() {
             </div>
             <div>
               <h3 className="font-bold mb-1">Downtown / LoDo (short drive)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If you&apos;re spending multiple days in Denver, downtown is the right base. National Western is a 10-minute drive or rideshare, and you&apos;ll have everything else at your doorstep. For Stock Show, book downtown hotels 6+ months in advance — they fill up entirely.</p>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">If you&apos;re spending multiple days in Denver, downtown is the right base. National Western is a 10-minute drive or rideshare, and you&apos;ll have everything else at your doorstep. For Stock Show, the official Marriott room block closes in late December, so book by early December rather than gambling on what's left in January.</p>
             </div>
             <blockquote className="border-l-4 border-denver-amber pl-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed italic" data-speakable>
               &ldquo;The National Western Stock Show is one of those only-in-Denver things &mdash; January, ice on the roads, and thousands of people in cowboy hats and Carhartt. It&apos;s genuinely fun even if ranching is not your world. Stay in RiNo if you want the option of walking over; in January, honestly, most people don&apos;t. Book downtown early and plan on a car.&rdquo;
@@ -199,8 +199,8 @@ export default async function HotelsNearNationalWesternPage() {
         <h2 className="text-xl font-bold mb-6">Event Tips</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: "Stock Show: Book Early", body: "The National Western Stock Show in January is one of the largest in the world. Denver hotels fill up entirely — book 6 months out if you're planning to attend. Prices spike significantly during the two-week run." },
-            { title: "RiNo Before and After", body: "The RiNo restaurant and brewery strip is about a mile south of the complex — a walk in decent weather, a two-minute ride in January. Odell Denver, Ratio Beerworks and dozens of restaurants sit within a few blocks of each other, which is the best pre-event dining of any Denver venue." },
+            { title: "Stock Show: Book Early", body: "The Stock Show drew 750,039 people over sixteen days in 2026, a record. There's an official Marriott room block with a hard cutoff in late December, which is the real deadline — book by early December and you won't be gambling on what's left." },
+            { title: "RiNo Before and After", body: "The RiNo restaurant and brewery strip is about a mile south of the complex — a twenty-minute walk in decent weather, a short ride in January. Odell Denver, Ratio Beerworks and dozens of restaurants sit within a few blocks of each other, which is a better pre-event situation than most Denver venues manage." },
             { title: "Rideshare Is Easiest", body: "Parking at National Western exists but can be chaotic around major events. Rideshare from RiNo or LoDo is usually the cleaner option — drop-off is direct and you avoid the post-event lot." },
           ].map((tip) => (
             <div key={tip.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">

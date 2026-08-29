@@ -111,7 +111,7 @@ export default async function HotelsNearElitchGardensPage() {
             <h2 className="text-2xl font-bold">Where to Stay</h2>
             <div>
               <h3 className="font-bold mb-1">Jefferson Park (closest, ~10 min)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Directly adjacent to Elitch Gardens on the east side. Jefferson Park is a walkable neighborhood with great bars (Brewed, Stats) and one of the best skyline views in the city. Very limited hotel options but worth checking first.</p>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just across the Platte from Elitch Gardens. Jefferson Park is a walkable neighborhood with a couple of good bars — Jefferson Park Pub and Briar Common — and one of the best skyline views in the city. Very limited hotel options but worth checking first.</p>
             </div>
             <div>
               <h3 className="font-bold mb-1">Sloan Lake (10–15 min)</h3>

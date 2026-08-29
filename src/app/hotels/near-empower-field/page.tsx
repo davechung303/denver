@@ -30,7 +30,7 @@ const FAQS = [
   },
   {
     q: "What is the closest neighborhood to Empower Field?",
-    a: "Jefferson Park is directly east of the stadium and overlooks the field from a hill, with a handful of good neighborhood bars. The catch is hotels: the Courtyard Denver Downtown West is the one real property on that side, and at 0.55 miles routed on foot it is the only hotel in this whole set that is a genuinely short walk to the stadium. Everything else means crossing the river.",
+    a: "Jefferson Park sits just north of the stadium and looks down on it from a hill, with a handful of good neighborhood bars. The catch is hotels: the Courtyard Denver Downtown West is the one real property on that side, and at 0.55 miles routed on foot it is the only hotel in this whole set that is a genuinely short walk to the stadium. Everything else means crossing the river.",
   },
   {
     q: "Is there parking near Empower Field?",
@@ -42,7 +42,7 @@ const FAQS = [
   },
   {
     q: "Is it worth staying in Jefferson Park vs downtown for a game?",
-    a: "Jefferson Park is closer and has some great bars (Brewed, Stats), but the hotel selection is thin — essentially the Courtyard Downtown West. Most people stay in LoDo or downtown anyway and accept a 33-plus minute walk or a five-minute car, because the food and the pre-game are better there.",
+    a: "Jefferson Park is closer and has a couple of good neighborhood bars — Jefferson Park Pub and Briar Common — but the hotel selection is thin — essentially the Courtyard Downtown West. Most people stay in LoDo or downtown anyway and accept a 33-plus minute walk or a five-minute car, because the food and the pre-game are better there.",
   },
   {
     q: "Is there a shuttle or train to Empower Field at Mile High?",
@@ -121,7 +121,7 @@ export default async function HotelsNearEmpowerFieldPage() {
             </div>
             <div>
               <h3 className="font-bold mb-1">Jefferson Park (closest &mdash; 11 min walk)</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Directly east of the stadium and the only side where a hotel is a short walk: the Courtyard Denver Downtown West routes at 0.55 miles, about eleven minutes. That is the single closest property in this whole set. Beyond it the options thin out fast, but you get stadium and skyline views and a few genuinely good neighborhood bars.</p>
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just north of the stadium, and the only side where a hotel is a short walk: the Courtyard Denver Downtown West routes at 0.55 miles, about eleven minutes. That is the single closest property in this whole set. Beyond it the options thin out fast, but you get stadium and skyline views and a few genuinely good neighborhood bars.</p>
             </div>
             <div>
               <h3 className="font-bold mb-1">LoHi &amp; Speer (22&ndash;24 min walk)</h3>
@@ -223,7 +223,7 @@ export default async function HotelsNearEmpowerFieldPage() {
         venueName={"Empower Field"}
         venueHref={"/hotels/near-empower-field"}
         hotels={hotelPool}
-        transitNote={"Empower Field is two stops from Union Station on the E or W line."}
+        transitNote={"Empower Field at Mile High station is one stop from Union Station on the E or W line, about four minutes."}
       />
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">

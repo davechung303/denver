@@ -73,7 +73,7 @@ export const COMPARISONS: Comparison[] = [
       { label: "Food", a: "Denver's fine-dining center — Matsuhisa, Del Frisco's, Hillstone, Blue Island Oyster Bar. The Cherry Cricket, open since 1945, is the counterweight", b: "Convenient rather than exceptional. Guard and Grace, ChoLon, Larimer Square. The best food is a short walk out in any direction" },
       { label: "After 10pm", a: "Quiet, by design. That is the product, not a flaw", b: "Busy on the LoDo side, thin and empty toward the Capitol and the eastern edge" },
       { label: "Light rail", a: "None. Rideshare downtown runs about fifteen minutes outside rush hour", b: "The FreeRide runs 16th Street end to end every 4 to 12 minutes, free, with rail at both ends" },
-      { label: "Parking", a: "Easier and often cheaper; this is a neighborhood built for cars", b: "Typically $50 to $70 a night for overnight self-park or valet — price it with the room" },
+      { label: "Parking", a: "Easier and often cheaper; this is a neighborhood built for cars", b: "Typically $45 to $70 a night for overnight self-park or valet — price it with the room" },
       { label: "Best for", a: "Luxury travelers, shoppers, couples, anyone whose hotel is the occasion", b: "First visits, short visits, sport, conferences, anyone who wants to stop planning" },
       { label: "Wrong for", a: "Tight budgets, nightlife, and a two-night first visit you will spend commuting", b: "Anyone hunting neighborhood character — downtown has less of it than the areas around it" },
     ],
@@ -89,7 +89,7 @@ export const COMPARISONS: Comparison[] = [
         h: "What each one is actually within walking distance of",
         body: [
           "Cherry Creek North is the walkable part and the shopping center is the enclosed part, and the distinction matters more than the maps suggest. North is a real grid of low-rise blocks you can wander for an afternoon. Across First Avenue, the mall is a mall. Both are good; only one of them is the reason to stay in a walkable neighborhood.",
-          "Downtown's walking radius is larger and more varied. 16th Street reopened in October 2025 after three years and $175 million of reconstruction, and was renamed in the process — the 16th Street Mall is now simply 16th Street, and the free MallRide is the 16th Street FreeRide. Any guide still routing you around construction detours was written before that. From the middle of it you reach the Convention Center, Larimer Square, the Performing Arts Complex and the Denver Art Museum on foot.",
+          "Downtown's walking radius is larger and more varied. 16th Street reopened in October 2025 after three and a half years and $175 million of reconstruction, and was renamed in the process — the 16th Street Mall is now simply 16th Street, and the free MallRide is the 16th Street FreeRide. Any guide still routing you around construction detours was written before that. From the middle of it you reach the Convention Center, Larimer Square, the Performing Arts Complex and the Denver Art Museum on foot.",
           "The honest caveat about downtown: parts of it still look half-finished. Vacant storefronts remain, though retail vacancy hit its lowest level since tracking began in 2021 and foot traffic was up 13% year over year by April 2026. The blocks toward the Capitol and the eastern edge of the ballpark district go quiet after dark — empty rather than menacing, but worth knowing when you choose which end to book.",
         ],
       },
@@ -97,8 +97,8 @@ export const COMPARISONS: Comparison[] = [
         h: "The money, honestly",
         body: [
           "Cherry Creek is more expensive on almost any night. The exception is the one worth planning around: Cherry Creek's rates barely respond to the Rockies schedule, and downtown's move a lot. On a home-game weekend the premium narrows enough that the comparison stops being obvious, which is the single most useful piece of Denver rate arbitrage there is.",
-          "Downtown's own spikes come from the Colorado Convention Center rather than from weekends. A citywide can double a Tuesday rate. Before you assume midweek is cheap, check what is booked — CEDIA Expo runs 1 to 4 September 2026 and Splunk's .conf26 follows on 14 to 17 September, and those two weeks price nothing like the ones either side of them.",
-          "Then add parking. Downtown overnight parking typically runs $50 to $70 a night; The Crawford publishes valet at $68. Cherry Creek parking is easier and generally cheaper. If you are driving, that gap is real money and it closes some of the rate difference.",
+          "Downtown's own spikes come from the Colorado Convention Center rather than from weekends. A citywide can double a Tuesday rate. Before you assume midweek is cheap, check what is booked — CEDIA Expo runs September 1 to 4, 2026 and Splunk's .conf26 follows on September 14 to 17, and those two weeks price nothing like the ones either side of them.",
+          "Then add parking. Downtown overnight parking typically runs $45 to $70 a night; The Crawford publishes valet at $68. Cherry Creek parking is easier and generally cheaper. If you are driving, that gap is real money and it closes some of the rate difference.",
         ],
       },
       {

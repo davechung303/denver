@@ -94,7 +94,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "Is the A Line better than a rideshare from the airport?",
         answer:
-          "For downtown, RiNo or anywhere near Union Station, yes — it is faster than rush-hour traffic, costs $10 for the round trip, and drops you in the middle of the city. A rideshare wins if you are staying somewhere the train does not reach, arriving outside service hours, or travelling with more luggage than you want to carry.",
+          "For downtown, RiNo or anywhere near Union Station, yes — it is faster than rush-hour traffic, costs $10 for the round trip, and drops you in the middle of the city. A rideshare wins if you are staying somewhere the train does not reach, arriving outside service hours, or traveling with more luggage than you want to carry.",
         body: [
           "This page covers the train. Hotel shuttles, mountain shuttles, rideshare and taxi costs are covered separately in the Denver airport ground-transport guide. Denver gets an unusually high share of visitors by air — 42% of overnight visitors arrive by plane, against a national average of 28% — which is why the airport connection matters more here than in most US cities.",
         ],
@@ -274,7 +274,7 @@ export const GUIDES: Record<string, Guide> = {
         answer:
           "Acute mountain sickness presents like a hangover: a headache plus at least one of appetite loss, dizziness, fatigue, nausea and occasionally vomiting. Onset is typically 2 to 12 hours after arriving at altitude, which is why it often gets blamed on the first night's sleep.",
         body: [
-          "Above about 9,000 feet, periodic breathing during sleep becomes close to universal, and disturbed sleep is the most common complaint travellers report at high altitude. Again — these are mountain numbers, not Denver ones.",
+          "Above about 9,000 feet, periodic breathing during sleep becomes close to universal, and disturbed sleep is the most common complaint travelers report at high altitude. Again — these are mountain numbers, not Denver ones.",
           "If symptoms are severe, or if someone becomes confused or unsteady on their feet at altitude, that is a reason to descend and seek medical care rather than to wait it out.",
         ],
       },
@@ -353,7 +353,7 @@ export const GUIDES: Record<string, Guide> = {
           "Measurably, yes. 16th Street fully reopened on October 4, 2025 after three and a half years and $175 million of reconstruction. Foot traffic was up 11% year to date as of July 2026 — about 162,000 additional visits — and average dwell time rose by 16 minutes against 2025.",
         body: [
           "Ground-floor vacancy on 16th Street had climbed to around 30% during construction, and the departures were the ones you would notice: Sephora, Starbucks, Chili's, Hard Rock Cafe, McDonald's. The corridor now counts about 200 retailers and restaurants including more than 40 sidewalk cafes, with over 1,200 residential units on the street itself and more than 1,800 hotel rooms adjacent to it.",
-          "Busier streets are safer streets, and that is the mechanism doing most of the work here. By April 2026, 16th Street foot traffic had reached 95% of 2019 levels.",
+          "Busier streets are safer streets, and that is the mechanism doing most of the work here. Downtown-wide foot traffic reached 95% of 2019 levels in April 2026, and 16th Street itself was running 13% above the previous April.",
         ],
       },
       {
@@ -383,7 +383,7 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         q: "Is 16th Street safe now that it has reopened?",
-        a: "Busier, which is the thing that matters most. Since the October 2025 reopening, foot traffic is up 11% year to date and average dwell time is up 16 minutes, reaching about 95% of 2019 levels by April 2026. The city also placed its new downtown police kiosk on the corridor at 16th and Arapahoe. Crowded streets are the mechanism; the numbers say the street is getting crowded again.",
+        a: "Busier, which is the thing that matters most. Since the October 2025 reopening, foot traffic is up 11% year to date and average dwell time is up 16 minutes, with downtown-wide foot traffic back to about 95% of 2019 levels by April 2026. The city also placed its new downtown police kiosk on the corridor at 16th and Arapahoe. Crowded streets are the mechanism; the numbers say the street is getting crowded again.",
       },
       {
         q: "Is Denver Union Station safe?",
@@ -522,7 +522,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "Which Denver hotels charge a destination fee?",
         answer:
-          "Fewer than the aggregator lists suggest. Verified directly from the hotels' own websites: The Maven at Dairy Block charges a $28 per room per night Destination Amenity Fee plus tax, and The Rally Hotel charges $28 plus tax per room night. Both are LoDo properties.",
+          "Fewer than the aggregator lists suggest. Verified directly from the hotels' own websites: The Crawford charges $30 plus tax per day, and The Maven at Dairy Block and The Rally Hotel both charge $28 plus tax per room per night. All three are LoDo properties, which is the pattern worth noticing — the fee clusters in the ballpark district rather than across downtown.",
         body: [
           "Just as usefully, several major downtown hotels publish no destination fee at all on their own sites — the Hilton Denver City Center, The Curtis, The Brown Palace and the Embassy Suites Convention Center all list parking charges and nothing else. If a comparison site tells you one of those charges a resort fee, check the hotel's own page before you believe it.",
           "Third-party fee databases list around twenty-five Denver properties with fees in the $20 to $41 range, but those figures usually appear to include tax, which is why they do not match what the hotels themselves quote. Treat them as leads to check, not as prices.",
@@ -568,7 +568,7 @@ export const GUIDES: Record<string, Guide> = {
     faqs: [
       {
         q: "Do Denver hotels charge resort fees?",
-        a: "Some do, most downtown flags do not, and the amounts are modest by US standards. Verified from the hotels' own sites: The Maven at Dairy Block and The Rally Hotel both charge $28 plus tax per room per night. The Hilton Denver City Center, The Curtis, The Brown Palace and the Embassy Suites Convention Center publish no destination fee at all.",
+        a: "Some do, most downtown flags do not, and the amounts are modest by US standards. Verified from the hotels' own sites: The Crawford charges $30 plus tax per day, and The Maven at Dairy Block and The Rally Hotel both charge $28 plus tax per room per night. The Hilton Denver City Center, The Curtis, The Brown Palace and the Embassy Suites Convention Center publish no destination fee at all.",
       },
       {
         q: "How much is a destination fee in Denver?",
@@ -604,7 +604,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "How far are the ski areas from Denver?",
         answer:
-          "Loveland is the closest at 53 miles, then Eldora at 49 miles by a different road, Winter Park at 67, Keystone at 72 from downtown, Copper at 75, Breckenridge at 104 from the airport and Vail at 119 from the airport. Vail and Breckenridge both publish about an hour and three quarters in clear conditions.",
+          "Eldora is nominally the closest at 49 miles, though by a different road through Boulder rather than I-70. On the I-70 corridor itself Loveland is first at 53 miles, then Winter Park at 67, Keystone at 72 from downtown, Copper at 75, Breckenridge at 104 from the airport and Vail at 119 from the airport. Vail and Breckenridge both publish about an hour and three quarters in clear conditions.",
         table: {
           head: ["Resort", "Distance", "As published by"],
           rows: [
@@ -636,7 +636,7 @@ export const GUIDES: Record<string, Guide> = {
         answer:
           "On I-70 between Dotsero and Morrison, from September 1 to May 31, your vehicle needs tires with at least 3/16 inch of tread that are winter, all-weather or mud-and-snow rated — or chains. It applies to all vehicles including 4WD and AWD. Non-compliance is a $50 fine plus a $17 surcharge.",
         body: [
-          "The 2025 update shifted the emphasis onto tire condition and type regardless of drivetrain, which catches out a lot of visitors who assume an AWD rental is automatically compliant. It may not be — rental fleets run all-season tires, and all-season is not the same as all-weather. If you are renting for a ski day, it is a fair question to ask at the counter.",
+          "The 2025 update shifted the emphasis onto tire condition and type regardless of drivetrain, and added a requirement that two-wheel-drive vehicles carry chains or an approved traction device. It catches out a lot of visitors who assume an AWD rental is automatically compliant. It may not be — rental fleets run all-season tires, and all-season is not the same as all-weather. If you are renting for a ski day, it is a fair question to ask at the counter.",
         ],
       },
       {
@@ -668,7 +668,7 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         q: "What is the closest ski area to Denver?",
-        a: "Loveland Ski Area at 53 miles, sitting right at I-70 exit 216 just before the Eisenhower Tunnel. Eldora is nominally closer at 49 miles but by a different road through Boulder, and it is the only area reachable from Denver on ordinary RTD transit — Route NB from Downtown Boulder Station on a $5.50 day pass.",
+        a: "Eldora, at 49 miles, though it sits off the I-70 corridor on a different road through Boulder. On I-70 itself the closest is Loveland Ski Area at 53 miles, right at exit 216 just before the Eisenhower Tunnel. Eldora is also the only area reachable from Denver on ordinary RTD transit — Route NB from Downtown Boulder Station on a $5.50 day pass.",
       },
       {
         q: "Is there a ski train from Denver?",
@@ -684,7 +684,7 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         q: "How early should you leave Denver to ski?",
-        a: "Before 7am on a weekend. CDOT's own forecast has westbound I-70 building from 9am and peaking between 10:30am and 3pm, so leaving at 6:30 or 7 puts you ahead of it. Coming back, the choice is to leave the hill by about 2pm or to eat dinner in the mountains and drive after 7pm — anything in between is the Sunday eastbound queue.",
+        a: "Before 7am on a weekend. CDOT's own forecast has westbound I-70 building from 9am and peaking between 10:30am and 3pm, so leaving at 6:30 or 7 puts you ahead of it. Coming back, the choice is to leave the hill by about 2pm or to eat dinner in the mountains and drive after 7pm — anything in between is the Sunday eastbound backup.",
       },
     ],
   },
@@ -716,7 +716,7 @@ export const GUIDES: Record<string, Guide> = {
           ],
         },
         body: [
-          "International connections change the maths in the wrong direction: add immigration on arrival and a longer check-in on departure and you want an hour more than the figures above. Domestic-to-domestic on the same ticket is the easy case.",
+          "International connections change the math in the wrong direction: add immigration on arrival and a longer check-in on departure and you want an hour more than the figures above. Domestic-to-domestic on the same ticket is the easy case.",
         ],
       },
       {
