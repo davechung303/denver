@@ -27,6 +27,8 @@ const GROUPS: Group[] = [
     title: "Sports & Big Events",
     venues: [
       { href: "/hotels/great-american-beer-festival", name: "Great American Beer Festival", blurb: "GABF 2026 moved to Ruby Hill — new venue, new plan.", nb: "baker" },
+      { href: "/hotels/national-western-stock-show", name: "National Western Stock Show", blurb: "Sixteen days each January. The free shuttle nobody finds.", nb: "five-points" },
+      { href: "/hotels/colfax-marathon", name: "Colfax Marathon", blurb: "6am City Park start, 5am road closures. Book accordingly.", nb: "uptown" },
       { href: "/hotels/near-coors-field", name: "Coors Field", blurb: "Rockies games — walkable LoDo hotels.", nb: "lodo" },
       { href: "/hotels/near-ball-arena", name: "Ball Arena", blurb: "Nuggets, Avalanche & concerts.", nb: "lodo" },
       { href: "/hotels/near-empower-field", name: "Empower Field at Mile High", blurb: "Broncos games & stadium shows.", nb: "jefferson-park" },
@@ -179,6 +181,36 @@ export default async function HotelsHubPage() {
             className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
             <h3 className="font-bold group-hover:text-denver-amber transition-colors">Coors Field Parking Guide</h3>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Where to park for a Rockies game, what it costs, and how to skip the hassle entirely.</p>
+          </Link>
+          <Link href="/denver/hotel-parking"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">What Hotel Parking Costs</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">$45 to $70 a night downtown, published hotel by hotel — and the garage charging $23 for the same 24 hours.</p>
+          </Link>
+          <Link href="/denver/is-downtown-denver-safe"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Is Downtown Denver Safe?</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Police district data, what changed at Union Station, and why the hour matters more than the block.</p>
+          </Link>
+          <Link href="/denver/resort-fees"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Do Denver Hotels Charge Resort Fees?</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Some do, most downtown flags don&apos;t — and the law changed in 2025 and again in 2026.</p>
+          </Link>
+          <Link href="/denver/red-rocks-what-to-know"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Red Rocks: The Rules Nobody Tells You</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Bag size, no re-entry, the overnight rule, and 193 steps at 6,450 feet.</p>
+          </Link>
+          <Link href="/denver/ski-basecamp"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Denver as a Ski Basecamp</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Verified distances, the ski train, the Snowstang bus, and when I-70 actually jams.</p>
+          </Link>
+          <Link href="/denver/den-layover"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Leaving DEN on a Layover</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">About three and a half hours of overhead. Here&apos;s the layover length that makes it worth it.</p>
           </Link>
           <Link href="/denver/red-rocks-shuttle"
             className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">

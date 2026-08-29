@@ -212,6 +212,7 @@ export default async function WhereToStayPage() {
             { href: "/denver/den-layover", title: "Leaving DEN on a layover", blurb: "About three and a half hours of overhead. Here’s the layover length that makes it worth it." },
             { href: "/denver/ski-basecamp", title: "Denver as a ski basecamp", blurb: "Verified distances, the ski train, the Snowstang bus, and when I-70 actually jams." },
             { href: "/denver/altitude", title: "The altitude, honestly", blurb: "Denver is 5,280 feet. The CDC's threshold for altitude illness is 8,000." },
+            { href: "/denver/red-rocks-what-to-know", title: "Red Rocks: the rules nobody tells you", blurb: "Bag size, no re-entry, the overnight rule, and 193 steps at 6,450 feet." },
             { href: "/denver/coors-field-parking", title: "Coors Field parking", blurb: "Where to leave the car on a game night without paying the lot price." },
           ].map((g) => (
             <Link

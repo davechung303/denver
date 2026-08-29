@@ -781,6 +781,108 @@ export const GUIDES: Record<string, Guide> = {
       },
     ],
   },
+  "red-rocks-what-to-know": {
+    slug: "red-rocks-what-to-know",
+    title: "Red Rocks: The Rules Nobody Tells You Until You're There",
+    metaTitle: "Red Rocks Rules: Bags, Re-Entry, Parking & the 193 Steps",
+    metaDescription:
+      "The bag size that actually gets in, why you can't leave and come back, what the 193 steps really feel like at 6,450 feet, and where the overflow lot is.",
+    ogTitle: "Red Rocks: What to Know Before Your First Show",
+    ogDescription:
+      "Bag policy, re-entry, the overnight rule, the steps, and the parking situation — the official versions, not the ones circulating online.",
+    lede:
+      "Four things catch first-timers at Red Rocks. Bags must be single-pocket or clear and no bigger than 13 by 15 by 8 inches — multi-pocket bags are refused at the gate whatever their size. Once your ticket is scanned you cannot leave and come back; re-entry is allowed only for weather or medical emergencies. Tickets are digital-only through AXS, and rows 1 to 4 are non-transferable. And the venue sits at 6,450 feet with 193 steps from the stage to the top plaza, a hundred feet of climb, which is more than the photographs suggest.",
+    updated: "2026-08-29",
+    sections: [
+      {
+        h2: "What bags are allowed at Red Rocks?",
+        answer:
+          "Single-pocket bags and clear bags no larger than 13 by 15 by 8 inches. Small purses and fanny packs of 6 by 9 inches or smaller are fine. Hydration packs are allowed up to 2 liters. Bags with multiple pockets are prohibited regardless of size, and everything must fit under your seat space of 18 by 12 inches.",
+        body: [
+          "The multi-pocket rule is the one that catches people, because it is about construction rather than volume — a small backpack with a front pocket is out, and a larger single-compartment tote is in. Bags are opened for inspection at the gate.",
+          "One widely circulated figure is wrong: some syndicated coverage lists the maximum as 13 by 15 by 18 inches. The venue's own policy page says 8 inches for the third dimension. Use the official number.",
+          "You may bring an empty reusable water bottle — Nalgene, aluminum or stainless, 32 ounces or less. Glass and aluminum cans are prohibited, as are umbrellas, weapons of any kind, laptops and tablets, and cameras with removable lenses, GoPros and 360-degree cameras.",
+        ],
+      },
+      {
+        h2: "Can you leave Red Rocks and come back in?",
+        answer:
+          "No. In the venue's own words: once you enter and your ticket has been scanned, you cannot leave the show and re-enter. Re-entry is permitted only in weather-related or medical emergencies. Whatever you left in the car stays in the car.",
+        body: [
+          "This is the single most common Red Rocks mistake, and it interacts badly with the walk from the overflow lot. Take the jacket in with you. The venue is at 6,450 feet and the temperature can fall sharply once the sun goes behind Ship Rock, including in July.",
+        ],
+      },
+      {
+        h2: "Can you sleep in your car at Red Rocks?",
+        answer:
+          "No. Overnight camping is prohibited in all parking lots, roadways and natural areas at Red Rocks Park. You may, however, leave a vehicle unoccupied until 10am the following day — so the car can stay, you cannot.",
+        body: [
+          "That distinction is the practical one for anyone planning to drink at a show: leaving the car overnight and collecting it in the morning is explicitly allowed, sleeping in it is not.",
+        ],
+      },
+      {
+        h2: "How does parking work?",
+        answer:
+          "Parking and admission to the park are free. Lots open two hours before doors. The lots are Top Circle, Upper North, Upper South, Lower South 2, the Trading Post lot and the Jurassic Lot — and when the closer ones fill, arrivals are directed to the Jurassic Lot, a mile from the South Gate.",
+        body: [
+          "The venue does not publish a time by which the lots fill, so treat the Jurassic Lot as the realistic outcome of a late arrival rather than a rare one. The routes from the lots to the gates may be partly dirt or uphill, which is a reason to think about footwear before you leave the hotel.",
+          "Complimentary shuttles run around the park during arrival, helping people in from the further lots, with limited service after the show from the Top Circle and Trading Post lots back to the Jurassic Lot. Rideshare, taxi and private pick-up all happen at the Jurassic Lot.",
+          "Groups in a vehicle carrying at least 24 passengers and at least 85% full can reserve the Upper North Lot through an online form 48 hours ahead, first come first served. There is no general reservation system for ordinary cars.",
+        ],
+      },
+      {
+        h2: "How hard is the climb?",
+        answer:
+          "There are 193 steps from the stage to the top plaza and a hundred feet of elevation change from stage to the top row, all at 6,450 feet. The venue's own advice is to drink plenty of water and take your time on the stairs, which is more useful than it sounds if you flew in that morning.",
+        body: [
+          "The amphitheater is cut into a 738-acre park between two formations — Creation Rock to the north stands 300 feet and Ship Rock to the south 200 — and the seating bowl itself runs 320 feet wide by 480 feet long. None of that is flat.",
+          "Accessible parking is designated in the Top Circle Lot, about 500 feet from Row 70, and in the Upper South Lot, which is served by an accessible shuttle running to a point roughly 275 feet from Row 1. Rows 1 and 70 are both step-free; rows 2 and 3 have limited-mobility and sensory accessible seating. A placard or plate is required and spaces are first come, first served.",
+        ],
+      },
+      {
+        h2: "How do the tickets work?",
+        answer:
+          "Red Rocks ticketing runs through AXS, and AXS mobile delivery is the only admission method — there are no paper tickets. Rows 1 to 4 are non-transferable: the original purchaser must arrive with the whole party and present the app or a registered ID, and photo ID may be checked at the gate.",
+        body: [
+          "That front-rows rule exists to break up resale on the most speculated-on seats, and it is enforced. If you are buying rows 1 to 4 second-hand from anyone other than an official transfer, you are buying a problem.",
+        ],
+      },
+      {
+        h2: "What else happens at Red Rocks besides concerts?",
+        answer:
+          "Two long-running series, both official. Film on the Rocks screens films on Monday evenings across the summer — the 2026 run was its 27th season, five dates between June and August, doors at 6:30pm and the film at 8:30pm, tickets $25 to $50. Yoga on the Rocks runs Saturday mornings from late May to late August, doors at 6am and yoga at 7am, $23 a session.",
+        body: [
+          "The park itself is free to visit outside event hours — the amphitheater, the visitor center and the Trading Post all cost nothing, and on a weekday morning with nobody there it is one of the better free things to do near Denver. In 2025 the venue hosted 236 events with 1.75 million paid attendance, plus another 1.1 million people who simply came to look.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What size bag can you take into Red Rocks?",
+        a: "Single-pocket or clear bags no larger than 13 by 15 by 8 inches, plus small purses and fanny packs of 6 by 9 inches or less. Bags with multiple pockets are prohibited whatever their size, which is what catches most people. Hydration packs up to 2 liters are allowed, and everything has to fit in your 18-by-12-inch seat space.",
+      },
+      {
+        q: "Can you re-enter Red Rocks after leaving?",
+        a: "No. Once your ticket is scanned you cannot leave and come back, except for a weather or medical emergency. Bring your jacket in with you — the venue is at 6,450 feet and it gets cold after dark even in midsummer.",
+      },
+      {
+        q: "Is parking free at Red Rocks?",
+        a: "Yes — parking and park admission are both free. Lots open two hours before doors, and once the closer lots fill, arrivals are directed to the Jurassic Lot about a mile from the South Gate. The venue does not publish a fill time, so arriving early is the only reliable way to park close.",
+      },
+      {
+        q: "How many steps are there at Red Rocks?",
+        a: "193, from the stage to the top plaza, with about a hundred feet of elevation change from the stage to the top row — all at 6,450 feet. Accessible parking and a shuttle exist for rows 1 to 3 and row 70; a placard or plate is required and spaces are first come, first served.",
+      },
+      {
+        q: "Can you sleep in your car at Red Rocks after a show?",
+        a: "You can leave the car and collect it later — vehicles may stay unoccupied until 10am the next day — but overnight camping is prohibited in every lot, roadway and natural area in the park. Leave the car, take a ride home.",
+      },
+      {
+        q: "How far is Red Rocks from Denver?",
+        a: "The amphitheater is at 18300 W Alameda Pkwy in Morrison — officially about seven miles from Golden and less than two miles from the town of Morrison. Red Rocks does not publish a distance from downtown Denver, and there is no scheduled RTD or Bustang service to the venue, so the realistic options are driving, a rideshare, or one of the show-night shuttles that run from downtown.",
+      },
+    ],
+  },
 };
 
 export const GUIDE_SLUGS = Object.keys(GUIDES);

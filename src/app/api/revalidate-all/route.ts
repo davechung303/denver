@@ -42,6 +42,18 @@ export async function GET(req: Request) {
   revalidatePath("/denver/red-rocks-shuttle");
   revalidatePath("/denver/coors-field-parking");
   revalidatePath("/denver/things-to-do");
+  revalidatePath("/denver/is-downtown-denver-safe");
+  revalidatePath("/denver/hotel-parking");
+  revalidatePath("/denver/resort-fees");
+  revalidatePath("/denver/ski-basecamp");
+  revalidatePath("/denver/den-layover");
+  revalidatePath("/denver/red-rocks-what-to-know");
+  revalidatePath("/denver/where-to-stay/cherry-creek-vs-downtown");
+  revalidatePath("/denver/where-to-stay/union-station-vs-rino");
+  revalidatePath("/denver/where-to-stay/lodo-vs-golden-triangle");
+  revalidatePath("/denver/where-to-stay/downtown-vs-airport");
+  revalidatePath("/hotels/national-western-stock-show");
+  revalidatePath("/hotels/colfax-marathon");
   revalidatePath("/hotels");
   for (const slug of HOTEL_PAGES) revalidatePath(`/hotels/${slug}`);
   for (const slug of EVENT_PAGES) revalidatePath(`/events/${slug}`);
