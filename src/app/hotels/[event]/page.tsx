@@ -5,6 +5,7 @@ import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import HowThisListWasMade from "@/components/HowThisListWasMade";
 import { EVENT_GUIDES, getEventGuide } from "@/lib/eventGuides";
 
 export const revalidate = 86400;
@@ -252,6 +253,8 @@ export default async function EventGuidePage({
           ))}
         </div>
       </section>
+
+      <HowThisListWasMade updated={g.updated} what="guide" />
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

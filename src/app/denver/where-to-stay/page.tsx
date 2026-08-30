@@ -4,6 +4,7 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
+import HowThisListWasMade from "@/components/HowThisListWasMade";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { STAY_AREAS, QUICK_PICKS, STAY_FAQS } from "@/lib/stayGuide";
 import { COMPARISONS } from "@/lib/stayComparisons";
@@ -154,6 +155,8 @@ export default async function WhereToStayPage() {
       </section>
 
       {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
+      <HowThisListWasMade updated={UPDATED} what="guide" />
+
       <BookYourTrip
         pubref="where-to-stay"
         heading="Know your dates?"

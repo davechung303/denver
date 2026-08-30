@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import HowThisListWasMade from "@/components/HowThisListWasMade";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
@@ -194,6 +195,8 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
           </Link>
         </section>
       </div>
+
+      <HowThisListWasMade updated={guide.updated} what="guide" />
 
       {guide.booking && (
         <BookYourTrip

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import HowThisListWasMade from "@/components/HowThisListWasMade";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { getHotelPool } from "@/lib/places";
@@ -284,6 +285,8 @@ export default async function ComparisonPage({
           covers all ten Denver neighborhoods, including who each one is wrong for.
         </p>
       </section>
+
+      <HowThisListWasMade updated={c.updated} what="comparison" />
 
       <section className="bg-denver-navy text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
