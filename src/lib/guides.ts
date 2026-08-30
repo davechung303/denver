@@ -15,6 +15,12 @@ export interface GuideSection {
   body?: string[];
   table?: { head: string[]; rows: string[][] };
   list?: string[];
+  /**
+   * Hotel slugs to render as large image cards directly under this section.
+   * These pages were walls of text with the only photography far below the
+   * fold; a spotlight puts the rooms beside the argument for them.
+   */
+  spotlight?: { slugs: string[]; heading?: string; note?: string };
 }
 
 /**
@@ -1127,6 +1133,11 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         h2: "The one place in Denver that sleeps eight",
+        spotlight: {
+          slugs: ["catbird-hotel"],
+          heading: "The Klee House is here",
+          note: "Four bedrooms, a full kitchen, and a stated capacity of eight, inside a RiNo hotel. It is one unit, so it goes early.",
+        },
         answer:
           "The Klee House at the Catbird Hotel in RiNo: four bedrooms, two and a half bathrooms, 2,500 square feet, a full kitchen, and a stated capacity of eight guests. It is a house inside a hotel, in the neighborhood you were going out in anyway.",
         body: [
@@ -1136,6 +1147,15 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         h2: "If you need connecting rooms",
+        spotlight: {
+          slugs: [
+            "grand-hyatt-denver",
+            "hyatt-regency-denver-at-colorado-convention-center",
+            "embassy-suites-by-hilton-denver-downtown-convention-center",
+          ],
+          heading: "The three worth calling",
+          note: "Deepest connecting-room inventory downtown. None of them publishes a request procedure, so call the property rather than trusting a booking-site filter.",
+        },
         answer:
           "Ask the hotel directly, and ask before you book — no Denver property publishes a request procedure, and the booking-site \"connecting rooms\" filter is unreliable. The Grand Hyatt has the deepest connecting inventory in the city, and the Homewood Suites on the Convention Center block is the one that says outright it has none.",
         body: [
@@ -1232,6 +1252,16 @@ export const GUIDES: Record<string, Guide> = {
     sections: [
       {
         h2: "Which Denver hotels sell a room with a mountain view?",
+        spotlight: {
+          slugs: [
+            "hyatt-regency-denver-at-colorado-convention-center",
+            "four-seasons-hotel-denver",
+            "hotel-clio-a-luxury-collection-hotel-denver-cherry-creek",
+            "populus-denver",
+          ],
+          heading: "The four you can actually book",
+          note: "Every other mountain view in Denver is a room assignment you have to ask for. These four sell it as a category.",
+        },
         answer:
           "Four. We went through the published room lists on the brands' own sites and only these four name a bookable guest room for the view. The Hyatt Regency has the deepest inventory of the group — it is the only Denver hotel selling mountain-view rooms in both bed configurations.",
         table: {
@@ -1260,6 +1290,16 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         h2: "What guests actually report seeing",
+        spotlight: {
+          slugs: [
+            "sonesta-denver-downtown",
+            "courtyard-by-marriott-denver-cherry-creek",
+            "the-jacquard-autograph-collection",
+            "home2-by-hilton-denver-downtown-convention-center",
+          ],
+          heading: "Where the guest reports are strongest",
+          note: "None of these sells a mountain-view room type. All four have guests describing one anyway — ask for a high floor.",
+        },
         answer:
           "We searched our own Google review data across 250 Denver hotels for mountain mentions. Thirty-one properties have guests describing a mountain view, which is far more than the four selling one — but the useful detail is that guests keep naming the specific floor, side or room type that delivers it.",
         list: [
@@ -1305,6 +1345,16 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         h2: "The cheaper way to buy the view",
+        spotlight: {
+          slugs: [
+            "grand-hyatt-denver",
+            "the-rally-hotel-at-mcgregor-square",
+            "the-art-hotel-denver-curio-collection-by-hilton",
+            "the-westin-denver-downtown",
+          ],
+          heading: "Rooftops you can visit without a room",
+          note: "All four claim mountain views from a bar or pool deck on their own site. A drink up there costs less than a view upgrade — and you get to see the weather first.",
+        },
         answer:
           "Drink it instead of sleeping in it. Six Denver hotels claim mountain views from a rooftop or top-floor bar on their own sites, and a cocktail costs less than a view upgrade at every one of them.",
         list: [
@@ -1367,3 +1417,32 @@ export const GUIDES: Record<string, Guide> = {
 };
 
 export const GUIDE_SLUGS = Object.keys(GUIDES);
+
+/**
+ * Ordered card copy for the guides. These pages were islands — each one linked
+ * up to the pillar and nowhere sideways, so a new guide had exactly two
+ * internal links pointing at it and took weeks to get discovered. Every guide
+ * now links to the three that follow it here, wrapping around, which gives
+ * each page three inbound contextual links the moment it ships.
+ */
+export const GUIDE_CARDS: { slug: string; title: string; blurb: string }[] = [
+  { slug: "mountain-view-hotels", title: "Hotels with mountain views", blurb: "Only four sell a room named for it — and some famous ones advertise the opposite." },
+  { slug: "hotel-free-parking", title: "Where parking is actually free", blurb: "No downtown hotel. Not the airport strip either, whatever the booking sites say." },
+  { slug: "bachelorette-party-hotels", title: "Group and bachelorette weekends", blurb: "Most rooms cap at four adults. What genuinely sleeps six or eight." },
+  { slug: "hotel-parking", title: "What hotel parking costs", blurb: "$42 to $70 a night downtown, published hotel by hotel." },
+  { slug: "resort-fees", title: "Do Denver hotels charge resort fees?", blurb: "Some do, most downtown flags don't, and the law changed twice." },
+  { slug: "hotel-costs", title: "What a Denver hotel really costs", blurb: "Rate, tax and parking together — the only number worth comparing." },
+  { slug: "is-downtown-denver-safe", title: "Is downtown Denver safe?", blurb: "District data, what changed at Union Station, and why the hour beats the block." },
+  { slug: "altitude", title: "The altitude, honestly", blurb: "What a mile up actually does to you, and the first-night mistakes." },
+  { slug: "airport-train", title: "The A Line from the airport", blurb: "37 minutes for $10 — and the $10 is a day pass, not a one-way." },
+  { slug: "den-layover", title: "Leaving DEN on a layover", blurb: "About three and a half hours of overhead. Here's when it's worth it." },
+  { slug: "ski-basecamp", title: "Denver as a ski basecamp", blurb: "Verified distances, the ski train, the Snowstang, and when I-70 jams." },
+  { slug: "red-rocks-what-to-know", title: "Red Rocks, before you go", blurb: "The climb, the parking, the altitude, and what you cannot bring in." },
+];
+
+export function relatedGuides(slug: string, count = 3) {
+  const i = GUIDE_CARDS.findIndex((g) => g.slug === slug);
+  const start = i === -1 ? 0 : i + 1;
+  return Array.from({ length: count }, (_, n) => GUIDE_CARDS[(start + n) % GUIDE_CARDS.length])
+    .filter((g) => g.slug !== slug);
+}

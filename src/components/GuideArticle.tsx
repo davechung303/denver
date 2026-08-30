@@ -2,10 +2,12 @@ import Link from "next/link";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
-import VenueHotelCard from "@/components/VenueHotelCard";
+import HotelSpotlight from "@/components/HotelSpotlight";
+import LinkedText from "@/components/LinkedText";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
-import type { Guide } from "@/lib/guides";
+import { buildMentionIndex } from "@/lib/hotelMentions";
+import { relatedGuides, type Guide } from "@/lib/guides";
 
 function formatUpdated(iso: string) {
   return new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", {
@@ -25,7 +27,9 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
   // properties: every card carries that hotel's own affiliate link rather than
   // handing a high-intent click to a generic Denver search.
   const areas = guide.booking?.areas ?? [];
-  const pool = areas.length > 0 ? await getHotelPool() : [];
+  const pool = await getHotelPool();
+  const mentions = buildMentionIndex(pool);
+  const bySlug = new Map(pool.map((p) => [p.slug, p]));
   const byArea = hotelsInAreas(pool, areas.map((a) => a.slug), { limit: 4 });
   const areaHotels = areas
     .map((a) => ({ ...a, hotels: byArea[a.slug] ?? [] }))
@@ -84,17 +88,24 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
 
       {/* Body */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        {guide.sections.map((s) => (
+        {guide.sections.map((s) => {
+          // One link per hotel per section: enough to catch the reader at the
+          // sentence that sold them, not so many that the copy turns blue.
+          const seen = new Set<string>();
+          const spotlight = (s.spotlight?.slugs ?? [])
+            .map((slug) => bySlug.get(slug))
+            .filter((p): p is NonNullable<typeof p> => Boolean(p));
+          return (
           <section key={s.h2} className="mb-14">
             <h2 className="text-2xl font-bold mb-4 leading-snug">{s.h2}</h2>
 
             <p className="text-lg leading-relaxed border-l-4 border-denver-amber pl-5 py-1 text-slate-700 dark:text-slate-300">
-              {s.answer}
+              <LinkedText text={s.answer} index={mentions} seen={seen} />
             </p>
 
             {s.body?.map((p) => (
               <p key={p.slice(0, 40)} className="mt-5 leading-relaxed text-slate-600 dark:text-slate-400">
-                {p}
+                <LinkedText text={p} index={mentions} seen={seen} />
               </p>
             ))}
 
@@ -103,7 +114,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                 {s.list.map((li) => (
                   <li key={li.slice(0, 40)} className="flex gap-3 text-slate-600 dark:text-slate-400 leading-relaxed">
                     <span aria-hidden="true" className="text-denver-amber mt-1 shrink-0">&bull;</span>
-                    <span>{li}</span>
+                    <span><LinkedText text={li} index={mentions} seen={seen} /></span>
                   </li>
                 ))}
               </ul>
@@ -126,7 +137,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                       <tr key={r[0]} className="border-t border-slate-100 dark:border-slate-800">
                         {r.map((c, i) => (
                           <td key={i} className={`px-4 py-3 align-top ${i === 0 ? "font-medium" : "text-slate-600 dark:text-slate-400"}`}>
-                            {c}
+                            <LinkedText text={c} index={mentions} seen={seen} />
                           </td>
                         ))}
                       </tr>
@@ -135,8 +146,17 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                 </table>
               </div>
             )}
+
+            {spotlight.length > 0 && (
+              <HotelSpotlight
+                places={spotlight}
+                heading={s.spotlight?.heading}
+                note={s.spotlight?.note}
+              />
+            )}
           </section>
-        ))}
+          );
+        })}
 
         {/* Booking. Placed after the argument and before the FAQ — the reader has
             the answer by here, and this is the first point on the page where
@@ -145,16 +165,12 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
           <section className="mb-14 border-t border-slate-200 dark:border-slate-800 pt-12">
             <h2 className="text-2xl font-bold mb-3 leading-snug">{guide.booking?.heading}</h2>
             <p className="leading-relaxed text-slate-600 dark:text-slate-400 mb-8">{guide.booking?.blurb}</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div className="space-y-12">
               {areaHotels.map((a) => (
                 <div key={a.slug}>
-                  <h3 className="font-bold mb-1">{a.label}</h3>
+                  <h3 className="text-xl font-bold mb-1">{a.label}</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{a.note}</p>
-                  <div className="space-y-2">
-                    {a.hotels.map((h) => (
-                      <VenueHotelCard key={h.place_id} place={h} />
-                    ))}
-                  </div>
+                  <HotelSpotlight places={a.hotels} />
                   <Link
                     href={`/denver/${a.slug}/hotels`}
                     className="mt-3 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
@@ -171,11 +187,34 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
         <section className="border-t border-slate-200 dark:border-slate-800 pt-12">
           <h2 className="text-2xl font-bold mb-8">Common questions</h2>
           <div className="space-y-7">
-            {guide.faqs.map((f) => (
-              <div key={f.q}>
-                <h3 className="text-lg font-semibold mb-2">{f.q}</h3>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{f.a}</p>
-              </div>
+            {guide.faqs.map((f) => {
+              const seen = new Set<string>();
+              return (
+                <div key={f.q}>
+                  <h3 className="text-lg font-semibold mb-2">{f.q}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <LinkedText text={f.a} index={mentions} seen={seen} />
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Sideways links. Without these each guide had two inbound internal
+            links site-wide and took weeks to get crawled. */}
+        <section className="mt-14 border-t border-slate-200 dark:border-slate-800 pt-12">
+          <h2 className="text-xl font-bold mb-5">Also worth knowing before you book</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {relatedGuides(guide.slug).map((g) => (
+              <Link
+                key={g.slug}
+                href={`/denver/${g.slug}`}
+                className="group block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors"
+              >
+                <h3 className="font-bold text-sm mb-1 group-hover:text-denver-amber transition-colors">{g.title}</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{g.blurb}</p>
+              </Link>
             ))}
           </div>
         </section>

@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { relatedGuides } from "@/lib/guides";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
-import VenueHotelCard from "@/components/VenueHotelCard";
+import HotelSpotlight from "@/components/HotelSpotlight";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import { COMPARISONS, getComparison } from "@/lib/stayComparisons";
@@ -190,15 +191,11 @@ export default async function ComparisonPage({
             Best-rated first, by real guest reviews. Hotel names go to our own write-up of each property;
             the rate links go to Expedia, which pays us a commission at no extra cost to you.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-12">
             {sides.map((side) => (
               <div key={side.area}>
-                <h3 className="font-bold mb-3">{side.name}</h3>
-                <div className="space-y-2">
-                  {side.hotels.map((h) => (
-                    <VenueHotelCard key={h.place_id} place={h} />
-                  ))}
-                </div>
+                <h3 className="text-xl font-bold mb-3">{side.name}</h3>
+                <HotelSpotlight places={side.hotels} />
                 <Link
                   href={`/denver/${side.area}/hotels`}
                   className="mt-3 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
@@ -284,6 +281,22 @@ export default async function ComparisonPage({
           </Link>{" "}
           covers all ten Denver neighborhoods, including who each one is wrong for.
         </p>
+      </section>
+
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <h2 className="text-xl font-bold mb-5">Before you book either side</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {relatedGuides(c.slug).map((g) => (
+            <Link
+              key={g.slug}
+              href={`/denver/${g.slug}`}
+              className="group block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors"
+            >
+              <h3 className="font-bold text-sm mb-1 group-hover:text-denver-amber transition-colors">{g.title}</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{g.blurb}</p>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <HowThisListWasMade updated={c.updated} what="comparison" />

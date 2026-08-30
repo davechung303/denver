@@ -1,0 +1,49 @@
+import Link from "next/link";
+import { findMentions, type MentionIndex } from "@/lib/hotelMentions";
+
+// Renders a string of guide copy with the first mention of each hotel turned
+// into a link to that hotel's detail page, followed by a small affiliate
+// "Book" chip. The chip is the point: a reader who has just read a sentence
+// about a specific hotel is the highest-intent click on the page.
+export default function LinkedText({
+  text,
+  index,
+  seen,
+}: {
+  text: string;
+  index: MentionIndex;
+  seen: Set<string>;
+}) {
+  const hits = findMentions(text, index, seen);
+  if (hits.length === 0) return <>{text}</>;
+
+  const nodes: React.ReactNode[] = [];
+  let cursor = 0;
+
+  hits.forEach((h, n) => {
+    if (h.start > cursor) nodes.push(text.slice(cursor, h.start));
+    const m = index.bySlug[h.slug];
+    nodes.push(
+      <span key={`${h.slug}-${n}`}>
+        <Link
+          href={m.detailHref}
+          className="font-medium text-slate-900 dark:text-slate-100 underline decoration-denver-amber decoration-2 underline-offset-2 hover:text-denver-amber transition-colors"
+        >
+          {h.text}
+        </Link>
+        <a
+          href={m.bookHref}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="ml-1.5 inline-flex items-center rounded-full bg-denver-amber/10 px-2 py-0.5 text-[11px] font-semibold text-denver-amber align-middle hover:bg-denver-amber hover:text-white transition-colors"
+        >
+          Book
+        </a>
+      </span>
+    );
+    cursor = h.end;
+  });
+
+  if (cursor < text.length) nodes.push(text.slice(cursor));
+  return <>{nodes}</>;
+}
