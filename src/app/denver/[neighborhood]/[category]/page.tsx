@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory, CATEGORY_DESCRIPTIONS, getPlaceTag } from "@/lib/neighborhoods";
 import { getSubcategories } from "@/lib/subcategories";
 import { getPlaces, getHotelPool, isRealHotel, isUsefulPlace } from "@/lib/places";
-import { hotelsForAreaListing } from "@/lib/areaHotels";
+import { hotelsForAreaListing, hotelsInArea } from "@/lib/areaHotels";
+import VenueHotelCard from "@/components/VenueHotelCard";
 import { photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import PlaceCard from "@/components/PlaceCard";
@@ -63,12 +64,19 @@ export default async function CategoryPage({ params }: Props) {
   // several other neighborhoods listed hotels with no affiliate links while
   // their real, linked properties sat under some other slug. Every other
   // category still uses the column, which works fine for them.
-  const [places, videos] = await Promise.all([
+  const [places, videos, hotelPool] = await Promise.all([
     cSlug === "hotels"
       ? getHotelPool().then((pool) => hotelsForAreaListing(pool, nSlug))
       : getPlaces(nSlug, cSlug),
     getVideosForPage(nSlug, cSlug, 3),
+    // Non-hotel categories get a booking path. These are the site's
+    // highest-traffic pages — the RiNo restaurants page is the largest on the
+    // whole site — and until now the only way to book from one was an undated
+    // search widget below the fold. Someone reading about where to eat in RiNo
+    // is often deciding where to stay in RiNo.
+    cSlug === "hotels" ? Promise.resolve([]) : getHotelPool(),
   ]);
+  const nearbyHotels = cSlug === "hotels" ? [] : hotelsInArea(hotelPool, nSlug, { limit: 4 });
 
   const description = CATEGORY_DESCRIPTIONS[nSlug]?.[cSlug] ??
     `Local picks for the best ${c!.name.toLowerCase()} in ${n!.name}, Denver.`;
@@ -341,6 +349,27 @@ export default async function CategoryPage({ params }: Props) {
           </>
         )}
       </section>
+
+      {nearbyHotels.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-100 dark:border-slate-800">
+          <h2 className="text-2xl font-bold mb-2">Staying in {n.name}?</h2>
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl mb-6">
+            The best-rated hotels within walking distance of everything on this page, by real guest
+            reviews. Rate links go to Expedia and earn us a commission at no cost to you.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {nearbyHotels.map((h) => (
+              <VenueHotelCard key={h.place_id} place={h} />
+            ))}
+          </div>
+          <Link
+            href={`/denver/${nSlug}/hotels`}
+            className="mt-4 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
+          >
+            All {n.name} hotels &rarr;
+          </Link>
+        </section>
+      )}
 
       {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
       <BookYourTrip

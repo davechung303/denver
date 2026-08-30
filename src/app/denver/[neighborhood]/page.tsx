@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood } from "@/lib/neighborhoods";
 import { getVideosForPage } from "@/lib/youtube";
 import { getEventsForNeighborhood } from "@/lib/ticketmaster";
-import { getPlaces, getRecentlyAddedPlaces, isRealBar, isRealCoffeeShop, isRealHotel, isRealRestaurant, isUsefulPlace, photoUrl, type Place } from "@/lib/places";
+import { getPlaces, getHotelPool, getRecentlyAddedPlaces, isRealBar, isRealCoffeeShop, isRealHotel, isRealRestaurant, isUsefulPlace, photoUrl, type Place } from "@/lib/places";
 import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -13,6 +13,7 @@ import MapWrapper from "@/components/MapWrapper";
 import PlaceCard from "@/components/PlaceCard";
 import { getPlaceTag } from "@/lib/neighborhoods";
 import BookYourTrip from "@/components/BookYourTrip";
+import { hotelsForAreaListing } from "@/lib/areaHotels";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up new videos, articles, and fresh photo names
 // No generateStaticParams — pages render on first visit and are ISR-cached.
@@ -102,7 +103,10 @@ export default async function NeighborhoodPage({ params }: Props) {
     getVideosForPage(slug, null, 3),
     getEventsForNeighborhood(slug, 4),
     getPlaces(slug, "restaurants"),
-    getPlaces(slug, "hotels"),
+    // Geographic, not by neighborhood_slug — that column has no hotels filed
+    // under 'rino' at all, so this section rendered empty on the RiNo landing
+    // page and thin on several others.
+    getHotelPool().then((pool) => hotelsForAreaListing(pool, slug, 12)),
     getPlaces(slug, "bars"),
     getPlaces(slug, "things-to-do"),
     getPlaces(slug, "coffee"),
