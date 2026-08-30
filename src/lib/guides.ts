@@ -1217,6 +1217,153 @@ export const GUIDES: Record<string, Guide> = {
       ],
     },
   },
+  "mountain-view-hotels": {
+    slug: "mountain-view-hotels",
+    title: "Denver Hotels With Mountain Views: Which Ones Are Actually Real",
+    metaTitle: "Denver Hotels With Mountain Views: Which Ones Are Real",
+    metaDescription:
+      "Only four Denver hotels sell a room named for the mountain view. We checked every published room list and mined our own guest-review data. Here's what you get, and where the upgrade is a waste.",
+    ogTitle: "Denver Mountain-View Hotels: Four Real Ones, and the Traps",
+    ogDescription:
+      "Most Denver hotels don't advertise a mountain view at all — some advertise the opposite. Here's which rooms genuinely face the Front Range, from published inventory and guest reports.",
+    lede:
+      "Four hotels in Denver sell a guest room with \"mountain view\" in its name: the Four Seasons, the Hyatt Regency at the Convention Center, Hotel Clio in Cherry Creek, and Populus. That is the whole list, and it surprised us — the assumption going in was that every hotel in a city with a mountain range on the horizon would be selling the window. Most do not. The Oxford advertises views of the Lower Downtown neighborhood. The Maven sells Sky Yard, city, alley and Coors Field views and no mountain view at all. Denver's highest open-air rooftop bar makes no mountain claim in its own marketing. When a view is that easy to sell and a hotel doesn't sell it, that tells you something.",
+    updated: "2026-08-30",
+    sections: [
+      {
+        h2: "Which Denver hotels sell a room with a mountain view?",
+        answer:
+          "Four. We went through the published room lists on the brands' own sites and only these four name a bookable guest room for the view. The Hyatt Regency has the deepest inventory of the group — it is the only Denver hotel selling mountain-view rooms in both bed configurations.",
+        table: {
+          head: ["Hotel", "What it's called", "What you're buying"],
+          rows: [
+            ["Hyatt Regency Denver at the Convention Center", "1 King Bed Mountain View / 2 Queen Beds Mountain View", "The deepest mountain-view inventory in the city, and the only one offering it as a two-queen. Peaks Lounge on the 27th floor is the same view without the room rate"],
+            ["Four Seasons Hotel Denver", "Deluxe Mountain-View Room", "Also sold as an accessible room. The tallest hotel tower downtown, so the sightline clears more than the others"],
+            ["Hotel Clio, Cherry Creek", "King Guest Room — Mountain View / Queen/Queen Guest Room — Mountain View", "The only real option outside downtown. Clio splits inventory by aspect: the Deluxe rooms face Cherry Creek instead"],
+            ["Populus", "Mountain Studio Suite with Rocky Mountain Views / Summit Junior Suite", "Thirteen floors, so this is a foreground view rather than a horizon one. The Summit is a top-floor category"],
+          ],
+        },
+        body: [
+          "Clio is the one to be careful with. Marriott gates the bookable category list behind a dated availability search, so the mountain-view names appear in the room photography and the marketing copy — \"unobstructed views of the Rocky Mountains in select guest rooms\" — rather than in a list you can browse. Put your dates in before you assume it's available on the night you want.",
+          "Two properties that used to belong on this list no longer do. The Source Hotel in RiNo sold a Mountain View Suite; that page now returns a 404 and the current room list runs Ironworks, Studio and Deluxe categories with no mountain designation. Google still surfaces the old URL, which is a good reminder that a search result is not inventory.",
+        ],
+      },
+      {
+        h2: "Doesn't every Denver hotel advertise a mountain view?",
+        answer:
+          "No, and the ones that stay quiet are the more useful signal. The Crawford, the Oxford, the Teatro, the Ramble, the Catbird, the Halcyon, the Clayton, the Magnolia and the Monaco publish no mountain claim anywhere in their room descriptions. The Oxford goes further and tells you what you actually get: views of the Lower Downtown neighborhood.",
+        body: [
+          "The Maven at Dairy Block is the clearest case. It sells rooms by view — Sky Yard view, city view, alley view, Coors Field view — so it clearly believes the window is worth pricing. There is no mountain-view category, and there is no mountain language. A hotel that itemizes its views and leaves that one out has told you the answer.",
+          "The same holds up high. 54thirty at Le Méridien bills itself as downtown Denver's highest open-air rooftop bar and makes no mountain claim in its own marketing, while the Hyatt Regency's Peaks Lounge twenty-seven floors up leads with the Rockies. Height alone doesn't do it. What's standing between you and west does.",
+          "Three hotels make a mountain claim without naming a room for it: the Grand Hyatt, the Thompson and The Rally all describe mountain views inside high-floor, corner or suite descriptions. The Grand Hyatt's is the most specific — its high-floor category is defined as floors 16 and above. Those are worth asking about at the desk, but they are not something you can select at booking.",
+        ],
+      },
+      {
+        h2: "What guests actually report seeing",
+        answer:
+          "We searched our own Google review data across 250 Denver hotels for mountain mentions. Thirty-one properties have guests describing a mountain view, which is far more than the four selling one — but the useful detail is that guests keep naming the specific floor, side or room type that delivers it.",
+        list: [
+          "Hyatt Regency Denver — \"Watching the sunset over Denver with the mountains in the distance from the rooftop lounge is something special.\" The rooftop keeps coming up more than the rooms do.",
+          "Sonesta Denver Downtown — \"The views were incredible, a perfect mix of the Denver skyline and the beautiful Rocky Mountains in the distance.\" Guests consistently attach this to the upper floors, not the building.",
+          "Hilton Garden Inn Denver Downtown — \"I had a room on the 12th floor, which had a nice territorial view of the city and mountains.\" The floor number is the whole claim.",
+          "Courtyard by Marriott Cherry Creek — \"Beautiful Views of the City & Rockies!\" A high-rise in a low-rise neighborhood, which is the geometry that works.",
+          "The Jacquard, Cherry Creek — \"an unbeatable rooftop bar & pool with the most incredible views of the Front Range.\" Rooftop again, not rooms.",
+          "Home2 Suites Convention Center — \"There is a great view of the Rockies.\" One of the cheapest rooms on this page.",
+          "Courtyard Denver Downtown West — \"From the 2nd floor terrace we had a little peek at the mountains and a gorgeous view of Downtown Denver and the Broncos Stadium.\" An honest description of a partial view, which is rarer than it should be.",
+        ],
+        body: [
+          "Read those back and a pattern falls out: the reliable mountain views in Denver are on rooftops and upper floors, and almost nobody reports one from a standard room on a low floor. If the view is the reason for the trip, the floor matters more than the hotel.",
+        ],
+      },
+      {
+        h2: "The mountain-view upgrades that disappoint",
+        answer:
+          "Paying for the view is the part that goes wrong. Guests report being charged for a mountain view and given something else at three separate properties, and one hotel's mountain-view rooms are on the noisy side of the building.",
+        table: {
+          head: ["Property", "What guests report", "What to do"],
+          rows: [
+            ["Hilton Garden Inn Arvada", "\"The Mountain View is not really a view so don't pay for the upgrade even if it is only $5 extra a night\"", "Skip the upgrade"],
+            ["Hotel Indigo Union Station", "A guest bought a mountain-view room for an anniversary and was given a view of a wall. IHG publishes no mountain-view room type at this hotel", "Don't pay for a view that isn't a published category"],
+            ["Hampton Inn & Suites Cherry Creek", "The mountain view guests praise is from the front entrance and the parking lot, not from the rooms", "Fine hotel, wrong reason to book it"],
+            ["Cambria Denver Downtown RiNo", "\"Our odd numbered room did NOT have a mountain view\"", "Ask for an even-numbered room at check-in"],
+            ["The Source Hotel, RiNo", "\"the mountain-view side of the hotel that we stayed on was very noisy at night\" — construction and truck traffic", "The view side and the quiet side are different sides"],
+          ],
+        },
+        body: [
+          "The Hilton Garden Inn Denver Union Station sits in an awkward middle. Its gallery includes a photo captioned \"Guestroom Mountain View\" and guests do report seeing mountains in the distance, but there is no bookable mountain-view category or view upgrade on Hilton's site. If someone offers you one at the desk, it is a room assignment, not a room type.",
+        ],
+      },
+      {
+        h2: "Why a west window works on some Denver blocks and not others",
+        answer:
+          "Because Denver protects almost nothing. The city has no citywide height limit, and only fourteen mapped view planes — all of which protect the view from public places, not from your window. The city's own language is blunt: whether it's a single-story home or a high rise, other buildings are allowed to block the view from a residence.",
+        body: [
+          "That makes the foreground everything. LoDo has the best one in the city and it is protected by accident rather than design: the Lower Downtown Neighborhood Plan sets a height of 55 feet by right, and about 85% of LoDo's 131 contributing historic buildings already stand under that. A five-story western foreground is why a mid-rise room near Union Station can see over the top of the neighborhood, and why the same floor in the CBD sees a building.",
+          "The central business district is the opposite case. All ten of Denver's tallest buildings sit on that spine, and the newest ones went up in exactly the wrong places for a hotel window — 1900 Lawrence at 30 floors in 2024, described as Denver's largest skyscraper in 40 years, Block 162 at 30 floors in 2021, One River North at 16 in 2024, and the Upton Residences at roughly 38 floors opening this year. In the CBD, high floors are not a bonus. They are the entry price.",
+          "The one to watch is Ball Arena. Its rezoning amended the Old City Hall view plane and passed 10 to 1, and that parcel sits directly west of LoDo and Union Station — the exact ground a west-facing LoDo window looks across. Residents raised blocked mountain views during the process. Nothing has been built yet, but a mountain view booked in LoDo today is not a permanent feature of the block.",
+        ],
+      },
+      {
+        h2: "The cheaper way to buy the view",
+        answer:
+          "Drink it instead of sleeping in it. Six Denver hotels claim mountain views from a rooftop or top-floor bar on their own sites, and a cocktail costs less than a view upgrade at every one of them.",
+        list: [
+          "Peaks Lounge, Hyatt Regency — 27th floor, and the one our review data endorses most consistently. It is the same aspect as the hotel's mountain-view rooms.",
+          "Pinnacle Club, Grand Hyatt — 38th floor, the highest of the set.",
+          "Stellar Jay, Populus — the rooftop of the building whose room categories are named for the same view.",
+          "SkyBridge, The Rally Hotel — over the Coors Field side of LoDo, where the low foreground helps.",
+          "The Westin Denver Downtown rooftop pool — the Westin's mountain claims live in its gallery labels rather than its room names.",
+          "FIRE at The Art Hotel — Golden Triangle, looking back across the low-rise museum district.",
+          "The Jacquard rooftop pool, Cherry Creek — the Front Range view our guests rate highest outside downtown.",
+        ],
+        body: [
+          "This is also the honest hedge. A rooftop lets you see the weather before you commit: the Front Range disappears behind haze, cloud and summer smoke often enough that a view upgrade booked three months out is partly a bet on air quality.",
+        ],
+      },
+      {
+        h2: "What to ask before you pay for the view",
+        answer:
+          "Four questions, and none of them can be answered by a booking site. No Denver hotel publishes the compass direction a room faces, so every mountain claim you read at booking is marketing language rather than a verified sightline.",
+        list: [
+          "Is this a room category or a room assignment? A category is contractual. An assignment is a favor, and the Hotel Indigo guest who paid for a view of a wall is what happens when the two get confused.",
+          "What floor, specifically? Guests reporting real mountain views in Denver are on the 12th floor and up, or on a rooftop. Ask for a floor number, not a floor range.",
+          "What is directly west of the building, and is anything going up there? A hotel that can answer this is telling you it knows its own view. One that can't is selling you a direction.",
+          "Is the view side the quiet side? At The Source they are not. Ask before you choose the window over the sleep.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Which Denver hotels have mountain view rooms?",
+        a: "Four hotels sell a guest room named for the mountain view: the Hyatt Regency Denver at the Colorado Convention Center (1 King Bed Mountain View and 2 Queen Beds Mountain View), the Four Seasons Hotel Denver (Deluxe Mountain-View Room), Hotel Clio in Cherry Creek (King and Queen/Queen Guest Rooms — Mountain View), and Populus (Mountain Studio Suite with Rocky Mountain Views, plus the top-floor Summit Junior Suite). Many other Denver hotels have rooms that happen to face the mountains, but those are room assignments rather than bookable categories.",
+      },
+      {
+        q: "Can you see the mountains from downtown Denver hotels?",
+        a: "From upper floors and rooftops, yes; from a standard low floor in the central business district, usually not. All ten of Denver's tallest buildings are on the downtown spine, the city has no citywide height limit, and its fourteen mapped view planes protect views from public places rather than from hotel windows. Guests reporting genuine mountain views in our review data are almost always on the 12th floor or higher, or on a rooftop.",
+      },
+      {
+        q: "Is a mountain view room upgrade in Denver worth it?",
+        a: "Only when it is a published room category at a hotel tall enough to clear its western foreground. Guests at the Hilton Garden Inn Arvada advise skipping the upgrade outright — \"not really a view\" even at $5 extra a night — and a guest at the Hotel Indigo Union Station paid for a mountain view and got a wall, at a hotel that publishes no mountain-view room type. If the view is the point, the Hyatt Regency's Peaks Lounge on the 27th floor gives you the same aspect for the price of a drink.",
+      },
+      {
+        q: "Which side of a Denver hotel faces the mountains?",
+        a: "West. The Front Range runs the length of Denver's western horizon, so a west-facing window is the requirement — but no Denver hotel publishes which rooms face which direction, so you have to ask. Guests at the Cambria in RiNo report that odd-numbered rooms face away from the mountains, and guests at The Source report the mountain side is also the noisy side.",
+      },
+      {
+        q: "Why do so few Denver hotels advertise mountain views?",
+        a: "Because most of them can't honestly claim one. Denver's downtown core is dense and tall enough that a west window frequently looks at another building, and hotels that sell views by name tend to sell what they actually have — the Maven at Dairy Block itemizes Sky Yard, city, alley and Coors Field views with no mountain option, and the Oxford advertises views of the Lower Downtown neighborhood. LoDo is the exception worth knowing: its 55-foot height-by-right and its low historic building stock leave a genuine gap to see over.",
+      },
+    ],
+    booking: {
+      pubref: "guide-mountain-views",
+      heading: "Book the window",
+      blurb: "Mountain-view categories are a small slice of a hotel's inventory and they sell out before the standard rooms do. Put your dates in and check both neighborhoods — downtown has the height, Cherry Creek has the open western foreground.",
+      areas: [
+        { slug: "downtown", label: "Downtown & the Convention Center", note: "Where the four mountain-view categories cluster, and where height is the price of entry. The Hyatt Regency has the deepest inventory and the 27th-floor lounge to match." },
+        { slug: "cherry-creek", label: "Cherry Creek", note: "Lower buildings, more open sky to the west, and the strongest Front Range reports in our review data outside downtown. Hotel Clio splits its rooms by aspect, so ask for the mountain side." },
+      ],
+    },
+  },
 };
 
 export const GUIDE_SLUGS = Object.keys(GUIDES);

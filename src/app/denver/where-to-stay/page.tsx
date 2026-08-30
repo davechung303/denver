@@ -210,6 +210,7 @@ export default async function WhereToStayPage() {
             { href: "/denver/is-downtown-denver-safe", title: "Is downtown Denver safe?", blurb: "Police district data, what changed at Union Station, and why the hour matters more than the block." },
             { href: "/denver/hotel-parking", title: "What hotel parking costs", blurb: "$45 to $70 a night downtown, published hotel by hotel — and the public garage charging $23." },
             { href: "/denver/hotel-free-parking", title: "Where parking is actually free", blurb: "No downtown hotel. Not the airport strip either, whatever the booking sites say. Here's the verified list." },
+            { href: "/denver/mountain-view-hotels", title: "Hotels with mountain views", blurb: "Only four sell a room named for it. Where the view is real, where the upgrade is a waste, and why." },
             { href: "/denver/bachelorette-party-hotels", title: "Group and bachelorette weekends", blurb: "Most rooms here cap at four adults. What genuinely sleeps six or eight, and which hotels connect rooms." },
             { href: "/denver/resort-fees", title: "Do Denver hotels charge resort fees?", blurb: "Some do, most downtown flags don’t, and the law changed in 2025 and again in 2026." },
             { href: "/denver/hotel-costs", title: "What a Denver hotel really costs", blurb: "Rate, tax and parking together, which is the only number worth comparing." },
