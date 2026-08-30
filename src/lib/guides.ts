@@ -1102,6 +1102,121 @@ export const GUIDES: Record<string, Guide> = {
       ],
     },
   },
+  "bachelorette-party-hotels": {
+    slug: "bachelorette-party-hotels",
+    title: "Where to Stay for a Denver Bachelorette (or Any Group Weekend)",
+    metaTitle: "Denver Bachelorette Hotels: Where a Group Actually Fits",
+    metaDescription:
+      "Most Denver hotel rooms cap at four adults, whatever the sofa bed suggests. What genuinely sleeps six or eight, which hotels connect rooms, and the fees that wreck a split bill.",
+    ogTitle: "Denver Bachelorette Weekends: the Lodging Answer",
+    ogDescription:
+      "The pages ranking for this sell party supplies. This one answers the question you actually have: where does a group of eight sleep, and what does it really cost each.",
+    lede:
+      "Book RiNo if the weekend is about the bars and the food, and LoDo if it is about walking home from everything at one in the morning. But the decision that actually bites is capacity: Denver hotel rooms hold fewer people than a group assumes, the Embassy Suites two-room suite everyone reaches for caps at four adults, and the single best answer in the city — a four-bedroom house inside a RiNo hotel that sleeps eight — does not appear in any of the guides currently ranking for this.",
+    updated: "2026-08-30",
+    sections: [
+      {
+        h2: "How many people actually fit in one room?",
+        answer:
+          "Fewer than you think, and the hotels make it hard to find out. Hilton, Marriott and Hyatt all hide maximum occupancy behind the dated booking flow — none of them publishes it on the public page. Of the eighteen Denver properties we checked, only two publish a full occupancy table, and neither has a single room that sleeps five.",
+        body: [
+          "The one number that is published is the one that surprises people. The Embassy Suites Denver Downtown Convention Center — the two-room suite with the pull-out sofa that every group reaches for first — states a maximum of four adults per room, and offers no rollaway. The sofa bed is real. The headroom is not.",
+          "The Hyatt House downtown has a different problem: every unit in the building is a single king. There is no two-queen room and no two-bedroom unit anywhere in the property. A king plus a sofa bed is the ceiling, which works for a couple with a friend and not for four adults who would rather not share.",
+          "The most promising candidate we could not confirm is the Staybridge Suites downtown, whose Double Queen Studio Suites pair two queens with a pull-out. Two queens plus a sofa is a genuine five or six — but IHG publishes no number, so treat it as a phone call rather than a fact.",
+        ],
+      },
+      {
+        h2: "The one place in Denver that sleeps eight",
+        answer:
+          "The Klee House at the Catbird Hotel in RiNo: four bedrooms, two and a half bathrooms, 2,500 square feet, a full kitchen, and a stated capacity of eight guests. It is a house inside a hotel, in the neighborhood you were going out in anyway.",
+        body: [
+          "For a group of eight this changes the arithmetic completely. Four hotel rooms at Denver weekend rates against one house — with a kitchen for the morning after, a living room to get ready in, and no corridor between you — usually lands cheaper per person and always lands better. It is also walkable to the RiNo bars and breweries, which removes the ride home.",
+          "It is one unit, so it goes early. If your dates are fixed and the group is six or more, price this before anything else on the list, because everything else is a compromise around it.",
+        ],
+      },
+      {
+        h2: "If you need connecting rooms",
+        answer:
+          "Ask the hotel directly, and ask before you book — no Denver property publishes a request procedure, and the booking-site \"connecting rooms\" filter is unreliable. The Grand Hyatt has the deepest connecting inventory in the city, and the Homewood Suites on the Convention Center block is the one that says outright it has none.",
+        body: [
+          "The Grand Hyatt's Hospitality Parlor connects to a king or a two-queen room, and multiple rooms can be joined into a three-bedroom configuration. Its Executive Suite pairs a king bedroom with a sleeper sofa and a dining table and has a connecting option, and the VIP Suite comes with an adjoining king bedroom. For a group that wants to be together without being in one room, that is the strongest set of options downtown.",
+          "The Hyatt Regency at the Convention Center is the other one worth calling. Its Blue Spruce and Monarch suites both connect to one or two additional bedrooms, and the Monarch seats twelve at a dining table — useful if the plan involves a night in rather than a night out.",
+          "Both Embassy Suites properties confirm connecting rooms are available. The Homewood Suites on the Convention Center block confirms they are not, which is the sort of thing worth knowing before you split a group across it.",
+        ],
+      },
+      {
+        h2: "RiNo or LoDo?",
+        answer:
+          "RiNo if the weekend is built around eating and drinking well; LoDo if it is built around walking. RiNo has the best restaurant and brewery density in Denver and the rooms cost less, but it is long and thin, so where you book inside it matters more than the neighborhood name. LoDo is the compact one — bar close is 2am and everything is inside a few blocks.",
+        list: [
+          "Book the RiNo spine between roughly 25th and 30th and you are inside the food, ten to fifteen minutes on foot from LoDo, and far enough from the venues to sleep.",
+          "Book LoDo and accept the noise. The blocks around Blake Street are loud on weekend nights, which is either the point or the problem. Ask for a room off the street side either way.",
+          "RiNo rates do not follow the Rockies schedule and LoDo's do. On a home-game weekend the same money buys a better room in RiNo — the single most useful piece of Denver rate arbitrage there is.",
+          "Neither needs a car. That is worth protecting: downtown hotel parking runs $42 to $70 a night, which is a real line on a split bill for a car nobody will move.",
+        ],
+      },
+      {
+        h2: "The fees that wreck a split bill",
+        answer:
+          "Two line items catch groups: a destination fee of $28 to $30 a night at several LoDo hotels, and parking at $42 to $70. On a two-night stay across three rooms, that is a couple of hundred dollars that never appeared in anyone's mental math when the group agreed a budget.",
+        table: {
+          head: ["Hotel", "Destination fee", "Parking"],
+          rows: [
+            ["The Crawford", "$30 + tax per night", "Valet $68"],
+            ["The Maven at Dairy Block", "$28 + tax per night", "See hotel"],
+            ["The Rally Hotel", "$28 + tax per night", "Valet $60"],
+            ["The Curtis Denver", "None published", "$45 self-park"],
+            ["Hilton Denver City Center", "None published", "$57 self / $67 valet"],
+            ["The Brown Palace", "None published", "$66 valet"],
+            ["Embassy Suites Convention Center", "None published", "$70 valet, no self-park"],
+          ],
+        },
+        body: [
+          "Since 2025 the advertised price has to include mandatory fees, so the booking total is now the honest number to compare across properties — not the nightly rate. Compare totals, divide by heads, then decide.",
+          "One more: the city-run Performing Arts Complex garage charges $23 for twelve to twenty-four hours against $42 to $70 at the hotels. If somebody is driving in and the car will sit all weekend, that is the move.",
+        ],
+      },
+      {
+        h2: "When to book",
+        answer:
+          "Earlier than feels necessary, and check what else is happening. Denver lodging demand is event-locked: the Stock Show takes sixteen days of January, GABF takes a weekend in October, the Colfax Marathon closes roads across the city in May, and eighty-one Rockies home games move LoDo rates all summer.",
+        body: [
+          "The practical version: pick your weekend, then check it against the events calendar before anyone puts money down. A bachelorette weekend that lands on a citywide convention or a home stand can cost a third more for the same rooms, and the group-sized options — the suites, the connecting sets, the Klee House — are the first things gone.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Where should a bachelorette party stay in Denver?",
+        a: "RiNo if the weekend is about food and breweries, LoDo if it is about walking home from the bars. RiNo has the better restaurant density and cheaper rooms and does not spike for Rockies weekends; LoDo is more compact and louder. For a group of six or more, look first at the Klee House at the Catbird in RiNo — four bedrooms, a full kitchen, sleeps eight.",
+      },
+      {
+        q: "What Denver hotel rooms sleep 6 or 8 people?",
+        a: "Very few, and most brands hide occupancy behind the booking flow. The clearest published answer is the Catbird's Klee House at eight guests across four bedrooms. The Staybridge Suites downtown pairs two queens with a pull-out, which should be five or six, but IHG publishes no number. Note that the Embassy Suites downtown, which groups often assume is the answer, caps at four adults per room.",
+      },
+      {
+        q: "Do Denver hotels have connecting rooms?",
+        a: "Some, but no Denver property publishes how to request them, and the booking-site filter for connecting rooms is unreliable. The Grand Hyatt has the deepest inventory — its Hospitality Parlor connects to a king or two-queen room and multiple rooms can form a three-bedroom set. The Hyatt Regency's Blue Spruce and Monarch suites connect to one or two additional bedrooms. The Homewood Suites Convention Center states it has none. Call before booking.",
+      },
+      {
+        q: "How much does a Denver bachelorette weekend cost per person?",
+        a: "Budget beyond the nightly rate. Several LoDo hotels add a destination fee of $28 to $30 a night, and downtown parking runs $42 to $70. Across three rooms and two nights those two lines alone can add a couple of hundred dollars. Since 2025 mandatory fees have to appear in the advertised total, so compare booking totals rather than nightly rates, then divide.",
+      },
+      {
+        q: "Is RiNo or LoDo better for a group weekend?",
+        a: "RiNo for eating and drinking, LoDo for walking. RiNo is long and thin so where you book inside it matters — the stretch between about 25th and 30th puts you in the food and still within fifteen minutes of LoDo on foot. LoDo is compact and loud, with bar close at 2am. Neither needs a car, which matters when parking is $42 to $70 a night.",
+      },
+    ],
+    booking: {
+      pubref: "guide-bachelorette",
+      heading: "Book the group in",
+      blurb: "Group-sized rooms are the first thing to go on a Denver weekend, and the difference between RiNo and LoDo rates is real. Put the dates in and compare both sides before the group commits.",
+      areas: [
+        { slug: "rino", label: "RiNo", note: "Best food and brewery density in the city, cheaper than LoDo, and it doesn't follow the Rockies schedule. The Catbird's four-bedroom Klee House is here." },
+        { slug: "lodo", label: "LoDo & Union Station", note: "The compact one — everything inside a few blocks and nobody needs a car or a ride home. Loudest around Blake Street, and it's where the destination fees cluster." },
+      ],
+    },
+  },
 };
 
 export const GUIDE_SLUGS = Object.keys(GUIDES);

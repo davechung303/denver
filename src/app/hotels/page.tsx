@@ -187,6 +187,11 @@ export default async function HotelsHubPage() {
             <h3 className="font-bold group-hover:text-denver-amber transition-colors">What Hotel Parking Costs</h3>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">$45 to $70 a night downtown, published hotel by hotel — and the garage charging $23 for the same 24 hours.</p>
           </Link>
+          <Link href="/denver/bachelorette-party-hotels"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">Group &amp; Bachelorette Weekends</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Most Denver rooms cap at four adults. Here&apos;s what actually sleeps six or eight.</p>
+          </Link>
           <Link href="/denver/hotel-free-parking"
             className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
             <h3 className="font-bold group-hover:text-denver-amber transition-colors">Where Parking Is Actually Free</h3>
