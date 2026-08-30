@@ -18,6 +18,11 @@
 -- failing the moment this runs.
 --
 -- Safe to re-run: policies are dropped and recreated.
+--
+-- THIS FILE IS NOT SUFFICIENT ON ITS OWN. Running it left anon still able to
+-- write, because the project already carried policies named "Service write"
+-- and "Service update" that were never scoped to a role and therefore applied
+-- to PUBLIC. Run drop-public-write-policies.sql next.
 
 do $$
 declare t text;
