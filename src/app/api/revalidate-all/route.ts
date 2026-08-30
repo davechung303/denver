@@ -44,6 +44,7 @@ export async function GET(req: Request) {
   revalidatePath("/denver/things-to-do");
   revalidatePath("/denver/is-downtown-denver-safe");
   revalidatePath("/denver/hotel-parking");
+  revalidatePath("/denver/hotel-free-parking");
   revalidatePath("/denver/resort-fees");
   revalidatePath("/denver/ski-basecamp");
   revalidatePath("/denver/den-layover");

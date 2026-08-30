@@ -514,7 +514,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "Which Denver hotels have free parking?",
         answer:
-          "Effectively none downtown, and we could not verify a single genuinely free option in the airport district or the suburbs either. What is true is that airport-area parking is cheap rather than free: published rates at properties near DEN run about $12 to $20 a night.",
+          "None downtown — we checked nine on their own brand sites and every one charges. Genuinely free parking means Lakewood, Arvada, Aurora, the Tech Center or Central Park, and there are eight properties we could verify. Airport-area parking is cheap rather than free, at about $12 to $20 a night. The full verified list is in our free-parking guide.",
         table: {
           head: ["Hotel", "Self-park", "Airport shuttle"],
           rows: [
@@ -980,6 +980,125 @@ export const GUIDES: Record<string, Guide> = {
       areas: [
         { slug: "lodo", label: "LoDo & Union Station", note: "Where most of the show-night shuttles pick up, which removes the parking lot, the Jurassic overflow walk and the drive home in one decision." },
         { slug: "downtown", label: "Downtown", note: "Same shuttle access a few blocks further in, usually for less money, with more to do before doors." },
+      ],
+    },
+  },
+  "hotel-free-parking": {
+    slug: "hotel-free-parking",
+    title: "Which Denver Hotels Actually Have Free Parking",
+    metaTitle: "Denver Hotels With Free Parking — Verified, Not Guessed",
+    metaDescription:
+      "No downtown Denver hotel has free parking. The airport strip everyone assumes is free charges $12–17. Here's where it's genuinely free, checked on the hotels' own sites.",
+    ogTitle: "Denver Hotels With Free Parking: the Verified List",
+    ogDescription:
+      "Nine downtown hotels checked, zero free. Five airport hotels checked, all paid. Here's where it's actually free — and the conditions nobody mentions.",
+    lede:
+      "Not one downtown Denver hotel offers free parking. We checked nine on their own brand sites and the cheapest was $42 a night. The bigger surprise is the airport strip, where everyone assumes parking is thrown in: every Tower Road and Gateway Park property we checked charges $12 to $17 a day. That gap between assumption and reality is exactly why booking sites flag airport hotels as having free parking — they are misreading park-and-fly packages. Genuinely free parking in Denver means going out to Lakewood, Arvada, Aurora, the Tech Center or Central Park.",
+    updated: "2026-08-30",
+    sections: [
+      {
+        h2: "Does any downtown Denver hotel have free parking?",
+        answer:
+          "No. We checked nine downtown and near-downtown properties on their own brand sites and every one charges. The range runs $42 to $70 a night, and two of them will not let you self-park at any price — it is valet or nothing.",
+        table: {
+          head: ["Hotel", "What it charges", "Notes"],
+          rows: [
+            ["Embassy Suites Convention Center", "$70 valet", "No self-parking at all. Add $10 for an oversize vehicle"],
+            ["Sheraton Denver Downtown", "$57 self / $67 valet", "Oversize valet is $77"],
+            ["Homewood Suites Convention Center", "$60 valet", "No self-parking. Covered and secured"],
+            ["Home2 Suites Convention Center", "$55 self", "No valet offered"],
+            ["The Curtis Denver", "$45 self", "Covered, with in-and-out privileges"],
+            ["Element Denver Downtown East", "$45 self", "$250 a week. Gated, EV charging on site"],
+            ["Residence Inn Denver City Center", "$42 self", "Register at the desk before you park"],
+            ["Kasa Union Station", "$25 a day", "Collected through your booking confirmation"],
+            ["The Source Hotel, RiNo", "$24 daily maximum", "First hour free. See the three-night catch below"],
+          ],
+        },
+        body: [
+          "The two valet-only properties are worth pausing on. At the Embassy Suites and the Homewood Suites on the Convention Center block, there is no cheaper option to find — you cannot decide to park yourself. Budget the full valet rate or plan to use a public garage.",
+          "For context, the city-run Denver Performing Arts Complex garage charges $23 for twelve to twenty-four hours. Against $70 valet, that is a $47 difference a night, and it is a four-block walk.",
+        ],
+      },
+      {
+        h2: "Why do booking sites say airport hotels have free parking?",
+        answer:
+          "Because those hotels sell park-and-fly packages, and the flag gets misread. Every airport-corridor property we checked charges for parking on its own site: $12 at the Home2 Suites, $15 at the Homewood Suites, $15.99 at the Staybridge, $16 at the Hampton Gateway Park, $17 at the Residence Inn Gateway Park.",
+        body: [
+          "This is the single most common piece of wrong information about Denver hotels, and it is wrong in the direction that costs you money — you book expecting free and pay $17 a night. Park-and-fly is a paid package that includes leaving your car while you travel. It is not the same as free overnight parking, and it usually requires an actual stay.",
+          "Airport parking is still cheap in absolute terms, which is the honest framing: $12 to $17 a night against $42 to $70 downtown. Just do not book it believing it is nothing.",
+        ],
+      },
+      {
+        h2: "So where is parking actually free?",
+        answer:
+          "Eight properties we could verify from the hotel's own site, all of them outside the central neighborhoods. Lakewood and the West Colfax corridor is the strongest cluster, and Drury Plaza at Central Park is the pick if you want free parking without going far out.",
+        table: {
+          head: ["Hotel", "Area", "What the hotel's own site says"],
+          rows: [
+            ["Drury Plaza Denver Central Park", "Central Park", "Free during stay, self-park, on site"],
+            ["Drury Inn & Suites Denver Tech Center", "Centennial", "Free during stay"],
+            ["Hampton Inn Denver West Federal Center", "Lakewood", "Complimentary self-parking, on-site lot"],
+            ["Home2 Suites Denver West Federal Center", "Lakewood", "Self-parking on site, complimentary"],
+            ["Hampton Inn & Suites Wheat Ridge", "Wheat Ridge", "Complimentary self-parking, plus EV charging"],
+            ["Hampton Inn & Suites Aurora South", "Aurora", "Self-parking on site, complimentary"],
+            ["Home2 Suites Aurora Medical Center", "Aurora", "Self-parking on site, complimentary"],
+            ["Hilton Garden Inn Arvada Denver", "Arvada", "Self-parking on site, complimentary"],
+          ],
+        },
+        body: [
+          "Drury Plaza at Central Park is the one worth knowing about even if free parking is not your priority. It is the only hotel we found that publishes both free parking and real room capacity — a maximum of five in a standard room, or six in a suite with a king bedroom and a queen sofa sleeper in a separate living area. For a family driving in, that combination is rare in this city.",
+        ],
+      },
+      {
+        h2: "The conditions nobody mentions",
+        answer:
+          "Four of the eight free-parking hotels do not offer in-and-out privileges, which matters a great deal if you are using the hotel as a base for day trips. And two Denver properties advertise free parking with strings attached that are easy to miss.",
+        list: [
+          "No in-and-out at the Hampton West Federal Center, Home2 West Federal Center, Hampton Wheat Ridge or Hilton Garden Inn Arvada. Free to park, but leaving and returning may not be allowed on the same stay. Confirm before you plan a day in the mountains.",
+          "The Source Hotel's \"Cars Stay Free\" package requires a stay of three nights or more. On a two-night weekend you pay the $24 daily maximum like everyone else.",
+          "Kasa RiNo's own site contradicts itself: one line offers a space for one vehicle per reservation on select room categories, another states parking is $25 a day. Two conditions stacked on top of each other. Confirm against your specific unit type before booking on the strength of it.",
+          "Oversize vehicles are unaccounted for. None of the eight free properties publishes a policy either way, so if you are in an RV, a lifted van or towing anything, none of them can be treated as confirmed.",
+        ],
+      },
+      {
+        h2: "Is it worth staying out of town to park free?",
+        answer:
+          "Rarely, if you came to see Denver. Free parking saves you $42 to $70 a night, but a Lakewood or Arvada base adds a twenty to thirty minute drive each way plus downtown parking when you get there — which puts you back where you started, with the driving added.",
+        body: [
+          "The arithmetic works in two cases. If you are driving to Denver and using it as a launch point for the mountains rather than the city, a west-side base on the I-70 corridor genuinely saves both money and driving. And if you are here for something specific in Aurora, Centennial or the Tech Center, the free-parking cluster is right there.",
+          "For a normal city trip, the cheaper move is to stay downtown and put the car in a public garage. Three nights downtown with garage parking still beats three nights in Lakewood once you count the trips in.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Do any downtown Denver hotels have free parking?",
+        a: "No. We checked nine downtown and near-downtown properties on their own brand sites and every one charges, from $42 a night at the Residence Inn City Center to $70 valet at the Embassy Suites Convention Center. The Embassy Suites and the Homewood Suites do not offer self-parking at any price.",
+      },
+      {
+        q: "Which Denver hotels have free parking?",
+        a: "Verified from the hotels' own sites: Drury Plaza Denver Central Park, Drury Inn & Suites Denver Tech Center, Hampton Inn Denver West Federal Center and Home2 Suites Denver West Federal Center in Lakewood, Hampton Inn & Suites Wheat Ridge, Hampton Inn & Suites Aurora South, Home2 Suites Aurora Medical Center, and the Hilton Garden Inn Arvada. All are outside the central neighborhoods.",
+      },
+      {
+        q: "Is parking free at Denver airport hotels?",
+        a: "No, and this is the most common piece of wrong information about Denver hotels. Every airport-corridor property we checked charges: $12 at the Home2 Suites, $15 at the Homewood Suites, $15.99 at the Staybridge, $16 at the Hampton Gateway Park, $17 at the Residence Inn Gateway Park. Booking sites flag these as free because they misread park-and-fly packages, which are a paid product.",
+      },
+      {
+        q: "Why do booking sites show free parking when the hotel charges?",
+        a: "Two reasons. Airport hotels sell park-and-fly packages that get miscategorized as free parking, and OTA amenity flags for Denver are frequently stale in general — properties listed as free self-park turn out to be valet-only, or the free lot is offsite. The hotel's own site is the only source worth trusting, and it is usually on a page called Hotel Information or Getting Here.",
+      },
+      {
+        q: "What is the cheapest way to park in downtown Denver overnight?",
+        a: "A public garage rather than your hotel. The city-run Denver Performing Arts Complex garage charges $23 for twelve to twenty-four hours against $42 to $70 at hotels. Watch the 4am rollover, though — a new parking day starts then, so an early-morning airport run costs you a second day.",
+      },
+    ],
+    booking: {
+      pubref: "guide-free-parking",
+      heading: "If you're paying for parking anyway",
+      blurb: "Free parking means staying well out of the city, and for most trips the arithmetic doesn't favor it. If you'd rather be central and put the car in a garage, these are the two clusters worth comparing.",
+      areas: [
+        { slug: "downtown", label: "Downtown", note: "Where the $42 to $70 parking rates live — but also where you can leave the car alone for three days and walk everywhere instead." },
+        { slug: "airport", label: "Near DEN", note: "Parking runs $12 to $17 a night out here, not free, but a fraction of downtown. Worth it the night before an early flight and hard to justify for longer." },
       ],
     },
   },
