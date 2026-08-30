@@ -193,7 +193,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                 <div key={f.q}>
                   <h3 className="text-lg font-semibold mb-2">{f.q}</h3>
                   <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                    <LinkedText text={f.a} index={mentions} seen={seen} />
+                    <LinkedText text={f.a} index={mentions} seen={seen} chipLimit={2} />
                   </p>
                 </div>
               );

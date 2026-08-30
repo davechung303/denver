@@ -9,11 +9,21 @@ export default function LinkedText({
   text,
   index,
   seen,
+  chipLimit = 4,
 }: {
   text: string;
   index: MentionIndex;
   seen: Set<string>;
+  /**
+   * Booking chips per section. Past this the hotel still links — the internal
+   * link is free and useful — but the chip stops, because a section with
+   * fourteen of them reads as an ad farm rather than a recommendation.
+   * `seen` already counts the hotels linked so far in this section, so the
+   * running total needs no mutable state.
+   */
+  chipLimit?: number;
 }) {
+  const linkedBefore = seen.size;
   const hits = findMentions(text, index, seen);
   if (hits.length === 0) return <>{text}</>;
 
@@ -23,6 +33,7 @@ export default function LinkedText({
   hits.forEach((h, n) => {
     if (h.start > cursor) nodes.push(text.slice(cursor, h.start));
     const m = index.bySlug[h.slug];
+    const chip = linkedBefore + n < chipLimit;
     nodes.push(
       <span key={`${h.slug}-${n}`}>
         <Link
@@ -31,14 +42,16 @@ export default function LinkedText({
         >
           {h.text}
         </Link>
-        <a
-          href={m.bookHref}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="ml-1.5 inline-flex items-center rounded-full bg-denver-amber/10 px-2 py-0.5 text-[11px] font-semibold text-denver-amber align-middle hover:bg-denver-amber hover:text-white transition-colors"
-        >
-          Book
-        </a>
+        {chip && (
+          <a
+            href={m.bookHref}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="ml-1.5 inline-flex items-center rounded-full bg-denver-amber/10 px-2 py-0.5 text-[11px] font-semibold text-denver-amber align-middle hover:bg-denver-amber hover:text-white transition-colors"
+          >
+            Book
+          </a>
+        )}
       </span>
     );
     cursor = h.end;
