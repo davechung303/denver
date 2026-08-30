@@ -1582,6 +1582,232 @@ export const GUIDES: Record<string, Guide> = {
       ],
     },
   },
+  "hotels-near-light-rail": {
+    slug: "hotels-near-light-rail",
+    title: "Denver Hotels Near Light Rail: Which Stations Actually Work",
+    metaTitle: "Denver Hotels Near Light Rail Stations, Walk-Timed",
+    metaDescription:
+      "Denver's downtown light rail is suspended for reconstruction through at least early 2027. Here's what's still running, which hotels are genuinely walkable from a station, and the airport stop with nothing near it.",
+    ogTitle: "Denver Hotels Near Rail: The Downtown Lines Are Closed",
+    ogDescription:
+      "The D, H and L lines are suspended. Union Station and the A Line are the rail that matters right now — measured hotel by hotel, on foot.",
+    lede:
+      "Book at Union Station and you are on seven rail lines including the airport train. That is the short answer, and right now it is close to the only answer, because Denver's downtown light rail is switched off: the D, H and L lines are suspended for the Downtown Rail Reconstruction Project through at least the first quarter of 2027, which means Theatre District–Convention Center, 16th & California, 16th & Stout and the rest of the downtown platforms have no train at them today. Downtown moves on the free 16th Street FreeRide instead. Every walk on this page is a routed pedestrian distance from the station entrance, not a straight line — a distinction that turns out to matter enormously at one airport stop.",
+    updated: "2026-08-30",
+    sections: [
+      {
+        h2: "Which Denver rail lines are running right now?",
+        answer:
+          "Nine: four commuter rail lines and five light rail lines. Three light rail lines — D, H and L — are suspended for the Downtown Rail Reconstruction Project, and a temporary T Line launched on 7 June 2026 to cover part of the gap.",
+        table: {
+          head: ["Line", "Type", "Runs between"],
+          rows: [
+            ["A", "Commuter rail", "Union Station ↔ Denver Airport — the one most visitors need"],
+            ["B", "Commuter rail", "Union Station ↔ Westminster"],
+            ["G", "Commuter rail", "Union Station ↔ Wheat Ridge Ward"],
+            ["N", "Commuter rail", "Union Station ↔ Eastlake & 124th"],
+            ["C", "Light rail", "Union Station ↔ Mineral — temporarily reinstated to cover the D Line"],
+            ["E", "Light rail", "Union Station ↔ RidgeGate Parkway"],
+            ["R", "Light rail", "Peoria ↔ RidgeGate Parkway — extended south in June 2026"],
+            ["T", "Light rail", "Lincoln ↔ I-25 & Broadway — new, temporary, opened June 2026"],
+            ["W", "Light rail", "Union Station ↔ Jefferson County Government Center–Golden"],
+            ["D, H, L", "Light rail", "Suspended. No service at the downtown platforms"],
+          ],
+        },
+        body: [
+          "If you have read an older guide to staying near Denver light rail, it was almost certainly written around the D and H lines running up the 16th Street corridor. That is not the network you will arrive to. Check RTD's own rail page before you build a trip around a line letter — this is the most fluid part of Denver travel planning right now.",
+        ],
+      },
+      {
+        h2: "Which Denver hotels are closest to Union Station?",
+        answer:
+          "The Crawford Hotel is 103 metres from the platforms because it is inside the building. Limelight Denver is 146 metres, The Oxford Hotel 214, and seven properties sit within a seven-minute walk. Union Station carries the A, B, C, E, G, N and W lines, which is more rail than the rest of the city combined.",
+        table: {
+          head: ["Hotel", "Walk from the station", "On foot"],
+          rows: [
+            ["The Crawford Hotel", "103 m · 0.06 mi", "About 1 minute — it is in the station"],
+            ["Limelight Denver", "146 m · 0.09 mi", "About 2 minutes"],
+            ["The Oxford Hotel", "214 m · 0.13 mi", "About 3 minutes"],
+            ["Hotel Indigo Denver Downtown-Union Station by IHG", "330 m · 0.21 mi", "About 4 minutes"],
+            ["The Maven Hotel at Dairy Block", "483 m · 0.30 mi", "About 6 minutes"],
+            ["The Rally Hotel at McGregor Square", "592 m · 0.37 mi", "About 7 minutes"],
+            ["Hilton Garden Inn Denver Union Station", "594 m · 0.37 mi", "About 7 minutes"],
+          ],
+        },
+        spotlight: {
+          slugs: ["the-crawford-hotel", "limelight-denver", "the-oxford-hotel", "hotel-indigo-denver-downtown-union-station-by-ihg"],
+          heading: "The four inside a four-minute walk",
+          note: "If you are arriving by train and leaving by train, this is the shortlist. Nothing else in Denver is this close to this much rail.",
+        },
+        body: [
+          "The Crawford is worth understanding properly: the hotel occupies the upper floors of Denver Union Station itself, so the walk from your room to the airport train is an elevator and a lobby. For a late arrival or an early departure that is not a small thing.",
+          "One caution about the neighborhood rather than the trains: this is the loudest corner of LoDo on a weekend night, and several of these hotels charge a destination fee of $28 to $30 on top of the rate. Neither of those shows up on a transit map.",
+        ],
+      },
+      {
+        h2: "Which hotels are near an A Line station to the airport?",
+        answer:
+          "Four, plus the two ends. The Westin sits 98 metres from the Denver Airport platform, Hyatt Place Peña Station is 383 metres from 61st & Peña, and 38th & Blake in RiNo has four hotels within a twelve-minute walk. The middle of the line has nothing.",
+        table: {
+          head: ["Station", "Hotel", "Walk"],
+          rows: [
+            ["Denver Airport", "The Westin Denver International Airport", "98 m · about 1 minute"],
+            ["61st & Peña", "Hyatt Place Peña Station / Denver Airport", "383 m · about 5 minutes"],
+            ["38th & Blake", "Catbird Hotel", "443 m · about 6 minutes"],
+            ["38th & Blake", "Vīb Hotel by Best Western Denver RiNo", "673 m · about 8 minutes"],
+            ["38th & Blake", "Cambria Hotel Denver Downtown RiNo", "699 m · about 9 minutes"],
+            ["38th & Blake", "The Source Hotel", "908 m · about 11 minutes"],
+            ["Central Park, 40th & Colorado, Peoria", "Nothing within a 15-minute walk", "—"],
+          ],
+        },
+        spotlight: {
+          slugs: ["catbird-hotel", "cambria-hotel-denver-downtown-rino", "the-source-hotel", "the-westin-denver-international-airport"],
+          heading: "One train, no transfers, no car",
+          note: "38th & Blake is one stop from Union Station and a straight run to the airport. It is the best transit position in Denver outside the station itself.",
+        },
+        body: [
+          "38th & Blake is the underrated one. It is a single stop from Union Station on the same train that goes to the airport, it sits in RiNo where the food and the breweries are, and the rooms cost less than the equivalent downtown. If you are flying in, eating well, and flying out, that is the whole trip solved without a car.",
+          "The A Line runs the 23 miles between the airport and Union Station in about 37 minutes, every 15 minutes from 6am to 8pm and every 30 minutes outside that.",
+        ],
+      },
+      {
+        h2: "Why the Gateway Park airport hotels are not walkable",
+        answer:
+          "Because there is no path. Six hotels sit within 1,158 metres of the 40th Avenue & Airport Boulevard–Gateway Park station as the crow flies, and not one is reachable in under 1,300 metres on foot. The routed walks run 1,307 to 1,590 metres — a penalty of a third to two-thirds, because the direct line crosses roads with no crossing.",
+        table: {
+          head: ["Hotel at Gateway Park", "Straight line", "Actual walking route"],
+          rows: [
+            ["Woolley's Classic Suites", "645 m", "1,570 m — 2.4× further"],
+            ["Hilton Garden Inn Denver Airport", "816 m", "1,307 m"],
+            ["Hampton Inn & Suites Denver/Airport-Gateway Park", "835 m", "1,392 m"],
+            ["Courtyard Denver Airport at Gateway Park", "924 m", "1,389 m"],
+            ["Hyatt Place Denver Airport", "941 m", "1,391 m"],
+            ["Cambria Hotel Denver International Airport", "1,158 m", "1,590 m"],
+          ],
+        },
+        body: [
+          "This is exactly the gap that a map-based \"hotels near the station\" list will not show you, and it is why every distance on this page is routed rather than measured with a ruler. Woolley's looks like a seven-minute walk and is a twenty-minute one, along roads built for cars.",
+          "The practical version: at Gateway Park, use the hotel shuttle. Do not book one of these on the theory that you will walk to the train with luggage. If you want to actually walk to an A Line platform, the options are the Westin at the airport itself, the Hyatt Place at 61st & Peña, or the RiNo cluster at 38th & Blake.",
+        ],
+      },
+      {
+        h2: "What does it mean that the downtown light rail is closed?",
+        answer:
+          "For a visitor, less than it sounds. The downtown platforms with no train are all on the 16th Street corridor, and the free 16th Street FreeRide bus runs that corridor every 4 to 12 minutes from early morning to late at night, from Union Station to Wade Blank Civic Center. You do not need a ticket and there is no fare.",
+        body: [
+          "The stations currently without rail service are Theatre District–Convention Center, 16th & California, 16th & Stout, 18th & California, 18th & Stout, 20th & Welton, 25th & Welton, 30th & Downing and Colfax at Auraria. The platforms are still there and buses still serve the area — there is simply no train.",
+          "So a hotel that markets itself as steps from a light rail station downtown is, at the moment, steps from a platform. The Hilton Denver City Center is 91 metres from 18th & California, the Magnolia Hotel is 98 from 16th & Stout, Le Méridien Denver Downtown is 142 from 16th & California and the Embassy Suites by Hilton Denver Downtown Convention Center is 169 from Theatre District. All excellent locations; none of them currently a train.",
+          "What those hotels do have is the FreeRide, which is genuinely useful and genuinely free, and a walk to Union Station of fifteen to twenty-five minutes if you want the A Line. Plan the airport leg from Union Station rather than from your front door.",
+        ],
+      },
+      {
+        h2: "Hotels near the C, E and W lines",
+        answer:
+          "Thin, and mostly on the western edge. Ball Arena–Elitch Gardens is the useful downtown-adjacent stop with four hotels inside a sixteen-minute walk, and the Sheraton Denver West is 593 metres from Federal Center out on the W Line.",
+        table: {
+          head: ["Station", "Lines", "Nearest hotels, on foot"],
+          rows: [
+            ["Ball Arena–Elitch Gardens", "C, E, W", "SpringHill Suites by Marriott Denver Downtown 810 m; Limelight Denver 1,160 m; Hotel Teatro 1,261 m; The Crawford Hotel 1,299 m"],
+            ["Empower Field at Mile High", "C, E, W", "SpringHill Suites by Marriott Denver Downtown, 1,134 m"],
+            ["Decatur–Federal", "W", "Courtyard by Marriott Denver Downtown West, 1,063 m"],
+            ["Federal Center", "W", "Sheraton Denver West Hotel 593 m; Hampton Inn by Hilton Denver West Federal Center 1,103 m"],
+          ],
+        },
+        body: [
+          "Ball Arena–Elitch Gardens is the stop worth knowing for an event night. It puts you one short ride from three light rail lines and a fifteen-minute walk from most of LoDo, and it is the only rail station in Denver that a Nuggets or Avalanche crowd actually uses in volume.",
+        ],
+      },
+      {
+        h2: "Hotels near rail in the Tech Center and the southeast",
+        answer:
+          "This is where staying on rail genuinely pays, because the alternative is I-25 at rush hour. The Residence Inn Denver Tech Center is 373 metres from Arapahoe at Village Center, and Belleview has four hotels within a fifteen-minute walk of a platform served by three lines.",
+        table: {
+          head: ["Station", "Lines", "Nearest hotels, on foot"],
+          rows: [
+            ["Arapahoe at Village Center", "E, R, T", "Residence Inn by Marriott Denver Tech Center 373 m; Wingate by Wyndham Greenwood Village/Denver Tech 982 m"],
+            ["Belleview", "E, R, T", "Denver Marriott Tech Center 784 m; Hyatt Regency Denver Tech Center 907 m; Hampton Inn & Suites Denver Tech Center 1,165 m"],
+            ["County Line", "E, R, T", "Residence Inn by Marriott Denver South/Park Meadows Mall, 654 m"],
+            ["Lincoln", "E, R, T", "Hilton Garden Inn Denver South Park Meadows Area, 654 m"],
+            ["Orchard", "E, R, T", "DoubleTree by Hilton Hotel Denver Tech Center, 746 m"],
+            ["Dry Creek", "E, R, T", "EVEN Hotel Denver Tech Center-Englewood, 949 m"],
+            ["Sky Ridge", "E, R", "Hampton Inn & Suites Denver/South-RidgeGate, 558 m"],
+          ],
+        },
+        body: [
+          "If your trip is a conference at the Tech Center rather than a weekend downtown, book one of these and skip the rental car entirely. The E Line runs straight to Union Station, and the drive it replaces is the worst commute in Colorado.",
+        ],
+      },
+      {
+        h2: "Hotels near the R Line for Anschutz and Aurora",
+        answer:
+          "Two stations matter. Iliff has three hotels within a fourteen-minute walk, led by the Fairfield Denver Aurora/Medical Center at 462 metres, and the Colfax station in Aurora puts the Holiday Inn Express Denver Aurora Medical Campus 646 metres away.",
+        table: {
+          head: ["Station", "Hotel", "Walk"],
+          rows: [
+            ["Iliff", "Fairfield by Marriott Inn & Suites Denver Aurora/Medical Center", "462 m · about 6 minutes"],
+            ["Iliff", "Hampton Inn & Suites Aurora South Denver", "491 m · about 6 minutes"],
+            ["Iliff", "DoubleTree by Hilton Hotel Denver - Aurora", "1,076 m · about 13 minutes"],
+            ["Colfax (Aurora)", "Holiday Inn Express & Suites Denver Aurora Medical Campus", "646 m · about 8 minutes"],
+          ],
+        },
+        body: [
+          "Note the name collision: the Colfax station on the R Line in Aurora is a completely different place from Colfax at Auraria downtown, which currently has no rail service at all. Booking sites confuse these two regularly.",
+        ],
+      },
+      {
+        h2: "What does the train cost?",
+        answer:
+          "A three-hour pass is $2.75 and a day pass is $5.50. The airport is separate: there is no one-way airport ticket, only a $10 Airport Day Pass, or an upgrade of $7.25 from a three-hour pass or $4.50 from a day pass. Youth 19 and under and active-duty US military ride free on everything.",
+        list: [
+          "Three-hour pass $2.75 — the effective one-way fare for everything except the airport.",
+          "Day pass $5.50. If you are making three trips, this is already cheaper.",
+          "Airport Day Pass $10 — and note it is a day pass, not a one-way, so the return trip is included if it falls on the same service day.",
+          "Discount fares run $1.35 for three hours, $2.70 for a day, and the Airport Day Pass carries no additional charge on the discount program.",
+          "The 16th Street FreeRide is free and needs no ticket at all.",
+        ],
+      },
+      {
+        h2: "How we measured these walks",
+        answer:
+          "Every distance is a routed pedestrian path from the station entrance to the hotel, computed with an OpenStreetMap foot-routing engine — the way a person actually walks, following crossings and paths. Times assume a steady 80 metres a minute, which is an unhurried adult pace.",
+        body: [
+          "We used routed distances rather than straight lines because Denver punishes the difference. At Gateway Park a hotel 645 metres away as the crow flies is a 1,570 metre walk. Downtown, where the grid is dense and every corner has a crossing, the two numbers land within a few percent of each other. A list that measures with a ruler will be right downtown and badly wrong everywhere else.",
+          "Two caveats worth stating. Routing does not know about luggage, and it does not know about winter — a nine-minute walk in July is a different proposition in February with a suitcase. And station data changes: the rail network described here was checked against RTD's own facility pages in August 2026, during an unusually disrupted period. Check the line before you book the room.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Which Denver hotel is closest to a light rail station?",
+        a: "The Crawford Hotel, at 103 metres — it occupies the upper floors of Denver Union Station itself, so the walk to the platform is an elevator and a lobby. Union Station carries seven lines including the A Line to the airport. Limelight Denver at 146 metres and The Oxford Hotel at 214 are the next closest, and seven hotels in total sit within a seven-minute walk.",
+      },
+      {
+        q: "Is Denver's downtown light rail running?",
+        a: "No. The D, H and L lines are suspended for the Downtown Rail Reconstruction Project through at least the first quarter of 2027, so Theatre District–Convention Center, 16th & California, 16th & Stout, 18th & California, 18th & Stout, 20th & Welton, 25th & Welton, 30th & Downing and Colfax at Auraria currently have no train. The platforms and the buses remain, and the free 16th Street FreeRide runs that corridor every 4 to 12 minutes.",
+      },
+      {
+        q: "Can you take the train from Denver airport to your hotel?",
+        a: "Yes, on the A Line, which runs the 23 miles to Union Station in about 37 minutes, every 15 minutes between 6am and 8pm. It costs $10 for an Airport Day Pass — there is no cheaper one-way. The hotels you can walk to from an A Line platform are the Westin at the airport itself (98 m), the Hyatt Place at 61st & Peña (383 m), and four in RiNo at 38th & Blake, led by the Catbird Hotel at 443 m.",
+      },
+      {
+        q: "Are the Gateway Park airport hotels walkable to the train?",
+        a: "No, despite looking like it on a map. Six hotels sit within 1,158 metres of the 40th & Airport–Gateway Park station in a straight line, but the shortest actual walking route to any of them is 1,307 metres and the longest is 1,590 — the roads out there have no pedestrian crossings on the direct line. Use the hotel shuttle instead, or book at 61st & Peña or 38th & Blake if walking to the platform matters.",
+      },
+      {
+        q: "Which Denver hotels are on the A Line to the airport?",
+        a: "Working outward from downtown: The Crawford, Limelight, The Oxford, Hotel Indigo, The Maven, The Rally and the Hilton Garden Inn at Union Station; the Catbird, Vīb, Cambria RiNo and The Source at 38th & Blake; the Hyatt Place at 61st & Peña; and the Westin at the airport station. The three intermediate stops — Central Park, 40th & Colorado and Peoria — have no hotel within a fifteen-minute walk.",
+      },
+    ],
+    booking: {
+      pubref: "guide-light-rail",
+      heading: "Book on the line",
+      blurb: "Rooms at Union Station carry a premium and a destination fee; a stop out in RiNo puts you on the same train for less. Check both on your dates before deciding what the walk is worth.",
+      areas: [
+        { slug: "lodo", label: "LoDo & Union Station", note: "Seven rail lines including the airport train, and the only hotel in Denver that is inside a station. Loudest on weekend nights, and where the destination fees cluster." },
+        { slug: "rino", label: "RiNo", note: "38th & Blake is one stop from Union Station on the airport line. Better food, cheaper rooms, and no car needed either way." },
+      ],
+    },
+  },
 };
 
 export const GUIDE_SLUGS = Object.keys(GUIDES);
@@ -1594,6 +1820,7 @@ export const GUIDE_SLUGS = Object.keys(GUIDES);
  * each page three inbound contextual links the moment it ships.
  */
 export const GUIDE_CARDS: { slug: string; title: string; blurb: string }[] = [
+  { slug: "hotels-near-light-rail", title: "Hotels near light rail", blurb: "The downtown lines are suspended. Which stations still work, walk-timed hotel by hotel." },
   { slug: "new-hotels-in-denver", title: "New hotels in Denver", blurb: "Five have opened in twenty months, not the dozen the lists claim. Plus what's paused and what closed." },
   { slug: "mountain-view-hotels", title: "Hotels with mountain views", blurb: "Only four sell a room named for it — and some famous ones advertise the opposite." },
   { slug: "hotel-free-parking", title: "Where parking is actually free", blurb: "No downtown hotel. Not the airport strip either, whatever the booking sites say." },

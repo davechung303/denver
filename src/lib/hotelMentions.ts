@@ -12,6 +12,41 @@ import { expediaDenverHotelsUrl } from "./travelpayouts";
 // If a hotel is not in this map it simply does not link, which is the correct
 // failure mode.
 const ALIASES: Record<string, string[]> = {
+  "springhill-suites-by-marriott-denver-downtown": ["SpringHill Suites by Marriott Denver Downtown", "SpringHill Suites Denver Downtown"],
+  "hilton-denver-city-center": ["Hilton Denver City Center"],
+  "hyatt-centric-downtown-denver": ["Hyatt Centric Downtown Denver", "Hyatt Centric"],
+  "aloft-by-marriott-denver-downtown": ["Aloft by Marriott Denver Downtown", "Aloft Denver Downtown"],
+  "tru-by-hilton-denver-downtown-convention-center": ["Tru by Hilton Denver Downtown Convention Center"],
+  "homewood-suites-by-hilton-denver-downtown-convention-center": ["Homewood Suites by Hilton Denver Downtown Convention Center", "Homewood Suites Convention Center", "Homewood Suites"],
+  "hampton-inn-suites-denver-downtown-convention-center": ["Hampton Inn & Suites Denver Downtown Convention Center"],
+  "the-slate-hotel-denver-downtown-tapestry-by-hilton": ["The Slate Hotel Denver Downtown", "The Slate"],
+  "hyatt-house-denverdowntown": ["Hyatt House Denver/Downtown", "Hyatt House Denver Downtown"],
+  "renaissance-denver-downtown-city-center-hotel": ["Renaissance Denver Downtown City Center"],
+  "element-by-marriott-denver-downtown-east": ["Element by Marriott Denver Downtown East", "Element Denver Downtown East"],
+  "residence-inn-by-marriott-denver-city-center": ["Residence Inn by Marriott Denver City Center", "Residence Inn Denver City Center"],
+  "courtyard-by-marriott-denver-downtown": ["Courtyard by Marriott Denver Downtown"],
+  "holiday-inn-express-denver-downtown-by-ihg": ["Holiday Inn Express Denver Downtown"],
+  "warwick-denver": ["Warwick Denver"],
+  "kasa-union-station-denver": ["Kasa Union Station Denver", "Kasa Union Station"],
+  "vb-hotel-by-best-western-denver-rino": ["V\u012bb Hotel by Best Western Denver RiNo", "V\u012bb Hotel"],
+  "hyatt-place-pea-station-denver-airport": ["Hyatt Place Pe\u00f1a Station / Denver Airport", "Hyatt Place Pe\u00f1a Station"],
+  "sheraton-denver-west-hotel": ["Sheraton Denver West Hotel", "Sheraton Denver West"],
+  "hampton-inn-by-hilton-denver-west-federal-center": ["Hampton Inn by Hilton Denver West Federal Center", "Hampton Inn Denver West Federal Center"],
+  "denver-marriott-tech-center": ["Denver Marriott Tech Center"],
+  "hyatt-regency-denver-tech-center": ["Hyatt Regency Denver Tech Center"],
+  "hampton-inn-suites-denver-tech-center": ["Hampton Inn & Suites Denver Tech Center"],
+  "residence-inn-by-marriott-denver-tech-center": ["Residence Inn by Marriott Denver Tech Center", "Residence Inn Denver Tech Center"],
+  "wingate-by-wyndham-greenwood-villagedenver-tech": ["Wingate by Wyndham Greenwood Village/Denver Tech"],
+  "doubletree-by-hilton-hotel-denver-tech-center": ["DoubleTree by Hilton Hotel Denver Tech Center", "DoubleTree Denver Tech Center"],
+  "residence-inn-by-marriott-denver-southpark-meadows-mall": ["Residence Inn by Marriott Denver South/Park Meadows Mall"],
+  "hilton-garden-inn-denver-south-park-meadows-area": ["Hilton Garden Inn Denver South Park Meadows Area", "Hilton Garden Inn Denver South Park Meadows"],
+  "even-hotel-denver-tech-center-englewood-by-ihg": ["EVEN Hotel Denver Tech Center-Englewood", "EVEN Hotel Denver Tech Center"],
+  "hampton-inn-suites-denversouth-ridgegate": ["Hampton Inn & Suites Denver/South-RidgeGate"],
+  "fairfield-by-marriott-inn-suites-denver-auroramedical-center": ["Fairfield by Marriott Inn & Suites Denver Aurora/Medical Center", "Fairfield Denver Aurora/Medical Center"],
+  "hampton-inn-suites-aurora-south-denver": ["Hampton Inn & Suites Aurora South Denver"],
+  "doubletree-by-hilton-hotel-denver---aurora": ["DoubleTree by Hilton Hotel Denver - Aurora", "DoubleTree Denver - Aurora"],
+  "holiday-inn-express-suites-denver-aurora-medical-campus": ["Holiday Inn Express & Suites Denver Aurora Medical Campus"],
+  "gravity-haus-denver-hotel": ["Gravity Haus Denver"],
   "hyatt-regency-denver-at-colorado-convention-center": [
     "Hyatt Regency Denver at the Colorado Convention Center",
     "Hyatt Regency Denver at Colorado Convention Center",
@@ -91,10 +126,6 @@ const ALIASES: Record<string, string[]> = {
   "gaylord-rockies-resort-convention-center": ["Gaylord Rockies Resort", "Gaylord Rockies"],
   "hyatt-house-denverlakewood-at-belmar": ["Hyatt House Denver/Lakewood at Belmar", "Hyatt House at Belmar"],
   "hilton-garden-inn-arvada-denver": ["Hilton Garden Inn Arvada Denver", "Hilton Garden Inn Arvada"],
-  "homewood-suites-by-hilton-denver-downtown-convention-center": [
-    "Homewood Suites Convention Center",
-    "Homewood Suites",
-  ],
 };
 
 export interface HotelMention {
