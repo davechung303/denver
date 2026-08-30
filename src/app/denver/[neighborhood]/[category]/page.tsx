@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory, CATEGORY_DESCRIPTIONS, getPlaceTag } from "@/lib/neighborhoods";
 import { getSubcategories } from "@/lib/subcategories";
-import { getPlaces, isRealHotel, isUsefulPlace } from "@/lib/places";
+import { getPlaces, getHotelPool, isRealHotel, isUsefulPlace } from "@/lib/places";
+import { hotelsForAreaListing } from "@/lib/areaHotels";
 import { photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
 import PlaceCard from "@/components/PlaceCard";
@@ -56,8 +57,16 @@ export default async function CategoryPage({ params }: Props) {
 
   const otherCategories = CATEGORIES.filter((cat) => cat.slug !== cSlug);
   const subcategories = getSubcategories(cSlug!);
+  // Hotels are sourced geographically rather than by places.neighborhood_slug.
+  // That column records how a row was fetched, not where it is: no hotel is
+  // filed under 'rino' at all, so this page rendered empty for RiNo, and
+  // several other neighborhoods listed hotels with no affiliate links while
+  // their real, linked properties sat under some other slug. Every other
+  // category still uses the column, which works fine for them.
   const [places, videos] = await Promise.all([
-    getPlaces(nSlug, cSlug),
+    cSlug === "hotels"
+      ? getHotelPool().then((pool) => hotelsForAreaListing(pool, nSlug))
+      : getPlaces(nSlug, cSlug),
     getVideosForPage(nSlug, cSlug, 3),
   ]);
 

@@ -192,3 +192,41 @@ export function hotelsInAreas(
   for (const [slug, list] of buckets) out[slug] = rank(list, limit);
   return out;
 }
+
+/**
+ * Hotels for a neighborhood LISTING page — a directory, not a recommendation.
+ *
+ * Different job from hotelsInArea(), and therefore different rules. A module
+ * says "here are the rooms worth booking", so it demands an affiliate link and
+ * drops hostels and B&Bs. A listing page says "here is what exists in this part
+ * of Denver", so it includes them: a directory that silently omits every
+ * property we can't monetize is a worse directory, and readers notice.
+ *
+ * Existed because /denver/rino/hotels rendered completely empty. That page
+ * queried places.neighborhood_slug, and there is not a single hotel filed under
+ * 'rino' — RiNo's hotels are scattered across 'five-points', 'cole' and
+ * 'highlands' depending on how each row happened to be fetched. Four more
+ * neighborhood pages carried no affiliate links at all for the same reason.
+ *
+ * The radius is the module radius with a one-mile floor, because a directory
+ * can reasonably cast a slightly wider net than a curated shortlist. Results
+ * come back nearest-first; the page applies its own quality and proximity
+ * scoring on top.
+ */
+export function hotelsForAreaListing(
+  pool: Place[],
+  areaSlug: string,
+  limit = 60
+): Place[] {
+  const area = getNeighborhood(areaSlug);
+  if (!area) return [];
+  const radius = Math.max(RADIUS_MILES[areaSlug] ?? DEFAULT_RADIUS_MILES, 1.0);
+
+  return pool
+    .filter((p) => p.lat != null && p.lng != null)
+    .map((p) => ({ p, d: haversineMiles(p.lat as number, p.lng as number, area.lat, area.lng) }))
+    .filter((x) => x.d <= radius)
+    .sort((a, b) => a.d - b.d)
+    .slice(0, limit)
+    .map((x) => x.p);
+}
