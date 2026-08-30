@@ -235,6 +235,72 @@ export default async function WhereToStayPage() {
         </div>
       </section>
 
+      {/* Walkability, measured. The single most-asked question on the Denver
+          travel forums is "where do I base myself", and the recurring failure
+          of every answer to it is that nobody gives a number. These are routed
+          pedestrian distances, not straight lines. */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <h2 className="text-2xl font-bold mb-2">How far apart are these places on foot?</h2>
+        <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl mb-6">
+          Every guide to Denver tells you a neighborhood is walkable and none of them tells you to what.
+          These are routed pedestrian distances between the places people actually mean when they name a
+          neighborhood &mdash; not straight lines, and not the whole neighborhood, which in RiNo&apos;s case is
+          more than a mile long.
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-900">
+              <tr>
+                {["From", "To", "On foot"].map((h) => (
+                  <th key={h} className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Union Station", "Larimer Square, LoDo", "805 m · 11 min"],
+                ["Union Station", "Convention Center", "1.6 km · 21 min"],
+                ["Union Station", "LoHi, 16th & Boulder", "1.7 km · 22 min"],
+                ["Union Station", "RiNo at 25th & Larimer", "1.5 km · 20 min"],
+                ["Union Station", "RiNo at 27th & Larimer", "2.1 km · 28 min"],
+                ["Larimer Square, LoDo", "Convention Center", "821 m · 11 min"],
+                ["Larimer Square, LoDo", "RiNo at 25th & Larimer", "1.4 km · 19 min"],
+                ["Larimer Square, LoDo", "RiNo at 30th & Larimer", "2.6 km · 35 min"],
+                ["Larimer Square, LoDo", "Golden Triangle, Art Museum", "1.7 km · 22 min"],
+                ["Coors Field", "RiNo at 25th & Larimer", "883 m · 12 min"],
+                ["Coors Field", "RiNo at 30th & Larimer", "2.0 km · 26 min"],
+                ["Convention Center", "Golden Triangle, Art Museum", "945 m · 13 min"],
+                ["Convention Center", "Capitol Hill, Colfax & Pearl", "1.5 km · 20 min"],
+                ["LoHi, 16th & Boulder", "RiNo at 27th & Larimer", "3.3 km · 43 min"],
+                ["Convention Center", "Cherry Creek North", "5.5 km · 73 min"],
+                ["Union Station", "Cherry Creek North", "6.5 km · 87 min"],
+              ].map((r) => (
+                <tr key={r[0] + r[1]} className="border-t border-slate-100 dark:border-slate-800">
+                  <td className="px-4 py-3 align-top font-medium">{r[0]}</td>
+                  <td className="px-4 py-3 align-top text-slate-600 dark:text-slate-400">{r[1]}</td>
+                  <td className="px-4 py-3 align-top text-slate-600 dark:text-slate-400 whitespace-nowrap">{r[2]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl">
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            <strong className="text-slate-900 dark:text-slate-100">Cherry Creek is not walkable from downtown.</strong>{" "}
+            An hour and a half on foot from Union Station. People ask this constantly and get told it is
+            &ldquo;close&rdquo; &mdash; it is close by car, and it is a different trip on foot. Related trap: a lot of
+            hotels marketed as &ldquo;Cherry Creek area&rdquo; actually sit out on Colorado Boulevard, which is a long
+            walk from the shops and restaurants people book Cherry Creek for. Check the street address, not the name.
+          </p>
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            <strong className="text-slate-900 dark:text-slate-100">RiNo is long and thin, so where you book inside it matters.</strong>{" "}
+            The south end at 25th is a 19-minute walk from LoDo and 12 from Coors Field. The north end at 30th
+            is 35 and 26. That is the difference between walking home and calling a car, and no listing page
+            will tell you which end you are on.
+          </p>
+        </div>
+      </section>
+
       {/* Head-to-head pages. Most people arrive already down to two areas. */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <h2 className="text-2xl font-bold mb-2">Already down to two?</h2>

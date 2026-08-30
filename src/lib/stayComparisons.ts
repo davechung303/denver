@@ -203,7 +203,7 @@ export const COMPARISONS: Comparison[] = [
       {
         h: "If you cannot decide",
         body: [
-          "Split the difference at the south end of RiNo, roughly between 25th and 30th. You are ten to fifteen minutes from Coors Field on foot, inside the restaurant density, and far enough from the venues to sleep. That is where most repeat visitors end up, and it is the answer when the trip is neither purely a game nor purely a food trip.",
+          "Split the difference at the south end of RiNo, roughly between 25th and 27th. From 25th and Larimer, Coors Field is a measured 12-minute walk; from 27th it is 20, and from 30th it is 26. Stay south and you are inside the restaurant density, walkable to the ballpark, and far enough from the venues to sleep. That is where most repeat visitors end up, and it is the answer when the trip is neither purely a game nor purely a food trip.",
         ],
       },
     ],

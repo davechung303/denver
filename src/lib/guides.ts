@@ -166,6 +166,18 @@ export const GUIDES: Record<string, Guide> = {
         a: "No. Buy it at the station or in RTD's app before you board. There are no reservations and no assigned seats.",
       },
       {
+        q: "How do you buy an A Line ticket at the airport?",
+        a: "At the ticket kiosks by the platform — they are at the bottom of the escalator down from the terminal, and they take cash or card. You do not need an account and you do not need the app, though RTD's MyRide app works if you prefer. Buy before you board: inspectors check tickets on the A Line regularly. Youth 19 and under and active-duty US military ride free, which is worth knowing before you buy four adult fares for a family.",
+      },
+      {
+        q: "How long is an RTD day pass valid?",
+        a: "Until 2:59am, not 24 hours from when you activate it. That trips people up: a pass bought at 4pm on Tuesday is dead at 3am Wednesday, not at 4pm Wednesday. The upside is that within one service day an Airport Day Pass covers multiple airport round-trips, so if you are collecting someone later the same day you do not need a second one.",
+      },
+      {
+        q: "Which level of Denver airport is baggage claim on?",
+        a: "Baggage claim is on Level 5, on both the east and west sides of the terminal. Passenger pickup is Level 4. People mix these two up constantly when arranging to meet someone — if you are being collected, agree on Level 4 and a side, east or west, because the building is long enough that the side matters more than the level.",
+      },
+      {
         q: "Where does the A Line drop you in downtown Denver?",
         a: "Union Station, in the middle of LoDo. The station building itself holds The Crawford Hotel, a food hall and several bars, and the 16th Street FreeRide starts from the door.",
       },
@@ -1197,7 +1209,7 @@ export const GUIDES: Record<string, Guide> = {
         answer:
           "RiNo if the weekend is built around eating and drinking well; LoDo if it is built around walking. RiNo has the best restaurant and brewery density in Denver and the rooms cost less, but it is long and thin, so where you book inside it matters more than the neighborhood name. LoDo is the compact one — bar close is 2am and everything is inside a few blocks.",
         list: [
-          "Book the RiNo spine between roughly 25th and 30th and you are inside the food, ten to fifteen minutes on foot from LoDo, and far enough from the venues to sleep.",
+          "Book the RiNo spine between roughly 25th and 30th and you are inside the food and far enough from the venues to sleep. Be honest about the walk, though: 25th and Larimer is 19 minutes on foot from Larimer Square, and 30th is 35. RiNo is a long thin neighborhood and the north end is a ride, not a stroll.",
           "Book LoDo and accept the noise. The blocks around Blake Street are loud on weekend nights, which is either the point or the problem. Ask for a room off the street side either way.",
           "RiNo rates do not follow the Rockies schedule and LoDo's do. On a home-game weekend the same money buys a better room in RiNo — the single most useful piece of Denver rate arbitrage there is.",
           "Neither needs a car. That is worth protecting: downtown hotel parking runs $42 to $70 a night, which is a real line on a split bill for a car nobody will move.",
@@ -1698,6 +1710,7 @@ export const GUIDES: Record<string, Guide> = {
           "The stations currently without rail service are Theatre District–Convention Center, 16th & California, 16th & Stout, 18th & California, 18th & Stout, 20th & Welton, 25th & Welton, 30th & Downing and Colfax at Auraria. The platforms are still there and buses still serve the area — there is simply no train.",
           "So a hotel that markets itself as steps from a light rail station downtown is, at the moment, steps from a platform. The Hilton Denver City Center is 91 metres from 18th & California, the Magnolia Hotel is 98 from 16th & Stout, Le Méridien Denver Downtown is 142 from 16th & California and the Embassy Suites by Hilton Denver Downtown Convention Center is 169 from Theatre District. All excellent locations; none of them currently a train.",
           "What those hotels do have is the FreeRide, which is genuinely useful and genuinely free, and a walk to Union Station of fifteen to twenty-five minutes if you want the A Line. Plan the airport leg from Union Station rather than from your front door.",
+          "One caveat we would rather state than hide: RTD has floated eliminating the 16th Street FreeRide in four of five budget-reduction scenarios it published in July 2026, and the B Line in all five. Nothing has been cut — the FreeRide is running now, and RTD has temporarily increased it to roughly three-minute frequency to cover the rail work. But if you are planning a 2027 trip around a free downtown shuttle, check that it still exists before you count on it.",
         ],
       },
       {
