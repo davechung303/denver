@@ -8,7 +8,8 @@ import BookYourTrip from "@/components/BookYourTrip";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Tours & Experiences in Denver, CO — Dave Loves Denver",
+  // Brand suffix comes from the root layout template; don't repeat it here.
+  title: "Best Tours & Experiences in Denver, CO",
   description:
     "The best tours and experiences in Denver — food tours, brewery tours, bike tours, and only-in-Denver adventures. Honest picks from a local who actually lives here.",
   openGraph: {

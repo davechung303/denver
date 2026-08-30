@@ -116,7 +116,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const imageUrl = article.youtube_videos?.thumbnail_url ?? null;
 
   return {
-    title: `${article.title} | Dave Loves Denver`,
+    // The root layout already appends " | Dave Loves Denver" via title.template,
+    // so adding it here produced "… | Dave Loves Denver | Dave Loves Denver" on
+    // every article — about twenty characters of a truncated title spent
+    // repeating the brand instead of the headline.
+    title: article.title,
     description,
     openGraph: {
       title: article.title,
