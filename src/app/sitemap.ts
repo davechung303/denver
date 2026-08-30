@@ -107,6 +107,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/denver/hotel-free-parking`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/denver/bachelorette-party-hotels`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/denver/mountain-view-hotels`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/denver/new-hotels-in-denver`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/denver/resort-fees`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/denver/ski-basecamp`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/denver/den-layover`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },

@@ -1442,6 +1442,146 @@ export const GUIDES: Record<string, Guide> = {
       ],
     },
   },
+  "new-hotels-in-denver": {
+    slug: "new-hotels-in-denver",
+    title: "New Hotels in Denver: What Has Actually Opened",
+    metaTitle: "New Hotels in Denver: What Has Actually Opened",
+    metaDescription:
+      "Five hotels opened in Denver proper in the last twenty months, not the dozen the listicles claim. What's new, what's paused, what closed, and the booking pages for hotels that no longer exist.",
+    ogTitle: "Denver's New Hotels: Five in Twenty Months",
+    ogDescription:
+      "The convention-center Marriott is paused. Virgin has slipped three times. And sonder.com is still selling rooms in Denver buildings that closed in November 2025.",
+    lede:
+      "Five hotels have opened inside Denver city limits since January 2025. That is the real number, and it is a long way from the dozen you will find on the lists that pad themselves with 2024 openings — Populus, Urban Cowboy, the Cambria in RiNo and the Kimpton Claret all opened before this window. The 559-room Marriott that was supposed to fix the convention-center block is paused. Virgin Hotels has slipped three times and no source confirms it has broken ground. Meanwhile the most important thing to know about new Denver hotels is defensive: sonder.com is still taking bookings for four Denver buildings that closed in November 2025.",
+    updated: "2026-08-30",
+    sections: [
+      {
+        h2: "What new hotels have opened in Denver?",
+        answer:
+          "Five in the city proper since January 2025, and they are smaller and more scattered than the pipeline stories suggested. The AC Hotel Denver RiNo in June 2026 is the most significant of them at 128 rooms; the Apiary at Belleview Station in February is the largest at 175.",
+        table: {
+          head: ["Hotel", "Opened", "Rooms", "Where"],
+          rows: [
+            ["AC Hotel Denver RiNo", "June 2026", "128", "RiNo — the first full-service flag in the neighborhood's core"],
+            ["Apiary Hotel Belleview Station", "February 2026", "175", "Belleview Station, on the light rail south of the Tech Center"],
+            ["All Inn Hotel", "March 2026", "54", "City Park West, on the Bluebird stretch of Colfax"],
+            ["La Vista Motel", "November 2025", "23", "East Colfax — a motel reworking, not a new build"],
+            ["Courtyard by Marriott Denver Downtown West", "January 2025", "110–116", "Sun Valley, walking distance to Empower Field"],
+          ],
+        },
+        spotlight: {
+          slugs: [
+            "ac-hotel-denver-rino",
+            "apiary-hotel-belleview-station-denver",
+            "courtyard-by-marriott-denver-downtown-west",
+          ],
+          heading: "The three you can book tonight",
+          note: "The two smallest openings are boutique conversions on Colfax and are not carried by the major booking channels the way these are.",
+        },
+        body: [
+          "One more sits just over the line and is worth naming: the Holiday Inn & Suites Commerce City–Denver Airport opened in August 2026 with 106 rooms, and it is the first ground-up build of Holiday Inn's new lobby prototype anywhere. If you are pricing the airport corridor, it is the newest room out there by a wide margin.",
+          "Note the room count on the Courtyard Downtown West: sources give 110 and 116 and we could not resolve which is right. It does not change anything for a traveler, but it is the kind of small discrepancy that tells you how loosely this information gets copied around.",
+        ],
+      },
+      {
+        h2: "What new Denver hotels are coming next?",
+        answer:
+          "Nothing we can verify as under construction. The two projects everyone names are the 559-room convention-center Marriott, which was explicitly paused in July 2026, and Virgin Hotels Denver, which has slipped from 2025 to 2026 to 2027 with no source confirming it broke ground.",
+        table: {
+          head: ["Project", "Size", "Status as of August 2026"],
+          rows: [
+            ["Convention Center Marriott, 14th & Stout", "~559 rooms", "Paused July 2026 — financing costs and soft group travel. No revised date published"],
+            ["Virgin Hotels Denver, Fox Park", "241 keys", "Target slipped 2025 → 2026 → 2027. No confirmation of a groundbreaking"],
+            ["Train Denver, RiNo", "Not published", "Announced, then dormant for years"],
+            ["Fairfield / TownePlace dual-brand", "Not published", "Announced, then dormant for years"],
+          ],
+        },
+        body: [
+          "Denver has a long history of hotels that get announced, get a rendering, get written up, and never get built. Treat any of these as a real room only when someone can point at a construction fence. The convention-center Marriott is the one that would actually change downtown supply, and its pause is the single most useful fact on this page for anyone planning a 2027 event.",
+        ],
+      },
+      {
+        h2: "Why is sonder.com still selling Denver hotels that closed?",
+        answer:
+          "Because the website outlived the company. When Sonder collapsed in November 2025, a buyer acquired its trademarks and domain names out of bankruptcy — not its buildings, leases or staff — and relaunched sonder.com as a booking aggregator. A live listing with recent reviews and nightly rates is not evidence the building is operating.",
+        body: [
+          "Four Denver buildings went dark on 10 November 2025: The Artesian at 3258 Tejon, the Skyline building at 2600 Bryant with 93 units, the Osage at 3206 Osage with 20 units, and 3354 Larimer with 23. We could not verify that any of them has reopened under a new operator. The full portfolio may have been larger; the reporting that would settle it is paywalled.",
+          "This is the single most expensive mistake available to a Denver traveler right now, because everything about the listing looks normal — photos, a rate, a review dated after the closure. If you are booking anything that carries the Sonder name in Denver, the only safe check is whether a named, reachable operator answers the phone at that address.",
+          "It generalizes, too. An OTA listing is inventory data, not proof of operation, and we have found the same pattern on hotels that closed for unrelated reasons. We keep a list of Denver properties we refuse to recommend for exactly this reason, and nothing on it appears anywhere on this site.",
+        ],
+      },
+      {
+        h2: "What changed at the hotels that were already here?",
+        answer:
+          "Two things worth knowing. The Hyatt Regency Denver finished a $70 million renovation of all 1,100 guestrooms in April 2026, which makes it effectively a new hotel at an old address. And the Brown Palace was listed for sale in March 2026 — listed, not sold.",
+        spotlight: {
+          slugs: [
+            "hyatt-regency-denver-at-colorado-convention-center",
+            "the-brown-palace-hotel-and-spa-autograph-collection",
+          ],
+          heading: "Old addresses, new rooms",
+          note: "If you stayed at the Hyatt Regency before 2026, you have not stayed in these rooms.",
+        },
+        body: [
+          "A rebrand or a gut renovation is functionally a new hotel to anyone searching, and it is the category the listicles miss entirely because there is no ribbon-cutting to write about. The Hyatt Regency is the clearest case in Denver right now: a full reimagination of 1,100 rooms and suites, finished this spring.",
+          "The Brown Palace listing covers 472 rooms including the adjacent Holiday Inn Express. As of this writing no sale has been announced, and nothing about the guest experience has changed. We mention it only because a sale would be the biggest ownership story in Denver hospitality in years, and because you will see it reported as a done deal somewhere.",
+          "One correction while we are here: the Hotel Born became the Limelight Denver in May 2023, not recently. It shows up on new-hotel lists constantly.",
+        ],
+      },
+      {
+        h2: "What Denver hotels have closed?",
+        answer:
+          "Fewer than you would expect, and none of them were ordinary commercial failures. Beyond the four Sonder buildings, the notable closures are the Nativ Hotel downtown, which is permanently closed, and a Comfort Inn on North Quebec Street that shut in March 2026 after serving as a city shelter.",
+        list: [
+          "Nativ Hotel, downtown — permanently closed and unbookable. It still appears in search results with a live rating, which is why it is worth naming.",
+          "The Artesian, Skyline, Osage and 3354 Larimer — closed 10 November 2025 in the Sonder collapse. Still listed on sonder.com.",
+          "Comfort Inn, North Quebec Street — closed March 2026. It had been operating as a city shelter rather than as a hotel.",
+          "The former Stay Inn — vacant since 2023 and city-owned; being sold rather than reopened.",
+          "Royal Palace Motel — demolished in May 2025, but it had been closed since 2013. It belongs in a demolition list, not a closure list.",
+        ],
+      },
+      {
+        h2: "Why do the new-hotel lists get this wrong?",
+        answer:
+          "Two reasons. They pad the window — 2024 openings like Populus and Urban Cowboy keep getting recycled as new — and they copy from sources that are themselves stale, including Denver's own tourism board.",
+        body: [
+          "We checked Visit Denver's hotel pages against primary sources while building this page and would not cite them. They still list a Sonder building as open, give the Courtyard Downtown West a room count off by more than a thousand, and attribute two Marriott brands to Hilton. That is a lead-generation surface, not a reference, and a great deal of the Denver hotel content on the internet is downstream of it.",
+          "The honest version of the Denver story is that supply growth has slowed sharply. Five city openings in twenty months, the biggest project paused, and the flashiest one unbuilt. If you are choosing between neighborhoods rather than waiting for something to open, the pages below are more useful than this one.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What new hotels have opened in Denver in 2026?",
+        a: "Three inside the city: the AC Hotel Denver RiNo in June with 128 rooms, the Apiary Hotel at Belleview Station in February with 175, and the 54-room All Inn Hotel in City Park West in March. Just outside the city, the Holiday Inn & Suites Commerce City–Denver Airport opened in August with 106 rooms and is the first ground-up build of Holiday Inn's new lobby prototype anywhere.",
+      },
+      {
+        q: "Is the new convention center hotel in Denver open?",
+        a: "No. The roughly 559-room Marriott planned for 14th and Stout was explicitly paused in July 2026, with financing costs and soft group travel cited, and no revised opening date has been published. If you are planning an event that assumed that supply, plan without it.",
+      },
+      {
+        q: "When is Virgin Hotels Denver opening?",
+        a: "Unknown. The 241-key Fox Park project has slipped from 2025 to 2026 to 2027, and no source we could find confirms it has broken ground. Denver has a long record of announced hotels that never got built, so treat this as a proposal rather than a date.",
+      },
+      {
+        q: "Are Sonder hotels in Denver still open?",
+        a: "No. Four Denver buildings — The Artesian on Tejon, Skyline on Bryant, the Osage, and 3354 Larimer — closed on 10 November 2025 when Sonder collapsed. A buyer acquired the Sonder trademarks and domains out of bankruptcy but no buildings, and relaunched sonder.com as a booking aggregator, so live listings with recent reviews and nightly rates still appear for addresses that are not operating. Do not book one without reaching a named operator by phone.",
+      },
+      {
+        q: "Which Denver hotel was most recently renovated?",
+        a: "The Hyatt Regency Denver at the Colorado Convention Center completed a $70 million renovation of all 1,100 guestrooms and suites in April 2026. For a traveler that matters more than most of the actual openings on this page — it is the largest block of genuinely new rooms downtown, at an address that has been there for years.",
+      },
+    ],
+    booking: {
+      pubref: "guide-new-hotels",
+      heading: "Book the new ones",
+      blurb: "New rooms price oddly in their first year — sometimes under the market to fill, sometimes over it because the photography is good. Put your dates in and compare the new stock against the neighborhood it landed in.",
+      areas: [
+        { slug: "rino", label: "RiNo", note: "Where the newest full-service hotel in Denver opened this June, and still the best food and brewery density in the city." },
+        { slug: "downtown", label: "Downtown", note: "No new supply here since January 2025 and the big convention-center project is paused — but the largest renovation in the city just finished." },
+      ],
+    },
+  },
 };
 
 export const GUIDE_SLUGS = Object.keys(GUIDES);
@@ -1454,6 +1594,7 @@ export const GUIDE_SLUGS = Object.keys(GUIDES);
  * each page three inbound contextual links the moment it ships.
  */
 export const GUIDE_CARDS: { slug: string; title: string; blurb: string }[] = [
+  { slug: "new-hotels-in-denver", title: "New hotels in Denver", blurb: "Five have opened in twenty months, not the dozen the lists claim. Plus what's paused and what closed." },
   { slug: "mountain-view-hotels", title: "Hotels with mountain views", blurb: "Only four sell a room named for it — and some famous ones advertise the opposite." },
   { slug: "hotel-free-parking", title: "Where parking is actually free", blurb: "No downtown hotel. Not the airport strip either, whatever the booking sites say." },
   { slug: "bachelorette-party-hotels", title: "Group and bachelorette weekends", blurb: "Most rooms cap at four adults. What genuinely sleeps six or eight." },

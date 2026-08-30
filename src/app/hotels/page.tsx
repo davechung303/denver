@@ -192,6 +192,11 @@ export default async function HotelsHubPage() {
             <h3 className="font-bold group-hover:text-denver-amber transition-colors">Group &amp; Bachelorette Weekends</h3>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Most Denver rooms cap at four adults. Here&apos;s what actually sleeps six or eight.</p>
           </Link>
+          <Link href="/denver/new-hotels-in-denver"
+            className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
+            <h3 className="font-bold group-hover:text-denver-amber transition-colors">New Hotels in Denver</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Five have opened in twenty months, not the dozen the lists claim &mdash; plus what&apos;s paused and what closed.</p>
+          </Link>
           <Link href="/denver/mountain-view-hotels"
             className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:border-denver-amber transition-colors">
             <h3 className="font-bold group-hover:text-denver-amber transition-colors">Hotels With Mountain Views</h3>
