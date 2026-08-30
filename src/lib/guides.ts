@@ -100,6 +100,16 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         h2: "Which Denver hotels are on the A Line?",
+        spotlight: {
+          slugs: [
+            "the-crawford-hotel",
+            "the-oxford-hotel",
+            "limelight-denver",
+            "hotel-indigo-denver-downtown-union-station-by-ihg",
+          ],
+          heading: "Rooms at the end of the line",
+          note: "All four are inside a few minutes' walk of Union Station, where the A Line terminates. The Crawford is literally inside the building.",
+        },
         answer:
           "The A Line has eight stations, and three of them put you inside a walkable Denver neighborhood: Union Station for LoDo and downtown, 38th and Blake for RiNo, and Central Park for the east-side residential neighborhoods. Book near one of those and you can skip the rental car entirely.",
         list: [
@@ -720,6 +730,16 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         h2: "Can you ski from Denver without a car?",
+        spotlight: {
+          slugs: [
+            "the-crawford-hotel",
+            "the-oxford-hotel",
+            "limelight-denver",
+            "the-maven-hotel-at-dairy-block",
+          ],
+          heading: "Stay where the ski train leaves from",
+          note: "The Winter Park Express departs Union Station early. Booking within a block of it is the difference between catching it and driving I-70.",
+        },
         answer:
           "Yes, three ways: the Winter Park Express train from Union Station, CDOT's Snowstang buses to Arapahoe Basin, Breckenridge, Copper and Loveland, and RTD's regular Route NB to Eldora for a $5.50 day pass. All of them beat driving on a Saturday.",
         body: [
@@ -839,6 +859,14 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         h2: "Should you book a hotel for a long layover?",
+        spotlight: {
+          slugs: [
+            "the-westin-denver-international-airport",
+            "cambria-hotel-denver-international-airport",
+          ],
+          heading: "If the layover is long enough to sleep",
+          note: "The Westin sits on top of the terminal — no shuttle, no leaving security landside twice. The Cambria is the cheaper version of the same idea.",
+        },
         answer:
           "If it is overnight and your onward flight leaves before about 7am, book near the airport — the Westin is attached to the terminal, so you walk to your gate. If your flight is later than that, take the train and book downtown: the rooms are better, the food is better, and the A Line handles the morning.",
         body: [
