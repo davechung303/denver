@@ -346,8 +346,12 @@ export const GUIDES: Record<string, Guide> = {
     ],
     booking: {
       pubref: "guide-altitude",
-      heading: "Coming from sea level?",
-      blurb: "Denver itself is the easy part — 5,280 feet, below the threshold where altitude illness starts. Book your dates here, and read the mountain section above before you plan a day trip up I-70.",
+      heading: "Where to stay while you adjust",
+      blurb: "Elevation is the one thing that does not vary across Denver — every neighborhood sits at the same 5,280 feet, so no hotel here is going to be gentler on you than another. What actually helps in the first day or two is not needing to drive: a walkable base, and letting the mountains wait a day.",
+      areas: [
+        { slug: "lodo", label: "LoDo & Union Station", note: "The most walkable base in the city, and the one where the mountains are a train rather than a drive — the Winter Park ski train and the Snowstang buses both leave from Union Station, so you can gain four thousand feet without being the one at the wheel." },
+        { slug: "downtown", label: "Downtown", note: "Flat, central and car-free, with the free 16th Street FreeRide if the first afternoon leaves you flatter than you expected. Cheaper than LoDo and every bit as walkable." },
+      ],
     },
   },
   "is-downtown-denver-safe": {
