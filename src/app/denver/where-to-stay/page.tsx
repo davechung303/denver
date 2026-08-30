@@ -373,33 +373,14 @@ export default async function WhereToStayPage() {
 
               <div className="mt-8">
 
-              {/* This used to be a generic Expedia link. expediaDenverHotelsUrl()
-                  takes an area and ignores it — the Creator short links can't be
-                  parameterized — so all ten of these buttons dropped the reader
-                  on the same undifferentiated Denver search, seconds after we'd
-                  sold them on one specific neighborhood.
-
-                  Our own neighborhood page is the better destination: it lists
-                  the actual properties here, each with its own deep link, so the
-                  click monetizes per-property instead of generically and the
-                  reader stays on the site. The Expedia search stays alongside it
-                  for anyone who'd rather go straight there. */}
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-                <Link
-                  href={`/denver/${hn.slug}/hotels`}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
-                >
-                  See the hotels in {n.name} &rarr;
-                </Link>
-                <a
-                  href={expediaDenverHotelsUrl(n.name)}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  className="text-sm font-semibold text-denver-amber hover:underline"
-                >
-                  Or search Denver hotels on Expedia &rarr;
-                </a>
-              </div>
+              <a
+                href={expediaDenverHotelsUrl(n.name)}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+              >
+                Browse hotels in {n.name} &rarr;
+              </a>
               </div>
               {hn.venueLinks && (
                 <div className="mt-4 flex flex-wrap gap-2">
