@@ -7,6 +7,7 @@ import LinkedText from "@/components/LinkedText";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import { buildMentionIndex } from "@/lib/hotelMentions";
+import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { relatedGuides, type Guide } from "@/lib/guides";
 
 function formatUpdated(iso: string) {
@@ -31,6 +32,15 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
   const mentions = buildMentionIndex(pool);
   const bySlug = new Map(pool.map((p) => [p.slug, p]));
   const byArea = hotelsInAreas(pool, areas.map((a) => a.slug), { limit: 4 });
+  // Whatever the page argues for first is what gets a rate button at the top.
+  const ledeSlugs = guide.sections.find((sec) => sec.spotlight?.slugs?.length)?.spotlight?.slugs ?? [];
+  const spotlit = ledeSlugs
+    .map((slug) => bySlug.get(slug))
+    .filter((h): h is NonNullable<typeof h> => Boolean(h));
+  // Guides with no spotlight (what a room costs, resort fees, the altitude) still
+  // deserve a rate button above the fold, so fall back to the areas they name.
+  const ledeHotels = (spotlit.length > 0 ? spotlit : areas.flatMap((a) => (byArea[a.slug] ?? []).slice(0, 2))).slice(0, 4);
+
   const areaHotels = areas
     .map((a) => ({ ...a, hotels: byArea[a.slug] ?? [] }))
     .filter((a) => a.hotels.length > 0);
@@ -82,7 +92,42 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
             </span>
           </div>
 
-          <p className="mt-6 text-lg text-white/80 leading-relaxed">{guide.lede}</p>
+          {/* The lede is the first mention of nearly every hotel on the page and
+              it carried no links at all — the first affiliate link on these
+              pages sat 6,000px down. It links first, before anything else. */}
+          <p className="mt-6 text-lg text-white/80 leading-relaxed">
+            <LinkedText text={guide.lede} index={mentions} seen={new Set<string>()} chipLimit={3} tone="navy" />
+          </p>
+
+          {ledeHotels.length > 0 && (
+            <div className="mt-7 border-t border-white/15 pt-6">
+              <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber mb-3">
+                {guide.booking?.heading ?? "Check rates"}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {ledeHotels.map((h) => (
+                  <a
+                    key={h.place_id}
+                    href={h.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-denver-amber px-3.5 py-2 text-sm font-semibold text-white transition-colors"
+                  >
+                    {h.name}
+                    {h.rating ? <span className="text-denver-amber text-xs font-bold">&#9733; {h.rating.toFixed(1)}</span> : null}
+                  </a>
+                ))}
+                <a
+                  href={expediaDenverHotelsUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="inline-flex items-center rounded-full border border-white/25 hover:border-denver-amber hover:text-denver-amber px-3.5 py-2 text-sm font-semibold text-white/80 transition-colors"
+                >
+                  All Denver hotels &rarr;
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 

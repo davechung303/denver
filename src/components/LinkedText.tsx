@@ -10,10 +10,13 @@ export default function LinkedText({
   index,
   seen,
   chipLimit = 4,
+  tone = "light",
 }: {
   text: string;
   index: MentionIndex;
   seen: Set<string>;
+  /** "navy" renders for the dark page header, where slate-900 text is invisible. */
+  tone?: "light" | "navy";
   /**
    * Booking chips per section. Past this the hotel still links — the internal
    * link is free and useful — but the chip stops, because a section with
@@ -23,6 +26,13 @@ export default function LinkedText({
    */
   chipLimit?: number;
 }) {
+  const navy = tone === "navy";
+  const linkClass = navy
+    ? "font-semibold text-white underline decoration-denver-amber decoration-2 underline-offset-2 hover:text-denver-amber transition-colors"
+    : "font-medium text-slate-900 dark:text-slate-100 underline decoration-denver-amber decoration-2 underline-offset-2 hover:text-denver-amber transition-colors";
+  const chipClass = navy
+    ? "ml-1.5 inline-flex items-center rounded-full bg-denver-amber px-2 py-0.5 text-[11px] font-bold text-white align-middle hover:bg-amber-400 transition-colors"
+    : "ml-1.5 inline-flex items-center rounded-full bg-denver-amber/10 px-2 py-0.5 text-[11px] font-semibold text-denver-amber align-middle hover:bg-denver-amber hover:text-white transition-colors";
   const linkedBefore = seen.size;
   const hits = findMentions(text, index, seen);
   if (hits.length === 0) return <>{text}</>;
@@ -38,7 +48,7 @@ export default function LinkedText({
       <span key={`${h.slug}-${n}`}>
         <Link
           href={m.detailHref}
-          className="font-medium text-slate-900 dark:text-slate-100 underline decoration-denver-amber decoration-2 underline-offset-2 hover:text-denver-amber transition-colors"
+          className={linkClass}
         >
           {h.text}
         </Link>
@@ -47,7 +57,7 @@ export default function LinkedText({
             href={m.bookHref}
             target="_blank"
             rel="noopener noreferrer sponsored"
-            className="ml-1.5 inline-flex items-center rounded-full bg-denver-amber/10 px-2 py-0.5 text-[11px] font-semibold text-denver-amber align-middle hover:bg-denver-amber hover:text-white transition-colors"
+            className={chipClass}
           >
             Book
           </a>
