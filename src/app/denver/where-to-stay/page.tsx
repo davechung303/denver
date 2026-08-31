@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import LinkedText from "@/components/LinkedText";
+import StayAreaNav from "@/components/StayAreaNav";
 import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
 import { getHotelPool } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
@@ -170,7 +171,7 @@ export default async function WhereToStayPage() {
       />
 
       {/* Quick answer table — written to stand alone if an answer engine lifts it. */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <section id="pick" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 scroll-mt-32">
         <h2 className="text-2xl font-bold mb-2">Which Denver neighborhood should you book?</h2>
         <p className="text-slate-500 dark:text-slate-400 mb-6">The short version. Each one is covered in full below.</p>
         <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
@@ -221,6 +222,15 @@ export default async function WhereToStayPage() {
           is shorter and more useful than the version you’ve been told.
         </p>
       </section>
+
+      {/* Ten neighborhoods is a lot of page. This makes it navigable without
+          hiding nine of them behind tab state. */}
+      <StayAreaNav
+        areas={HOTEL_NEIGHBORHOODS.filter((a) => NEIGHBORHOODS.some((n) => n.slug === a.slug)).map((a) => ({
+          slug: a.slug,
+          label: NEIGHBORHOODS.find((n) => n.slug === a.slug)!.name,
+        }))}
+      />
 
       {/* The logistics pages. Sourced, specific, and the reason people link to us. */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
@@ -410,7 +420,7 @@ export default async function WhereToStayPage() {
           <section
             key={hn.slug}
             id={hn.slug}
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800"
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800 scroll-mt-32"
           >
             {/* Content */}
             <div className="lg:grid lg:grid-cols-3 lg:gap-10">
@@ -434,7 +444,7 @@ export default async function WhereToStayPage() {
               <p className="text-slate-500 dark:text-slate-400 mb-6">{n.description}</p>
 
               <blockquote className="border-l-4 border-denver-amber pl-5 py-1 mb-8 text-slate-600 dark:text-slate-400 text-lg leading-relaxed italic">
-                &ldquo;{hn.take}&rdquo;
+&ldquo;<LinkedText text={hn.take} index={mentions} seen={seen} chipLimit={2} />&rdquo;
                 <footer className="mt-2 text-sm not-italic text-slate-400 dark:text-slate-500">— Dave</footer>
               </blockquote>
 
@@ -526,6 +536,15 @@ export default async function WhereToStayPage() {
                 </div>
               </aside>
             )}
+            </div>
+
+            <div className="mt-6">
+              <a
+                href="#pick"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-denver-amber transition-colors"
+              >
+                &uarr; All ten neighborhoods
+              </a>
             </div>
 
             {/* Hotels + map side by side */}
