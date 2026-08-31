@@ -8,7 +8,8 @@ import ExperiencesStrip from "@/components/ExperiencesStrip";
 import LinkedText from "@/components/LinkedText";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
-import { buildMentionIndex } from "@/lib/hotelMentions";
+import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
+import { photoUrl } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { relatedGuides, type Guide } from "@/lib/guides";
 
@@ -186,11 +187,43 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                   <tbody>
                     {s.table.rows.map((r) => (
                       <tr key={r[0]} className="border-t border-slate-100 dark:border-slate-800">
-                        {r.map((c, i) => (
-                          <td key={i} className={`px-4 py-3 align-top ${i === 0 ? "font-medium" : "text-slate-600 dark:text-slate-400"}`}>
-                            <LinkedText text={c} index={mentions} seen={seen} />
+                        {r.map((c, i) => {
+                          // If the row's first cell IS a hotel, lead with its
+                          // photo. These tables were the last text-only surface
+                          // left on the guides.
+                          const lead =
+                            i === 0
+                              ? findMentions(c, mentions, new Set<string>())
+                                  .map((h) => bySlug.get(h.slug))
+                                  .find((h) => h?.photos?.[0])
+                              : undefined;
+                          return (
+                          <td key={i} className={`px-4 py-3 align-middle ${i === 0 ? "font-medium" : "text-slate-600 dark:text-slate-400"}`}>
+                            {lead ? (
+                              <div className="flex items-center gap-3 min-w-[14rem]">
+                                <Link
+                                  href={`/denver/${lead.neighborhood_slug}/hotels/${lead.slug}`}
+                                  aria-label={lead.name}
+                                  className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800"
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={photoUrl(lead.photos![0])}
+                                    alt=""
+                                    loading="lazy"
+                                    className="w-full h-full object-cover"
+                                  />
+                                </Link>
+                                <span>
+                                  <LinkedText text={c} index={mentions} seen={seen} />
+                                </span>
+                              </div>
+                            ) : (
+                              <LinkedText text={c} index={mentions} seen={seen} />
+                            )}
                           </td>
-                        ))}
+                          );
+                        })}
                       </tr>
                     ))}
                   </tbody>

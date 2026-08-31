@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
+import LinkedText from "@/components/LinkedText";
+import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
+import { getHotelPool } from "@/lib/places";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
@@ -83,8 +86,9 @@ export default async function WhereToStayPage() {
   ).map((a) => a.slug);
 
   // Fetch hotels for all neighborhoods in parallel
-  const [allVideos, hotelsByNeighborhood] = await Promise.all([
+  const [allVideos, mentionPool, hotelsByNeighborhood] = await Promise.all([
     getAllVideos(),
+    getHotelPool(),
     Promise.all(
     HOTEL_NEIGHBORHOODS.map(async (hn) => {
       const places = await getPlaces(hn.slug, "hotels");
@@ -95,6 +99,10 @@ export default async function WhereToStayPage() {
     })
     ),
   ]);
+
+  // The pillar named dozens of real hotels in prose and linked none of them.
+  const mentions = buildMentionIndex(mentionPool);
+  const poolBySlug = new Map(mentionPool.map((h) => [h.slug, h]));
 
   // Assigned in page order against a shared used-set, so no video repeats.
   const areaVideos = assignStayVideos(allVideos, areaSlugs, 2);
@@ -155,8 +163,6 @@ export default async function WhereToStayPage() {
       </section>
 
       {/* Expedia stays + flights search — dated searches convert better than a bare hotel-search handoff */}
-      <HowThisListWasMade updated={UPDATED} what="guide" />
-
       <BookYourTrip
         pubref="where-to-stay"
         heading="Know your dates?"
@@ -176,14 +182,32 @@ export default async function WhereToStayPage() {
               </tr>
             </thead>
             <tbody>
-              {QUICK_PICKS.map((q) => (
-                <tr key={q.slug} className="border-t border-slate-100 dark:border-slate-800">
-                  <td className="px-4 py-3 font-medium whitespace-nowrap align-top">
-                    <a href={`#${q.slug}`} className="hover:text-denver-amber transition-colors">{q.area}</a>
+              {QUICK_PICKS.map((q) => {
+                const nb = NEIGHBORHOODS.find((n) => n.slug === q.slug);
+                return (
+                <tr key={q.slug} className="group/row border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50/70 dark:hover:bg-slate-900/40 transition-colors">
+                  <td className="px-4 py-3 align-middle">
+                    <a href={`#${q.slug}`} className="flex items-center gap-3 min-w-[12rem] font-medium hover:text-denver-amber transition-colors">
+                      <span className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        {nb ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={nb.image}
+                            alt=""
+                            loading="lazy"
+                            className="w-full h-full object-cover group-hover/row:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <span className="block w-full h-full bg-slate-200 dark:bg-slate-700" />
+                        )}
+                      </span>
+                      <span>{q.area}</span>
+                    </a>
                   </td>
-                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{q.verdict}</td>
+                  <td className="px-4 py-3 align-middle text-slate-600 dark:text-slate-400">{q.verdict}</td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -371,6 +395,16 @@ export default async function WhereToStayPage() {
       {HOTEL_NEIGHBORHOODS.map((hn) => {
         const n = NEIGHBORHOODS.find((nb) => nb.slug === hn.slug);
         if (!n) return null;
+        // One link per hotel per neighborhood section.
+        const seen = new Set<string>();
+        // The right third of these sections was empty on every desktop screen.
+        // Fill it with the hotels this section's own prose names — computed up
+        // front rather than read off `seen`, which is populated during render.
+        const areaCopy = [hn.take, hn.walk, hn.eat, hn.cost, hn.hotels, hn.transit, hn.changing ?? "", hn.skip].join("\n");
+        const named = findMentions(areaCopy, mentions, new Set<string>())
+          .map((m) => poolBySlug.get(m.slug))
+          .filter((h): h is NonNullable<typeof h> => Boolean(h));
+        const asideHotels = (named.length > 0 ? named : hotelMap.get(hn.slug) ?? []).slice(0, 3);
 
         return (
           <section
@@ -379,7 +413,8 @@ export default async function WhereToStayPage() {
             className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800"
           >
             {/* Content */}
-            <div className="max-w-3xl">
+            <div className="lg:grid lg:grid-cols-3 lg:gap-10">
+            <div className="max-w-3xl lg:col-span-2">
               {/* Neighborhood image badge */}
               <div className="relative inline-flex items-center gap-2 mb-5">
                 <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
@@ -415,33 +450,33 @@ export default async function WhereToStayPage() {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-base font-bold mb-1.5">What you can walk to from {n.name}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.walk}</p>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed"><LinkedText text={hn.walk} index={mentions} seen={seen} chipLimit={2} /></p>
                 </div>
                 <div>
                   <h3 className="text-base font-bold mb-1.5">Where you&apos;ll eat</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.eat}</p>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed"><LinkedText text={hn.eat} index={mentions} seen={seen} chipLimit={2} /></p>
                 </div>
                 <div>
                   <h3 className="text-base font-bold mb-1.5">What it costs</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.cost}</p>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed"><LinkedText text={hn.cost} index={mentions} seen={seen} chipLimit={2} /></p>
                 </div>
                 <div>
                   <h3 className="text-base font-bold mb-1.5">Where to book in {n.name}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.hotels}</p>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed"><LinkedText text={hn.hotels} index={mentions} seen={seen} chipLimit={2} /></p>
                 </div>
                 <div>
                   <h3 className="text-base font-bold mb-1.5">Getting around</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.transit}</p>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed"><LinkedText text={hn.transit} index={mentions} seen={seen} chipLimit={2} /></p>
                 </div>
                 {hn.changing && (
                   <div>
                     <h3 className="text-base font-bold mb-1.5">What&apos;s changing here</h3>
-                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.changing}</p>
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed"><LinkedText text={hn.changing ?? ""} index={mentions} seen={seen} chipLimit={2} /></p>
                   </div>
                 )}
                 <div className="rounded-xl bg-slate-50 dark:bg-slate-900 p-5">
                   <h3 className="text-base font-bold mb-1.5">Who should skip {n.name}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{hn.skip}</p>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed"><LinkedText text={hn.skip} index={mentions} seen={seen} chipLimit={2} /></p>
                 </div>
               </div>
 
@@ -467,6 +502,30 @@ export default async function WhereToStayPage() {
                   ))}
                 </div>
               )}
+            </div>
+
+            {asideHotels.length > 0 && (
+              <aside className="hidden lg:block lg:col-span-1">
+                <div className="sticky top-24">
+                  <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
+                    {named.length > 0 ? `Named above in ${n.name}` : `Top-rated in ${n.name}`}
+                  </h3>
+                  <div className="space-y-4">
+                    {asideHotels.map((h) => (
+                      <HotelCardStacked key={h.place_id} place={h} />
+                    ))}
+                  </div>
+                  <a
+                    href={expediaDenverHotelsUrl(n.name)}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="mt-4 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
+                  >
+                    All {n.name} hotels &rarr;
+                  </a>
+                </div>
+              </aside>
+            )}
             </div>
 
             {/* Hotels + map side by side */}
@@ -581,6 +640,10 @@ export default async function WhereToStayPage() {
           </Link>
         </div>
       </section>
+
+      {/* Methodology sits after the argument, not in front of it. A reader who
+          has not been told anything yet has no reason to care how we know it. */}
+      <HowThisListWasMade updated={UPDATED} what="guide" />
     </>
   );
 }
