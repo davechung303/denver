@@ -10,6 +10,8 @@ import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTripCard from "@/components/BookYourTripCard";
+import ExperiencesStrip from "@/components/ExperiencesStrip";
+import { experiencesTermFor } from "@/lib/experienceTerms";
 import { nearestVenues } from "@/lib/venueProximity";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up fresh photo names after monthly refresh
@@ -842,6 +844,21 @@ export default async function BusinessPage({ params }: Props) {
                       ))}
                     </div>
                   </div>
+                )}
+
+                {/* Bookable counterpart to the free/local list above. Hotel pages
+                    only — a guided tour is a reasonable next step for someone
+                    picking where to sleep, and makes no sense on a restaurant
+                    page. Sits below the booking CTA on purpose: a room booking is
+                    worth several times a tour, so it does not compete for the
+                    scroll position above it. */}
+                {isHotel && (
+                  <ExperiencesStrip
+                    term={experiencesTermFor(place.neighborhood_slug)}
+                    heading="Book a tour or experience"
+                    note="Guided versions of what is around this hotel, bookable for the dates you are already choosing."
+                    compact
+                  />
                 )}
               </div>
             )}

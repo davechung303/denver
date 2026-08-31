@@ -15,15 +15,35 @@ export default async function ExperiencesStrip({
   heading,
   note,
   limit = 4,
+  compact = false,
 }: {
   term: string;
   heading: string;
   note?: string;
   limit?: number;
+  /** Sits inside a detail page's nearby column, where a 2xl heading shouts. */
+  compact?: boolean;
 }) {
   const products = await searchViatorProducts(term, limit + 4);
   const shown = products.filter((p) => p.images?.length).slice(0, limit);
   if (shown.length === 0) return null;
+
+  if (compact) {
+    return (
+      <div>
+        <h2 className="text-lg font-semibold mb-1">{heading}</h2>
+        {note && <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-3">{note}</p>}
+        <div className="grid grid-cols-2 gap-3">
+          {shown.slice(0, 4).map((p) => (
+            <ViatorProductCard key={p.productCode} product={p} />
+          ))}
+        </div>
+        <p className="mt-3 text-xs text-slate-400">
+          Booking links go to Viator, which pays us a commission at no extra cost to you.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <section className="mb-14 border-t border-slate-200 dark:border-slate-800 pt-12">

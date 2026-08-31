@@ -7,6 +7,7 @@ import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
 import VenueDistanceTable from "@/components/VenueDistanceTable";
+import VenueDriveTable from "@/components/VenueDriveTable";
 import { getHotelPool } from "@/lib/places";
 
 export const revalidate = 86400;
@@ -236,6 +237,97 @@ export default async function HotelsNearRedRocksPage() {
         hotels={hotelPool}
         transitNote={"There is no transit to Red Rocks at all — this is a drive, a show shuttle or a rideshare."}
       />
+
+      <VenueDriveTable hotels={hotelPool} />
+
+      {/* Everything below is from the venue's own pages, CDOT and Denverite. The
+          numbers people repeat about Red Rocks — "arrive two hours early", a
+          traffic multiplier — are not published anywhere; the lot-opening time is
+          what gets misquoted as arrival guidance. */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold mb-2">Parking, shuttles and getting in</h2>
+        <p className="text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed mb-8">
+          Checked against Red Rocks&apos; own pages for the 2026 season. A few of the things everyone
+          &ldquo;knows&rdquo; about Red Rocks turn out not to be published anywhere.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+            <h3 className="font-bold mb-2">Do you pay for parking?</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              No fee is collected at the gate. The venue&apos;s wording is worth reading closely though: for most
+              shows, parking is <em>included in the price of your ticket</em>, and nothing on the site explains which
+              shows are the exception. There is no reserved or premium parking product to buy. Lots are Top Circle,
+              Upper North, Upper South, Lower South 1 and 2 &mdash; the second of which everyone calls the Jurassic
+              Lot &mdash; plus the Trading Post.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+            <h3 className="font-bold mb-2">When do you actually need to arrive?</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Lots open <strong>two hours before door time</strong>, and that is the whole of the official
+              guidance &mdash; the venue says only to arrive early, especially for general admission. The widely
+              repeated &ldquo;arrive two hours early&rdquo; rule is that lot-opening time being misquoted as
+              instruction. Also worth knowing: vehicle entry ends at 8:30pm, and on event days the park closes to
+              the general public around 2pm, so hiking first and staying for the show does not work the way people
+              assume.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+            <h3 className="font-bold mb-2">Is there any transit? Not really.</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              RTD does not serve Red Rocks, and there is no Bustang route to it. The new Westracks shuttle from the
+              Jefferson County Government Center station is real but is <strong>weekends only, 9:30am to 5pm,
+              Memorial Day to Labor Day</strong> &mdash; it does not run for evening concerts. For a show, the
+              options are your own car, a rideshare, or a paid shuttle: Red Rocks Shuttle runs about $65 per person
+              round trip from Union Station, the Convention Center, Improper City in RiNo, Avanti in LoHi, the
+              Origin in Golden and Belleview Beer Garden in the Tech Center.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+            <h3 className="font-bold mb-2">Rideshare changed for 2026</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Drop-off is the Upper North Lot or Red Rocks Park Road at Trading Post Road. Pickup at the end of the
+              night is the <strong>Jurassic Lot only</strong> &mdash; Limo Lane is gone this year, and anything not
+              staged inside the park by 8:30pm gets sent there too. The Jurassic Lot is a mile from the South Gate.
+              Plan on a long walk or a wait for a return shuttle, and note that cell service up there is patchy
+              enough to make summoning a car at 11pm its own small adventure.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+            <h3 className="font-bold mb-2">The climb is the part people underestimate</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              The venue sits at 6,450 feet &mdash; about 1,200 feet above downtown &mdash; and the walk up from the
+              lower lots is uphill, partly unpaved and, by local estimates, fifteen to thirty minutes depending on
+              your pace and how adjusted you are to the altitude. Seating runs to around row 70. There is no
+              re-entry once your ticket is scanned except for weather or medical emergencies, and the venue is fully
+              exposed to sun, wind, rain and hail.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-amber-300 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-950/20 p-6">
+            <h3 className="font-bold mb-2">Check I-70 before you go, through October 2026</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              CDOT began bridge repairs at Kipling and Garrison on 2 August 2026, running into late October, with
+              single-lane and ramp closures on the main I-70 approach and{" "}
+              <strong>full I-70 closures the weekends of 18&ndash;22 and 25&ndash;29 September</strong>. Major delays
+              are expected and Red Rocks is flagging it on its own homepage. If your show falls in that window, the
+              drive times above are the least of it &mdash; check the closure schedule and leave accordingly.
+            </p>
+          </div>
+        </div>
+
+        <p className="mt-6 text-xs text-slate-400 max-w-3xl">
+          Sources: Red Rocks&apos; Getting Here, FAQ, Accessibility and What To Expect pages; CDOT&apos;s I-70
+          Kipling &amp; Garrison project page; Denverite on the Westracks shuttle and on transit to the park.
+          Verified 31 August 2026 &mdash; parking rules and rideshare zones change season to season, so check the
+          venue before you drive.
+        </p>
+      </section>
 
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
