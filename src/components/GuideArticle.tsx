@@ -1,8 +1,10 @@
+import React from "react";
 import Link from "next/link";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
 import HotelSpotlight from "@/components/HotelSpotlight";
+import ExperiencesStrip from "@/components/ExperiencesStrip";
 import LinkedText from "@/components/LinkedText";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
@@ -40,6 +42,9 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
   // Guides with no spotlight (what a room costs, resort fees, the altitude) still
   // deserve a rate button above the fold, so fall back to the areas they name.
   const ledeHotels = (spotlit.length > 0 ? spotlit : areas.flatMap((a) => (byArea[a.slug] ?? []).slice(0, 2))).slice(0, 4);
+
+  // Clamp so a mis-set index still renders the strip somewhere sensible.
+  const expAfter = Math.min(guide.experiences?.afterSection ?? 1, guide.sections.length - 1);
 
   const areaHotels = areas
     .map((a) => ({ ...a, hotels: byArea[a.slug] ?? [] }))
@@ -133,7 +138,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
 
       {/* Body */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        {guide.sections.map((s) => {
+        {guide.sections.map((s, i) => {
           // One link per hotel per section: enough to catch the reader at the
           // sentence that sold them, not so many that the copy turns blue.
           const seen = new Set<string>();
@@ -141,7 +146,8 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
             .map((slug) => bySlug.get(slug))
             .filter((p): p is NonNullable<typeof p> => Boolean(p));
           return (
-          <section key={s.h2} className="mb-14">
+          <React.Fragment key={s.h2}>
+          <section className="mb-14">
             <h2 className="text-2xl font-bold mb-4 leading-snug">{s.h2}</h2>
 
             <p className="text-lg leading-relaxed border-l-4 border-denver-amber pl-5 py-1 text-slate-700 dark:text-slate-300">
@@ -200,8 +206,21 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
               />
             )}
           </section>
+
+          {/* Second offer, placed mid-article rather than in the basement: the
+              reader planning where to sleep is the same reader planning what to
+              do, and these cards are the page's only other photography. */}
+          {guide.experiences && i === expAfter && (
+            <ExperiencesStrip
+              term={guide.experiences.term}
+              heading={guide.experiences.heading}
+              note={guide.experiences.note}
+            />
+          )}
+          </React.Fragment>
           );
         })}
+
 
         {/* Booking. Placed after the argument and before the FAQ — the reader has
             the answer by here, and this is the first point on the page where

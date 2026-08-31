@@ -24,6 +24,20 @@ export interface GuideSection {
 }
 
 /**
+ * Viator experiences to render partway down a guide. Someone choosing a Denver
+ * hotel is by definition planning a Denver trip, and these pages had no second
+ * offer and almost no photography above the booking module.
+ */
+export interface GuideExperiences {
+  /** Viator freetext search. A term that returns nothing renders nothing. */
+  term: string;
+  heading: string;
+  note?: string;
+  /** Render after this section index, 0-based. Defaults to after the second. */
+  afterSection?: number;
+}
+
+/**
  * Booking module for a guide page.
  *
  * These pages were shipped as pure link magnets and carried no way to book at
@@ -53,12 +67,14 @@ export interface Guide {
   sections: GuideSection[];
   faqs: { q: string; a: string }[];
   booking?: GuideBooking;
+  experiences?: GuideExperiences;
   updated: string;
 }
 
 export const GUIDES: Record<string, Guide> = {
   "airport-train": {
     slug: "airport-train",
+    experiences: { term: "Denver city tour", heading: "Worth doing once you are downtown", note: "You saved the rideshare money. Here is what the difference buys.", afterSection: 3 },
     title: "The A Line: Denver Airport to Downtown by Train",
     metaTitle: "Denver Airport to Downtown by Train — A Line Fares & Times",
     metaDescription:
@@ -199,6 +215,7 @@ export const GUIDES: Record<string, Guide> = {
 
   "hotel-costs": {
     slug: "hotel-costs",
+    experiences: { term: "Denver unique experiences", heading: "Where the money you saved could go", note: "Rate, tax and parking is the honest number. Here is what the gap between that and what you budgeted actually buys.", afterSection: 2 },
     title: "What a Denver Hotel Actually Costs",
     metaTitle: "What a Denver Hotel Actually Costs — Taxes & Parking",
     metaDescription:
@@ -296,6 +313,7 @@ export const GUIDES: Record<string, Guide> = {
 
   altitude: {
     slug: "altitude",
+    experiences: { term: "Denver city tour", heading: "Easy first-day options", note: "The advice for day one at altitude is to take it gently. These are the low-effort ways to still see something.", afterSection: 2 },
     title: "Denver Altitude: What's Actually True",
     metaTitle: "Denver Altitude: What's Actually True at 5,280 Feet",
     metaDescription:
@@ -384,6 +402,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "is-downtown-denver-safe": {
     slug: "is-downtown-denver-safe",
+    experiences: { term: "Denver downtown walking tour", heading: "Downtown with someone who knows it", note: "A guided walk is the cheapest way to get your bearings in a downtown you are unsure about, and you cover it in daylight with a group.", afterSection: 3 },
     title: "Is It Safe to Stay in Downtown Denver?",
     metaTitle: "Is Downtown Denver Safe to Stay In? A Local's Honest Answer",
     metaDescription:
@@ -484,6 +503,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "hotel-parking": {
     slug: "hotel-parking",
+    experiences: { term: "Denver unique experiences", heading: "Reasons to leave the car parked", note: "You are paying $42 to $70 a night for that space either way. These do not need it.", afterSection: 2 },
     title: "What Denver Hotel Parking Actually Costs",
     metaTitle: "Denver Hotel Parking Costs — Published Rates, Hotel by Hotel",
     metaDescription:
@@ -600,6 +620,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "resort-fees": {
     slug: "resort-fees",
+    experiences: { term: "Denver unique experiences", heading: "What a destination fee does not include", note: "The $28 to $30 a night buys you a fitness center and some wifi. This is what the city actually offers.", afterSection: 2 },
     title: "Do Denver Hotels Charge Resort Fees?",
     metaTitle: "Denver Hotel Resort & Destination Fees — What's Real in 2026",
     metaDescription:
@@ -691,6 +712,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "ski-basecamp": {
     slug: "ski-basecamp",
+    experiences: { term: "Rocky Mountain National Park tour from Denver", heading: "Mountain days that do not need a rental car", note: "If you are basing in Denver to avoid resort-town prices, the thing you still need is a way up the hill. These run from downtown.", afterSection: 2 },
     title: "Using Denver as a Ski Basecamp",
     metaTitle: "Denver as a Ski Basecamp — Drive Times, Trains & the I-70 Reality",
     metaDescription:
@@ -810,6 +832,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "den-layover": {
     slug: "den-layover",
+    experiences: { term: "Denver city tour", heading: "What fits in a layover", note: "Check the duration on each of these against the three and a half hours of overhead a layover trip costs you before you commit.", afterSection: 2 },
     title: "Can You Leave Denver Airport on a Layover?",
     metaTitle: "DEN Layover: Can You Leave the Airport? The Honest Math",
     metaDescription:
@@ -920,6 +943,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "red-rocks-what-to-know": {
     slug: "red-rocks-what-to-know",
+    experiences: { term: "Red Rocks Amphitheatre tour", heading: "Red Rocks without a car", note: "There is no public transit to Red Rocks and parking is the hardest part of the night. These solve both.", afterSection: 2 },
     title: "Red Rocks: The Rules Nobody Tells You Until You're There",
     metaTitle: "Red Rocks Rules: Bags, Re-Entry, Parking & the 193 Steps",
     metaDescription:
@@ -1031,6 +1055,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "hotel-free-parking": {
     slug: "hotel-free-parking",
+    experiences: { term: "Denver unique experiences", heading: "Things to do with the car you brought", note: "Free parking usually means you are staying outside the core. These are worth the drive in.", afterSection: 2 },
     title: "Which Denver Hotels Actually Have Free Parking",
     metaTitle: "Denver Hotels With Free Parking — Verified, Not Guessed",
     metaDescription:
@@ -1150,6 +1175,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "bachelorette-party-hotels": {
     slug: "bachelorette-party-hotels",
+    experiences: { term: "Denver brewery tour", heading: "Something for the group to actually do", note: "The lodging is the hard part of a group weekend; this is the easy part. All bookable for the whole group on one reservation.", afterSection: 3 },
     title: "Where to Stay for a Denver Bachelorette (or Any Group Weekend)",
     metaTitle: "Denver Bachelorette Hotels: Where a Group Actually Fits",
     metaDescription:
@@ -1279,6 +1305,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "mountain-view-hotels": {
     slug: "mountain-view-hotels",
+    experiences: { term: "Rocky Mountain day trip from Denver", heading: "Or go and stand in them", note: "A good west-facing room shows you the Front Range from 40 miles away. These put you in it and back by dinner \u2014 and none of them needs a car.", afterSection: 2 },
     title: "Denver Hotels With Mountain Views: Which Ones Are Actually Real",
     metaTitle: "Denver Hotels With Mountain Views: Which Ones Are Real",
     metaDescription:
@@ -1456,6 +1483,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "new-hotels-in-denver": {
     slug: "new-hotels-in-denver",
+    experiences: { term: "Denver food tour", heading: "What to do once you have checked in", note: "The newest rooms in Denver are clustered in RiNo and downtown, which is also where the eating is. These are the tours people actually book there.", afterSection: 2 },
     title: "New Hotels in Denver: What Has Actually Opened",
     metaTitle: "New Hotels in Denver: What Has Actually Opened",
     metaDescription:
@@ -1596,6 +1624,7 @@ export const GUIDES: Record<string, Guide> = {
   },
   "hotels-near-light-rail": {
     slug: "hotels-near-light-rail",
+    experiences: { term: "Denver city tour", heading: "What you can reach without a car", note: "If you have booked next to a station specifically so you would not need to drive, these are the trips that hold up that decision.", afterSection: 2 },
     title: "Denver Hotels Near Light Rail: Which Stations Actually Work",
     metaTitle: "Denver Hotels Near Light Rail Stations, Walk-Timed",
     metaDescription:

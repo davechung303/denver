@@ -7,6 +7,7 @@ import { relatedGuides } from "@/lib/guides";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import HotelSpotlight from "@/components/HotelSpotlight";
+import ExperiencesStrip from "@/components/ExperiencesStrip";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import { COMPARISONS, getComparison } from "@/lib/stayComparisons";
@@ -282,6 +283,14 @@ export default async function ComparisonPage({
           covers all ten Denver neighborhoods, including who each one is wrong for.
         </p>
       </section>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ExperiencesStrip
+          term="Denver city tour"
+          heading="Whichever side you pick"
+          note="These run from downtown and work from either neighborhood, so they are not part of the decision — they are what you do once it is made."
+        />
+      </div>
 
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <h2 className="text-xl font-bold mb-5">Before you book either side</h2>
