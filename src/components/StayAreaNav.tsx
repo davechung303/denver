@@ -20,7 +20,35 @@ export default function StayAreaNav({
   areas: { slug: string; label: string }[];
 }) {
   const [active, setActive] = useState<string | null>(null);
+  const [top, setTop] = useState(64);
   const stripRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // The site header's height was hardcoded here as top-16. Anything that moved
+  // it — a wrapped nav, a different root font size, a promo bar — either buried
+  // this strip under the header or left a gap for page content to scroll
+  // through between them, which is what put a stray row of pills under the bar.
+  // Measure instead, and publish the combined offset so the sections can set
+  // their own scroll margin from the same number.
+  useEffect(() => {
+    const header = document.querySelector("header");
+    if (!header) return;
+    const sync = () => {
+      const h = Math.round(header.getBoundingClientRect().height);
+      setTop(h);
+      const navH = Math.round(navRef.current?.getBoundingClientRect().height ?? 56);
+      document.documentElement.style.setProperty("--stay-nav-offset", `${h + navH + 24}px`);
+    };
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(header);
+    if (navRef.current) ro.observe(navRef.current);
+    window.addEventListener("resize", sync);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", sync);
+    };
+  }, []);
 
   useEffect(() => {
     const els = areas
@@ -56,8 +84,12 @@ export default function StayAreaNav({
 
   return (
     <nav
+      ref={navRef}
       aria-label="Jump to a neighborhood"
-      className="sticky top-16 z-40 border-y border-slate-200 dark:border-slate-800 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+      style={{ top }}
+      // Fully opaque. A translucent bar lets whatever is passing underneath read
+      // as a second row of the nav, which is exactly how it looked.
+      className="sticky z-40 border-y border-slate-200 dark:border-slate-800 bg-background shadow-sm"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div

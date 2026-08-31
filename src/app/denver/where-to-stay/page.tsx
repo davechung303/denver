@@ -171,7 +171,7 @@ export default async function WhereToStayPage() {
       />
 
       {/* Quick answer table — written to stand alone if an answer engine lifts it. */}
-      <section id="pick" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 scroll-mt-32">
+      <section id="pick" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14" style={{ scrollMarginTop: "var(--stay-nav-offset, 9rem)" }}>
         <h2 className="text-2xl font-bold mb-2">Which Denver neighborhood should you book?</h2>
         <p className="text-slate-500 dark:text-slate-400 mb-6">The short version. Each one is covered in full below.</p>
         <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
@@ -420,7 +420,8 @@ export default async function WhereToStayPage() {
           <section
             key={hn.slug}
             id={hn.slug}
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800 scroll-mt-32"
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800"
+            style={{ scrollMarginTop: "var(--stay-nav-offset, 9rem)" }}
           >
             {/* Content */}
             <div className="lg:grid lg:grid-cols-3 lg:gap-10">
@@ -518,7 +519,7 @@ export default async function WhereToStayPage() {
               <aside className="hidden lg:block lg:col-span-1">
                 <div className="sticky top-24">
                   <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
-                    {named.length > 0 ? `Named above in ${n.name}` : `Top-rated in ${n.name}`}
+                    {`Popular hotels in ${n.name}`}
                   </h3>
                   <div className="space-y-4">
                     {asideHotels.map((h) => (
@@ -531,7 +532,7 @@ export default async function WhereToStayPage() {
                     rel="noopener noreferrer sponsored"
                     className="mt-4 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
                   >
-                    All {n.name} hotels &rarr;
+                    {`All ${n.name} hotels `}&rarr;
                   </a>
                 </div>
               </aside>
