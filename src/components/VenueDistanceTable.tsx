@@ -10,7 +10,7 @@ import {
   VENUE_WALK_DATED,
   type WalkBand,
 } from "@/lib/venueWalks";
-import type { Place } from "@/lib/places";
+import { photoUrl, type Place } from "@/lib/places";
 
 /**
  * Walking-distance table for a venue lodging guide.
@@ -91,22 +91,48 @@ export default function VenueDistanceTable({
                 </thead>
                 <tbody>
                   {g.rows.map(({ place, m }) => (
-                    <tr key={place.place_id} className="border-t border-slate-100 dark:border-slate-800">
-                      <td className="px-4 py-3 font-medium">
-                        <Link
-                          href={`/denver/${place.neighborhood_slug}/hotels/${place.slug}`}
-                          className="hover:text-denver-amber transition-colors"
-                        >
-                          {place.name}
-                        </Link>
+                    <tr key={place.place_id} className="group/row border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50/70 dark:hover:bg-slate-900/40 transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3 min-w-[17rem]">
+                          <Link
+                            href={`/denver/${place.neighborhood_slug}/hotels/${place.slug}`}
+                            aria-label={place.name}
+                            className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800"
+                          >
+                            {place.photos?.[0] ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={photoUrl(place.photos[0])}
+                                alt={place.name}
+                                loading="lazy"
+                                className="w-full h-full object-cover group-hover/row:scale-105 transition-transform duration-300"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
+                            )}
+                          </Link>
+                          <div className="min-w-0">
+                            <Link
+                              href={`/denver/${place.neighborhood_slug}/hotels/${place.slug}`}
+                              className="font-medium leading-snug hover:text-denver-amber transition-colors"
+                            >
+                              {place.name}
+                            </Link>
+                            {place.review_summary?.tagline && (
+                              <p className="mt-0.5 text-xs leading-snug text-slate-500 dark:text-slate-400 line-clamp-1 first-letter:uppercase">
+                                {place.review_summary.tagline}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </td>
-                      <td className="px-4 py-3 tabular-nums whitespace-nowrap font-semibold">
+                      <td className="px-4 py-3 align-middle tabular-nums whitespace-nowrap font-semibold">
                         {walkMinutes(m)} min
                       </td>
-                      <td className="px-4 py-3 tabular-nums whitespace-nowrap text-slate-600 dark:text-slate-400">
+                      <td className="px-4 py-3 align-middle tabular-nums whitespace-nowrap text-slate-600 dark:text-slate-400">
                         {metresToMiles(m).toFixed(2)} mi
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-slate-600 dark:text-slate-400">
+                      <td className="px-4 py-3 align-middle whitespace-nowrap text-slate-600 dark:text-slate-400">
                         {place.rating ? `★ ${place.rating.toFixed(1)}` : "—"}
                       </td>
                       <td className="px-4 py-3">
@@ -114,7 +140,7 @@ export default function VenueDistanceTable({
                           href={place.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
                           target="_blank"
                           rel="noopener noreferrer sponsored"
-                          className="text-denver-amber hover:underline font-medium whitespace-nowrap"
+                          className="inline-flex items-center rounded-full bg-denver-amber/10 px-3 py-1.5 text-xs font-semibold text-denver-amber whitespace-nowrap hover:bg-denver-amber hover:text-white transition-colors"
                         >
                           Check rates &rarr;
                         </a>
