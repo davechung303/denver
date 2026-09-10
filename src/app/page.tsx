@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   },
 };
 
-const HERO_VIDEO_ID = "Jnbjxwl84c8";
+const HERO_VIDEO_ID = "JJjUJ8Uoqwg";
 const PINNED_VIDEO_IDS = ["ny7PDhZ9FOQ", "Zp66Pfg-ZqM"];
 const EXCLUDED_VIDEO_IDS = new Set(["ygxF4hz7KBY", "yIX0Y5Wc7QQ", "zMYd-4Iqllo"]);
 
@@ -151,15 +151,15 @@ export default async function HomePage() {
             <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <div className="aspect-video">
                 <iframe
-                  src="https://www.youtube.com/embed/Jnbjxwl84c8"
-                  title="Havana Street Night Market — Denver's Best Kept Secret"
+                  src="https://www.youtube.com/embed/JJjUJ8Uoqwg"
+                  title="NEW Restaurants You Should Try in the North Denver Suburbs"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="w-full h-full"
                 />
               </div>
               <div className="px-4 py-3 bg-white/5">
-                <p className="text-sm text-white/70">Havana Street Night Market — Denver&apos;s Best Kept Secret</p>
+                <p className="text-sm text-white/70">NEW Restaurants You Should Try in the North Denver Suburbs</p>
               </div>
             </div>
           </div>
