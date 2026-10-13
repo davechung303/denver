@@ -13,6 +13,9 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const onlyNeighborhood = url.searchParams.get("neighborhood");
   const onlyCategory = url.searchParams.get("category");
+  // ?force=true bypasses the 30-day TTL (manual re-pull). The weekly cron never sets it,
+  // so each neighborhood/category hits Google at most once a month.
+  const force = url.searchParams.get("force") === "true";
 
   const neighborhoods = onlyNeighborhood
     ? NEIGHBORHOODS.filter((n) => n.slug === onlyNeighborhood)
@@ -26,8 +29,8 @@ export async function GET(request: Request) {
 
   for (const n of neighborhoods) {
     for (const c of categories) {
-      // refreshPlacesFromGoogle checks TTL internally — returns [] if still fresh
-      const places = await refreshPlacesFromGoogle(n.slug, c.slug);
+      // Returns [] (skipped) when this combo was refreshed within the last 30 days.
+      const places = await refreshPlacesFromGoogle(n.slug, c.slug, force);
       if (places.length === 0) {
         skipped++;
       } else {

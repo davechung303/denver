@@ -46,8 +46,10 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const batchSize = parseInt(url.searchParams.get("batch") ?? "50");
 
-  // Get all cached photo names — paginate to avoid Supabase 1000-row default limit
-  const cached = new Set<string>();
+  // Build the set of place_ids that already have at least one photo in Storage.
+  // Photo names look like places/{PLACE_ID}/photos/{ref}; the ref rotates, the
+  // place_id doesn't — so key the "already have an image" check on the place.
+  const cachedPlaceIds = new Set<string>();
   let cachePage = 0;
   const CACHE_PAGE = 1000;
   while (true) {
@@ -56,15 +58,18 @@ export async function GET(request: Request) {
       .select("photo_name")
       .range(cachePage * CACHE_PAGE, (cachePage + 1) * CACHE_PAGE - 1);
     if (!cachedRows || cachedRows.length === 0) break;
-    for (const r of cachedRows) cached.add(r.photo_name);
+    for (const r of cachedRows) {
+      const id = (r.photo_name as string).split("/")[1];
+      if (id) cachedPlaceIds.add(id);
+    }
     if (cachedRows.length < CACHE_PAGE) break;
     cachePage++;
   }
 
-  // Only warm photos from places refreshed within the last 7 days.
-  // Google photo names expire in ~2 weeks, so names older than 7 days have
-  // a high failure rate. Places outside this window need a fresh refresh-places run first.
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  // Only places refreshed recently have photo names Google will still honour
+  // (names expire after ~2 weeks). Older places get picked up after the next
+  // monthly refresh-places run.
+  const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
 
   let page = 0;
   const PAGE = 500;
@@ -73,21 +78,19 @@ export async function GET(request: Request) {
   while (true) {
     const { data: places } = await supabaseAdmin
       .from("places")
-      .select("photos")
+      .select("place_id, photos")
       .not("photos", "is", null)
-      .gte("cached_at", sevenDaysAgo)
+      .gte("cached_at", fourteenDaysAgo)
       .range(page * PAGE, (page + 1) * PAGE - 1);
 
     if (!places || places.length === 0) break;
 
     for (const place of places) {
-      const photos = place.photos as { name: string }[] | null;
-      if (!photos) continue;
-      for (const photo of photos) {
-        if (photo?.name && VALID_PHOTO_NAME.test(photo.name) && !cached.has(photo.name)) {
-          uncached.push(photo.name);
-        }
-      }
+      // One image per place is enough — skip anything that already has one,
+      // and only ever warm photos[0].
+      if (cachedPlaceIds.has(place.place_id)) continue;
+      const first = (place.photos as { name: string }[] | null)?.[0];
+      if (first?.name && VALID_PHOTO_NAME.test(first.name)) uncached.push(first.name);
     }
 
     if (places.length < PAGE) break;

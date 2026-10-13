@@ -46,7 +46,27 @@ export async function GET(request: Request) {
     });
   }
 
-  // Cache miss — fetch image bytes from Google.
+  // Cache miss on this exact name. Google rotates photo names, and old URLs stay in
+  // Google's index and in crawlers for months — this was the biggest line item on the
+  // bill (~1,000 Google photo fetches/day at $0.007). If we already hold ANY photo for
+  // this place, serve that instead. One image per place is all the site needs.
+  const placeId = photoName.split("/")[1];
+  if (placeId) {
+    const { data: anyForPlace } = await supabaseAdmin
+      .from("photo_cache")
+      .select("cdn_url")
+      .like("photo_name", `places/${placeId}/photos/%`)
+      .limit(1)
+      .maybeSingle();
+    if (anyForPlace?.cdn_url) {
+      return NextResponse.redirect(anyForPlace.cdn_url, {
+        status: 301,
+        headers: { "Cache-Control": "public, max-age=31536000, s-maxage=31536000, immutable" },
+      });
+    }
+  }
+
+  // Genuinely new place with nothing stored — fetch image bytes from Google.
   const googleUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=800&maxHeightPx=500&key=${PLACES_API_KEY}`;
 
   try {
@@ -55,7 +75,6 @@ export async function GET(request: Request) {
     // Photo name expired — try to heal: fetch fresh names from Google Places API,
     // update the DB, then serve the fresh photo.
     if (!res.ok) {
-      const placeId = photoName.split("/")[1]; // places/{PLACE_ID}/photos/...
       if (placeId) {
         const freshRes = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
           headers: { "X-Goog-Api-Key": PLACES_API_KEY, "X-Goog-FieldMask": "photos" },

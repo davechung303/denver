@@ -583,23 +583,31 @@ export default async function BusinessPage({ params }: Props) {
         </ol>
       </nav>
 
-      {/* Hero photo */}
-      {place.photos && place.photos.length > 0 && (
+      {/* Hero photo — only photos already in Supabase Storage (cdn_url set), falling
+          back to photos[0] via the proxy for a brand-new place. Unstored extras are
+          skipped on purpose: fetching them from Google costs money and one good image
+          per place is all the page needs. */}
+      {(() => {
+        const stored = (place.photos ?? []).filter((p) => p.cdn_url).slice(0, 3);
+        const heroPhotos = stored.length > 0 ? stored : (place.photos ?? []).slice(0, 1);
+        if (heroPhotos.length === 0) return null;
+        return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-2xl overflow-hidden max-h-80">
-            {place.photos.slice(0, 3).map((photo, i) => (
+            {heroPhotos.map((photo, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={i}
                 src={photoUrl(photo)}
                 alt={`${place.name} photo ${i + 1}`}
-                className={`w-full h-80 object-cover ${i === 0 && place.photos!.length === 1 ? "sm:col-span-3" : ""} ${i === 0 && place.photos!.length > 1 ? "sm:col-span-2" : ""}`}
+                className={`w-full h-80 object-cover ${i === 0 && heroPhotos.length === 1 ? "sm:col-span-3" : ""} ${i === 0 && heroPhotos.length > 1 ? "sm:col-span-2" : ""}`}
                 loading={i === 0 ? "eager" : "lazy"}
               />
             ))}
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* Main content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

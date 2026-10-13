@@ -86,11 +86,12 @@ function photoAbsoluteUrl(photo: GooglePhoto | string): string {
 // exclusion filter has to be somewhere a new getter cannot forget to call.
 async function hydratePlaces(input: Place[]): Promise<Place[]> {
   const places = input.filter((p) => !isExcludedPlace(p.slug));
-  // Only look up the first photo per place — all card and listing views use photos[0] only.
-  // This keeps the .in() query small regardless of how many photos Google returned.
+  // Look up every stored photo name (max 3 per place) so any view — cards or the
+  // detail-page gallery — renders from Supabase Storage and never falls back to the
+  // Google proxy for a photo we already have.
   const names: string[] = [];
   for (const p of places) {
-    if (p.photos?.[0]) names.push(p.photos[0].name);
+    for (const ph of p.photos ?? []) if (ph?.name) names.push(ph.name);
   }
   if (!names.length) return places;
 
@@ -153,6 +154,35 @@ async function fetchAllPagesForQuery(body: Record<string, unknown>): Promise<any
     results = [...results, ...page2.places];
   }
   return results;
+}
+
+// For each place_id that already has at least one photo in photo_cache, return its
+// current `photos` array so a refresh can carry it forward instead of replacing it.
+async function getPreservedPhotos(placeIds: string[]): Promise<Map<string, GooglePhoto[]>> {
+  const out = new Map<string, GooglePhoto[]>();
+  if (!placeIds.length) return out;
+  const { data: existing } = await supabaseAdmin
+    .from("places")
+    .select("place_id, photos")
+    .in("place_id", placeIds)
+    .not("photos", "is", null);
+  if (!existing?.length) return out;
+
+  const names: string[] = [];
+  for (const row of existing) for (const ph of (row.photos as GooglePhoto[]) ?? []) if (ph?.name) names.push(ph.name);
+  if (!names.length) return out;
+
+  const { data: cached } = await supabaseAdmin
+    .from("photo_cache")
+    .select("photo_name")
+    .in("photo_name", names);
+  const cachedNames = new Set((cached ?? []).map((c: { photo_name: string }) => c.photo_name));
+
+  for (const row of existing) {
+    const photos = (row.photos as GooglePhoto[]) ?? [];
+    if (photos.some((ph) => cachedNames.has(ph.name))) out.set(row.place_id, photos);
+  }
+  return out;
 }
 
 async function fetchFromGooglePlaces(
@@ -230,6 +260,17 @@ async function fetchFromGooglePlaces(
       cached_at: new Date().toISOString(),
       expedia_affiliate_url: null,
     }));
+
+  // COST GUARD: Google rotates photo resource names on every search. If we blindly
+  // overwrite `photos`, every place looks "unwarmed" again, the warm cron re-downloads
+  // it ($0.007/photo) and public traffic falls through to the Google proxy. One stored
+  // image per place is all the site needs, so keep the existing names for any place
+  // that already has a photo in Storage.
+  const preserved = await getPreservedPhotos(places.map((p) => p.place_id));
+  for (const p of places) {
+    const keep = preserved.get(p.place_id);
+    if (keep) p.photos = keep;
+  }
 
   // Upsert into Supabase cache
   if (places.length > 0) {
@@ -843,22 +884,27 @@ export async function discoverNewPlaces(): Promise<{ added: number; neighborhood
 }
 
 // Called only by /api/refresh-places — never from page renders.
-// Checks the TTL, invalidates stale rows, and re-fetches from Google.
+// Skips the Google fetch when this neighborhood/category was refreshed within
+// CACHE_TTL_HOURS (30 days). Pass force=true to bypass the TTL.
+//
+// Each combo costs ~2 Text Search (Enterprise) calls ≈ $0.07, so the full
+// 20×5 sweep is ≈ $7 — fine monthly, not weekly. (The previous version of this
+// guard could never fire because minResults defaulted to 0.)
 export async function refreshPlacesFromGoogle(
   neighborhoodSlug: string,
   categorySlug: string,
-  minResults = 0
+  force = false
 ): Promise<Place[]> {
-  const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
-  const { count } = await supabaseAdmin
-    .from("places")
-    .select("*", { count: "exact", head: true })
-    .eq("neighborhood_slug", neighborhoodSlug)
-    .eq("category_slug", categorySlug)
-    .gt("cached_at", cutoff);
-
-  // Skip if still fresh and above the minimum threshold
-  if ((count ?? 0) >= minResults && minResults > 0) return [];
+  if (!force) {
+    const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
+    const { count } = await supabaseAdmin
+      .from("places")
+      .select("*", { count: "exact", head: true })
+      .eq("neighborhood_slug", neighborhoodSlug)
+      .eq("category_slug", categorySlug)
+      .gt("cached_at", cutoff);
+    if ((count ?? 0) > 0) return [];
+  }
 
   return fetchFromGooglePlaces(neighborhoodSlug, categorySlug);
 }
