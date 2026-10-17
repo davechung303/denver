@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY!;
@@ -23,6 +23,52 @@ function placeholderResponse() {
   });
 }
 
+function imageResponse(buffer: ArrayBuffer, contentType: string) {
+  return new NextResponse(buffer, {
+    headers: {
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=2592000, s-maxage=2592000",
+    },
+  });
+}
+
+// Upload the bytes we just paid Google for and record them in photo_cache so the
+// next request for this place is a free 301. Every supabase-js call here is
+// awaited on purpose: PostgrestBuilder only sends its request when `.then()` runs,
+// so an un-awaited `.upsert()` / `.update()` is silently a no-op. That no-op is why
+// the proxy kept re-buying the same ~300 photos a day — Storage filled up with
+// files that photo_cache never knew about. Callers run this inside `after()` so the
+// image is still served immediately.
+async function persistPhoto(photoName: string, buffer: ArrayBuffer, contentType: string) {
+  const ext = contentType.includes("png") ? "png" : contentType.includes("webp") ? "webp" : "jpg";
+  const storagePath = `${photoName}.${ext}`;
+  const cdnUrl = `${STORAGE_BASE}/${storagePath}`;
+
+  const { error: uploadError } = await supabaseAdmin.storage
+    .from(STORAGE_BUCKET)
+    .upload(storagePath, Buffer.from(buffer), { contentType, upsert: true, cacheControl: "31536000" });
+  if (uploadError) {
+    console.error("places-photo: storage upload failed", photoName, uploadError.message);
+    return;
+  }
+
+  const { error: cacheError } = await supabaseAdmin
+    .from("photo_cache")
+    .upsert({ photo_name: photoName, cdn_url: cdnUrl }, { onConflict: "photo_name" });
+  if (cacheError) {
+    console.error("places-photo: photo_cache upsert failed", photoName, cacheError.message);
+  }
+}
+
+async function recordFreshPhotoNames(placeId: string, photos: { name: string }[]) {
+  const { error } = await supabaseAdmin
+    .from("places")
+    .update({ photos, cached_at: new Date().toISOString() })
+    .eq("place_id", placeId);
+  if (error) {
+    console.error("places-photo: places.photos update failed", placeId, error.message);
+  }
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -81,35 +127,19 @@ export async function GET(request: Request) {
         });
         if (freshRes.ok) {
           const freshData = await freshRes.json();
-          const freshPhotos = freshData.photos?.slice(0, 3).map((p: any) => ({ name: p.name }));
+          const freshPhotos: { name: string }[] | undefined = freshData.photos
+            ?.slice(0, 3)
+            .map((p: { name: string }) => ({ name: p.name }));
           if (freshPhotos?.length) {
-            // Update DB with fresh photo names (fire-and-forget)
-            supabaseAdmin
-              .from("places")
-              .update({ photos: freshPhotos, cached_at: new Date().toISOString() })
-              .eq("place_id", placeId);
+            after(() => recordFreshPhotoNames(placeId, freshPhotos));
             // Try to serve the first fresh photo
             const freshPhotoUrl = `https://places.googleapis.com/v1/${freshPhotos[0].name}/media?maxWidthPx=800&maxHeightPx=500&key=${PLACES_API_KEY}`;
             const freshImgRes = await fetch(freshPhotoUrl);
             if (freshImgRes.ok) {
               const buffer = await freshImgRes.arrayBuffer();
               const contentType = freshImgRes.headers.get("content-type") ?? "image/jpeg";
-              const ext = contentType.includes("png") ? "png" : contentType.includes("webp") ? "webp" : "jpg";
-              const storagePath = `${freshPhotos[0].name}.${ext}`;
-              const finalStorageUrl = `${STORAGE_BASE}/${storagePath}`;
-              supabaseAdmin.storage
-                .from(STORAGE_BUCKET)
-                .upload(storagePath, Buffer.from(buffer), { contentType, upsert: true, cacheControl: "31536000" })
-                .then(({ error }) => {
-                  if (!error) {
-                    supabaseAdmin
-                      .from("photo_cache")
-                      .upsert({ photo_name: freshPhotos[0].name, cdn_url: finalStorageUrl }, { onConflict: "photo_name" });
-                  }
-                });
-              return new NextResponse(buffer, {
-                headers: { "Content-Type": contentType, "Cache-Control": "public, max-age=2592000, s-maxage=2592000" },
-              });
+              after(() => persistPhoto(freshPhotos[0].name, buffer, contentType));
+              return imageResponse(buffer, contentType);
             }
           }
         }
@@ -119,30 +149,11 @@ export async function GET(request: Request) {
 
     const buffer = await res.arrayBuffer();
     const contentType = res.headers.get("content-type") ?? "image/jpeg";
-    const ext = contentType.includes("png") ? "png" : contentType.includes("webp") ? "webp" : "jpg";
-    const storagePath = `${photoName}.${ext}`;
-    const finalStorageUrl = `${STORAGE_BASE}/${storagePath}`;
 
-    // Fire-and-forget: upload to Storage and cache the URL for future requests.
-    // We don't await this — the image is served immediately from Google bytes below.
-    supabaseAdmin.storage
-      .from(STORAGE_BUCKET)
-      .upload(storagePath, Buffer.from(buffer), { contentType, upsert: true, cacheControl: "31536000" })
-      .then(({ error }) => {
-        if (!error) {
-          supabaseAdmin
-            .from("photo_cache")
-            .upsert({ photo_name: photoName, cdn_url: finalStorageUrl }, { onConflict: "photo_name" });
-        }
-      });
-
-    // Serve bytes immediately — fast first load, Storage redirect on subsequent requests.
-    return new NextResponse(buffer, {
-      headers: {
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=2592000, s-maxage=2592000",
-      },
-    });
+    // Serve bytes immediately; persist to Storage + photo_cache after the response
+    // is sent so the next request for this place is a free redirect.
+    after(() => persistPhoto(photoName, buffer, contentType));
+    return imageResponse(buffer, contentType);
   } catch {
     return placeholderResponse();
   }
