@@ -3,14 +3,23 @@ import Link from "next/link";
 const TOP_NEIGHBORHOODS = [
   { slug: "rino", name: "RiNo" },
   { slug: "lodo", name: "LoDo" },
+  { slug: "capitol-hill", name: "Capitol Hill" },
   { slug: "highlands", name: "Highlands" },
   { slug: "cherry-creek", name: "Cherry Creek" },
-  { slug: "capitol-hill", name: "Capitol Hill" },
+  { slug: "five-points", name: "Five Points" },
+  { slug: "cole", name: "Cole" },
   { slug: "washington-park", name: "Washington Park" },
   { slug: "baker", name: "Baker" },
-  { slug: "five-points", name: "Five Points" },
-  { slug: "platt-park", name: "Platt Park" },
+  { slug: "golden-triangle", name: "Golden Triangle" },
+  { slug: "uptown", name: "Uptown" },
   { slug: "sloan-lake", name: "Sloan Lake" },
+  { slug: "berkeley", name: "Berkeley" },
+  { slug: "platt-park", name: "Platt Park" },
+  { slug: "jefferson-park", name: "Jefferson Park" },
+  { slug: "curtis-park", name: "Curtis Park" },
+  { slug: "downtown", name: "Downtown" },
+  { slug: "denver-suburbs", name: "Denver Suburbs" },
+  { slug: "airport", name: "DEN Airport Area" },
 ];
 
 const BEST_OF = [
@@ -48,6 +57,24 @@ const VENUE_EVENTS = [
   { href: "/events/dicks-sporting-goods-park", label: "Dick's Sporting Goods Park" },
 ];
 
+const TRIP_PLANNING = [
+  { href: "/denver/is-downtown-denver-safe", label: "Is Downtown Denver Safe?" },
+  { href: "/denver/hotel-parking", label: "What Hotel Parking Costs" },
+  { href: "/denver/hotel-free-parking", label: "Free Hotel Parking" },
+  { href: "/denver/hotels-near-light-rail", label: "Hotels Near Light Rail" },
+  { href: "/denver/new-hotels-in-denver", label: "New Hotels in Denver" },
+  { href: "/denver/mountain-view-hotels", label: "Mountain View Hotels" },
+  { href: "/denver/bachelorette-party-hotels", label: "Group & Bachelorette Stays" },
+  { href: "/denver/resort-fees", label: "Do Hotels Charge Resort Fees?" },
+  { href: "/denver/den-layover", label: "Leaving DEN on a Layover" },
+  { href: "/denver/ski-basecamp", label: "Denver as a Ski Basecamp" },
+  { href: "/denver/red-rocks-what-to-know", label: "Red Rocks: Before You Go" },
+  { href: "/denver/where-to-stay/cherry-creek-vs-downtown", label: "Cherry Creek vs Downtown" },
+  { href: "/denver/where-to-stay/union-station-vs-rino", label: "Union Station vs RiNo" },
+  { href: "/denver/where-to-stay/lodo-vs-golden-triangle", label: "LoDo vs Golden Triangle" },
+  { href: "/denver/where-to-stay/downtown-vs-airport", label: "Downtown vs Airport" },
+];
+
 const HOTEL_GUIDES = [
   { href: "/denver/where-to-stay", label: "Where to Stay in Denver" },
   { href: "/denver/airport-train", label: "Airport to Downtown by Train" },
@@ -76,7 +103,7 @@ export default function Footer() {
   return (
     <footer className="bg-denver-navy text-white/70 mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-10">
 
           {/* Brand */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
@@ -163,6 +190,20 @@ export default function Footer() {
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Hotel Guides</p>
             <ul className="space-y-2">
               {HOTEL_GUIDES.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Trip Planning */}
+          <div className="col-span-1">
+            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Trip Planning</p>
+            <ul className="space-y-2">
+              {TRIP_PLANNING.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm hover:text-white transition-colors">
                     {link.label}
