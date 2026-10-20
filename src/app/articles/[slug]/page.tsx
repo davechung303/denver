@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { embedUrl, getVideosForPage } from "@/lib/youtube";
 import { expediaDenverHotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
+import { nearestVenues } from "@/lib/venueProximity";
 import { getPlaces, isRealHotel, isUsefulPlace, photoUrl, type Place } from "@/lib/places";
 import { searchViatorProducts } from "@/lib/viator";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -172,6 +173,10 @@ export default async function ArticlePage({ params }: Props) {
     ? getNeighborhood(article.neighborhood_slug)
     : null;
   const isWeeklyGuide = article.content_type === "weekly-guide";
+  // Surfaces one relevant venue-lodging guide per article so neighborhood
+  // pieces pass some of their traffic to the pages that need it most,
+  // instead of only ever linking the neighborhood root.
+  const nearbyVenue = neighborhood ? nearestVenues(neighborhood.lat, neighborhood.lng, 1)[0] : null;
 
   const viatorQuery = neighborhood ? `${neighborhood.name} Denver` : "Denver Colorado";
 
@@ -429,6 +434,13 @@ export default async function ArticlePage({ params }: Props) {
                 </p>
                 <span className="text-xs font-bold text-denver-amber shrink-0 ml-3 group-hover:underline">Search →</span>
               </a>
+            )}
+            {nearbyVenue && (
+              <Link href={nearbyVenue.href}
+                className="mt-2 flex items-center justify-between bg-white/5 rounded-xl px-4 py-3 hover:bg-white/10 transition-colors group">
+                <p className="text-sm text-slate-300">Staying for {nearbyVenue.label}?</p>
+                <span className="text-xs font-bold text-denver-amber shrink-0 ml-3 group-hover:underline">See the guide →</span>
+              </Link>
             )}
           </div>
 

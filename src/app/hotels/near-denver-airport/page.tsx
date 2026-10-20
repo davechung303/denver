@@ -56,6 +56,10 @@ const FAQS = [
     q: "What are the best and most luxurious hotels near Denver Airport?",
     a: "The Westin Denver International Airport is the best for pure convenience — connected to the terminal with upscale rooms and a rooftop pool. For a resort experience, the Gaylord Rockies is the luxury pick, with an indoor water park, spa, and several restaurants. Between them they cover both 'I just need to make my flight' and 'make a weekend of it.'",
   },
+  {
+    q: "Can I leave DEN during a long layover?",
+    a: "If you've got three and a half hours or more, yes — the city is reachable, though it eats most of that window between the A Line, the walk to the terminal gates, and security on the way back. Under that, stay in the terminal. DEN also has a United Club lounge if you'd rather sit somewhere quiet than venture out at all.",
+  },
 ];
 
 
@@ -171,6 +175,24 @@ export default async function HotelsNearDenverAirportPage() {
             </div>
           ))}
         </div>
+        <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">
+          Full A Line fare, schedule and station detail: <Link href="/denver/airport-train" className="text-denver-amber hover:underline font-medium">the A Line from the airport &rarr;</Link>
+        </p>
+      </section>
+
+      {/* Layover */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
+        <div className="bg-denver-navy text-white rounded-2xl p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+          <div>
+            <h2 className="font-bold text-lg mb-1">Got a layover instead of a stay?</h2>
+            <p className="text-white/70 text-sm leading-relaxed max-w-xl">
+              Three and a half hours is roughly the line between &ldquo;worth leaving the airport&rdquo; and &ldquo;stay put.&rdquo; Here&apos;s the breakdown, plus the United Club lounge if you&apos;d rather not venture out at all.
+            </p>
+          </div>
+          <Link href="/denver/den-layover" className="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors">
+            Read the layover guide &rarr;
+          </Link>
+        </div>
       </section>
 
       {/* FAQ */}
@@ -178,6 +200,9 @@ export default async function HotelsNearDenverAirportPage() {
         <h2 className="text-xl font-bold mb-4">Getting Around DEN</h2>
         <div className="flex flex-wrap gap-3">
           <Link href="/denver/denver-airport-shuttle" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Airport shuttle guide</Link>
+          <Link href="/denver/airport-train" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">A Line train guide</Link>
+          <Link href="/denver/den-layover" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Layover guide</Link>
+          <Link href="/articles/denver-airport-united-club-lounge-tour-concourse-a-and-b" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">United Club lounge guide</Link>
           <Link href="/denver/where-to-stay" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Where to stay in Denver</Link>
           <Link href="/hotels" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">All hotel guides</Link>
         </div>

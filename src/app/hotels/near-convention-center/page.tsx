@@ -193,6 +193,9 @@ export default async function HotelsNearConventionCenterPage() {
             </div>
           ))}
         </div>
+        <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">
+          Full fare, schedule and station detail: <Link href="/denver/airport-train" className="text-denver-amber hover:underline font-medium">the A Line from the airport &rarr;</Link>
+        </p>
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
@@ -201,6 +204,7 @@ export default async function HotelsNearConventionCenterPage() {
           <Link href="/denver/downtown" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown guide</Link>
           <Link href="/denver/downtown/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown restaurants</Link>
           <Link href="/denver/golden-triangle" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Golden Triangle</Link>
+          <Link href="/denver/airport-train" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">A Line train guide</Link>
           <Link href="/events" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Denver events</Link>
         </div>
       </section>
