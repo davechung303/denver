@@ -282,7 +282,11 @@ export const GUIDES: Record<string, Guide> = {
           "CEDIA Expo — 1–4 September 2026, [Colorado Convention Center](/hotels/near-convention-center)",
           "Splunk .conf26 — 14–17 September 2026, [Colorado Convention Center](/hotels/near-convention-center)",
           "[National Western Stock Show](/hotels/national-western-stock-show) — 9–24 January 2027",
-          "[Denver March Powwow](/hotels/denver-march-powwow) — 19–21 March 2027, Denver Coliseum",
+          // No 2027 dates here on purpose: denvermarchpowwow.com says its site
+          // "will update in the new year 2027" and publishes none. The 19–21
+          // March figure this line used to carry traced only to third-party
+          // calendars, which is not a source this file accepts.
+          "[Denver March Powwow](/hotels/denver-march-powwow) — a March weekend at the Denver Coliseum, dates not yet published by the organizer",
             ],
       },
       {

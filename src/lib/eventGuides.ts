@@ -414,6 +414,156 @@ export const EVENT_GUIDES: EventGuide[] = [
     ],
     updated: "2026-10-29",
   },
+  {
+    slug: "denver-st-patricks-day-parade",
+    h1: "Where to Stay for the Denver St. Patrick's Day Parade",
+    metaTitle: "Denver St. Patrick's Day Parade 2027: Where to Stay & Watch",
+    metaDescription:
+      "Step off is 9:30am on Saturday, March 13, 2027 at 19th and Wynkoop, and streets close at 9am. Routed walk times from LoDo hotels, plus the free Coors Field garage.",
+    ogTitle: "Where to Stay for the Denver St. Patrick's Day Parade",
+    ogDescription:
+      "The one big Denver event where the lodging answer is: walk out of the hotel. Step-off is two blocks from Union Station.",
+    kicker: "Saturday, March 13, 2027 · Step off 9:30am at 19th & Wynkoop",
+    lede:
+      "The Denver St. Patrick's Day Parade steps off at 9:30am on Saturday, March 13, 2027, at 19th and Wynkoop — two blocks up Wynkoop from Union Station. That is what makes this the rare big Denver event where the lodging answer is simply to walk out of your hotel, and the opposite of the Stock Show out on Humboldt Street. The parade starts and ends in the Coors Field parking lot, and the street everyone watches from is Blake, which gets renamed Tooley Street for the day. Routed on foot to 20th and Blake, The Rally at McGregor Square is two minutes, the Maven five, The Crawford inside Union Station seven. Streets in the area shut down from 9:00am, so if you plan to drive in you are driving into a closure with a parade already forming.",
+    pubref: "event-st-patricks-parade",
+    lodging: [
+      {
+        neighborhood: "lodo",
+        heading: "LoDo and Union Station — you walk onto the route",
+        blurb:
+          "The step-off is at 19th and Wynkoop and the viewing stretch is Blake Street from 20th up to 27th, which means the LoDo hotels are not near the parade — they are on it. Routed on foot to 20th and Blake, the closest of them is two minutes and The Crawford, inside Union Station itself, is seven. It is the most expensive sleep in Denver and on this one weekend it is also the one that removes every logistics problem on the page.",
+      },
+      {
+        neighborhood: "downtown",
+        heading: "Downtown — more rooms, and the garage the organizer names",
+        blurb:
+          "A wider choice of brands at lower rates, and the one off-route parking option the committee actually recommends: the Colorado Convention Center's 1,000-space garage, which it describes as a little over half a mile and a fifteen-minute walk from the nearest point of the route. The convention-center hotel cluster routes about twenty-three minutes on foot to 20th and Blake, or two blocks to the 16th Street free shuttle that runs down to Blake.",
+      },
+    ],
+    sections: [
+      {
+        h2: "When is the Denver St. Patrick's Day Parade?",
+        answer:
+          "Saturday, March 13, 2027, stepping off at 9:30am at 19th and Wynkoop in Denver. The committee publishes that date and time on its homepage and again on its parade route page, so unlike most March events in this city it is confirmed rather than inferred. It runs the Saturday before St. Patrick's Day, and the committee's own FAQ says to expect it to last about four hours.",
+        body: [
+          "The 2027 theme is \"Irish Spirit, Mile High Hearts\" and Bellco Credit Union is again the presenting sponsor, which the committee says it has been for over sixteen years. Parade registration is open and the entry deadline for 2027 is March 1.",
+          "There is a second date worth knowing if you are already in town. The Changing of the Sign — the short ceremony where Blake Street becomes Tooley Street and the city paints a green stripe down it, weather permitting — is on Thursday, March 11, 2027 at 20th and Blake, with a reception at Jackson's LoDo afterwards. The committee lists the time as to be determined.",
+          "Worth knowing who you are dealing with: the committee is a 501(c)(4) founded in 1962, incorporated in 1986, run by over 300 volunteers, and it states plainly that it is not affiliated with the City of Denver or any other government entity in Colorado. Denver's first St. Patrick's Day parade was in 1889; parades ran until 1921 and the modern one restarted in the early 1960s.",
+        ],
+      },
+      {
+        h2: "What is the route, and where do you watch?",
+        answer:
+          "The committee publishes the route only as an image — there is no street-by-street description anywhere on its site — so what follows is what it actually says in words. The parade starts and ends in the Coors Field parking lot: its FAQ describes it as \"a big snake that uncoils and returns from whence it came.\" The spectator street is Blake, renamed Tooley Street for the day.",
+        list: [
+          "South of 20th on Blake is where the committee says you see the entries' full performances — the dancing and the complete music sets. It also says this is the most crowded part of the parade, standing room only, and that people arrive as early as 6am to hold a spot.",
+          "Blake Street from 23rd to 27th, at the end of the parade, is the spot the committee recommends for families.",
+          "There is no public reserved or VIP seating at all. The committee's advice is to bring your own chairs and get there early.",
+          "The route is a drone-free zone, and the committee asks that nothing be thrown to or from the floats — that restriction comes from the City of Denver.",
+          "Parade Marshals wear green jackets with the committee logo and carry radios to medical and police. They are who you find if something goes wrong.",
+        ],
+        body: [
+          "We are not going to transcribe a turn-by-turn route, because the only version the organizer publishes is a JPEG and the written descriptions circulating elsewhere are not sourced to it. The two facts you need to position yourself — it begins and ends at the Coors Field lot, and Blake between 20th and 27th is the viewing spine — are both from the committee directly.",
+          "One practical warning buried in the FAQ: the committee provides portable toilets in the staging area, at the Grand Stand and in the Shamrock Row area, but not along the route for what it calls the 300,000-plus spectators, because it does not sell food or drink and so is not required to. Its own suggestion is the LoDo bars and restaurants, which is another argument for basing yourself inside those blocks.",
+          "If you cannot be there, the parade is streamed on Fox31+, with Fox31 and CW2 as media sponsors.",
+        ],
+      },
+      {
+        h2: "Which hotels actually put you on the route?",
+        answer:
+          "The ones in LoDo, and by a wide margin. Below are routed walk times — real sidewalks, not straight lines — from our hotel set to 20th and Blake, which is the Coors Field corner and sits in the middle of the viewing stretch. Read them as distances to the parade rather than to the 9:30am step-off two blocks away at 19th and Wynkoop.",
+        table: {
+          head: ["Hotel", "Routed distance", "Walk"],
+          rows: [
+            ["The Rally Hotel at McGregor Square", "0.12 mi", "2 min"],
+            ["The Maven at Dairy Block", "0.26 mi", "5 min"],
+            ["The Crawford Hotel (inside Union Station)", "0.36 mi", "7 min"],
+            ["Hilton Garden Inn Denver Union Station", "0.46 mi", "9 min"],
+            ["Thompson Denver", "0.51 mi", "10 min"],
+            ["Limelight Denver", "0.51 mi", "10 min"],
+            ["Hotel Indigo Denver Downtown Union Station", "0.53 mi", "11 min"],
+            ["The Westin Denver Downtown", "0.60 mi", "12 min"],
+            ["Hyatt Regency Denver at Colorado Convention Center", "1.14 mi", "23 min"],
+          ],
+        },
+        body: [
+          "The gap between the top of that list and the bottom is the whole decision. A two-minute walk means you can leave your room at 9:20. Twenty-three minutes means you are leaving at 8:45 on a March morning, and you are doing it on foot anyway because the streets close at 9:00am.",
+          "This is the inverse of the National Western Stock Show, where nothing is a genuine walk and everybody rides. For this parade the premium LoDo rate buys something concrete, and the committee's own advice — arrive early, hold your spot, use public transport — is advice you can mostly ignore if your hotel is four blocks away.",
+        ],
+      },
+      {
+        h2: "Where do you park, and what closes?",
+        answer:
+          "Streets in the area shut down beginning at 9:00am, per the committee, and reopen immediately after the parade finishes once street sweeping is done. The free option is the Coors Field parking structure: the gate at 27th and Blake opens at 7:30am and closes at 9:00am, it is the only access point, and there is no fee and no reservation.",
+        list: [
+          "Coors Field structure — free, first come first served, open to spectators as well as parade participants. In at 27th and Blake between 7:30 and 9:00am only; no entry before or after. You exit afterwards from lot B via the 33rd Street exit.",
+          "Colorado Convention Center garage — 1,000 covered spaces, open 24 hours. The committee puts it a little over half a mile, or a fifteen-minute walk, from the closest part of the route, or two blocks from the 16th Street free shuttle down to Blake.",
+          "The committee recommends booking ahead through SpotHero and says close-in spaces often fill an hour before the 9:30am step-off.",
+          "The I-25 exit onto 20th Street is not closed for the parade and should stay open, though the committee notes traffic there builds as step-off approaches.",
+          "If you live or are staying on the route itself and need to get a car in or out of a garage, the committee says to check with the Denver Police Department — it is a private nonprofit and does not control the closures.",
+        ],
+        body: [
+          "The committee's blanket recommendation is to use public transport, which from a downtown or LoDo hotel means not using anything: the route is inside walking distance of most of the central hotel stock, and Union Station is two blocks from the step-off.",
+          "March in Denver is the part nobody plans for. The committee's own parade-day checklist says the weather is wildly variable, to dress in layers and to bring water — this is a city at 5,280 feet where a March Saturday can be 65 degrees or snowing, and you will be standing still outdoors for a while either way.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "When is the Denver St. Patrick's Day Parade 2027?",
+        a: "Saturday, March 13, 2027, with step-off at 9:30am at 19th and Wynkoop in Denver. The date and time are published by the Denver St. Patrick's Day Parade Committee on both its homepage and its parade route page. The committee's FAQ says to expect the parade to last about four hours.",
+      },
+      {
+        q: "Where does the Denver St. Patrick's Day Parade start?",
+        a: "At 19th and Wynkoop, two blocks up Wynkoop from Union Station, at 9:30am. The parade stages in the Coors Field parking lot and, per the committee's FAQ, starts and ends there — it describes the route as a snake that uncoils and returns to where it began.",
+      },
+      {
+        q: "What is the route of the Denver St. Patrick's Day Parade?",
+        a: "The committee publishes the route only as a map image, with no street-by-street description on its site, so we do not quote one. What it does state in words: the parade starts and ends in the Coors Field parking lot, and the spectator street is Blake — renamed Tooley Street for the day — with the viewing stretch running from around 20th up to 27th.",
+      },
+      {
+        q: "Where is the best place to watch the Denver St. Patrick's Day Parade?",
+        a: "The committee gives two answers. For the full performances — complete dance routines and music sets — it points to Blake Street south of 20th, while warning that this is the most crowded part of the parade, standing room only, with people arriving as early as 6am. For families it recommends the end of the parade, on Blake Street between 23rd and 27th. There is no public reserved seating, so bring a chair and get there early.",
+      },
+      {
+        q: "Where do you park for the Denver St. Patrick's Day Parade?",
+        a: "The Coors Field parking structure is free and open to spectators, but only through the gate at 27th and Blake, and only between 7:30am and 9:00am — no entry before or after, first come first served, no reservations. You exit from lot B via 33rd Street. The alternative the committee names is the Colorado Convention Center garage, 1,000 covered spaces, about a fifteen-minute walk or two blocks from the 16th Street free shuttle. It also recommends reserving through SpotHero, and notes close-in spaces fill an hour before step-off.",
+      },
+      {
+        q: "What streets close for the Denver St. Patrick's Day Parade?",
+        a: "The committee says streets in the area shut down beginning at 9:00am and reopen immediately once the parade finishes and street sweeping is complete. It does not publish a closure list, and it states that it is not affiliated with the City of Denver, so the Denver Police Department is the authority for specifics — including getting a car out of a garage on the route. One thing the committee does confirm: the I-25 exit onto 20th Street is not closed for the parade.",
+      },
+      {
+        q: "Where should you stay for the Denver St. Patrick's Day Parade?",
+        a: "LoDo, if the rate works. The step-off is at 19th and Wynkoop and the viewing stretch is Blake Street, which puts the LoDo hotels on the route rather than near it — routed on foot to 20th and Blake, The Rally at McGregor Square is two minutes, the Maven five and The Crawford, inside Union Station, seven. Downtown is the value version with far more rooms, at roughly twenty-three minutes on foot from the convention-center cluster, or two blocks to the 16th Street free shuttle.",
+      },
+      {
+        q: "How many people go to the Denver St. Patrick's Day Parade?",
+        a: "The committee's parking page says it averages around 300,000 to 400,000 people a year, and its FAQ refers to 300,000-plus spectators. Its history page states that the 2026 parade drew over 400,000 spectators and participants and was the third largest in the United States that year. Those are the organizer's own figures; no independent count is published.",
+      },
+    ],
+    event: {
+      // YEAR-SPECIFIC: officially announced by the committee on its homepage and
+      // its ParadeRoute page — "Saturday, March 13, 2027 - 9:30 AM Step Off at
+      // 19th & Wynkoop". Single-day event. Update each autumn.
+      name: "Denver St. Patrick's Day Parade 2027",
+      startDate: "2027-03-13",
+      endDate: "2027-03-13",
+      locationName: "Denver St. Patrick's Day Parade step-off, 19th & Wynkoop",
+      locationAddress: "19th St & Wynkoop St, Denver, CO 80202",
+      officialUrl: "https://www.denverstpatricksdayparade.com/",
+    },
+    links: [
+      { href: "/hotels/near-coors-field", label: "Routed walk times to 20th and Blake" },
+      { href: "/denver/where-to-stay#lodo", label: "The LoDo write-up" },
+      { href: "/denver/coors-field-parking", label: "The Coors Field parking guide" },
+      { href: "/denver/hotels-near-light-rail", label: "Hotels near light rail" },
+      { href: "/denver/hotel-costs", label: "What a Denver hotel actually costs" },
+      { href: "/denver/where-to-stay", label: "Where to stay in Denver: the full guide" },
+    ],
+    updated: "2026-10-29",
+  },
 ];
 
 export function getEventGuide(slug: string): EventGuide | undefined {
