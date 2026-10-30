@@ -8,6 +8,7 @@ import { hotelsForAreaListing, hotelsInArea } from "@/lib/areaHotels";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { photoUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
+import { nearestVenues } from "@/lib/venueProximity";
 import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
@@ -377,6 +378,22 @@ export default async function CategoryPage({ params }: Props) {
         heading="Coming to Denver?"
         blurb={`Visiting rather than local? Price your dates and compare hotels near ${n.name} along with the flight.`}
       />
+
+      {/* Nearest hotel-venue guide — people browsing a neighborhood's
+          restaurants/bars are often deciding where to stay right now too. */}
+      {(() => {
+        const venue = nearestVenues(n.lat, n.lng, 1)[0];
+        if (!venue) return null;
+        return (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+            <Link href={venue.href}
+              className="flex items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl px-5 py-4 hover:border-denver-amber transition-colors">
+              <p className="text-sm text-slate-600 dark:text-slate-400">Staying for {venue.label}?</p>
+              <span className="text-sm font-semibold text-denver-amber shrink-0">See the hotel guide &rarr;</span>
+            </Link>
+          </div>
+        );
+      })()}
 
       {/* YouTube Section */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-16">

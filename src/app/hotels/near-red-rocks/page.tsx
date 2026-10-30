@@ -224,7 +224,9 @@ export default async function HotelsNearRedRocksPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-xl font-bold mb-4">Plan Your Red Rocks Night</h2>
         <div className="flex flex-wrap gap-3">
+          <Link href="/denver/red-rocks-what-to-know" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Red Rocks: before you go</Link>
           <Link href="/denver/red-rocks-shuttle" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Red Rocks shuttle guide</Link>
+          <Link href="/denver/altitude" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">The altitude, honestly</Link>
           <Link href="/events/red-rocks" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Red Rocks shows</Link>
           <Link href="/denver/where-to-stay" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Where to stay in Denver</Link>
           <Link href="/hotels" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">All hotel guides</Link>
@@ -345,7 +347,10 @@ export default async function HotelsNearRedRocksPage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-wrap gap-3">
-          <Link href="/denver/red-rocks-shuttle" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/denver/red-rocks-what-to-know" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+            Red Rocks: before you go &rarr;
+          </Link>
+          <Link href="/denver/red-rocks-shuttle" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
             Red Rocks shuttle guide &rarr;
           </Link>
           <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">

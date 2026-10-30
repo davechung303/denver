@@ -341,6 +341,7 @@ export default async function GabfPage() {
             <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">Where to stay in Denver &rarr;</Link>
             <Link href="/denver/hotel-costs" className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">What a Denver hotel actually costs &rarr;</Link>
             <Link href="/denver/airport-train" className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">Getting in from the airport &rarr;</Link>
+            <Link href="/denver/hotels-near-light-rail" className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">Hotels near light rail &rarr;</Link>
           </div>
         </section>
       </div>
