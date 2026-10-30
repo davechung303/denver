@@ -8,7 +8,7 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Denver Guides & Articles",
-  description: "Local Denver guides, restaurant reviews, hotel picks, and neighborhood explainers from Dave Chung — Denver's most watched local YouTube creator.",
+  description: "Local Denver guides, restaurant reviews, hotel picks, and neighborhood explainers from Dave Chung — Denver's most watched local creator, with 6.5 million views across YouTube and TikTok.",
   alternates: { canonical: "https://davelovesdenver.com/articles" },
 };
 

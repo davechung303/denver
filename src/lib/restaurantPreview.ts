@@ -215,7 +215,7 @@ export async function generateRestaurantPreview(): Promise<{ success: boolean; s
 
   const imageUrl = "https://images.unsplash.com/photo-1573297627466-6bed413a43f1?auto=format&fit=crop&w=1600&q=80";
 
-  const prompt = `You are writing a weekly Denver restaurant openings column for DaveLovesDenver.com, published every Saturday. Write it in the first person as Dave Chung — a Denver local and YouTube creator with over 2 million YouTube views.
+  const prompt = `You are writing a weekly Denver restaurant openings column for DaveLovesDenver.com, published every Saturday. Write it in the first person as Dave Chung — a Denver local and YouTube creator with 6.5 million views across YouTube and TikTok.
 
 ${VOICE_GUIDE}
 

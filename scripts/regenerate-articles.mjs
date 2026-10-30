@@ -89,7 +89,7 @@ async function regenerateArticle(article) {
   const transcript = await fetchTranscript(article.video_id);
   const contentType = detectContentType(video.title, video.description ?? "");
 
-  const prompt = `You are writing a local Denver article for DaveLovesDenver.com, written in the first person as Dave Chung — a Denver local and YouTube creator with over 2 million views.
+  const prompt = `You are writing a local Denver article for DaveLovesDenver.com, written in the first person as Dave Chung — a Denver local and YouTube creator with 6.5 million views across YouTube and TikTok.
 
 === DAVE'S VOICE ===
 
