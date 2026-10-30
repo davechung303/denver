@@ -81,6 +81,13 @@ const HOTEL_GUIDES = [
   { href: "/denver/hotel-costs", label: "What a Denver Hotel Costs" },
   { href: "/denver/altitude", label: "Denver Altitude Explained" },
   { href: "/hotels/great-american-beer-festival", label: "GABF 2026" },
+  // The two durable event lodging guides were reachable only from the hotels
+  // hub — the same orphan condition the trip-planning guides were in before
+  // this column existed, and these are the highest-intent lodging pages on
+  // the site: someone searching "where to stay for X" already has dates.
+  { href: "/hotels/national-western-stock-show", label: "Stock Show (January)" },
+  { href: "/hotels/colfax-marathon", label: "Colfax Marathon (May)" },
+  { href: "/hotels/denver-march-powwow", label: "Denver March Powwow" },
   { href: "/hotels/best-value-denver", label: "Best Value Hotels" },
   { href: "/hotels/near-red-rocks", label: "Red Rocks Concert" },
   { href: "/hotels/near-empower-field", label: "Broncos Game" },

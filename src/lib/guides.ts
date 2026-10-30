@@ -167,12 +167,12 @@ export const GUIDES: Record<string, Guide> = {
         answer:
           "Light rail reaches most of Denver's major venues directly from downtown. Empower Field is two stops from Union Station on the E or W line. Ball Arena has its own station on the E and W lines. Mission Ballroom sits by the 38th and Blake A Line station.",
         list: [
-          "Coors Field — walk from Union Station, about seven minutes",
-          "Ball Arena — Ball Arena/Elitch Gardens station on the E and W lines",
-          "Empower Field at Mile High — two stops from Union Station on the E or W line",
-          "Mission Ballroom — 38th and Blake on the A Line, one stop from Union Station",
-          "Fiddler's Green Amphitheatre — a 10-minute walk from Arapahoe at Village Center station",
-          "Red Rocks Amphitheatre — no transit service. You drive, take a private show shuttle, or use a rideshare.",
+          "[Coors Field](/hotels/near-coors-field) — walk from Union Station, about seven minutes",
+          "[Ball Arena](/hotels/near-ball-arena) — Ball Arena/Elitch Gardens station on the E and W lines",
+          "[Empower Field at Mile High](/hotels/near-empower-field) — two stops from Union Station on the E or W line",
+          "[Mission Ballroom](/hotels/near-mission-ballroom) — 38th and Blake on the A Line, one stop from Union Station",
+          "[Fiddler's Green Amphitheatre](/hotels/near-fiddlers-green) — a 10-minute walk from Arapahoe at Village Center station",
+          "[Red Rocks Amphitheatre](/hotels/near-red-rocks) — no transit service. You drive, take [a private show shuttle](/denver/red-rocks-shuttle), or use a rideshare.",
         ],
       },
       {
@@ -278,11 +278,11 @@ export const GUIDES: Record<string, Guide> = {
           "Overnight visitation is flatter across the year than most people assume — the third quarter is the peak at 28% of overnight visitors and the first quarter the trough at 22%. That narrow spread is why checking what is booked in town beats picking a month.",
         ],
         list: [
-          "Great American Beer Festival — 10–11 October 2026. Note it has moved outdoors to Levitt Pavilion at Ruby Hill in southwest Denver, not the Colorado Convention Center. Guides still sending you downtown for it are out of date.",
-          "CEDIA Expo — 1–4 September 2026, Colorado Convention Center",
-          "Splunk .conf26 — 14–17 September 2026, Colorado Convention Center",
-          "National Western Stock Show — 9–24 January 2027",
-          "Denver March Powwow — 19–21 March 2027, Denver Coliseum",
+          "[Great American Beer Festival](/hotels/great-american-beer-festival) — 10–11 October 2026. Note it has moved outdoors to Levitt Pavilion at Ruby Hill in southwest Denver, not the Colorado Convention Center. Guides still sending you downtown for it are out of date.",
+          "CEDIA Expo — 1–4 September 2026, [Colorado Convention Center](/hotels/near-convention-center)",
+          "Splunk .conf26 — 14–17 September 2026, [Colorado Convention Center](/hotels/near-convention-center)",
+          "[National Western Stock Show](/hotels/national-western-stock-show) — 9–24 January 2027",
+          "[Denver March Powwow](/hotels/denver-march-powwow) — 19–21 March 2027, Denver Coliseum",
             ],
       },
       {
@@ -734,7 +734,7 @@ export const GUIDES: Record<string, Guide> = {
       "Distances, the train, the bus, the traction law and the two hours of I-70 that decide your whole day.",
     lede:
       "Denver works as a ski basecamp, and it is cheaper than sleeping in a resort town — but the thing that decides whether it is pleasant is I-70 rather than the mileage. Westbound traffic builds from 9am on Saturdays with delays of up to 45 minutes between 10:30am and 3pm, and eastbound Sunday delays of 15 to 30 minutes run from noon to 5pm. The resorts are close: Loveland is 53 miles from Denver, Winter Park 67, Copper 75, Keystone 72 from downtown. The trick is leaving before the corridor fills, or not driving at all.",
-    updated: "2026-08-29",
+    updated: "2026-10-29",
     sections: [
       {
         h2: "How far are the ski areas from Denver?",
@@ -789,7 +789,7 @@ export const GUIDES: Record<string, Guide> = {
         answer:
           "Yes, three ways: the Winter Park Express train from Union Station, CDOT's Snowstang buses to Arapahoe Basin, Breckenridge, Copper and Loveland, and RTD's regular Route NB to Eldora for a $5.50 day pass. All of them beat driving on a Saturday.",
         body: [
-          "The Winter Park Express runs from Union Station straight to the base area — Winter Park bills itself as the only ski resort in North America with a train that drops you at the lifts. In the 2025-26 season it ran 57 round trips, Fridays to Sundays in late December and Thursdays to Sundays from January to late March, departing Denver at 7:00am and arriving at the resort at 9:11am, returning at 4:35pm to reach Denver at 7:05pm. Fares started at $9 one way. The 2026-27 season has not been announced as of late August 2026; Amtrak announced last season in early November, so watch for it then.",
+          "The Winter Park Express runs from Union Station straight to the base area — Winter Park bills itself as the only ski resort in North America with a train that drops you at the lifts. In the 2025-26 season it ran 57 round trips, Fridays to Sundays in late December and Thursdays to Sundays from January to late March, departing Denver at 7:00am and arriving at the resort at 9:11am, returning at 4:35pm to reach Denver at 7:05pm. Fares started at $9 one way. The 2026-27 season still has not been announced as of 29 October 2026 — we rechecked. Amtrak announced the last two seasons in early November, so the schedule and fares should land within days of this writing; book nothing around the ski train until they do.",
           "Snowstang, run by CDOT, served A-Basin, Breckenridge, Copper and Loveland in 2025-26 on Saturdays, Sundays and holiday Mondays, from Denver Union Station, the RTD Federal Center Station and the Wooly Mammoth Park-n-Ride at Morrison. The fare was $25 round trip, $12.50 for children. The Copper run left Union Station at 6:25am and arrived at 8:45am. The 2026-27 schedule had not been published when this was written.",
           "Eldora is the quiet outlier and the only one available on ordinary transit with no reservation: RTD Route NB runs hourly through the season from Downtown Boulder Station, first drop-off at Eldora 6:58am and last pick-up 5:13pm, on a $5.50 day pass. From Denver, take Route FF1 from Union Station to Downtown Boulder Station and transfer. Skis have to be bagged before boarding.",
         ],
@@ -817,7 +817,7 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         q: "Is there a ski train from Denver?",
-        a: "The Winter Park Express runs from Union Station to the Winter Park base area, about two hours and eleven minutes each way. In 2025-26 it ran 57 round trips between late December and late March, departing Denver at 7:00am and returning at 7:05pm, with fares from $9 one way. Amtrak has not announced the 2026-27 season as of late August 2026 — it announced last season in early November.",
+        a: "The Winter Park Express runs from Union Station to the Winter Park base area, about two hours and eleven minutes each way. In 2025-26 it ran 57 round trips between late December and late March, departing Denver at 7:00am and returning at 7:05pm, with fares from $9 one way. Amtrak still has not announced the 2026-27 season as of 29 October 2026, rechecked that day — it announced each of the last two seasons in early November, so expect the dates and fares within days. [Staying at Union Station](/denver/hotels-near-light-rail) is the whole plan if you intend to use it: the train leaves from there at 7:00am.",
       },
       {
         q: "Do I need snow tires to drive to the Colorado ski areas?",
@@ -1505,7 +1505,7 @@ export const GUIDES: Record<string, Guide> = {
       "The convention-center Marriott is paused. Virgin has slipped three times. And sonder.com is still selling rooms in Denver buildings that closed in November 2025.",
     lede:
       "Five hotels have opened inside Denver city limits since January 2025. That is the real number, and it is a long way from the dozen you will find on the lists that pad themselves with 2024 openings — Populus, Urban Cowboy, the Cambria in RiNo and the Kimpton Claret all opened before this window. The 559-room Marriott that was supposed to fix the convention-center block is paused. Virgin Hotels has slipped three times and no source confirms it has broken ground. Meanwhile the most important thing to know about new Denver hotels is defensive: sonder.com is still taking bookings for four Denver buildings that closed in November 2025.",
-    updated: "2026-08-30",
+    updated: "2026-10-29",
     sections: [
       {
         h2: "What new hotels have opened in Denver?",
@@ -1663,7 +1663,7 @@ export const GUIDES: Record<string, Guide> = {
       "The D, H and L lines are suspended. Union Station and the A Line are the rail that matters right now — measured hotel by hotel, on foot.",
     lede:
       "Book at Union Station and you are on seven rail lines including the airport train. That is the short answer, and right now it is close to the only answer, because Denver's downtown light rail is switched off: the D, H and L lines are suspended for the Downtown Rail Reconstruction Project through at least the first quarter of 2027, which means Theatre District–Convention Center, 16th & California, 16th & Stout and the rest of the downtown platforms have no train at them today. Downtown moves on the free 16th Street FreeRide instead. Every walk on this page is a routed pedestrian distance from the station entrance, not a straight line — a distinction that turns out to matter enormously at one airport stop.",
-    updated: "2026-08-30",
+    updated: "2026-10-29",
     sections: [
       {
         h2: "Which Denver rail lines are running right now?",

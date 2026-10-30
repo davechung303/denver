@@ -324,6 +324,96 @@ export const EVENT_GUIDES: EventGuide[] = [
     ],
     updated: "2026-08-29",
   },
+  {
+    slug: "denver-march-powwow",
+    h1: "Where to Stay for the Denver March Powwow",
+    metaTitle: "Denver March Powwow: Where to Stay Near the Coliseum",
+    metaDescription:
+      "The Coliseum shares a campus with the National Western Complex, so the lodging answer is the same one — and nothing is a real walk. What the organizer has actually published for 2027, and what it hasn't.",
+    ogTitle: "Where to Stay for the Denver March Powwow",
+    ogDescription:
+      "Same Humboldt Street campus as the Stock Show, same lodging maths. Plus: the 2027 details are not out yet, whatever the aggregators tell you.",
+    kicker: "Three days each March · Denver Coliseum",
+    lede:
+      "The Denver March Powwow runs three days each March at the Denver Coliseum, and it is one of the largest events of its kind anywhere — the organizer counts more than 1,600 dancers from close to 100 tribes, across 38 states and three Canadian provinces. The useful lodging fact is that the Coliseum sits on the same Humboldt Street campus as the National Western Complex, about two and a half miles northeast of downtown, which means the answer to where to stay is the one we already worked out for the Stock Show: nothing out there is a genuine walk, so choose your base on food and evenings and plan a short ride each morning. The thing to know before you book: as of late October 2026 the organizer has not published its 2027 dates, times or prices at all.",
+    pubref: "event-march-powwow",
+    lodging: [
+      {
+        neighborhood: "rino",
+        heading: "RiNo — closest, and the best evening",
+        blurb:
+          "The nearest hotels to the Humboldt Street campus, and the densest food and brewery scene in Denver for afterwards. It is the same set we walk-timed for the National Western Complex next door, so the distances on that page are the right ballpark for the Coliseum too.",
+      },
+      {
+        neighborhood: "downtown",
+        heading: "Downtown — more rooms, a short ride",
+        blurb:
+          "Two and a half to three and a half miles out, which is a car, a rideshare or the N Line rather than a walk. What you get is the full range of brands and the whole city on your doorstep in the evening. In March you are also inside Denver's first-quarter trough for overnight visitors, which is the cheapest the downtown rate card gets.",
+      },
+    ],
+    sections: [
+      {
+        h2: "When is the Denver March Powwow in 2027?",
+        answer:
+          "Not confirmed by the organizer. Its own website carries a notice that the site will update in the new year 2027, and no 2027 dates, hours or admission prices are posted. Third-party calendars list 19–21 March 2027, but that is not an organizer-published date and we would not book flights on it.",
+        body: [
+          "This matters more than it sounds, because the Powwow is a fixed-venue event on a three-day March weekend and hotel rates on the I-70 corridor move with the Humboldt Street campus calendar. If you are planning around it, the sequence is: wait for the organizer to post, then book. Denver's first quarter is its softest for overnight visitors, so you are not racing a citywide.",
+          "For the 2026 edition, Denver Arts & Venues — the city agency that operates the Coliseum — published doors at 10am daily with the event starting at 11am. Treat that as the shape of the day rather than as a 2027 schedule.",
+          "We have deliberately left admission prices off this page. The figures circulating on aggregator sites are not on the organizer's site or the venue's, and a wrong ticket price is exactly the kind of thing that gets copied around until everyone repeats it.",
+        ],
+      },
+      {
+        h2: "Where is the Denver Coliseum, and can you walk to it?",
+        answer:
+          "It is on the Humboldt Street campus northeast of downtown, immediately beside the National Western Complex, roughly two and a half miles from the central business district. Nothing there is a realistic walk from a hotel — the nearest property in our set is under a mile from the complex next door, and everything downtown is two and a half to three and a half miles.",
+        body: [
+          "Because the Coliseum and the National Western Complex share the same campus, the walk-timed hotel set we built for the Stock Show is the right reference for this event too. The distances were routed to the complex rather than to the Coliseum door, so read them as close rather than exact.",
+          "The practical version for a March morning: stay in RiNo if you want the shortest hop and the best dinner, stay downtown if you want the range of rooms, and plan on driving or riding each morning either way.",
+        ],
+      },
+      {
+        h2: "What else is happening in Denver that week?",
+        answer:
+          "March is shoulder season in Denver and the first quarter is the trough for overnight visitation at 22%, against 28% in the third quarter. That is the narrowest spread most visitors assume exists, and it means a March weekend is one of the better times to get a downtown room at a sane rate.",
+        body: [
+          "It is also still ski season. The Winter Park Express runs from Union Station into late March in a typical year, so a Powwow weekend and a ski day are genuinely combinable if you base yourself at Union Station rather than out by the venue — though as of late October 2026 Amtrak had not announced the 2026-27 season.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "When is the Denver March Powwow 2027?",
+        a: "The organizer has not published 2027 dates. As of late October 2026 its website states that the site will update in the new year 2027, and no dates, hours or prices are posted. Third-party event calendars list 19–21 March 2027, but that is not an organizer-confirmed date — check denvermarchpowwow.com before booking travel around it.",
+      },
+      {
+        q: "Where is the Denver March Powwow held?",
+        a: "The Denver Coliseum, on the Humboldt Street campus northeast of downtown Denver, immediately beside the National Western Complex. The Coliseum is operated by Denver Arts & Venues, the city agency. It is about two and a half miles from the central business district, which is a short drive or rideshare rather than a walk.",
+      },
+      {
+        q: "How big is the Denver March Powwow?",
+        a: "The organizer counts more than 1,600 dancers from close to 100 tribes, drawn from 38 states and three Canadian provinces, which makes it one of the largest powwows in the country. It runs three days.",
+      },
+      {
+        q: "Where should you stay for the Denver March Powwow?",
+        a: "RiNo if you want the shortest trip to the Coliseum and the best food and breweries for the evening — it is the closest cluster to the Humboldt Street campus. Downtown if you want the full range of hotel brands and are happy with a two-and-a-half to three-and-a-half mile ride each morning. Nothing at the venue itself is walkable, so this is a trip where you pick your base on the evenings rather than the mornings.",
+      },
+      {
+        q: "How much does the Denver March Powwow cost?",
+        a: "We are not quoting a price, because the organizer has not published 2027 admission and the figures on aggregator sites are not sourced to the organizer or the venue. Denver Arts & Venues did note that student group rates are available for groups of 25 or more. Check denvermarchpowwow.com once its 2027 site goes live.",
+      },
+    ],
+    // No `event` block: the organizer has not announced 2027 dates, and Event
+    // schema with a date we cannot source from them is exactly the mistake
+    // this page exists to point out.
+    links: [
+      { href: "/hotels/near-national-western", label: "Routed walk times to the Humboldt Street campus" },
+      { href: "/hotels/national-western-stock-show", label: "The Stock Show — same campus, same lodging maths" },
+      { href: "/denver/where-to-stay#rino", label: "The RiNo write-up" },
+      { href: "/denver/hotel-costs", label: "What a Denver hotel actually costs" },
+      { href: "/denver/where-to-stay", label: "Where to stay in Denver: the full guide" },
+    ],
+    updated: "2026-10-29",
+  },
 ];
 
 export function getEventGuide(slug: string): EventGuide | undefined {

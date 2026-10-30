@@ -29,6 +29,7 @@ const GROUPS: Group[] = [
       { href: "/hotels/great-american-beer-festival", name: "Great American Beer Festival", blurb: "GABF 2026 moved to Ruby Hill — new venue, new plan.", nb: "baker" },
       { href: "/hotels/national-western-stock-show", name: "National Western Stock Show", blurb: "Sixteen days each January. The free shuttle nobody finds.", nb: "five-points" },
       { href: "/hotels/colfax-marathon", name: "Colfax Marathon", blurb: "6am City Park start, 5am road closures. Book accordingly.", nb: "uptown" },
+      { href: "/hotels/denver-march-powwow", name: "Denver March Powwow", blurb: "Same campus as the Stock Show. The 2027 dates aren't out yet.", nb: "five-points" },
       { href: "/hotels/near-coors-field", name: "Coors Field", blurb: "Rockies games — walkable LoDo hotels.", nb: "lodo" },
       { href: "/hotels/near-ball-arena", name: "Ball Arena", blurb: "Nuggets, Avalanche & concerts.", nb: "lodo" },
       { href: "/hotels/near-empower-field", name: "Empower Field at Mile High", blurb: "Broncos games & stadium shows.", nb: "jefferson-park" },

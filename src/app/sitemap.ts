@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { SUBCATEGORIES } from "@/lib/subcategories";
+import { EVENT_GUIDES } from "@/lib/eventGuides";
 import { supabase } from "@/lib/supabase";
 import { isExcludedPlace } from "@/lib/excludedPlaces";
 
@@ -119,8 +120,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/denver/denver-airport-shuttle`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.75 },
     { url: `${BASE_URL}/hotels/great-american-beer-festival`, lastModified: now, changeFrequency: "daily" as const, priority: 0.9 },
     { url: `${BASE_URL}/hotels/near-red-rocks`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/hotels/national-western-stock-show`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/hotels/colfax-marathon`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
+    // Derived, not listed: hardcoding these is what left GABF outside the
+    // event system and unlisted guides out of the sitemap for weeks.
+    ...EVENT_GUIDES.map((e) => ({
+      url: `${BASE_URL}/hotels/${e.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     { url: `${BASE_URL}/hotels/near-empower-field`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/hotels/near-coors-field`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/hotels/near-ball-arena`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },

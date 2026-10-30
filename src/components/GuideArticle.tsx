@@ -158,8 +158,10 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
               <LinkedText text={s.answer} index={mentions} seen={seen} />
             </p>
 
+            {/* Keys are taken off the prose, not the markup: inline links
+                would otherwise ship their syntax in the RSC payload. */}
             {s.body?.map((p) => (
-              <p key={p.slice(0, 40)} className="mt-5 leading-relaxed text-slate-600 dark:text-slate-400">
+              <p key={stripInlineLinks(p).slice(0, 40)} className="mt-5 leading-relaxed text-slate-600 dark:text-slate-400">
                 <LinkedText text={p} index={mentions} seen={seen} />
               </p>
             ))}
@@ -167,7 +169,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
             {s.list && (
               <ul className="mt-5 space-y-2.5">
                 {s.list.map((li) => (
-                  <li key={li.slice(0, 40)} className="flex gap-3 text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <li key={stripInlineLinks(li).slice(0, 40)} className="flex gap-3 text-slate-600 dark:text-slate-400 leading-relaxed">
                     <span aria-hidden="true" className="text-denver-amber mt-1 shrink-0">&bull;</span>
                     <span><LinkedText text={li} index={mentions} seen={seen} /></span>
                   </li>
