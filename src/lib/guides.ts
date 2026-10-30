@@ -8,6 +8,13 @@
 // Every figure here is sourced. Where a number could not be verified from a
 // primary source it is omitted rather than estimated.
 
+// Prose fields rendered through LinkedText — the lede, every answer, body
+// paragraph, list item and table cell, and the FAQ answers — auto-link the
+// first mention of each hotel, and accept inline internal links written as
+// `[label](/denver/altitude)`. Use those to cite the guide that owns a fact
+// at the sentence where the reader needs it; they are stripped back to prose
+// for JSON-LD.
+
 export interface GuideSection {
   h2: string;
   /** 40–60 word self-contained answer. Written to survive being quoted alone. */
@@ -66,6 +73,11 @@ export interface Guide {
   lede: string;
   sections: GuideSection[];
   faqs: { q: string; a: string }[];
+  /**
+   * Guide slugs to lead the "also worth knowing" cards with, when the topical
+   * neighbours are obvious. The positional rotation fills the rest.
+   */
+  related?: string[];
   booking?: GuideBooking;
   experiences?: GuideExperiences;
   updated: string;
@@ -1519,7 +1531,7 @@ export const GUIDES: Record<string, Guide> = {
           note: "The two smallest openings are boutique conversions on Colfax and are not carried by the major booking channels the way these are.",
         },
         body: [
-          "One more sits just over the line and is worth naming: the Holiday Inn & Suites Commerce City–Denver Airport opened in August 2026 with 106 rooms, and it is the first ground-up build of Holiday Inn's new lobby prototype anywhere. If you are pricing the airport corridor, it is the newest room out there by a wide margin.",
+          "One more sits just over the line and is worth naming: the Holiday Inn & Suites Commerce City–Denver Airport opened in August 2026 with 106 rooms, and it is the first ground-up build of Holiday Inn's new lobby prototype anywhere. If you are pricing the airport corridor, it is the newest room out there by a wide margin — [the airport hotel guide](/hotels/near-denver-airport) is the better place to compare that set, and worth reading first, because [not one of the Gateway Park hotels is actually walkable to the A Line](/denver/hotels-near-light-rail) however it looks on a map.",
           "Note the room count on the Courtyard Downtown West: sources give 110 and 116 and we could not resolve which is right. It does not change anything for a traveler, but it is the kind of small discrepancy that tells you how loosely this information gets copied around.",
         ],
       },
@@ -1563,7 +1575,7 @@ export const GUIDES: Record<string, Guide> = {
           note: "If you stayed at the Hyatt Regency before 2026, you have not stayed in these rooms.",
         },
         body: [
-          "A rebrand or a gut renovation is functionally a new hotel to anyone searching, and it is the category the listicles miss entirely because there is no ribbon-cutting to write about. The Hyatt Regency is the clearest case in Denver right now: a full reimagination of 1,100 rooms and suites, finished this spring.",
+          "A rebrand or a gut renovation is functionally a new hotel to anyone searching, and it is the category the listicles miss entirely because there is no ribbon-cutting to write about. The Hyatt Regency is the clearest case in Denver right now: a full reimagination of 1,100 rooms and suites, finished this spring. It is also the convention center's house hotel, which makes it the most relevant renovation in the city if you are here for a show — [the convention-center hotel guide](/hotels/near-convention-center) sets it against the rest of that block.",
           "The Brown Palace listing covers 472 rooms including the adjacent Holiday Inn Express. As of this writing no sale has been announced, and nothing about the guest experience has changed. We mention it only because a sale would be the biggest ownership story in Denver hospitality in years, and because you will see it reported as a done deal somewhere.",
           "One correction while we are here: the Hotel Born became the Limelight Denver in May 2023, not recently. It shows up on new-hotel lists constantly.",
         ],
@@ -1586,7 +1598,7 @@ export const GUIDES: Record<string, Guide> = {
           "Two reasons. They pad the window — 2024 openings like Populus and Urban Cowboy keep getting recycled as new — and they copy from sources that are themselves stale, including Denver's own tourism board.",
         body: [
           "We checked Visit Denver's hotel pages against primary sources while building this page and would not cite them. They still list a Sonder building as open, give the Courtyard Downtown West a room count off by more than a thousand, and attribute two Marriott brands to Hilton. That is a lead-generation surface, not a reference, and a great deal of the Denver hotel content on the internet is downstream of it.",
-          "The honest version of the Denver story is that supply growth has slowed sharply. Five city openings in twenty months, the biggest project paused, and the flashiest one unbuilt. If you are choosing between neighborhoods rather than waiting for something to open, the pages below are more useful than this one.",
+          "The honest version of the Denver story is that supply growth has slowed sharply. Five city openings in twenty months, the biggest project paused, and the flashiest one unbuilt. If you are choosing between neighborhoods rather than waiting for something to open, [the neighborhood breakdown](/denver/where-to-stay) and [what a Denver hotel actually costs once tax and parking are in](/denver/hotel-costs) are more useful than this page.",
         ],
       },
     ],
@@ -1611,7 +1623,24 @@ export const GUIDES: Record<string, Guide> = {
         q: "Which Denver hotel was most recently renovated?",
         a: "The Hyatt Regency Denver at the Colorado Convention Center completed a $70 million renovation of all 1,100 guestrooms and suites in April 2026. For a traveler that matters more than most of the actual openings on this page — it is the largest block of genuinely new rooms downtown, at an address that has been there for years.",
       },
+      {
+        q: "What is the newest hotel in Denver?",
+        a: "Inside the city, the AC Hotel Denver RiNo — it opened in June 2026 with 128 rooms and is the first full-service flag in RiNo's core. If you count the airport corridor, the Holiday Inn & Suites Commerce City–Denver Airport is newer still: 106 rooms, opened August 2026, and the first ground-up build of Holiday Inn's new lobby prototype anywhere.",
+      },
+      {
+        q: "Is Populus a new hotel in Denver?",
+        a: "Not within the window this page covers. Populus opened in 2024, and it is one of four hotels — with Urban Cowboy, the Cambria in RiNo and the Kimpton Claret — that keep getting recycled onto new-hotel lists two years after the fact. That padding is most of the reason those lists claim a dozen openings where there have been five.",
+      },
+      {
+        q: "Is there a new hotel near Denver airport?",
+        a: "Yes — the Holiday Inn & Suites Commerce City–Denver Airport, 106 rooms, opened August 2026, and the newest room in the airport corridor by a wide margin. One thing to know before booking anything out there off a map: the Gateway Park cluster beside the 40th & Airport station is not walkable to the train, so plan on the shuttle. [The airport hotel guide](/hotels/near-denver-airport) has the full set and [the light rail guide](/denver/hotels-near-light-rail) has the routed walking distances.",
+      },
+      {
+        q: "Is the Brown Palace being sold?",
+        a: "It was listed for sale in March 2026 — listed, not sold. The listing covers 472 rooms including the adjacent Holiday Inn Express, and as of this writing no sale has been announced and nothing about the guest experience has changed. A sale would be the biggest ownership story in Denver hospitality in years, which is why you will see it reported somewhere as a done deal. It isn't one.",
+      },
     ],
+    related: ["hotel-costs", "hotels-near-light-rail"],
     booking: {
       pubref: "guide-new-hotels",
       heading: "Book the new ones",
@@ -1682,7 +1711,8 @@ export const GUIDES: Record<string, Guide> = {
         },
         body: [
           "The Crawford is worth understanding properly: the hotel occupies the upper floors of Denver Union Station itself, so the walk from your room to the airport train is an elevator and a lobby. For a late arrival or an early departure that is not a small thing.",
-          "One caution about the neighborhood rather than the trains: this is the loudest corner of LoDo on a weekend night, and several of these hotels charge a destination fee of $28 to $30 on top of the rate. Neither of those shows up on a transit map.",
+          "One caution about the neighborhood rather than the trains: this is the loudest corner of LoDo on a weekend night, and several of these hotels charge a destination fee of $28 to $30 on top of the rate — [which Denver hotels charge that, and what the law now says about disclosing it](/denver/resort-fees), is worth reading before you compare rates. The station itself also carries a reputation that [the district-level data complicates](/denver/is-downtown-denver-safe). Neither of those shows up on a transit map.",
+          "One more thing a transit map will not tell you: Union Station is also where the mountains leave from. [The Winter Park Express and the Snowstang buses](/denver/ski-basecamp) both depart from here, which in winter is the strongest argument for this cluster over anywhere else in the city.",
         ],
       },
       {
@@ -1708,7 +1738,7 @@ export const GUIDES: Record<string, Guide> = {
         },
         body: [
           "38th & Blake is the underrated one. It is a single stop from Union Station on the same train that goes to the airport, it sits in RiNo where the food and the breweries are, and the rooms cost less than the equivalent downtown. If you are flying in, eating well, and flying out, that is the whole trip solved without a car.",
-          "The A Line runs the 23 miles between the airport and Union Station in about 37 minutes, every 15 minutes from 6am to 8pm and every 30 minutes outside that.",
+          "The A Line runs the 23 miles between the airport and Union Station in about 37 minutes, every 15 minutes from 6am to 8pm and every 30 minutes outside that. The fare is the part that catches people out — there is no one-way airport ticket at all, only a $10 day pass, which [the A Line guide](/denver/airport-train) walks through along with where the machines are at the airport end.",
         ],
       },
       {
@@ -1728,7 +1758,7 @@ export const GUIDES: Record<string, Guide> = {
         },
         body: [
           "This is exactly the gap that a map-based \"hotels near the station\" list will not show you, and it is why every distance on this page is routed rather than measured with a ruler. Woolley's looks like a seven-minute walk and is a twenty-minute one, along roads built for cars.",
-          "The practical version: at Gateway Park, use the hotel shuttle. Do not book one of these on the theory that you will walk to the train with luggage. If you want to actually walk to an A Line platform, the options are the Westin at the airport itself, the Hyatt Place at 61st & Peña, or the RiNo cluster at 38th & Blake.",
+          "The practical version: at Gateway Park, use the hotel shuttle. Do not book one of these on the theory that you will walk to the train with luggage. If you want to actually walk to an A Line platform, the options are the Westin at the airport itself, the Hyatt Place at 61st & Peña, or the RiNo cluster at 38th & Blake. If you are picking an airport hotel on shuttle quality rather than walkability — which out here is the right criterion — [the airport hotel guide](/hotels/near-denver-airport) compares that whole set.",
         ],
       },
       {
@@ -1776,7 +1806,7 @@ export const GUIDES: Record<string, Guide> = {
           ],
         },
         body: [
-          "If your trip is a conference at the Tech Center rather than a weekend downtown, book one of these and skip the rental car entirely. The E Line runs straight to Union Station, and the drive it replaces is the worst commute in Colorado.",
+          "If your trip is a conference at the Tech Center rather than a weekend downtown, book one of these and skip the rental car entirely. The E Line runs straight to Union Station, and the drive it replaces is the worst commute in Colorado. It is also the cheaper trip by a wide margin: [hotel parking downtown runs $42 to $70 a night](/denver/hotel-parking) on top of the rate, and a car you never rent is a car you never park.",
         ],
       },
       {
@@ -1839,7 +1869,28 @@ export const GUIDES: Record<string, Guide> = {
         q: "Which Denver hotels are on the A Line to the airport?",
         a: "Working outward from downtown: The Crawford, Limelight, The Oxford, Hotel Indigo, The Maven, The Rally and the Hilton Garden Inn at Union Station; the Catbird, Vīb, Cambria RiNo and The Source at 38th & Blake; the Hyatt Place at 61st & Peña; and the Westin at the airport station. The three intermediate stops — Central Park, 40th & Colorado and Peoria — have no hotel within a fifteen-minute walk.",
       },
+      {
+        q: "Does the Denver light rail go to Red Rocks?",
+        a: "No. No rail line reaches Red Rocks Park or Morrison — the W Line's western end at the Jefferson County Government Center in Golden is as close as the network gets, and that is still a drive from the amphitheatre. On a show night the real options are a shuttle from a downtown bar, a rideshare, or parking on site, which [the Red Rocks shuttle guide](/denver/red-rocks-shuttle) covers properly. If you would rather not come back over the hogback at midnight at all, [hotels near Red Rocks](/hotels/near-red-rocks) covers the Morrison and Lakewood properties.",
+      },
+      {
+        q: "Is there a light rail to Empower Field or Ball Arena?",
+        a: "Yes, and it is the best reason to use rail in Denver at all. The C, E and W lines serve both the Empower Field at Mile High station and Ball Arena–Elitch Gardens, and Ball Arena is the one rail stop a Denver event crowd actually uses in volume. The nearest hotel on foot to either is the SpringHill Suites by Marriott Denver Downtown — 810 metres from Ball Arena and 1,134 metres from Empower Field. [Hotels near Empower Field](/hotels/near-empower-field) and [hotels near Ball Arena](/hotels/near-ball-arena) have the full walk-timed sets.",
+      },
+      {
+        q: "Do you need a car in Denver if you stay near light rail?",
+        a: "Not for a downtown trip, and not for a Tech Center conference. From Union Station the network reaches the airport, Golden, Westminster and the south suburbs without a transfer, and the free 16th Street FreeRide covers the downtown core every 4 to 12 minutes. You will want a car for Red Rocks, for Morrison and for the mountains. The arithmetic usually settles it: [downtown hotel parking runs $42 to $70 a night](/denver/hotel-parking) on top of the rate, which is more than most visitors spend on rideshares for the two or three trips a car would have actually saved.",
+      },
+      {
+        q: "Is there a train from Denver to Boulder?",
+        a: "No. The B Line — the one people assume goes there — runs from Union Station to Westminster and stops well short. Boulder is a bus trip from Union Station rather than a rail trip, and a guide that tells you to take the train there is describing a line that was planned for years and never built. Worth noting for 2027 planning: RTD listed the B Line itself in all five of the budget-reduction scenarios it published in July 2026.",
+      },
+      {
+        q: "Is Denver's light rail safe?",
+        a: "The hour matters more than the line, which is also what the district-level data says about downtown generally — so we treat it as its own question rather than guessing at it here. [Is downtown Denver safe](/denver/is-downtown-denver-safe) goes through the numbers by district and what specifically changed at Union Station, which is the station almost every visitor passes through.",
+      },
     ],
+    related: ["airport-train", "hotel-parking"],
     booking: {
       pubref: "guide-light-rail",
       heading: "Book on the line",
@@ -1878,9 +1929,29 @@ export const GUIDE_CARDS: { slug: string; title: string; blurb: string }[] = [
   { slug: "red-rocks-what-to-know", title: "Red Rocks, before you go", blurb: "The climb, the parking, the altitude, and what you cannot bring in." },
 ];
 
-export function relatedGuides(slug: string, count = 3) {
+/**
+ * The three cards at the foot of a guide. The rotation is positional by
+ * default, which guarantees every guide inbound links but pairs pages that
+ * have nothing to do with each other — a guide can name its own neighbours
+ * via `related` when the topical pairing is obvious, and the rotation fills
+ * any remainder.
+ */
+export function relatedGuides(slug: string, count = 3, prefer?: string[]) {
+  const picked = (prefer ?? [])
+    .map((s) => GUIDE_CARDS.find((g) => g.slug === s))
+    .filter((g): g is (typeof GUIDE_CARDS)[number] => Boolean(g) && g!.slug !== slug)
+    .slice(0, count);
+
   const i = GUIDE_CARDS.findIndex((g) => g.slug === slug);
   const start = i === -1 ? 0 : i + 1;
-  return Array.from({ length: count }, (_, n) => GUIDE_CARDS[(start + n) % GUIDE_CARDS.length])
-    .filter((g) => g.slug !== slug);
+  const taken = new Set([slug, ...picked.map((g) => g.slug)]);
+
+  for (let n = 0; picked.length < count && n < GUIDE_CARDS.length; n += 1) {
+    const g = GUIDE_CARDS[(start + n) % GUIDE_CARDS.length];
+    if (taken.has(g.slug)) continue;
+    taken.add(g.slug);
+    picked.push(g);
+  }
+
+  return picked;
 }

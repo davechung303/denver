@@ -5,7 +5,7 @@ import BookYourTrip from "@/components/BookYourTrip";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
 import HotelSpotlight from "@/components/HotelSpotlight";
 import ExperiencesStrip from "@/components/ExperiencesStrip";
-import LinkedText from "@/components/LinkedText";
+import LinkedText, { stripInlineLinks } from "@/components/LinkedText";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
@@ -67,7 +67,10 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
           updatedAt: guide.updated,
           description: guide.metaDescription,
         }}
-        faqs={guide.faqs.map((f) => ({ question: f.q, answer: f.a }))}
+        faqs={
+          // Answers may carry inline guide links; JSON-LD wants the prose.
+          guide.faqs.map((f) => ({ question: f.q, answer: stripInlineLinks(f.a) }))
+        }
       />
 
       {/* Header */}
@@ -303,7 +306,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
         <section className="mt-14 border-t border-slate-200 dark:border-slate-800 pt-12">
           <h2 className="text-xl font-bold mb-5">Also worth knowing before you book</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {relatedGuides(guide.slug).map((g) => (
+            {relatedGuides(guide.slug, 3, guide.related).map((g) => (
               <Link
                 key={g.slug}
                 href={`/denver/${g.slug}`}
