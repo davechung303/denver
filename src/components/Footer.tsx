@@ -89,6 +89,7 @@ const HOTEL_GUIDES = [
   { href: "/hotels/colfax-marathon", label: "Colfax Marathon (May)" },
   { href: "/hotels/denver-march-powwow", label: "Denver March Powwow" },
   { href: "/hotels/denver-st-patricks-day-parade", label: "St. Patrick's Day Parade" },
+  { href: "/hotels/denver-pridefest", label: "Denver PrideFest (June)" },
   { href: "/hotels/best-value-denver", label: "Best Value Hotels" },
   { href: "/hotels/near-red-rocks", label: "Red Rocks Concert" },
   { href: "/hotels/near-empower-field", label: "Broncos Game" },

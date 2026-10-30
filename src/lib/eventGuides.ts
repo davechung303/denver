@@ -564,6 +564,145 @@ export const EVENT_GUIDES: EventGuide[] = [
     ],
     updated: "2026-10-29",
   },
+  {
+    slug: "denver-pridefest",
+    h1: "Where to Stay for Denver PrideFest",
+    metaTitle: "Denver PrideFest: Where to Stay (It Left Civic Center Park)",
+    metaDescription:
+      "PrideFest moved onto 16th Street and dropped from two days to one. The parade runs 17th Avenue. Which hotels sit inside the footprint, and what the organizer has not announced for 2027.",
+    ogTitle: "Where to Stay for Denver PrideFest",
+    ogDescription:
+      "The festival is on 16th Street and the parade is on 17th Avenue, which means two different neighborhoods are the right answer. Civic Center Park is not one of them any more.",
+    kicker: "Pride month every June · Festival on 16th Street, parade on 17th Avenue",
+    lede:
+      "Denver PrideFest is not at Civic Center Park any more. The Center on Colfax moved the free festival downtown onto 16th Street — Broadway to Arapahoe — and cut it from two days to one, Sunday 10am to 6pm. The Vizzy Denver Pride Parade runs the same morning along 17th Avenue from Franklin Street to Lincoln Street, 9:30am to 12:30pm, finishing two blocks from where the festival starts. That geography is the entire lodging answer: a downtown hotel on 16th Street is inside the festival footprint rather than near it, and an Uptown hotel on 17th Avenue is on the parade route. One thing to know before you book flights: as of late October 2026 the organizer has published no dates for the next PrideFest at all.",
+    pubref: "event-pridefest",
+    lodging: [
+      {
+        neighborhood: "downtown",
+        heading: "Downtown — the festival is on your street",
+        blurb:
+          "The free festival runs 16th Street from Broadway to Arapahoe, which is most of the downtown core, so a 16th Street hotel is not close to PrideFest — it is in it. The one catch is that the 16th Street FreeRide gets detoured off 16th Street while the festival is operating, so the shuttle you would normally use to move around downtown is the thing that does not work that day. If you were going to walk anyway, it costs you nothing.",
+      },
+      {
+        neighborhood: "uptown",
+        heading: "Uptown — 17th Avenue is the parade route",
+        blurb:
+          "The parade runs 17th Avenue from Franklin to Lincoln, which is the Restaurant Row strip essentially end to end — about a mile of it. Downtown and the festival are a ten to fifteen minute walk west, so one room covers the 9:30am parade and the 10am festival with no car and no transit. Rates here do not spike the way LoDo does, and Cheesman Park, where the Saturday 5K starts, is a short walk south.",
+      },
+    ],
+    sections: [
+      {
+        h2: "When is Denver PrideFest?",
+        answer:
+          "The final weekend of June, but the next edition is not confirmed. The Center on Colfax publishes no dates for the coming year as of late October 2026, and its own sponsorship page says 2027 package information \"will be available in the new year.\" What the organizer does commit to is the shape: Pride begins June 1st, runs as a month-long, city-wide program, and the final weekend carries the three main events — the 5K, the parade and the free festival.",
+        body: [
+          "Those three events are worth seeing laid out, because they are not all on the same day and two of them overlap. This is the 2026 edition exactly as the organizer published it — treat it as the shape of the weekend, not as next year's schedule.",
+        ],
+        table: {
+          head: ["Event", "Day", "Time", "Where", "Cost"],
+          rows: [
+            ["Pride 5K", "Saturday", "9:00am", "The Pavilion at Cheesman Park", "$40–$50"],
+            ["Vizzy Denver Pride Parade", "Sunday", "9:30am–12:30pm", "17th Ave, Franklin St to Lincoln St", "Free"],
+            ["Denver PrideFest", "Sunday", "10:00am–6:00pm", "16th St, Broadway to Arapahoe", "Free"],
+          ],
+        },
+      },
+      {
+        h2: "Where is Denver PrideFest held — and why isn't it at Civic Center Park?",
+        answer:
+          "On 16th Street between Broadway and Arapahoe, in the downtown core. Almost every guide to this event still puts it in Civic Center Park, and that is now out of date: the organizer's own festival page says \"Same Pride, new place! This year, we're taking over downtown and bringing the party to 16th Street,\" and lists the location as 16th Street & Arapahoe. The parade moved too — it runs 17th Avenue now, not Colfax.",
+        body: [
+          "The old format, in the organizer's words, was a two-day festival at Civic Center Park with the parade covering \"14 blocks of Colfax Avenue from Cheesman Park to Civic Center,\" where the festival's second day continued. The current format is one festival day on a reopened downtown street and a parade that runs a different avenue a block north of it. The parade page is blunt about why it stayed there: \"We had so much fun on 17th Ave that we decided to run it back.\"",
+          "If you are booking a room, that change matters more than it sounds. The old setup pointed you at the Golden Triangle and the Capitol end of Broadway, because that is where Civic Center Park is. The new one points at 16th Street and 17th Avenue, which are different hotels. The organizer also describes the wider shift as Denver Pride \"transitioning to a month-long, city-wide model\" — so the weekend is the anchor, but June is the event.",
+          "The classics the organizer says survived the move downtown: the Latin Stage, The Gayborhood, and the youth and family area.",
+        ],
+      },
+      {
+        h2: "Which hotels actually put you on the festival and the parade?",
+        answer:
+          "Two neighborhoods, one for each event, and they are a fifteen-minute walk apart. Downtown puts you on 16th Street, where the festival is. Uptown puts you on 17th Avenue, where the parade is. Because the parade finishes at 17th and Lincoln at lunchtime and the festival opens at 16th and Broadway at 10am — two blocks away — you do not have to choose between them from either base.",
+        list: [
+          "Downtown is the festival. 16th Street from Broadway to Arapahoe is the full length of the pedestrian corridor through the central business district, so the hotels on and immediately off it are inside the closure rather than driving to it. This is also the most forgiving base in the city for a day when you will be on foot from mid-morning to evening.",
+          "Uptown is the parade. 17th Avenue is Uptown's spine and it is walkable end to end, about a mile — which is almost exactly the Franklin-to-Lincoln parade route. Downtown is ten to fifteen minutes west on foot from most of it.",
+          "Capitol Hill is the value version and still works, but it is now the second-best fit rather than the first. It is the cheapest central sleep in Denver and The Center on Colfax itself is in the neighborhood, at 1301 E Colfax — but Colfax is no longer the parade route, so the walk is to the route rather than out onto it.",
+          "The Golden Triangle used to be the smart pick for this event and no longer is. It is the Civic Center Park neighborhood, and the festival left.",
+        ],
+        body: [
+          "We are not publishing routed walk times to the festival for this one, because there is no single door to route to — the footprint is twelve-odd blocks of street, and a distance to one end of it is misleading about the other. The honest version is that essentially the whole downtown and LoDo hotel stock is within a walk of some part of 16th Street, and that is unusual enough among Denver's big events to be the point of the page.",
+        ],
+      },
+      {
+        h2: "Street closures, the FreeRide detour, and the trains you can't use",
+        answer:
+          "The organizer publishes an access-impacts document for the festival, and the single most useful thing in it is counter-intuitive: the free 16th Street FreeRide is detoured off 16th Street while PrideFest is running. Eastbound service diverts from Lawrence Street to 17th Street, crosses Broadway, and returns westbound via 15th Street before rejoining its normal route at Lawrence and 16th. The Free MetroRide is unaffected.",
+        list: [
+          "Closed both days of the weekend, per the organizer: Cleveland Place, Welton Street and Champa Street, each between 15th and 17th Streets. Glenarm Place between 15th and 17th stays closed anyway as part of ongoing downtown work.",
+          "Closed on parade Sunday: 17th Avenue between Franklin Street and Lincoln Street, plus portions of Lincoln Street and Broadway along the route. Restrictions begin before the 9:30am step-off and streets reopen progressively through the early afternoon.",
+          "Downtown light rail is not an option. The D, H and L lines do not run the full Downtown Loop during the Downtown Rail Reconstruction Project, which the organizer flagged in its own transport notes and which is in force through at least the first quarter of 2027.",
+          "The route in is Union Station: mainline rail to Union Station, then buses, the FreeRide, a bike or a fifteen-minute walk. That is the organizer's own recommendation, and it is also what we would tell you for any downtown Denver weekend right now.",
+          "RTD increased service frequency on several downtown routes for the 2026 festival weekend. Whether it repeats that is RTD's call, not the organizer's.",
+        ],
+        body: [
+          "On parking, we have nothing sourced to give you, and that is worth saying plainly: the organizer publishes no parking guidance for the festival at all. It recommends public transport, rideshare, biking or walking, and that is the whole of it. There is no official lot, no shuttle lot and no named garage, which is a real change from the Civic Center Park years. If you are driving in, you are solving that problem yourself inside a weekend of rolling closures — which is the strongest argument on this page for booking a room you can walk from.",
+          "The organizer's site is also thinner than it was. Its current events pages link to a safety page that returns a 404, and there is no published bag policy, prohibited-items list or accessibility page for the street format. The rules that circulate online — no coolers, no outside alcohol, no glass, free water fountains at Colfax and Bannock — were written for a fenced park the festival no longer uses. Do not plan around them.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "When is Denver PrideFest 2027?",
+        a: "The Center on Colfax has not announced it. As of late October 2026 denverpride.org lists no upcoming events and its sponsorship page states that 2027 package information \"will be available in the new year.\" What the organizer does publish is the pattern: Pride begins June 1st and the final weekend of the month carries the 5K, the parade and the free festival. The 2026 weekend was June 27 and 28, 2025 was June 28 and 29, and 2023 was June 24 and 25 — all the last weekend of June. That is a pattern, not a date, so do not book flights on it.",
+      },
+      {
+        q: "Where is Denver PrideFest held?",
+        a: "On 16th Street between Broadway and Arapahoe, in downtown Denver. It is no longer at Civic Center Park. The organizer moved the festival downtown and describes it as \"taking over downtown and bringing the party to 16th Street,\" listing the location as 16th Street & Arapahoe. Festival hours were 10:00am to 6:00pm, on the Sunday only — the two-day Civic Center Park format is gone.",
+      },
+      {
+        q: "Is Denver PrideFest free?",
+        a: "Yes. The organizer labels both Denver PrideFest and the Vizzy Denver Pride Parade free, and it has described the festival as free and open to the public for years. The Pride 5K is the only ticketed main event: $40 early bird, $50 general registration for 2026. There is no general-admission VIP ticket to buy — VIP access appears in the organizer's sponsorship packages as a sponsor benefit, and its older FAQ stated plainly that it can no longer sell VIP tickets due to city regulations.",
+      },
+      {
+        q: "What is the Denver Pride Parade route?",
+        a: "17th Avenue from Franklin Street to Lincoln Street, running 9:30am to 12:30pm, per the organizer. That is roughly a mile westbound through Uptown, ending at the downtown edge near the Capitol. It is not the Colfax route any more: the old parade covered 14 blocks of Colfax Avenue from Cheesman Park to Civic Center Park, and the organizer moved it to 17th Avenue and kept it there — \"we had so much fun on 17th Ave that we decided to run it back.\" The parade finishes about two blocks from the festival's Broadway end.",
+      },
+      {
+        q: "Where do you park for Denver PrideFest?",
+        a: "The organizer publishes no parking guidance, no official lot and no recommended garage. Its advice is to use public transport, rideshare, biking or walking, and to allow extra travel time. We are not going to invent a lot for it. Practically: the festival closes a long stretch of 16th Street, the parade closes 17th Avenue plus portions of Lincoln and Broadway on the Sunday, and downtown light rail is partly suspended for reconstruction — so the realistic plan is a hotel you can walk from, or rail to Union Station and walk in from there.",
+      },
+      {
+        q: "Where should you stay for Denver PrideFest?",
+        a: "Downtown or Uptown, and they answer different halves of the weekend. Downtown puts you on 16th Street, which is the festival footprint itself. Uptown puts you on 17th Avenue, which is the parade route, with downtown ten to fifteen minutes west on foot. Capitol Hill is the cheapest central fallback and is still close to both. The Golden Triangle was the right answer when the festival was in Civic Center Park and is no longer — that is the single most common out-of-date booking advice for this event.",
+      },
+      {
+        q: "How big is Denver PrideFest?",
+        a: "The organizer currently says only that it is \"one of the country's largest Pride festivals, and the only one of our size produced by your local LGBTQ+ community center\" — it publishes no attendance number for the new downtown format, and neither do we. Its older figures, for the two-day Civic Center Park festival, were over 500,000 visitors annually and an estimated 535,000-plus in 2023, with over 100,000 lining the Colfax parade route. Those describe a different event in a different place across two days, so we would not carry them forward.",
+      },
+      {
+        q: "When is the Denver Pride 5K and where does it start?",
+        a: "The Saturday of Pride weekend, at 9:00am, from The Pavilion at Cheesman Park. The organizer put 2026 registration at $40 early bird and $50 general, and described the field as 4,000 participants. It is the one main-weekend event that is not downtown, which matters if you are booking a single room for the whole weekend — Cheesman Park is a short walk south of Uptown and about a mile and a half east of the festival.",
+      },
+      {
+        q: "Who organizes Denver Pride?",
+        a: "The Center on Colfax, the LGBTQ+ community center at 1301 E Colfax Avenue, which produces Denver Pride as its largest annual fundraiser. Per the organizer, Denver's first LGBTQ+ pride celebration was in 1974, that first parade led to The Center being founded in 1976, and a full festival was added in 1990. Denver Pride and Denver PrideFest are registered trademarks of The Center on Colfax.",
+      },
+    ],
+    // No `event` block. As of 29 October 2026 The Center on Colfax has
+    // published no dates for the next PrideFest — denverpride.org lists no
+    // upcoming events and its sponsorship page says 2027 information arrives
+    // "in the new year". Every date on this page is historical and labelled as
+    // such. The last-weekend-of-June pattern is a pattern, not an announcement,
+    // and Event schema built on it would be a guess.
+    links: [
+      { href: "/denver/where-to-stay#downtown", label: "The downtown write-up" },
+      { href: "/denver/where-to-stay#uptown", label: "The Uptown write-up" },
+      { href: "/denver/hotels-near-light-rail", label: "Hotels near light rail — and what's suspended" },
+      { href: "/denver/hotel-parking", label: "What downtown hotel parking costs" },
+      { href: "/denver/hotel-costs", label: "What a Denver hotel actually costs" },
+      { href: "/denver/where-to-stay", label: "Where to stay in Denver: the full guide" },
+    ],
+    updated: "2026-10-29",
+  },
 ];
 
 export function getEventGuide(slug: string): EventGuide | undefined {

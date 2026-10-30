@@ -31,6 +31,7 @@ const GROUPS: Group[] = [
       { href: "/hotels/colfax-marathon", name: "Colfax Marathon", blurb: "6am City Park start, 5am road closures. Book accordingly.", nb: "uptown" },
       { href: "/hotels/denver-march-powwow", name: "Denver March Powwow", blurb: "Same campus as the Stock Show. The 2027 dates aren't out yet.", nb: "five-points" },
       { href: "/hotels/denver-st-patricks-day-parade", name: "Denver St. Patrick's Day Parade", blurb: "Step off is 19th & Wynkoop. LoDo hotels are on the route.", nb: "lodo" },
+      { href: "/hotels/denver-pridefest", name: "Denver PrideFest", blurb: "It left Civic Center Park. The festival is on 16th Street now.", nb: "downtown" },
       { href: "/hotels/near-coors-field", name: "Coors Field", blurb: "Rockies games — walkable LoDo hotels.", nb: "lodo" },
       { href: "/hotels/near-ball-arena", name: "Ball Arena", blurb: "Nuggets, Avalanche & concerts.", nb: "lodo" },
       { href: "/hotels/near-empower-field", name: "Empower Field at Mile High", blurb: "Broncos games & stadium shows.", nb: "jefferson-park" },
