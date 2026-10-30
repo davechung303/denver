@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { EVENT_GUIDES } from "@/lib/eventGuides";
+import { COMPARISONS } from "@/lib/stayComparisons";
 
 // Static one-off routes. ISR cache survives a deploy, so anything whose copy
 // changed has to be revalidated explicitly or it keeps serving the old build.
@@ -54,10 +55,8 @@ export async function GET(req: Request) {
   revalidatePath("/denver/ski-basecamp");
   revalidatePath("/denver/den-layover");
   revalidatePath("/denver/red-rocks-what-to-know");
-  revalidatePath("/denver/where-to-stay/cherry-creek-vs-downtown");
-  revalidatePath("/denver/where-to-stay/union-station-vs-rino");
-  revalidatePath("/denver/where-to-stay/lodo-vs-golden-triangle");
-  revalidatePath("/denver/where-to-stay/downtown-vs-airport");
+  // Derived so a new stay comparison is covered the moment it ships.
+  for (const c of COMPARISONS) revalidatePath(`/denver/where-to-stay/${c.slug}`);
   // Derived so a new event guide is covered the moment it ships.
   for (const e of EVENT_GUIDES) revalidatePath(`/hotels/${e.slug}`);
   revalidatePath("/hotels");

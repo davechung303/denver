@@ -73,6 +73,12 @@ const TRIP_PLANNING = [
   { href: "/denver/where-to-stay/union-station-vs-rino", label: "Union Station vs RiNo" },
   { href: "/denver/where-to-stay/lodo-vs-golden-triangle", label: "LoDo vs Golden Triangle" },
   { href: "/denver/where-to-stay/downtown-vs-airport", label: "Downtown vs Airport" },
+  // Hardcoded on purpose, unlike the sitemap and revalidate lists: these labels
+  // are display copy, not derivable. "LoDo vs the Golden Triangle" and
+  // "Downtown Denver vs the DEN airport district" are the aName/bName pairs,
+  // and neither reads as a footer link. Add a row here when a comparison ships.
+  { href: "/denver/where-to-stay/rino-vs-cherry-creek", label: "RiNo vs Cherry Creek" },
+  { href: "/denver/where-to-stay/capitol-hill-vs-downtown", label: "Capitol Hill vs Downtown" },
 ];
 
 const HOTEL_GUIDES = [

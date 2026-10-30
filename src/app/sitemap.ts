@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { SUBCATEGORIES } from "@/lib/subcategories";
 import { EVENT_GUIDES } from "@/lib/eventGuides";
+import { COMPARISONS } from "@/lib/stayComparisons";
 import { supabase } from "@/lib/supabase";
 import { isExcludedPlace } from "@/lib/excludedPlaces";
 
@@ -96,10 +97,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/denver/best-things-to-do`, lastModified: now, changeFrequency: "daily" as const, priority: 0.85 },
     { url: `${BASE_URL}/denver/for-foodies`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.85 },
     { url: `${BASE_URL}/denver/where-to-stay`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/denver/where-to-stay/cherry-creek-vs-downtown`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/denver/where-to-stay/union-station-vs-rino`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/denver/where-to-stay/lodo-vs-golden-triangle`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/denver/where-to-stay/downtown-vs-airport`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 },
+    // Derived, not listed: same reason as the event guides below — a hardcoded
+    // list is how a page ships and then sits outside the sitemap for weeks.
+    ...COMPARISONS.map((c) => ({
+      url: `${BASE_URL}/denver/where-to-stay/${c.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     { url: `${BASE_URL}/hotels`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.9 },
     { url: `${BASE_URL}/denver/airport-train`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/denver/hotel-costs`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
