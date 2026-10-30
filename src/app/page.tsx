@@ -41,7 +41,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Dave Loves Denver — Local Denver Guides, Videos & Restaurant Reviews",
   description:
-    "Hyperlocal Denver guides, restaurant reviews, hotel picks, and neighborhood videos — written and filmed by a Denver local with over 2 million YouTube views.",
+    "Hyperlocal Denver guides, restaurant reviews, hotel picks, and neighborhood videos — written and filmed by a Denver local with 6.5 million views across YouTube and TikTok.",
   openGraph: {
     title: "Dave Loves Denver",
     description:
@@ -134,12 +134,12 @@ export default async function HomePage() {
               </div>
               <div className="mt-8 flex gap-8">
                 <div>
-                  <p className="text-2xl font-bold text-denver-amber">2M+</p>
-                  <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">YouTube Views</p>
+                  <p className="text-2xl font-bold text-denver-amber">6.5M</p>
+                  <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">Views</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-denver-amber">25K+</p>
-                  <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">Denver Subscribers</p>
+                  <p className="text-2xl font-bold text-denver-amber">30K+</p>
+                  <p className="text-xs text-white/50 mt-0.5 uppercase tracking-wide">YouTube & TikTok Subscribers</p>
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-denver-amber">100+</p>

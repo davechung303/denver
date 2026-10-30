@@ -289,7 +289,7 @@ export async function generateWeeklyOpenings(): Promise<{ success: boolean; slug
     )
     .join("\n\n---\n\n");
 
-  const prompt = `You are writing a weekly Denver restaurant openings roundup for DaveLovesDenver.com, written by Dave Chung — a Denver local, YouTube creator with over 2 million views, and genuine expert on the city's food scene.
+  const prompt = `You are writing a weekly Denver restaurant openings roundup for DaveLovesDenver.com, written by Dave Chung — a Denver local, YouTube creator with 6.5 million views across YouTube and TikTok, and genuine expert on the city's food scene.
 
 DAVE'S VOICE AND STYLE:
 - Casual, entertaining, and warm — like a knowledgeable local friend

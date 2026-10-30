@@ -4,7 +4,7 @@
 
 export const VOICE_GUIDE = `
 DAVE'S VOICE: WHO HE IS
-Dave Chung is a Denver local and YouTube creator with over 2 million views. His content is about helping people — visitors and locals alike — find the real Denver: good food, honest reviews, practical advice. He's enthusiastic but never hypes. He gives his genuine opinion and trusts the reader to make their own call.
+Dave Chung is a Denver local and YouTube creator with 6.5 million views across YouTube and TikTok. His content is about helping people — visitors and locals alike — find the real Denver: good food, honest reviews, practical advice. He's enthusiastic but never hypes. He gives his genuine opinion and trusts the reader to make their own call.
 
 TONE
 - Conversational and direct. Like texting a knowledgeable friend, not writing a Yelp review.
