@@ -41,7 +41,7 @@ export const STAY_AREAS: StayArea[] = [
     hotels:
       "The Crawford is inside Union Station itself and holds one of Denver's four Michelin Keys — the pick when the trip is the occasion. The Oxford, across the street, is Denver's oldest hotel and the quieter room. The Rally Hotel sits on McGregor Square directly across from Coors Field with a rooftop deck and plunge pool overlooking the ballpark district, which makes it the obvious game-weekend booking and the first to sell out. The Maven at Dairy Block is the design-forward mid-range option, Limelight is the reliable one, and Thompson Denver brought Ludo Lefebvre's Chez Maggy in with it. Hotel Indigo on the quieter back side of the station trades a little atmosphere for a lower rate.",
     cost:
-      "The most expensive night's sleep in the city, and it moves with the Rockies schedule rather than the calendar. Home-game weekends spike hard; midweek is dramatically cheaper for the same room. Overnight parking downtown typically runs $50 to $70 a night — The Crawford publishes valet at $68 — so if you're driving, price the room and the parking together or you'll be surprised at checkout. Book game weekends four to six weeks out; the cheap rooms go first and the gap between LoDo and RiNo widens as the date closes.",
+      "The most expensive night's sleep in the city, and it moves with the Rockies schedule rather than the calendar. Home-game weekends spike hard; midweek is dramatically cheaper for the same room. Overnight parking downtown typically runs $42 to $70 a night — The Crawford publishes valet at $68 — so if you're driving, price the room and the parking together or you'll be surprised at checkout. Book game weekends four to six weeks out; the cheap rooms go first and the gap between LoDo and RiNo widens as the date closes.",
     transit:
       "Union Station is the hub. The A Line runs to the airport in about 37 minutes, the E and W lines reach Ball Arena and Empower Field, and the FreeRide covers 16th Street. Nothing else in Denver is this connected, and it's the single strongest argument for paying LoDo rates on a first visit.",
     changing:
@@ -105,7 +105,7 @@ export const STAY_AREAS: StayArea[] = [
     eat:
       "Fine dining is the neighborhood's stock in trade. Matsuhisa does the high-end omakase. Del Frisco's and Hillstone cover the steak-and-expense-account end. Blue Island Oyster Bar, North Italia and True Food Kitchen fill the middle. The Cherry Cricket is the counterweight — a burger institution that has been here since 1945, long before anything glossy around it. This is where you book the anniversary dinner, not where you find the cheap noodle shop.",
     hotels:
-      "Clayton Members Club & Hotel holds one of Denver's four Michelin Keys and has the rooftop pool people book it for. Halcyon is the other design-led option. The JW Marriott sits on the North side, and Moxy is the newer, younger, cheaper entry. If you're choosing a Denver trip on the strength of the room rather than the location, the shortlist starts here and at Populus in the Golden Triangle.",
+      "Clayton Members Club & Hotel holds one of Denver's four Michelin Keys and has the rooftop pool people book it for. Halcyon is the other design-led option. Hotel Clio — a Luxury Collection property, and the one you may remember as the JW Marriott — sits on the North side, and Moxy is the newer, younger, cheaper entry. If you're choosing a Denver trip on the strength of the room rather than the location, the shortlist starts here and at Populus in the Golden Triangle.",
     cost:
       "Denver's priciest rooms sit here, and they're worth it if the hotel is part of why you came. It's also the least event-driven pricing in the city — Cherry Creek doesn't spike for baseball — so on a Rockies weekend the premium over LoDo narrows more than you'd expect. The Cherry Creek Arts Festival over the July 4th weekend is the one reliable local spike.",
     transit:
@@ -288,7 +288,7 @@ export const STAY_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How much is hotel parking in downtown Denver?",
-    a: "Typically $50 to $70 a night for self-park or valet at downtown hotels — The Crawford publishes valet at $68. If you're driving to Denver, compare the room rate plus parking rather than the room rate alone. Staying somewhere walkable and skipping the car entirely is often cheaper than a cheaper room plus two nights of valet.",
+    a: "Typically $42 to $70 a night for self-park or valet at downtown hotels — The Crawford publishes valet at $68. If you're driving to Denver, compare the room rate plus parking rather than the room rate alone. Staying somewhere walkable and skipping the car entirely is often cheaper than a cheaper room plus two nights of valet.",
   },
   {
     q: "Will I get altitude sickness in Denver?",

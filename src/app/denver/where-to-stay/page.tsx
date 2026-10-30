@@ -242,7 +242,7 @@ export default async function WhereToStayPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { href: "/denver/is-downtown-denver-safe", title: "Is downtown Denver safe?", blurb: "Police district data, what changed at Union Station, and why the hour matters more than the block." },
-            { href: "/denver/hotel-parking", title: "What hotel parking costs", blurb: "$45 to $70 a night downtown, published hotel by hotel — and the public garage charging $23." },
+            { href: "/denver/hotel-parking", title: "What hotel parking costs", blurb: "$42 to $70 a night downtown, published hotel by hotel — and the public garage charging $23." },
             { href: "/denver/hotel-free-parking", title: "Where parking is actually free", blurb: "No downtown hotel. Not the airport strip either, whatever the booking sites say. Here's the verified list." },
             { href: "/denver/hotels-near-light-rail", title: "Hotels near light rail", blurb: "The downtown lines are suspended for reconstruction. Which stations still work, measured on foot." },
             { href: "/denver/new-hotels-in-denver", title: "New hotels in Denver", blurb: "Five have opened in twenty months. What's paused, what closed, and the booking pages for hotels that no longer exist." },

@@ -231,12 +231,12 @@ export const GUIDES: Record<string, Guide> = {
     title: "What a Denver Hotel Actually Costs",
     metaTitle: "What a Denver Hotel Actually Costs — Taxes & Parking",
     metaDescription:
-      "Denver's lodger's tax is 10.75%, larger hotels add 1% more, and downtown parking runs $50–$70 a night. What the advertised rate doesn't tell you.",
+      "Denver's lodger's tax is 10.75%, larger hotels add 1% more, and downtown parking runs $42–$70 a night. What the advertised rate doesn't tell you.",
     ogTitle: "What a Denver Hotel Actually Costs",
     ogDescription:
-      "Lodger's tax, the Tourism Improvement District surcharge, and $50–$70 nightly parking — the real number at checkout.",
+      "Lodger's tax, the Tourism Improvement District surcharge, and $42–$70 nightly parking — the real number at checkout.",
     lede:
-      "The advertised nightly rate is not what you pay in Denver. Add the city's 10.75% lodger's tax, a further 1% Tourism Improvement District surcharge at hotels with 50 or more rooms, state and district sales taxes on top of that, and $50 to $70 a night if you are parking a car downtown. On a three-night stay with a rental car, the gap between the rate you booked and the bill you settle is routinely more than a hundred dollars.",
+      "The advertised nightly rate is not what you pay in Denver. Add the city's 10.75% lodger's tax, a further 1% Tourism Improvement District surcharge at hotels with 50 or more rooms, state and district sales taxes on top of that, and $42 to $70 a night if you are parking a car downtown. On a three-night stay with a rental car, the gap between the rate you booked and the bill you settle is routinely more than a hundred dollars.",
     updated: "2026-08-28",
     sections: [
       {
@@ -251,7 +251,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "How much is hotel parking in downtown Denver?",
         answer:
-          "Expect $50 to $70 a night for self-park or valet at a downtown Denver hotel. The Crawford Hotel publishes valet at $68. Some hotels charge for their own garage while a reserved spot in a lot down the block costs less — it is worth asking which arrangement your hotel uses.",
+          "Expect $42 to $70 a night for self-park or valet at a downtown Denver hotel. The Crawford Hotel publishes valet at $68. Some hotels charge for their own garage while a reserved spot in a lot down the block costs less — it is worth asking which arrangement your hotel uses.",
         body: [
           "This is the single most common budgeting mistake visitors make in Denver. A $180 room with $65 valet is a $245 room, and a $210 room you can walk away from is cheaper.",
           "If you are driving in for a game or a show, reserving a garage spot in advance locks a rate and guarantees a space rather than circling. Rates at the lots closest to Coors Field and Ball Arena surge on event days and the nearest ones sell out early.",
@@ -263,7 +263,7 @@ export const GUIDES: Record<string, Guide> = {
           "Usually, yes. A walkable downtown or LoDo room plus the A Line from the airport frequently beats a cheaper suburban or airport room plus a rental car, parking and fuel — particularly on trips of three nights or fewer where you would leave the car parked most of the time.",
         list: [
           "Airport to downtown on the A Line: $10 for a day pass covering the return trip",
-          "Downtown hotel parking: $50–$70 per night",
+          "Downtown hotel parking: $42–$70 per night",
           "Rental car: daily rate plus fuel plus that parking, every night of the stay",
         ],
         body: [
@@ -309,7 +309,7 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         q: "How much should I budget per night for a downtown Denver hotel?",
-        a: "Take the advertised rate, add at least 12% in taxes — more once state and district sales taxes are applied — and add $50 to $70 if you are parking a car. That total is the number worth comparing between hotels.",
+        a: "Take the advertised rate, add at least 12% in taxes — more once state and district sales taxes are applied — and add $42 to $70 if you are parking a car. That total is the number worth comparing between hotels.",
       },
       {
         q: "Is parking cheaper at hotels outside downtown?",
@@ -523,24 +523,25 @@ export const GUIDES: Record<string, Guide> = {
     title: "What Denver Hotel Parking Actually Costs",
     metaTitle: "Denver Hotel Parking Costs — Published Rates, Hotel by Hotel",
     metaDescription:
-      "Downtown Denver hotel parking runs $45 to $70 a night. Published rates from the hotels themselves, plus the public garage that charges $23 for the same 24 hours.",
+      "Downtown Denver hotel parking runs $42 to $70 a night. Published rates from the hotels themselves, plus the public garage that charges $23 for the same 24 hours.",
     ogTitle: "Denver Hotel Parking: The Real Numbers",
     ogDescription:
       "Published overnight rates from the hotels' own sites, and the cheaper option two blocks away.",
     lede:
-      "Overnight parking at a downtown Denver hotel runs roughly $45 to $70 a night, and the rate is almost never shown next to the room rate when you book. A city-run public garage charges $23 for the same twelve to twenty-four hours. On a three-night stay that difference is around $100 — enough to be worth ten minutes of planning, and enough that you should price the room and the parking together rather than being surprised at checkout.",
+      "Overnight parking at a downtown Denver hotel runs roughly $42 to $70 a night, and the rate is almost never shown next to the room rate when you book. A city-run public garage charges $23 for the same twelve to twenty-four hours. On a three-night stay that difference is around $100 — enough to be worth ten minutes of planning, and enough that you should price the room and the parking together rather than being surprised at checkout.",
     updated: "2026-08-29",
     sections: [
       {
         h2: "How much is parking at downtown Denver hotels?",
         answer:
-          "Published rates from the hotels' own websites, as of August 2026. Self-park where offered runs $45 to $57; valet runs $60 to $70. Several downtown properties offer valet only, which removes the cheaper option entirely.",
+          "Published rates from the hotels' own websites, as of August 2026. Self-park where offered runs $42 to $57; valet runs $60 to $70. Several downtown properties offer valet only, which removes the cheaper option entirely.",
         table: {
           head: ["Hotel", "Self-park", "Valet"],
           rows: [
             ["Sheraton Denver Downtown", "$57", "$67 ($77 oversized)"],
             ["Hilton Denver City Center", "$57", "$67"],
             ["The Curtis Denver", "$45, in-and-out", "Not offered"],
+            ["Residence Inn Denver City Center", "$42, register at the desk", "Not listed"],
             ["The Brown Palace", "Not offered", "$66, in-and-out"],
             ["Limelight Denver", "Not listed", "$64 ($80 over 7 ft)"],
             ["The Oxford Hotel", "Not listed", "$62"],
@@ -556,7 +557,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "Is a public garage cheaper than the hotel?",
         answer:
-          "Substantially. The city-operated Denver Performing Arts Complex garage charges $23 for twelve to twenty-four hours, against $45 to $70 at the hotels — a saving of roughly $25 to $50 a night. Its rate card is published, which is more than most hotel parking pages manage.",
+          "Substantially. The city-operated Denver Performing Arts Complex garage charges $23 for twelve to twenty-four hours, against $42 to $70 at the hotels — a saving of roughly $25 to $50 a night. Its rate card is published, which is more than most hotel parking pages manage.",
         table: {
           head: ["Duration", "Denver Performing Arts Complex garage"],
           rows: [
@@ -605,7 +606,7 @@ export const GUIDES: Record<string, Guide> = {
     faqs: [
       {
         q: "How much is overnight parking in downtown Denver?",
-        a: "At hotels, roughly $45 to $70 a night as published on their own sites — $45 self-park at The Curtis at the low end, $70 valet at the Embassy Suites Convention Center at the high end, with $57 self-park and $67 valet typical at the big convention hotels. A city-run public garage charges $23 for the same twelve to twenty-four hours.",
+        a: "At hotels, roughly $42 to $70 a night as published on their own sites — $42 self-park at the Residence Inn City Center at the low end, $70 valet at the Embassy Suites Convention Center at the high end, with $57 self-park and $67 valet typical at the big convention hotels. A city-run public garage charges $23 for the same twelve to twenty-four hours.",
       },
       {
         q: "Is hotel parking included in Denver hotel rates?",
@@ -613,7 +614,7 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         q: "Can I park somewhere cheaper and walk to my hotel?",
-        a: "Yes. The Denver Performing Arts Complex garage publishes $23 for twelve to twenty-four hours, versus $45 to $70 at the hotels. Watch the 4:00am rollover: a new parking day starts then, so an early-morning exit costs you a second day.",
+        a: "Yes. The Denver Performing Arts Complex garage publishes $23 for twelve to twenty-four hours, versus $42 to $70 at the hotels. Watch the 4:00am rollover: a new parking day starts then, so an early-morning exit costs you a second day.",
       },
       {
         q: "Do Denver airport hotels have free parking?",
@@ -627,7 +628,7 @@ export const GUIDES: Record<string, Guide> = {
     booking: {
       pubref: "guide-hotel-parking",
       heading: "Price the room and the parking together",
-      blurb: "A $45 to $70 nightly parking charge is a third night on a three-night stay, and it is almost never shown beside the room rate. Compare these with the parking number from the table above already in your head.",
+      blurb: "A $42 to $70 nightly parking charge is a third night on a three-night stay, and it is almost never shown beside the room rate. Compare these with the parking number from the table above already in your head.",
       areas: [
         { slug: "downtown", label: "Downtown", note: "Where the $57 self-park and $67 valet rates cluster. Worth checking whether in-and-out privileges are included if you are driving daily." },
         { slug: "airport", label: "Near DEN", note: "Published parking runs about $12 to $20 a night out here. Check the shuttle separately — some charge for it while the parking is cheap." },
@@ -701,7 +702,7 @@ export const GUIDES: Record<string, Guide> = {
       },
       {
         q: "How much is a destination fee in Denver?",
-        a: "Around $25 to $35 a night at the properties that charge one, before tax. That is well below the Las Vegas and Miami range. Parking, at $45 to $70 a night downtown, is the bigger line item at almost every Denver hotel.",
+        a: "Around $25 to $35 a night at the properties that charge one, before tax. That is well below the Las Vegas and Miami range. Parking, at $42 to $70 a night downtown, is the bigger line item at almost every Denver hotel.",
       },
       {
         q: "Are resort fees legal?",
@@ -1086,7 +1087,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "Does any downtown Denver hotel have free parking?",
         answer:
-          "No. We checked nine downtown and near-downtown properties on their own brand sites and every one charges. The range runs $42 to $70 a night, and two of them will not let you self-park at any price — it is valet or nothing.",
+          "No. We checked nine downtown and near-downtown properties on their own brand sites and every one charges. Across the conventional downtown hotels the range runs $42 to $70 a night, and two of them will not let you self-park at any price — it is valet or nothing. The two cheapest lines in the table below are not hotel garages in the usual sense: an aparthotel at Union Station at $25 a day, and a RiNo property with a $24 daily maximum.",
         table: {
           head: ["Hotel", "What it charges", "Notes"],
           rows: [
