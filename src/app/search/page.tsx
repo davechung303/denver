@@ -3,7 +3,7 @@ import Link from "next/link";
 import { searchPlaces } from "@/lib/search";
 import { photoUrl } from "@/lib/places";
 import { CATEGORIES, NEIGHBORHOODS, getPlaceTag } from "@/lib/neighborhoods";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { bookingCta } from "@/lib/travelpayouts";
 import type { Place } from "@/lib/places";
 
 export const dynamic = "force-dynamic";
@@ -149,12 +149,12 @@ function SearchResultCard({ place }: { place: Place }) {
         {isHotel && (
           <div className="mt-2">
             <a
-              href={place.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
+              href={bookingCta(place).href}
               target="_blank"
-              rel="noopener noreferrer sponsored"
+              rel={bookingCta(place).rel}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-semibold rounded-lg hover:bg-amber-400 transition-colors"
             >
-              Reserve on Expedia
+              {bookingCta(place).label}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>

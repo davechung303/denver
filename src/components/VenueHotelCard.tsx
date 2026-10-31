@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { photoUrl, type Place } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { bookingCta } from "@/lib/travelpayouts";
 
 // Card used on the /hotels/near-* venue pages. The hotel name + image link to the
 // internal detail page (/denver/<neighborhood>/hotels/<slug>) — passing relevance and
@@ -8,7 +8,7 @@ import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 // "Book on Expedia" button keeps the affiliate conversion path intact.
 export default function VenueHotelCard({ place }: { place: Place }) {
   const detailHref = `/denver/${place.neighborhood_slug}/hotels/${place.slug}`;
-  const bookHref = place.expedia_affiliate_url ?? expediaDenverHotelsUrl();
+  const cta = bookingCta(place);
   const photo = place.photos?.[0];
   return (
     <div className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200">
@@ -30,8 +30,8 @@ export default function VenueHotelCard({ place }: { place: Place }) {
             {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
           </span>
         )}
-        <a href={bookHref} target="_blank" rel="noopener noreferrer sponsored" className="text-xs text-denver-amber font-medium hover:underline w-fit">
-          Book on Expedia &rarr;
+        <a href={cta.href} target="_blank" rel={cta.rel} className="text-xs text-denver-amber font-medium hover:underline w-fit">
+          {cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;
         </a>
       </div>
     </div>

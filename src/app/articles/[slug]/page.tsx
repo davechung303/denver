@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { embedUrl, getVideosForPage } from "@/lib/youtube";
-import { expediaDenverHotelsUrl, expediaFlightsToDenverUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, expediaFlightsToDenverUrl, bookingCta } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
 import { nearestVenues } from "@/lib/venueProximity";
 import { getPlaces, isRealHotel, isUsefulPlace, photoUrl, type Place } from "@/lib/places";
@@ -139,11 +139,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // eslint-disable-next-line @next/next/no-img-element
-function HotelCard({ hotel, fallbackUrl }: { hotel: Place; fallbackUrl: string }) {
+function HotelCard({ hotel }: { hotel: Place; fallbackUrl?: string }) {
   const photo = hotel.photos?.[0];
-  const href = hotel.expedia_affiliate_url ?? fallbackUrl;
+  const cta = bookingCta(hotel);
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer sponsored"
+    <a href={cta.href} target="_blank" rel={cta.rel}
       className="group flex flex-col rounded-xl overflow-hidden border border-white/10 hover:border-denver-amber transition-colors bg-white/5">
       <div className="aspect-[16/9] overflow-hidden bg-slate-800">
         {photo && (
@@ -157,7 +157,9 @@ function HotelCard({ hotel, fallbackUrl }: { hotel: Place; fallbackUrl: string }
           {hotel.rating && <span className="text-amber-400">★ {hotel.rating.toFixed(1)}</span>}
           {hotel.price_level != null && hotel.price_level > 0 && <span>{"$".repeat(hotel.price_level)}</span>}
         </div>
-        <p className="text-xs font-semibold text-denver-amber mt-auto pt-1">Book on Expedia →</p>
+        <p className="text-xs font-semibold text-denver-amber mt-auto pt-1">
+          {cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} →
+        </p>
       </div>
     </a>
   );

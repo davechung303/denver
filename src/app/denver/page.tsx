@@ -3,7 +3,7 @@ import Link from "next/link";
 import ViatorWidget from "@/components/ViatorWidget";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { getBestOfDenver, getRecentlyAddedPlaces, getTrendingPlaces, isHiddenGem, isRealBar, isRealHotel, isRealRestaurant, photoUrl, qualityScore, type Place, type TrendingPlace } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, bookingCta } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
 
@@ -121,7 +121,7 @@ function CompactCard({ place, hideNeighborhood }: { place: Place; rank?: number;
 // Hotel card with Reserve button
 function HotelCard({ place }: { place: Place }) {
   const href = `/denver/${place.neighborhood_slug}/hotels/${place.slug}`;
-  const bookUrl = place.expedia_affiliate_url ?? expediaDenverHotelsUrl();
+  const cta = bookingCta(place);
   return (
     <div className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200">
       <a href={href} className="flex flex-col flex-1">
@@ -143,12 +143,12 @@ function HotelCard({ place }: { place: Place }) {
       </a>
       <div className="px-4 pb-4">
         <a
-          href={bookUrl}
+          href={cta.href}
           target="_blank"
-          rel="noopener noreferrer sponsored"
+          rel={cta.rel}
           className="flex items-center justify-center w-full py-2 bg-denver-amber text-slate-900 text-sm font-bold rounded-xl hover:bg-amber-400 transition-colors"
         >
-          Reserve on Expedia
+          {cta.label}
         </a>
       </div>
     </div>

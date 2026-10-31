@@ -10,7 +10,7 @@ import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
 import { photoUrl } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl , bookingCta } from "@/lib/travelpayouts";
 import { relatedGuides, type Guide } from "@/lib/guides";
 
 function formatUpdated(iso: string) {
@@ -117,9 +117,9 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                 {ledeHotels.map((h) => (
                   <a
                     key={h.place_id}
-                    href={h.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
+                    href={bookingCta(h).href}
                     target="_blank"
-                    rel="noopener noreferrer sponsored"
+                    rel={bookingCta(h).rel}
                     className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-denver-amber px-3.5 py-2 text-sm font-semibold text-white transition-colors"
                   >
                     {h.name}

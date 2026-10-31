@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getBestValueHotels, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, bookingCta } from "@/lib/travelpayouts";
 import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
@@ -44,11 +44,11 @@ const FAQS = [
 
 // eslint-disable-next-line @next/next/no-img-element
 function HotelCard({ place }: { place: Place }) {
-  const href = place.expedia_affiliate_url ?? expediaDenverHotelsUrl();
+  const cta = bookingCta(place);
   const photo = place.photos?.[0];
   const neighborhood = NEIGHBORHOODS.find((n) => n.slug === place.neighborhood_slug);
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer sponsored"
+    <a href={cta.href} target="_blank" rel={cta.rel}
       className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200"
     >
       <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -76,7 +76,7 @@ function HotelCard({ place }: { place: Place }) {
         {neighborhood && (
           <span className="text-xs text-slate-400">{neighborhood.name}</span>
         )}
-        <span className="text-xs text-denver-amber font-medium">Book on Expedia &rarr;</span>
+        <span className="text-xs text-denver-amber font-medium">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
       </div>
     </a>
   );

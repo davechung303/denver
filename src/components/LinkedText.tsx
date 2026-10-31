@@ -76,10 +76,10 @@ export default function LinkedText({
             <a
               href={m.bookHref}
               target="_blank"
-              rel="noopener noreferrer sponsored"
+              rel={m.bookRel}
               className={chipClass}
             >
-              Book
+              {m.bookLabel}
             </a>
           )}
         </span>

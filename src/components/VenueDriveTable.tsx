@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { bookingCta } from "@/lib/travelpayouts";
 import {
   RED_ROCKS_DRIVE,
   RED_ROCKS_DRIVE_DATED,
@@ -118,12 +118,12 @@ export default function VenueDriveTable({ hotels }: { hotels: Place[] }) {
                       </td>
                       <td className="px-4 py-3 align-middle">
                         <a
-                          href={place.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
+                          href={bookingCta(place).href}
                           target="_blank"
-                          rel="noopener noreferrer sponsored"
+                          rel={bookingCta(place).rel}
                           className="inline-flex items-center rounded-full bg-denver-amber/10 px-3 py-1.5 text-xs font-semibold text-denver-amber whitespace-nowrap hover:bg-denver-amber hover:text-white transition-colors"
                         >
-                          Check rates &rarr;
+                          {bookingCta(place).kind === "direct" ? "Hotel site" : "Check rates"} &rarr;
                         </a>
                       </td>
                     </tr>

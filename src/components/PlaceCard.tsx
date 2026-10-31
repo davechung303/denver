@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import type { Place } from "@/lib/places";
 import { photoUrl } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { bookingCta } from "@/lib/travelpayouts";
 
 interface Props {
   place: Place;
@@ -46,6 +46,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
   const photo = place.photos?.[0];
   const isOpen = place.hours?.openNow;
   const isHotel = categorySlug === "hotels";
+  const cta = bookingCta(place);
 
   return (
     <div className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200">
@@ -123,12 +124,12 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
       {isHotel && (
         <div className="px-4 pb-4">
           <a
-            href={place.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
+            href={cta.href}
             target="_blank"
-            rel="noopener noreferrer sponsored"
+            rel={cta.rel}
             className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
           >
-            Reserve on Expedia
+            {cta.label}
           </a>
         </div>
       )}

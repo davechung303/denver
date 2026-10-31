@@ -5,7 +5,7 @@ import LinkedText from "@/components/LinkedText";
 import StayAreaNav from "@/components/StayAreaNav";
 import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
 import { getHotelPool } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaDenverHotelsUrl, bookingCta } from "@/lib/travelpayouts";
 import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
@@ -47,13 +47,13 @@ const HOTEL_NEIGHBORHOODS = STAY_AREAS;
 
 // eslint-disable-next-line @next/next/no-img-element
 function HotelCardStacked({ place }: { place: Place }) {
-  const href = place.expedia_affiliate_url ?? expediaDenverHotelsUrl();
+  const cta = bookingCta(place);
   const photo = place.photos?.[0];
   return (
     <a
-      href={href}
+      href={cta.href}
       target="_blank"
-      rel="noopener noreferrer sponsored"
+      rel={cta.rel}
       className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200"
     >
       <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -71,7 +71,7 @@ function HotelCardStacked({ place }: { place: Place }) {
             {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
           </span>
         )}
-        <span className="text-xs text-denver-amber font-medium group-hover:underline">Book on Expedia &rarr;</span>
+        <span className="text-xs text-denver-amber font-medium group-hover:underline">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
       </div>
     </a>
   );

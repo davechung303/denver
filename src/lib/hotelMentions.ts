@@ -1,5 +1,5 @@
 import type { Place } from "./places";
-import { expediaDenverHotelsUrl } from "./travelpayouts";
+import { bookingCta } from "./travelpayouts";
 
 // Guide copy names real hotels constantly and, until now, none of those names
 // was a link. Every one of them is a reader at the highest possible intent —
@@ -133,6 +133,9 @@ export interface HotelMention {
   name: string;
   detailHref: string;
   bookHref: string;
+  /** Chip label — not every hotel is on Expedia, so not every chip says "Book". */
+  bookLabel: string;
+  bookRel: string;
   hasAffiliate: boolean;
 }
 
@@ -151,12 +154,15 @@ export function buildMentionIndex(pool: Place[]): MentionIndex {
   for (const p of pool) {
     const list = ALIASES[p.slug];
     if (!list) continue;
+    const cta = bookingCta(p);
     bySlug[p.slug] = {
       slug: p.slug,
       name: p.name,
       detailHref: `/denver/${p.neighborhood_slug}/hotels/${p.slug}`,
-      bookHref: p.expedia_affiliate_url ?? expediaDenverHotelsUrl(),
-      hasAffiliate: Boolean(p.expedia_affiliate_url),
+      bookHref: cta.href,
+      bookLabel: cta.short,
+      bookRel: cta.rel,
+      hasAffiliate: cta.kind === "expedia",
     };
     for (const alias of list) aliases.push({ alias, slug: p.slug });
   }

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getPlace, getPlaceBySlug, getPlaces, getPlacesForSubcategory, isUsefulPlace, isRealHotel, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
-import { expediaHotelUrl, expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { expediaHotelUrl, expediaDenverHotelsUrl , bookingCta } from "@/lib/travelpayouts";
 import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/lib/neighborhoods";
 import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
@@ -398,7 +398,7 @@ export default async function BusinessPage({ params }: Props) {
   const categoryCount = relatedPlaces.filter(isUsefulPlace).length;
 
   // Use per-hotel affiliate link if available, fall back to generic Denver search
-  const expediaUrl = isHotel ? (place.expedia_affiliate_url ?? expediaHotelUrl()) : null;
+  const hotelCta = isHotel ? bookingCta(place) : null;
 
   const placeFAQs = buildPlaceFAQs(place, cSlug, n.name);
   // Map Google Places types → cuisine labels for Restaurant schema
@@ -920,14 +920,14 @@ export default async function BusinessPage({ params }: Props) {
           <div className="space-y-4">
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4">
               {/* Hotel booking CTAs */}
-              {isHotel && expediaUrl && (
+              {isHotel && hotelCta && (
                 <a
-                  href={expediaUrl}
+                  href={hotelCta.href}
                   target="_blank"
-                  rel="noopener noreferrer sponsored"
+                  rel={hotelCta.rel}
                   className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
                 >
-                  Reserve on Expedia &rarr;
+                  {hotelCta.label} &rarr;
                 </a>
               )}
               {place.phone && (
@@ -1184,9 +1184,9 @@ export default async function BusinessPage({ params }: Props) {
                       )}
                     </Link>
                     <a
-                      href={hotel.expedia_affiliate_url ?? expediaDenverHotelsUrl()}
+                      href={bookingCta(hotel).href}
                       target="_blank"
-                      rel="noopener noreferrer sponsored"
+                      rel={bookingCta(hotel).rel}
                       className="text-xs font-bold px-2.5 py-1.5 bg-denver-amber text-slate-900 rounded-lg hover:bg-amber-400 transition-colors shrink-0"
                     >
                       Book

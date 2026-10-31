@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { photoUrl, type Place } from "@/lib/places";
-import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { bookingCta } from "@/lib/travelpayouts";
 
 // Big, image-forward hotel cards dropped inline between sections. The guides
 // were walls of text with the only photography 2,000 words down in the booking
@@ -22,7 +22,7 @@ export default function HotelSpotlight({
       <div className={`grid gap-4 ${places.length === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"}`}>
         {places.map((p) => {
           const detailHref = `/denver/${p.neighborhood_slug}/hotels/${p.slug}`;
-          const bookHref = p.expedia_affiliate_url ?? expediaDenverHotelsUrl();
+          const cta = bookingCta(p);
           const photo = p.photos?.[0];
           return (
             <div
@@ -59,12 +59,12 @@ export default function HotelSpotlight({
                 )}
                 <div className="mt-3 flex items-center gap-2">
                   <a
-                    href={bookHref}
+                    href={cta.href}
                     target="_blank"
-                    rel="noopener noreferrer sponsored"
+                    rel={cta.rel}
                     className="inline-flex items-center justify-center rounded-full bg-denver-amber px-4 py-2 text-sm font-semibold text-white hover:bg-amber-500 transition-colors"
                   >
-                    Check rates &rarr;
+                    {cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Check rates"} &rarr;
                   </a>
                   <Link
                     href={detailHref}
