@@ -66,7 +66,7 @@ export function bookingCta(place: {
     return { href: place.expedia_affiliate_url, kind: "expedia", label: "Reserve on Expedia", short: "Book", rel: SPONSORED };
   }
   if (place.website) {
-    return { href: place.website, kind: "direct", label: "Visit hotel site", short: "Site", rel: "noopener noreferrer" };
+    return { href: place.website, kind: "direct", label: "Visit hotel site", short: "View website", rel: "noopener noreferrer" };
   }
   return { href: EXPEDIA_HOTELS_DENVER, kind: "search", label: "Compare Denver hotels", short: "Compare", rel: SPONSORED };
 }
