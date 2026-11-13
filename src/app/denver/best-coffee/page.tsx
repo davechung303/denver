@@ -31,7 +31,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
 function RatingBadge({ place }: { place: Place }) {
   if (!place.rating) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
       ★ {place.rating.toFixed(1)}
       {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
     </span>
@@ -51,7 +51,7 @@ function CoffeeCard({ place, rank }: { place: Place; rank?: number }) {
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
         {rank && (
-          <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">
+          <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-sm">
             #{rank}
           </span>
         )}

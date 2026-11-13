@@ -41,7 +41,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
 function RatingBadge({ place }: { place: Place }) {
   if (!place.rating) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
       ★ {place.rating.toFixed(1)}
       {place.review_count && (
         <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>
@@ -254,7 +254,7 @@ export default async function BestOfDenverPage() {
               <a
                 key={cat.slug}
                 href={`#${cat.slug}`}
-                className="px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white hover:border-denver-amber transition-colors"
+                className="px-4 py-1.5 bg-white/10 border border-white/20 rounded-sm text-sm font-medium hover:bg-denver-amber hover:text-white hover:border-denver-amber transition-colors"
               >
                 {cat.name}
               </a>
@@ -310,7 +310,7 @@ export default async function BestOfDenverPage() {
                           loading="lazy"
                         />
                       )}
-                      <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                      <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
                         NEW
                       </span>
                     </div>
@@ -369,7 +369,7 @@ export default async function BestOfDenverPage() {
                           loading="lazy"
                         />
                       )}
-                      <span className="absolute top-2 right-2 bg-denver-amber text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      <span className="absolute top-2 right-2 bg-denver-amber text-white text-[10px] font-bold px-2 py-0.5 rounded-sm">
                         +{place.velocity} reviews
                       </span>
                     </div>
@@ -454,7 +454,7 @@ export default async function BestOfDenverPage() {
                 { href: "/hotels/best-value-denver", label: "Best Value Hotels" },
               ].map((v) => (
                 <Link key={v.href} href={v.href}
-                  className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap"
+                  className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap"
                 >
                   {v.label}
                 </Link>
@@ -567,7 +567,7 @@ export default async function BestOfDenverPage() {
                   <div className="flex flex-col gap-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <NeighborhoodChip slug={p.neighborhood_slug} />
-                      <span className="text-xs bg-denver-amber/10 text-denver-amber font-semibold px-1.5 py-0.5 rounded-full">
+                      <span className="text-xs bg-denver-amber/10 text-denver-amber font-semibold px-1.5 py-0.5 rounded-sm">
                         {CATEGORIES.find((c) => c.slug === p.category_slug)?.name ?? p.category_slug}
                       </span>
                     </div>

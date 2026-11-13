@@ -206,7 +206,7 @@ function StarRating({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((i) => (
         <svg
           key={i}
-          className={`w-5 h-5 ${i <= Math.round(rating) ? "text-amber-400" : "text-slate-200 dark:text-slate-700"}`}
+          className={`w-5 h-5 ${i <= Math.round(rating) ? "text-denver-amber" : "text-slate-200 dark:text-slate-700"}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -270,11 +270,11 @@ export default async function BusinessPage({ params }: Props) {
 
         {/* Other subcategory pills */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 flex flex-wrap gap-2">
-          <Link href={`/denver/${nSlug}/${c.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors">
+          <Link href={`/denver/${nSlug}/${c.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-sm text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors">
             All {c.name}
           </Link>
           {otherSubs.map((s) => (
-            <Link key={s.slug} href={`/denver/${nSlug}/${cSlug}/${s.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors">
+            <Link key={s.slug} href={`/denver/${nSlug}/${cSlug}/${s.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-sm text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors">
               {s.name}
             </Link>
           ))}
@@ -697,7 +697,7 @@ export default async function BusinessPage({ params }: Props) {
                   <ul className="space-y-1">
                     {place.review_summary.lowlights.map((l, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
-                        <span className="text-amber-500 mt-0.5 shrink-0">⚠</span>
+                        <span className="text-denver-amber mt-0.5 shrink-0">⚠</span>
                         {l}
                       </li>
                     ))}
@@ -733,17 +733,17 @@ export default async function BusinessPage({ params }: Props) {
                   parking are in, and whether you need a car at all.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Link href={`/denver/where-to-stay#${nSlug}`} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                  <Link href={`/denver/where-to-stay#${nSlug}`} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                     Staying in {n.name} &rarr;
                   </Link>
-                  <Link href="/denver/hotel-costs" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                  <Link href="/denver/hotel-costs" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                     What it really costs &rarr;
                   </Link>
-                  <Link href="/denver/airport-train" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                  <Link href="/denver/airport-train" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                     Getting in from DEN &rarr;
                   </Link>
                   {nearestVenues(place.lat, place.lng, 2).map((v) => (
-                    <Link key={v.href} href={v.href} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                    <Link key={v.href} href={v.href} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                       Staying for {v.label} &rarr;
                     </Link>
                   ))}
@@ -769,11 +769,11 @@ export default async function BusinessPage({ params }: Props) {
                   Hotel policies can change, so it never hurts to call ahead and be 100% sure your pup can come with.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Link href="/denver/pet-friendly-hotels" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                  <Link href="/denver/pet-friendly-hotels" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                     Compare every pet-friendly Denver hotel &rarr;
                   </Link>
                   {petPolicy.sourceUrl && (
-                    <a href={petPolicy.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                    <a href={petPolicy.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                       Hotel&apos;s pet policy
                     </a>
                   )}
@@ -794,7 +794,7 @@ export default async function BusinessPage({ params }: Props) {
                       ))}
                     </div>
                     {place.hours.openNow !== undefined && (
-                      <span className={`mt-3 inline-block text-sm font-semibold px-3 py-1 rounded-full ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                      <span className={`mt-3 inline-block text-sm font-semibold px-3 py-1 rounded-sm ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
                         {place.hours.openNow ? "Open now" : "Closed now"}
                       </span>
                     )}
@@ -951,7 +951,7 @@ export default async function BusinessPage({ params }: Props) {
                         </div>
                         <div className="ml-auto flex items-center gap-0.5">
                           {[1,2,3,4,5].map((s) => (
-                            <svg key={s} className={`w-3 h-3 ${s <= review.rating ? "text-amber-400" : "text-slate-200 dark:text-slate-700"}`} fill="currentColor" viewBox="0 0 20 20">
+                            <svg key={s} className={`w-3 h-3 ${s <= review.rating ? "text-denver-amber" : "text-slate-200 dark:text-slate-700"}`} fill="currentColor" viewBox="0 0 20 20">
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                           ))}

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import type { Place } from "@/lib/places";
 import { photoUrl } from "@/lib/places";
@@ -20,7 +18,7 @@ function StarRating({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((i) => (
         <svg
           key={i}
-          className={`w-3.5 h-3.5 ${i <= full ? "text-amber-400" : i === full + 1 && half ? "text-amber-400" : "text-slate-300"}`}
+          className={`w-3.5 h-3.5 ${i <= full ? "text-denver-amber" : i === full + 1 && half ? "text-denver-amber" : "text-slate-300"}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -72,13 +70,13 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             </div>
           )}
           {tag && (
-            <span className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-semibold px-2 py-0.5 rounded-full backdrop-blur-sm">
+            <span className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-semibold px-2 py-0.5 rounded-sm backdrop-blur-sm">
               {tag}
             </span>
           )}
           {place.hours && (
             <span
-              className={`absolute top-3 right-3 text-xs font-semibold px-2 py-0.5 rounded-full ${
+              className={`absolute top-3 right-3 text-xs font-semibold px-2 py-0.5 rounded-sm ${
                 isOpen ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
               }`}
             >

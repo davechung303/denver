@@ -122,13 +122,13 @@ export default async function HomePage() {
               <div className="mt-6 flex flex-wrap gap-4">
                 <Link
                   href="/articles"
-                  className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-full hover:bg-[#8c2b17] transition-colors"
+                  className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-sm hover:bg-[#8c2b17] transition-colors"
                 >
                   Read the Guides
                 </Link>
                 <Link
                   href="/videos"
-                  className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded-full hover:bg-white/10 transition-colors"
+                  className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded-sm hover:bg-white/10 transition-colors"
                 >
                   Watch the Videos
                 </Link>
@@ -329,7 +329,7 @@ export default async function HomePage() {
             { href: "/hotels/best-value-denver", label: "Best Value" },
           ].map((h) => (
             <Link key={h.href} href={h.href}
-              className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">
+              className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">
               {h.label}
             </Link>
           ))}

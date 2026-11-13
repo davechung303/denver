@@ -63,7 +63,7 @@ function HotelCard({ place }: { place: Place }) {
         <h3 className="font-semibold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
         <div className="flex items-center gap-2">
           {place.rating && (
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
               ★ {place.rating.toFixed(1)}
               {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
             </span>
@@ -128,8 +128,8 @@ export default async function BestValueDenverHotelsPage() {
             <span className="text-white/80">Best Value Hotels</span>
           </nav>
           <div className="flex items-center gap-3 mb-3">
-            <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full uppercase tracking-widest">4.3+ Rating</span>
-            <span className="px-3 py-1 bg-white/10 text-white/70 text-xs font-bold rounded-full uppercase tracking-widest">$ – $$</span>
+            <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded-sm uppercase tracking-widest">4.3+ Rating</span>
+            <span className="px-3 py-1 bg-white/10 text-white/70 text-xs font-bold rounded-sm uppercase tracking-widest">$ – $$</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight">Best Value Hotels in Denver</h1>
           <p className="mt-4 text-lg text-white/70 max-w-2xl">
@@ -200,7 +200,7 @@ export default async function BestValueDenverHotelsPage() {
             <p className="text-white/70 text-sm">Compare prices and availability on Expedia — filters, maps, and real-time rates.</p>
           </div>
           <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored"
-            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
+            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors"
           >
             Browse Expedia Denver hotels &rarr;
           </a>
@@ -225,16 +225,16 @@ export default async function BestValueDenverHotelsPage() {
       {/* Bottom nav */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-wrap gap-3">
-          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">
             Full Denver hotel guide &rarr;
           </Link>
-          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Hotels near Red Rocks &rarr;
           </Link>
-          <Link href="/hotels/near-convention-center" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-convention-center" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Hotels near Convention Center &rarr;
           </Link>
-          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Hotels near Denver Airport &rarr;
           </Link>
         </div>

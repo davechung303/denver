@@ -25,7 +25,7 @@ export default function VenueHotelCard({ place }: { place: Place }) {
           {place.name}
         </Link>
         {place.rating && (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
             ★ {place.rating.toFixed(1)}
             {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
           </span>

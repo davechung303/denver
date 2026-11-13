@@ -147,7 +147,7 @@ export default function EventsClient({ events, feverEvents }: Props) {
                       <button
                         key={cat}
                         onClick={() => setActive(dateKey, cat)}
-                        className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                        className={`px-3 py-1.5 rounded-sm text-sm font-medium transition-colors ${
                           active === cat
                             ? "bg-denver-amber text-white"
                             : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber"
@@ -183,7 +183,7 @@ export default function EventsClient({ events, feverEvents }: Props) {
                           {formatTime(event.start_time)}
                         </span>
                         {event.is_free && (
-                          <span className="text-xs font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                          <span className="text-xs font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-sm">
                             Free
                           </span>
                         )}

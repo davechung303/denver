@@ -31,7 +31,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
 function RatingBadge({ place }: { place: Place }) {
   if (!place.rating) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
       ★ {place.rating.toFixed(1)}
       {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
     </span>
@@ -48,7 +48,7 @@ function DishChips({ dishes }: { dishes: string[] }) {
   return (
     <div className="flex flex-wrap gap-1 mt-1">
       {dishes.slice(0, 3).map((d) => (
-        <span key={d} className="text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 rounded-full px-2 py-0.5">
+        <span key={d} className="text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-denver-amber border border-amber-200 dark:border-amber-800 rounded-sm px-2 py-0.5">
           {d}
         </span>
       ))}

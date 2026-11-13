@@ -72,22 +72,22 @@ export default function EventCard({ event }: Props) {
             {formatDate(event.start_time)}
           </span>
           {event.is_free && (
-            <span className="text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300 px-1.5 py-0.5 rounded-full">
+            <span className="text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300 px-1.5 py-0.5 rounded-sm">
               Free
             </span>
           )}
           {isRescheduled && (
-            <span className="text-xs font-semibold bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300 px-1.5 py-0.5 rounded-full">
+            <span className="text-xs font-semibold bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300 px-1.5 py-0.5 rounded-sm">
               Rescheduled
             </span>
           )}
           {isCancelled && (
-            <span className="text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300 px-1.5 py-0.5 rounded-full">
+            <span className="text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300 px-1.5 py-0.5 rounded-sm">
               Cancelled
             </span>
           )}
           {age && (
-            <span className="text-xs font-medium text-slate-400 px-1.5 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+            <span className="text-xs font-medium text-slate-400 px-1.5 py-0.5 rounded-sm border border-slate-200 dark:border-slate-700">
               {age}
             </span>
           )}
@@ -101,7 +101,7 @@ export default function EventCard({ event }: Props) {
         {/* Genre + venue + Spotify row */}
         <div className="flex items-center gap-2 flex-wrap mt-0.5">
           {showGenre && (
-            <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${genreClass(event.genre)}`}>
+            <span className={`text-xs font-medium px-1.5 py-0.5 rounded-sm ${genreClass(event.genre)}`}>
               {event.genre}
             </span>
           )}

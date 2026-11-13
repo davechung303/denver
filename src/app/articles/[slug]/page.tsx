@@ -167,7 +167,7 @@ function HotelCard({ hotel }: { hotel: Place; fallbackUrl?: string }) {
       <div className="p-3 flex flex-col gap-1 flex-1">
         <p className="text-sm font-semibold text-white line-clamp-1 group-hover:text-denver-amber transition-colors">{hotel.name}</p>
         <div className="flex items-center gap-2 text-xs text-slate-400">
-          {hotel.rating && <span className="text-amber-400">★ {hotel.rating.toFixed(1)}</span>}
+          {hotel.rating && <span className="text-denver-amber">★ {hotel.rating.toFixed(1)}</span>}
           {hotel.price_level != null && hotel.price_level > 0 && <span>{"$".repeat(hotel.price_level)}</span>}
         </div>
         <p className="text-xs font-semibold text-denver-amber mt-auto pt-1">
@@ -276,16 +276,16 @@ export default async function ArticlePage({ params }: Props) {
         </nav>
         <div className="flex items-center gap-2 flex-wrap mb-4">
           {neighborhood && (
-            <Link href={`/denver/${neighborhood.slug}`} className="text-xs px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 hover:bg-teal-100 transition-colors">
+            <Link href={`/denver/${neighborhood.slug}`} className="text-xs px-3 py-1 rounded-sm bg-teal-50 text-teal-800 border border-teal-200 hover:bg-teal-100 transition-colors">
               {neighborhood.name}
             </Link>
           )}
           {article.category_slug && (
-            <span className="text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 capitalize">
+            <span className="text-xs px-3 py-1 rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 capitalize">
               {article.category_slug.replace("-", " ")}
             </span>
           )}
-          <span className="text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700 capitalize">
+          <span className="text-xs px-3 py-1 rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700 capitalize">
             {article.content_type}
           </span>
         </div>
@@ -417,7 +417,7 @@ export default async function ArticlePage({ params }: Props) {
         {/* Trip planning module */}
         <div className="rounded-2xl overflow-hidden mb-10 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
           <div className="px-6 pt-6 pb-4">
-            <p className="text-xs font-semibold uppercase tracking-widest text-amber-400 mb-1">Plan Your Trip</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber mb-1">Plan Your Trip</p>
             <h3 className="text-xl font-bold">
               {neighborhood ? `Visiting ${neighborhood.name}?` : "Coming to Denver?"}
             </h3>

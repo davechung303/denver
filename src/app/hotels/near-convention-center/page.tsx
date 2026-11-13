@@ -134,7 +134,7 @@ export default async function HotelsNearConventionCenterPage() {
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Downtown &amp; Golden Triangle Hotels</p>
             {hotels.map((hotel) => <VenueHotelCard key={hotel.place_id} place={hotel} />)}
             <a href={expediaDenverHotelsUrl("Downtown Denver Convention Center")} target="_blank" rel="noopener noreferrer sponsored"
-              className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
+              className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors"
             >
               See all nearby hotels &rarr;
             </a>
@@ -202,11 +202,11 @@ export default async function HotelsNearConventionCenterPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-xl font-bold mb-4">Explore Downtown</h2>
         <div className="flex flex-wrap gap-3">
-          <Link href="/denver/downtown" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown guide</Link>
-          <Link href="/denver/downtown/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown restaurants</Link>
-          <Link href="/denver/golden-triangle" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Golden Triangle</Link>
-          <Link href="/denver/airport-train" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">A Line train guide</Link>
-          <Link href="/events" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Denver events</Link>
+          <Link href="/denver/downtown" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown guide</Link>
+          <Link href="/denver/downtown/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Downtown restaurants</Link>
+          <Link href="/denver/golden-triangle" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Golden Triangle</Link>
+          <Link href="/denver/airport-train" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">A Line train guide</Link>
+          <Link href="/events" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Denver events</Link>
         </div>
       </section>
 
@@ -226,16 +226,16 @@ export default async function HotelsNearConventionCenterPage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-wrap gap-3">
-          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">
             Full Denver hotel guide &rarr;
           </Link>
-          <Link href="/hotels/near-ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Hotels near Ball Arena &rarr;
           </Link>
-          <Link href="/hotels/near-coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Hotels near Coors Field &rarr;
           </Link>
-          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Hotels near Denver Airport &rarr;
           </Link>
         </div>

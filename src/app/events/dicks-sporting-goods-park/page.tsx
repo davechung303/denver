@@ -156,7 +156,7 @@ export default async function EventsDicksSportingGoodsParkPage() {
             <p className="text-white/70 text-sm max-w-md">Stay downtown and drive or rideshare to the match — it&apos;s 15 minutes and you&apos;ll have the rest of the city at your disposal.</p>
           </div>
           <Link href="/denver/where-to-stay"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-sm transition-colors text-sm">
             Where to stay in Denver &rarr;
           </Link>
         </div>
@@ -178,10 +178,10 @@ export default async function EventsDicksSportingGoodsParkPage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-wrap gap-3">
-          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">Where to stay in Denver &rarr;</Link>
-          <Link href="/events/empower-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Empower Field events &rarr;</Link>
-          <Link href="/events/ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Ball Arena events &rarr;</Link>
-          <Link href="/events/coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Coors Field events &rarr;</Link>
+          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">Where to stay in Denver &rarr;</Link>
+          <Link href="/events/empower-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Empower Field events &rarr;</Link>
+          <Link href="/events/ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Ball Arena events &rarr;</Link>
+          <Link href="/events/coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Coors Field events &rarr;</Link>
         </div>
       </section>
     </>

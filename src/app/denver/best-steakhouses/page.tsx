@@ -42,7 +42,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
 function RatingBadge({ place }: { place: Place }) {
   if (!place.rating) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
       ★ {place.rating.toFixed(1)}
       {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
     </span>
@@ -59,7 +59,7 @@ function DishChips({ dishes }: { dishes: string[] }) {
   return (
     <div className="flex flex-wrap gap-1 mt-1">
       {dishes.slice(0, 3).map((d) => (
-        <span key={d} className="text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 rounded-full px-2 py-0.5">
+        <span key={d} className="text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-denver-amber border border-amber-200 dark:border-amber-800 rounded-sm px-2 py-0.5">
           {d}
         </span>
       ))}
@@ -75,7 +75,7 @@ function SteakhouseCard({ place, note }: { place: Place; note?: string }) {
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
         {davePick && (
-          <span className="absolute top-3 left-3 bg-denver-amber text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">
+          <span className="absolute top-3 left-3 bg-denver-amber text-white text-xs font-bold px-2.5 py-1 rounded-sm shadow">
             Dave&apos;s Pick
           </span>
         )}

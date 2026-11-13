@@ -156,7 +156,7 @@ export default async function EventsEmpowerFieldPage() {
             <p className="text-white/70 text-sm max-w-md">LoDo and Jefferson Park put you within walking distance. We break down the closest hotels and what the tradeoffs are.</p>
           </div>
           <Link href="/hotels/near-empower-field"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-sm transition-colors text-sm">
             Hotels near Empower Field &rarr;
           </Link>
         </div>
@@ -178,10 +178,10 @@ export default async function EventsEmpowerFieldPage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-wrap gap-3">
-          <Link href="/hotels/near-empower-field" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">Hotels near Empower Field &rarr;</Link>
-          <Link href="/events/ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Ball Arena events &rarr;</Link>
-          <Link href="/events/coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Coors Field events &rarr;</Link>
-          <Link href="/events/red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Red Rocks shows &rarr;</Link>
+          <Link href="/hotels/near-empower-field" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">Hotels near Empower Field &rarr;</Link>
+          <Link href="/events/ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Ball Arena events &rarr;</Link>
+          <Link href="/events/coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Coors Field events &rarr;</Link>
+          <Link href="/events/red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Red Rocks shows &rarr;</Link>
         </div>
       </section>
     </>

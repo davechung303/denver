@@ -33,7 +33,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
 function RatingBadge({ place }: { place: Place }) {
   if (!place.rating) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
       ★ {place.rating.toFixed(1)}
       {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
     </span>
@@ -52,7 +52,7 @@ function ActivityCard({ place, rank }: { place: Place; rank?: number }) {
     <a href={href} className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200">
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
-        {rank && <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">#{rank}</span>}
+        {rank && <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-sm">#{rank}</span>}
       </div>
       <div className="p-5 flex flex-col gap-2 flex-1">
         <NeighborhoodChip slug={place.neighborhood_slug} />

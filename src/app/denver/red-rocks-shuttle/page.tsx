@@ -144,7 +144,7 @@ export default function RedRocksShuttleGuide() {
           <p className="text-white/70 text-sm leading-relaxed mb-3">
             There&apos;s no walkable hotel at Red Rocks, so most people either base in Denver and shuttle out, or stay in the west-metro suburbs (Lakewood, Golden) for a shorter drive. If you want the full trip — great food, bars, and the city — stay downtown and take a shuttle to the show.
           </p>
-          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors">
             Where to stay for a Red Rocks show &rarr;
           </Link>
         </div>
@@ -180,13 +180,13 @@ export default function RedRocksShuttleGuide() {
         </div>
 
         <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">
             Hotels near Red Rocks &rarr;
           </Link>
-          <Link href="/events/red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/events/red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Upcoming Red Rocks shows &rarr;
           </Link>
-          <Link href="/hotels" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Where to stay in Denver &rarr;
           </Link>
         </div>

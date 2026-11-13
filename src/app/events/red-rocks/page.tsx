@@ -167,7 +167,7 @@ export default async function EventsRedRocksPage() {
             <p className="text-white/70 text-sm max-w-md">Morrison, Lakewood, and downtown Denver are your options. We break down exactly where to stay, what the tradeoffs are, and which hotels are worth it.</p>
           </div>
           <Link href="/hotels/near-red-rocks"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-sm transition-colors text-sm">
             Hotels near Red Rocks &rarr;
           </Link>
         </div>
@@ -207,16 +207,16 @@ export default async function EventsRedRocksPage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-wrap gap-3">
-          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">
             Hotels near Red Rocks &rarr;
           </Link>
-          <Link href="/events/fiddlers-green" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/events/fiddlers-green" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Fiddler&apos;s Green shows &rarr;
           </Link>
-          <Link href="/events/ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/events/ball-arena" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Ball Arena events &rarr;
           </Link>
-          <Link href="/events/mission-ballroom" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/events/mission-ballroom" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Mission Ballroom shows &rarr;
           </Link>
         </div>

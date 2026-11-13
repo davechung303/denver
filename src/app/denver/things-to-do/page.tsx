@@ -113,7 +113,7 @@ function AttractionCard({ place }: { place: Place }) {
       <div className="flex flex-col gap-1 min-w-0 py-3 pr-4">
         <h3 className="font-semibold text-sm leading-tight group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
         {place.rating && (
-          <span className="text-xs text-amber-500 font-semibold">★ {place.rating.toFixed(1)}</span>
+          <span className="text-xs text-denver-amber font-semibold">★ {place.rating.toFixed(1)}</span>
         )}
         {place.review_summary?.tagline && (
           <p className="text-xs text-slate-500 line-clamp-1">{place.review_summary.tagline}</p>

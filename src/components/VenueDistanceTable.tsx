@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { bookingCta } from "@/lib/travelpayouts";
+import HotelRouteTable from "@/components/HotelRouteTable";
 import {
   walkMetres,
   metresToMiles,
@@ -10,7 +9,7 @@ import {
   VENUE_WALK_DATED,
   type WalkBand,
 } from "@/lib/venueWalks";
-import { photoUrl, type Place } from "@/lib/places";
+import type { Place } from "@/lib/places";
 
 /**
  * Walking-distance table for a venue lodging guide.
@@ -57,7 +56,7 @@ export default function VenueDistanceTable({
     .filter((g) => g.rows.length > 0);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-slate-100 dark:border-slate-800">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-rule dark:border-white/10">
       <h2 className="text-2xl font-bold mb-2">
         How far is each hotel from {venueName}, on foot?
       </h2>
@@ -68,9 +67,9 @@ export default function VenueDistanceTable({
       </p>
 
       <div className="mt-8 space-y-10">
-        {groups.map((g) => (
+        {groups.map((g, gi) => (
           <div key={g.band}>
-            <h3 className="text-base font-bold">{WALK_BANDS[g.band].label}</h3>
+            <h3 className="text-lg font-bold">{WALK_BANDS[g.band].label}</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 mb-4 max-w-3xl leading-relaxed">
               {WALK_BANDS[g.band].note}
               {g.band === "ride" && transitNote ? ` ${transitNote}` : ""}
@@ -78,99 +77,33 @@ export default function VenueDistanceTable({
                 ? ` Showing the ${g.rows.length} closest; ${g.hidden} more fall in this band and get further out from here.`
                 : ""}
             </p>
-            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
-              <table className="w-full text-sm">
-                <thead className="bg-slate-50 dark:bg-slate-900">
-                  <tr>
-                    <th className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs">Hotel</th>
-                    <th className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs whitespace-nowrap">Walk</th>
-                    <th className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs whitespace-nowrap">Distance</th>
-                    <th className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs whitespace-nowrap">Rating</th>
-                    <th className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs">Rates</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {g.rows.map(({ place, m }) => (
-                    <tr key={place.place_id} className="group/row border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50/70 dark:hover:bg-slate-900/40 transition-colors">
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3 min-w-[17rem]">
-                          <Link
-                            href={`/denver/${place.neighborhood_slug}/hotels/${place.slug}`}
-                            aria-label={place.name}
-                            className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800"
-                          >
-                            {place.photos?.[0] ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img decoding="async"
-                                src={photoUrl(place.photos[0])}
-                                alt={place.name}
-                                loading="lazy"
-                                className="w-full h-full object-cover group-hover/row:scale-105 transition-transform duration-300"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
-                            )}
-                          </Link>
-                          <div className="min-w-0">
-                            <Link
-                              href={`/denver/${place.neighborhood_slug}/hotels/${place.slug}`}
-                              className="font-medium leading-snug hover:text-denver-amber transition-colors"
-                            >
-                              {place.name}
-                            </Link>
-                            {place.review_summary?.tagline && (
-                              <p className="mt-0.5 text-xs leading-snug text-slate-500 dark:text-slate-400 line-clamp-1 first-letter:uppercase">
-                                {place.review_summary.tagline}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 align-middle tabular-nums whitespace-nowrap font-semibold">
-                        {walkMinutes(m)} min
-                      </td>
-                      <td className="px-4 py-3 align-middle tabular-nums whitespace-nowrap text-slate-600 dark:text-slate-400">
-                        {metresToMiles(m).toFixed(2)} mi
-                      </td>
-                      <td className="px-4 py-3 align-middle whitespace-nowrap text-slate-600 dark:text-slate-400">
-                        {place.rating ? `★ ${place.rating.toFixed(1)}` : "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        <a
-                          href={bookingCta(place).href}
-                          target="_blank"
-                          rel={bookingCta(place).rel}
-                          className="inline-flex items-center rounded-full bg-denver-amber/10 px-3 py-1.5 text-xs font-semibold text-denver-amber whitespace-nowrap hover:bg-denver-amber hover:text-white transition-colors"
-                        >
-                          {bookingCta(place).kind === "direct" ? "Hotel site" : "Check rates"} &rarr;
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <HotelRouteTable
+              rows={g.rows.map((r) => ({ place: r.place, primary: `${walkMinutes(r.m)} min`, secondary: `${metresToMiles(r.m).toFixed(2)} mi` }))}
+              primaryLabel="Walk"
+              secondaryLabel="Distance"
+              thumbs={gi === 0}
+            />
           </div>
         ))}
       </div>
 
       {/* The method statement is what makes this citable — and what keeps it honest. */}
-      <div className="mt-8 max-w-3xl rounded-xl bg-slate-50 dark:bg-slate-900 p-5">
-        <h3 className="text-sm font-bold mb-2">How these numbers were produced</h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+      <div className="mt-10 method-note">
+        <h3>How these numbers were produced</h3>
+        <p>
           Street-network walking distances from each hotel to the {venueName} entrance, routed over OpenStreetMap
           pedestrian data with OSRM&apos;s foot profile{dated ? `, run on ${new Date(dated + "T12:00:00Z").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })}` : ""}.
           Times are derived from distance at a steady {WALK_MPH} mph, so you can adjust for your own pace rather than
           trusting a routing engine&apos;s hidden default.
         </p>
-        <p className="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p>
           These are <strong>routed, not walked</strong> &mdash; nobody has stood there with a stopwatch. They follow
           real sidewalks and crossings, which is why they run so much longer than the straight-line figures other
           guides publish, but they cannot know about a closed sidewalk or a queue at a crossing on the night.
         </p>
-        <p className="mt-3 text-xs text-slate-400">
+        <p className="text-xs">
           Distance data ©{" "}
-          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="underline hover:text-denver-amber transition-colors">
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
             OpenStreetMap contributors
           </a>
           , ODbL. Routing by OSRM.

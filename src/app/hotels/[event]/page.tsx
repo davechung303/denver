@@ -247,7 +247,7 @@ export default async function EventGuidePage({
             <Link
               key={l.href}
               href={l.href}
-              className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors"
             >
               {l.label}
             </Link>

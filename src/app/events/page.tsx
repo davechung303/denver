@@ -72,7 +72,7 @@ export default async function EventsPage() {
             { href: "/events/dicks-sporting-goods-park", label: "Dick's Sporting Goods Park" },
           ].map((v) => (
             <Link key={v.href} href={v.href}
-              className="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">
+              className="inline-flex items-center px-4 py-2 rounded-sm border border-slate-200 dark:border-slate-700 text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">
               {v.label}
             </Link>
           ))}

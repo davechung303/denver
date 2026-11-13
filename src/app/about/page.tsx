@@ -67,7 +67,7 @@ export default function AboutPage() {
             href="https://youtube.com/davechung"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-full hover:bg-[#8c2b17] transition-colors no-underline"
+            className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-sm hover:bg-[#8c2b17] transition-colors no-underline"
           >
             Watch on YouTube &rarr;
           </a>
