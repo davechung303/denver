@@ -7,7 +7,7 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: fitTitle("Videos"),
-  description: fitDescription("Watch all of Dave's Denver videos — neighborhood guides, restaurant reviews, hotel tours, and more."),
+  description: fitDescription("Every Denver video from Dave Chung: neighborhood guides, restaurant reviews, hotel tours and hidden gems, from a channel with 6.5 million views."),
   robots: { index: false, follow: false }, // excluded from search indexing per plan
 };
 
@@ -21,14 +21,28 @@ export default async function VideosPage() {
   } catch {
     // db timeout — render empty
   }
-  const videos = allVideos.filter((v) => !isShort(v));
-  const shorts = allVideos.filter((v) => isShort(v));
+  // Only the fields a card shows. The whole Video row (descriptions, tags) used
+  // to be serialized into the client component's props: ~430 KB of payload.
+  const slim = (v: (typeof allVideos)[number]) => ({
+    id: v.id,
+    video_id: v.video_id,
+    title: v.title,
+    thumbnail_url: v.thumbnail_url,
+    view_count: v.view_count,
+    published_at: v.published_at,
+    description: null,
+    duration_seconds: null,
+    tags: null,
+    cached_at: "",
+  });
+  const videos = allVideos.filter((v) => !isShort(v)).map(slim);
+  const shorts = allVideos.filter((v) => isShort(v)).map(slim);
 
   return (
     <>
       <section className="bg-denver-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-3">
+          <p className="kicker mb-3">
             youtube.com/davechung
           </p>
           <h1 className="text-4xl md:text-5xl font-bold">All Videos</h1>

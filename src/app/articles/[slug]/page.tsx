@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { embedUrl, getVideosForPage } from "@/lib/youtube";
+import { getVideosForPage } from "@/lib/youtube";
 import { expediaDenverHotelsUrl, expediaFlightsToDenverUrl, bookingCta } from "@/lib/travelpayouts";
 import { getNeighborhood } from "@/lib/neighborhoods";
 import { nearestVenues } from "@/lib/venueProximity";
@@ -13,6 +13,7 @@ import VideoCard from "@/components/VideoCard";
 import ViatorProductCard from "@/components/ViatorProductCard";
 import ExpediaSearchWidget from "@/components/ExpediaSearchWidget";
 import { fitTitle, fitDescription } from "@/lib/seo";
+import YouTubeLite from "@/components/YouTubeLite";
 
 export const revalidate = 86400;
 
@@ -339,20 +340,14 @@ export default async function ArticlePage({ params }: Props) {
           </h2>
         ) : (
           <p
-            className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6"
+            className="prose-serif text-[1.3rem] leading-[1.55] text-ink dark:text-white/90 mb-6"
             dangerouslySetInnerHTML={{ __html: linkifyNeighborhoods(firstPara) }}
           />
         )}
         {video && (
           <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
             <div className="aspect-video">
-              <iframe
-                src={embedUrl(video.video_id)}
-                title={video.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
+              <YouTubeLite videoId={video.video_id} title={video.title} priority />
             </div>
             <div className="px-4 py-3 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
               <p className="text-sm text-slate-500">{video.title}</p>
@@ -386,7 +381,7 @@ export default async function ArticlePage({ params }: Props) {
               );
             }
             return (
-              <p key={i} className="text-base leading-relaxed mb-5 text-slate-700 dark:text-slate-300"
+              <p key={i} className="prose-serif mb-5 text-ink/90 dark:text-white/80"
                 dangerouslySetInnerHTML={{
                   __html: linkifyNeighborhoods(
                     para

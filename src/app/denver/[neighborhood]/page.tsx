@@ -295,13 +295,16 @@ export default async function NeighborhoodPage({ params }: Props) {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <div className="flex items-center gap-2 mb-6">
             <h2 className="text-2xl font-bold">Just Added in {n.name}</h2>
-            <span className="text-sm text-slate-400">New places discovered in the last 30 days</span>
+            <span className="text-sm text-slate-400">Added to the site in the last 30 days</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {recentlyAdded.map((place) => {
               const photo = place.photos?.[0];
-              const daysSince = Math.floor((Date.now() - new Date((place as any).created_at).getTime()) / 86400000);
-              const timeLabel = daysSince === 0 ? "Today" : daysSince === 1 ? "Yesterday" : `${daysSince}d ago`;
+              // Absolute date: the page is cached for a day, so relative labels went stale.
+              const added = (place as { created_at?: string }).created_at;
+              const timeLabel = added
+                ? `Added ${new Date(added).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "America/Denver" })}`
+                : "";
               const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
               return (
                 <a key={place.place_id} href={href} className="group flex flex-col">
@@ -313,9 +316,6 @@ export default async function NeighborhoodPage({ params }: Props) {
                         loading="lazy"
                       />
                     )}
-                    <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
-                      NEW
-                    </span>
                   </div>
                   <div className="mt-2">
                     <p className="text-[11px] text-slate-400">{timeLabel}</p>

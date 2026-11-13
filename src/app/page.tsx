@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
 import { fitDescription } from "@/lib/seo";
+import YouTubeLite from "@/components/YouTubeLite";
 
 const STAY_VENUES = [
   { href: "/hotels/near-coors-field", label: "Coors Field", sub: "Rockies games in LoDo", nb: "lodo" },
@@ -151,13 +152,7 @@ export default async function HomePage() {
             {/* Right: featured video */}
             <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <div className="aspect-video">
-                <iframe
-                  src="https://www.youtube.com/embed/JJjUJ8Uoqwg"
-                  title="NEW Restaurants You Should Try in the North Denver Suburbs"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
+                <YouTubeLite videoId="JJjUJ8Uoqwg" title="NEW Restaurants You Should Try in the North Denver Suburbs" priority />
               </div>
               <div className="px-4 py-3 bg-white/5">
                 <p className="text-sm text-white/70">NEW Restaurants You Should Try in the North Denver Suburbs</p>
