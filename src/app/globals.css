@@ -389,3 +389,17 @@ h3 {
   .hotel-mini .rating .muted { color: #a8a6a0; }
   .hotel-mini .rating .star, .hotel-mini .cta { color: var(--sandstone-light); }
 }
+@layer components {
+  .place-card-rank {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 2px;
+    background: var(--sandstone);
+    color: #fff;
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}

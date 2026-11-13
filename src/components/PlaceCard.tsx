@@ -8,9 +8,11 @@ interface Props {
   neighborhoodSlug: string;
   categorySlug: string;
   tag?: string | null;
+  /** Shows a #1–#5 badge on the photo (Top Local Picks). */
+  rank?: number;
 }
 
-export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }: Props) {
+export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag, rank }: Props) {
   // Link to the place's own canonical URL (the one in the sitemap). The page's
   // URL can differ: subcategory pages pass the base category, and compound
   // slugs like "restaurants-mexican_restaurant" would otherwise cost a 301 hop.
@@ -34,6 +36,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             // eslint-disable-next-line @next/next/no-img-element
             <img src={photoUrl(photo)} alt={place.name} loading="lazy" decoding="async" />
           ) : null}
+          {rank != null && <span className="place-card-rank">#{rank}</span>}
           {tag && <span className="place-card-tag">{tag}</span>}
         </div>
         <div className="place-card-body">
