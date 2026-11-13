@@ -410,19 +410,31 @@ async function maybeGenerateSummary(place: Place): Promise<Place> {
 }
 
 
+/** Of several rows sharing a slug, the one worth rendering: useful first, then most reviewed. */
+function bestRow(rows: Place[]): Place | null {
+  if (rows.length === 0) return null;
+  return [...rows].sort(
+    (a, b) => Number(isUsefulPlace(b)) - Number(isUsefulPlace(a)) || (b.review_count ?? 0) - (a.review_count ?? 0)
+  )[0];
+}
+
 export async function getPlace(
   neighborhoodSlug: string,
   categorySlug: string,
   slug: string
 ): Promise<Place | null> {
   if (isExcludedPlace(slug)) return null;
-  const { data } = await supabase
+  // .single() errored whenever two rows shared neighborhood + category + slug
+  // (two branches of a chain, or a shell duplicate), and the page then 404'd or
+  // landed on the empty duplicate. Take every match and keep the best one.
+  const { data: rows } = await supabase
     .from("places")
     .select("*")
     .eq("neighborhood_slug", neighborhoodSlug)
     .eq("category_slug", categorySlug)
     .eq("slug", slug)
-    .single();
+    .limit(10);
+  const data = bestRow((rows ?? []) as Place[]);
 
   // Row exists — generate summary if needed (fetches reviews lazily if missing)
   if (data) {
@@ -432,12 +444,13 @@ export async function getPlace(
   }
 
   // Try any category (handles places cached under a compound subcategory slug)
-  const { data: anyCategory } = await supabase
+  const { data: anyRows } = await supabase
     .from("places")
     .select("*")
     .eq("neighborhood_slug", neighborhoodSlug)
     .eq("slug", slug)
-    .single();
+    .limit(10);
+  const anyCategory = bestRow((anyRows ?? []) as Place[]);
 
   if (anyCategory) {
     const withSummary = await maybeGenerateSummary(anyCategory as Place);
@@ -463,8 +476,10 @@ export async function getPlaceBySlug(slug: string, nearNeighborhood?: string): P
     .select(LISTING_COLUMNS)
     .eq("slug", slug)
     .limit(20);
-  const rows = (data ?? []) as Place[];
-  if (rows.length === 0) return null;
+  const all = (data ?? []) as Place[];
+  if (all.length === 0) return null;
+  // Prefer rows that would actually render; a shell duplicate redirects to a 404.
+  const rows = all.some(isUsefulPlace) ? all.filter(isUsefulPlace) : all;
   let pick = rows[0];
   const n = nearNeighborhood ? getNeighborhood(nearNeighborhood) : undefined;
   if (rows.length > 1 && n) {

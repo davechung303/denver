@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { NEIGHBORHOODS, CATEGORIES, getNeighborhood, getCategory, CATEGORY_DESCRIPTIONS, getPlaceTag } from "@/lib/neighborhoods";
 import { getSubcategories } from "@/lib/subcategories";
 import { getPlaces, getHotelPool, isRealHotel, isUsefulPlace } from "@/lib/places";
@@ -29,10 +29,27 @@ interface Props {
 }
 
 
+/**
+ * Places cached under a compound slug ("restaurants-mexican_restaurant") have
+ * detail URLs like /denver/baker/restaurants-mexican_restaurant/la-taqueria,
+ * and their breadcrumbs used to link one level up to
+ * /denver/baker/restaurants-mexican_restaurant, which isn't a page. Ahrefs found
+ * about 170 of those 404s. Send them to the matching cuisine page
+ * (/denver/baker/restaurants/mexican) or, failing that, the category.
+ */
+function redirectCompoundCategory(nSlug: string, cSlug: string): void {
+  const base = CATEGORIES.find((cat) => cSlug.startsWith(`${cat.slug}-`));
+  if (!base) return;
+  const type = cSlug.slice(base.slug.length + 1);
+  const sub = getSubcategories(base.slug).find((s) => s.types.includes(type));
+  permanentRedirect(sub ? `/denver/${nSlug}/${base.slug}/${sub.slug}` : `/denver/${nSlug}/${base.slug}`);
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { neighborhood: nSlug, category: cSlug } = await params;
   const n = getNeighborhood(nSlug);
   const c = getCategory(cSlug);
+  if (n && !c) redirectCompoundCategory(nSlug, cSlug);
   if (!n || !c) notFound();
 
   const title = `Best ${c.name} near ${n.name}, Denver`;
@@ -56,6 +73,7 @@ export default async function CategoryPage({ params }: Props) {
   const { neighborhood: nSlug, category: cSlug } = await params;
   const n = getNeighborhood(nSlug);
   const c = getCategory(cSlug);
+  if (n && !c) redirectCompoundCategory(nSlug, cSlug);
   if (!n || !c) notFound();
 
   const otherCategories = CATEGORIES.filter((cat) => cat.slug !== cSlug);

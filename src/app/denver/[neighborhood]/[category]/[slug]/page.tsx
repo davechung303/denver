@@ -234,7 +234,7 @@ export default async function BusinessPage({ params }: Props) {
           breadcrumbs={[
             { name: "Home", url: "https://davelovesdenver.com" },
             { name: n.name, url: `https://davelovesdenver.com/denver/${nSlug}` },
-            { name: c.name, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}` },
+            { name: c.name, url: `https://davelovesdenver.com/denver/${nSlug}/${c.slug}` },
             { name: subcategory.name, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
           ]}
           videos={videos.map((v) => ({ name: v.title, description: v.description, thumbnailUrl: v.thumbnail_url, uploadDate: v.published_at, videoId: v.video_id }))}
@@ -245,7 +245,7 @@ export default async function BusinessPage({ params }: Props) {
             <li>/</li>
             <li><Link href={`/denver/${nSlug}`} className="hover:text-foreground transition-colors">{n.name}</Link></li>
             <li>/</li>
-            <li><Link href={`/denver/${nSlug}/${cSlug}`} className="hover:text-foreground transition-colors">{c.name}</Link></li>
+            <li><Link href={`/denver/${nSlug}/${c.slug}`} className="hover:text-foreground transition-colors">{c.name}</Link></li>
             <li>/</li>
             <li className="text-foreground font-medium">{subcategory.name}</li>
           </ol>
@@ -259,7 +259,7 @@ export default async function BusinessPage({ params }: Props) {
 
         {/* Other subcategory pills */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 flex flex-wrap gap-2">
-          <Link href={`/denver/${nSlug}/${cSlug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors">
+          <Link href={`/denver/${nSlug}/${c.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors">
             All {c.name}
           </Link>
           {otherSubs.map((s) => (
@@ -309,7 +309,7 @@ export default async function BusinessPage({ params }: Props) {
         )}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <Link href={`/denver/${nSlug}/${cSlug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-denver-amber hover:underline">
+          <Link href={`/denver/${nSlug}/${c.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-denver-amber hover:underline">
             &larr; All {c.name} near {n.name}
           </Link>
         </div>
@@ -537,7 +537,7 @@ export default async function BusinessPage({ params }: Props) {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: "https://davelovesdenver.com" },
         { "@type": "ListItem", position: 2, name: n.name, item: `https://davelovesdenver.com/denver/${nSlug}` },
-        { "@type": "ListItem", position: 3, name: c.name, item: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}` },
+        { "@type": "ListItem", position: 3, name: c.name, item: `https://davelovesdenver.com/denver/${nSlug}/${c.slug}` },
         { "@type": "ListItem", position: 4, name: place.name, item: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
       ],
     },
@@ -563,7 +563,7 @@ export default async function BusinessPage({ params }: Props) {
         breadcrumbs={[
           { name: "Home", url: "https://davelovesdenver.com" },
           { name: n.name, url: `https://davelovesdenver.com/denver/${nSlug}` },
-          { name: c.name, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}` },
+          { name: c.name, url: `https://davelovesdenver.com/denver/${nSlug}/${c.slug}` },
           { name: place.name, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
         ]}
         videos={videos.map((v) => ({
@@ -583,7 +583,7 @@ export default async function BusinessPage({ params }: Props) {
           <li>/</li>
           <li><Link href={`/denver/${nSlug}`} className="hover:text-foreground transition-colors">{n.name}</Link></li>
           <li>/</li>
-          <li><Link href={`/denver/${nSlug}/${cSlug}`} className="hover:text-foreground transition-colors">{c.name}</Link></li>
+          <li><Link href={`/denver/${nSlug}/${c.slug}`} className="hover:text-foreground transition-colors">{c.name}</Link></li>
           <li>/</li>
           <li className="text-foreground font-medium truncate max-w-[200px]">{place.name}</li>
         </ol>
@@ -1005,7 +1005,7 @@ export default async function BusinessPage({ params }: Props) {
               )}
 
               <Link
-                href={`/denver/${nSlug}/${cSlug}`}
+                href={`/denver/${nSlug}/${c.slug}`}
                 className="block text-center text-sm text-slate-500 hover:text-denver-amber transition-colors pt-2 border-t border-slate-100 dark:border-slate-800"
               >
                 &larr; More {c.name} near {n.name}

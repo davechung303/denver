@@ -79,7 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   while (true) {
     const { data } = await supabase
       .from("places")
-      .select("neighborhood_slug, category_slug, slug, cached_at, lat, lng")
+      .select("neighborhood_slug, category_slug, slug, cached_at, lat, lng, rating, photos")
       .range(from, from + PAGE_SIZE - 1);
     if (!data || data.length === 0) break;
     for (const p of data) {
@@ -89,6 +89,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Out-of-area places (beyond day-trip range, or non-attractions beyond
       // the metro) 404 now, so they don't belong in the sitemap either.
       if (isOutOfArea(p.lat, p.lng, p.category_slug)) continue;
+      // Same test the detail page uses before it 404s (isUsefulPlace): no
+      // rating and no photo means a shell record. Ahrefs found ~30 sitemap
+      // URLs like that, all returning 404.
+      const hasPhoto = Array.isArray(p.photos) && p.photos.length > 0;
+      if (!(p.rating != null && p.rating > 0) && !hasPhoto) continue;
       placePages.push({
         url: `${BASE_URL}/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}`,
         lastModified: p.cached_at ? new Date(p.cached_at) : now,
