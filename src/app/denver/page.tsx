@@ -197,7 +197,7 @@ export default async function BestOfDenverPage() {
   const restaurantsByNeighborhood = NEIGHBORHOODS.map((n) => {
     const picks = filteredRestaurants
       .filter((p) => p.neighborhood_slug === n.slug && isNearNeighborhood(p, n))
-      .slice(0, 4); // already sorted by qualityScore from getBestOfDenver
+      .slice(0, 3); // already sorted by qualityScore from getBestOfDenver
     return { neighborhood: n, picks };
   }).filter((g) => g.picks.length > 0);
 
@@ -282,21 +282,20 @@ export default async function BestOfDenverPage() {
       {recentlyAdded.length > 0 && (
         <section className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-denver-amber">
-                <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                </svg>
-                Just Added
-              </span>
-              <span className="text-sm text-slate-400">New places discovered in the last 30 days</span>
+            <div className="flex items-baseline gap-3 mb-4">
+              <h2 className="kicker">Just added</h2>
+              <span className="text-sm text-ink-muted dark:text-white/60">Places added to the site in the last 30 days</span>
             </div>
             <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
               {recentlyAdded.map((place) => {
                 const photo = place.photos?.[0];
                 const n = NEIGHBORHOODS.find((nb) => nb.slug === place.neighborhood_slug);
-                const daysSince = Math.floor((Date.now() - new Date((place as any).created_at).getTime()) / 86400000);
-                const timeLabel = daysSince === 0 ? "Today" : daysSince === 1 ? "Yesterday" : `${daysSince}d ago`;
+                // An absolute date: this page is cached for a day, so "Today" or
+                // "3d ago" computed at render time went stale while it was shown.
+                const added = (place as { created_at?: string }).created_at;
+                const timeLabel = added
+                  ? `Added ${new Date(added).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "America/Denver" })}`
+                  : "";
                 const href = `/denver/${place.neighborhood_slug}/${place.category_slug}/${place.slug}`;
                 return (
                   <a key={place.place_id} href={href}
@@ -310,9 +309,6 @@ export default async function BestOfDenverPage() {
                           loading="lazy"
                         />
                       )}
-                      <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
-                        NEW
-                      </span>
                     </div>
                     <div className="mt-2 px-0.5">
                       <p className="text-[11px] text-slate-400">{timeLabel}</p>
@@ -467,6 +463,8 @@ export default async function BestOfDenverPage() {
                 height="428"
                 src="https://stay22.com/embed/69d0526a8ef49a292b4d6fc8"
                 frameBorder="0"
+                loading="lazy"
+                title="Map of Denver hotels"
               />
             </div>
           </section>

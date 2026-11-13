@@ -339,7 +339,7 @@ export default async function ArticlePage({ params }: Props) {
           </h2>
         ) : (
           <p
-            className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6"
+            className="prose-serif text-[1.3rem] leading-[1.55] text-ink dark:text-white/90 mb-6"
             dangerouslySetInnerHTML={{ __html: linkifyNeighborhoods(firstPara) }}
           />
         )}
@@ -386,7 +386,7 @@ export default async function ArticlePage({ params }: Props) {
               );
             }
             return (
-              <p key={i} className="text-base leading-relaxed mb-5 text-slate-700 dark:text-slate-300"
+              <p key={i} className="prose-serif mb-5 text-ink/90 dark:text-white/80"
                 dangerouslySetInnerHTML={{
                   __html: linkifyNeighborhoods(
                     para
