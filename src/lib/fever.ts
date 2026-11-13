@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { NEIGHBORHOOD_BOUNDS } from "./neighborhoods";
+import { resolveNeighborhood } from "./neighborhoodResolver";
 
 export interface FeverEvent {
   id: string;
@@ -25,13 +25,10 @@ export interface FeverEvent {
 const CATALOG_ID = "15532";
 const API_BASE = "https://api.impact.com";
 
+// Same coordinate filing as places (official neighborhood polygons). The old
+// box loop now also hit the huge Day Trips box before the suburbs.
 function assignNeighborhood(lat: number, lng: number): string | null {
-  for (const [slug, [minLat, maxLat, minLng, maxLng]] of Object.entries(NEIGHBORHOOD_BOUNDS)) {
-    if (lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng) {
-      return slug;
-    }
-  }
-  return null;
+  return resolveNeighborhood(lat, lng);
 }
 
 function parseCoords(pattern: string | null): { lat: number | null; lng: number | null } {

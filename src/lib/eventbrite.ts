@@ -1,5 +1,6 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { NEIGHBORHOODS, NEIGHBORHOOD_BOUNDS } from "./neighborhoods";
+import { NEIGHBORHOODS } from "./neighborhoods";
+import { resolveNeighborhood } from "./neighborhoodResolver";
 
 export interface DenverEvent {
   id: string;
@@ -22,33 +23,10 @@ export interface DenverEvent {
 const API_KEY = process.env.EVENTBRITE_API_KEY;
 
 // Assign a neighborhood based on venue coordinates
+// Same coordinate filing as places (official neighborhood polygons). The old
+// box loop now also hit the huge Day Trips box before the suburbs.
 function assignNeighborhood(lat: number, lng: number): string | null {
-  for (const [slug, [minLat, maxLat, minLng, maxLng]] of Object.entries(NEIGHBORHOOD_BOUNDS)) {
-    if (lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng) {
-      return slug;
-    }
-  }
-
-  // Fallback: find nearest neighborhood center
-  const centers: Record<string, [number, number]> = {
-    rino: [39.765, -104.987],
-    lodo: [39.752, -104.998],
-    "capitol-hill": [39.734, -104.978],
-    highlands: [39.760, -105.015],
-    "cherry-creek": [39.715, -104.952],
-    "five-points": [39.754, -104.974],
-    cole: [39.766, -104.959],
-    "washington-park": [39.711, -104.964],
-  };
-
-  let closest: string | null = null;
-  let minDist = Infinity;
-  for (const [slug, [cLat, cLng]] of Object.entries(centers)) {
-    const dist = Math.sqrt((lat - cLat) ** 2 + (lng - cLng) ** 2);
-    if (dist < minDist) { minDist = dist; closest = slug; }
-  }
-  // Only assign if within ~2 miles of a center (~0.03 degrees)
-  return minDist < 0.03 ? closest : null;
+  return resolveNeighborhood(lat, lng);
 }
 
 export async function syncDenverEvents(): Promise<number> {

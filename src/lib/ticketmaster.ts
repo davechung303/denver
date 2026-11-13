@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { NEIGHBORHOOD_BOUNDS } from "./neighborhoods";
+import { resolveNeighborhood } from "./neighborhoodResolver";
 
 export interface DenverEvent {
   id: string;
@@ -77,13 +77,10 @@ function mapTicketmasterEvent(e: any): DenverEvent | null {
   };
 }
 
+// Same coordinate filing as places (official neighborhood polygons). The old
+// box loop now also hit the huge Day Trips box before the suburbs.
 function assignNeighborhood(lat: number, lng: number): string | null {
-  for (const [slug, [minLat, maxLat, minLng, maxLng]] of Object.entries(NEIGHBORHOOD_BOUNDS)) {
-    if (lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng) {
-      return slug;
-    }
-  }
-  return null;
+  return resolveNeighborhood(lat, lng);
 }
 
 export async function syncDenverEvents(): Promise<number> {
@@ -113,7 +110,12 @@ export async function syncDenverEvents(): Promise<number> {
     );
 
     if (!res.ok) {
-      console.error("Ticketmaster API error:", res.status, await res.text());
+      const body = await res.text();
+      console.error("Ticketmaster API error:", res.status, body);
+      // A failure on the first page used to return 0 quietly, so the events
+      // table just aged out and /events showed "0 upcoming events" with no
+      // error anywhere. Fail loudly so the cron response says what broke.
+      if (page === 0) throw new Error(`Ticketmaster API ${res.status}: ${body.slice(0, 300)}`);
       break;
     }
 
