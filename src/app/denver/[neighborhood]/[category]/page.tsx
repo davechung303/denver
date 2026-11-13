@@ -326,11 +326,6 @@ export default async function CategoryPage({ params }: Props) {
                                 {tag}
                               </span>
                             )}
-                            {place.hours?.openNow !== undefined && (
-                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-sm ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
-                                {place.hours.openNow ? "Open" : "Closed"}
-                              </span>
-                            )}
                           </div>
                           <h3 className="font-bold text-base leading-tight group-hover:text-denver-amber transition-colors">
                             {place.name}

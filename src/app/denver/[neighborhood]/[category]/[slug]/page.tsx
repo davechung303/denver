@@ -793,11 +793,6 @@ export default async function BusinessPage({ params }: Props) {
                         <p key={day} className="text-sm text-slate-600 dark:text-slate-400">{day}</p>
                       ))}
                     </div>
-                    {place.hours.openNow !== undefined && (
-                      <span className={`mt-3 inline-block text-sm font-semibold px-3 py-1 rounded-sm ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
-                        {place.hours.openNow ? "Open now" : "Closed now"}
-                      </span>
-                    )}
                   </div>
                 )}
                 {/* People Order — food categories only */}

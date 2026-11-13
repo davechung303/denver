@@ -10,130 +10,54 @@ interface Props {
   tag?: string | null;
 }
 
-function StarRating({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
-  const half = rating - full >= 0.5;
-  return (
-    <span className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <svg
-          key={i}
-          className={`w-3.5 h-3.5 ${i <= full ? "text-denver-amber" : i === full + 1 && half ? "text-denver-amber" : "text-slate-300"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </span>
-  );
-}
-
-function PriceLevel({ level }: { level: number }) {
-  return (
-    <span className="text-xs text-slate-500">
-      {"$".repeat(level)}
-      <span className="text-slate-300">{"$".repeat(4 - level)}</span>
-    </span>
-  );
-}
-
 export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }: Props) {
   // Link to the place's own canonical URL (the one in the sitemap). The page's
   // URL can differ: subcategory pages pass the base category, and compound
   // slugs like "restaurants-mexican_restaurant" would otherwise cost a 301 hop.
   const href = `/denver/${place.neighborhood_slug || neighborhoodSlug}/${place.category_slug || categorySlug}/${place.slug}`;
   const photo = place.photos?.[0];
-  const isOpen = place.hours?.openNow;
   const isHotel = categorySlug === "hotels";
   const cta = bookingCta(place);
 
+  // Markup kept deliberately small: a category page renders 100+ of these and
+  // every element is shipped twice (HTML + RSC payload). Styling lives in
+  // globals.css (.place-card). The old five-SVG star row was ~2 KB per card.
+  //
+  // No "Open/Closed" badge: hours.openNow is whatever Google said when the row
+  // was cached, and these pages are cached for a day, so the badge was wrong
+  // for much of the time it was shown.
   return (
-    <div className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200">
-      {/* Card body is a real link. It used to be a div with an onClick, which
-          crawlers can't follow: about 2,100 place pages had no internal links
-          at all and were reachable only through the sitemap. */}
-      <Link href={href} className="flex flex-col flex-1">
-        {/* Photo */}
-        <div className="aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
+    <div className="place-card group">
+      <Link href={href} className="place-card-link">
+        <div className="place-card-photo">
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img decoding="async"
-              src={photoUrl(photo)}
-              alt={place.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-slate-300 dark:text-slate-600 text-sm">No photo</span>
-            </div>
-          )}
-          {tag && (
-            <span className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-semibold px-2 py-0.5 rounded-sm backdrop-blur-sm">
-              {tag}
-            </span>
-          )}
-          {place.hours && (
-            <span
-              className={`absolute top-3 right-3 text-xs font-semibold px-2 py-0.5 rounded-sm ${
-                isOpen ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
-              }`}
-            >
-              {isOpen ? "Open" : "Closed"}
-            </span>
-          )}
+            <img src={photoUrl(photo)} alt={place.name} loading="lazy" decoding="async" />
+          ) : null}
+          {tag && <span className="place-card-tag">{tag}</span>}
         </div>
-
-        {/* Info */}
-        <div className="p-4 flex flex-col gap-2 flex-1">
-          <h3 className="font-semibold text-base leading-tight group-hover:text-denver-amber transition-colors line-clamp-1">
-            {place.name}
-          </h3>
-
-          {place.rating && (
-            <div className="flex items-center gap-2">
-              <StarRating rating={place.rating} />
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                {place.rating.toFixed(1)}
-              </span>
-              {place.review_count && (
-                <span className="text-xs text-slate-400">
-                  ({place.review_count.toLocaleString()})
-                </span>
-              )}
-              {place.price_level != null && place.price_level > 0 && (
-                <>
-                  <span className="text-slate-300">·</span>
-                  <PriceLevel level={place.price_level} />
-                </>
-              )}
-            </div>
+        <div className="place-card-body">
+          <h3 className="place-card-name">{place.name}</h3>
+          {place.rating != null && (
+            <p className="place-card-meta">
+              <span className="star">★</span> {place.rating.toFixed(1)}
+              {place.review_count ? <span className="muted"> ({place.review_count.toLocaleString()})</span> : null}
+              {place.price_level ? <span className="muted"> · {"$".repeat(place.price_level)}</span> : null}
+            </p>
           )}
-
-          {place.address && (
-            <p className="text-xs text-slate-500 line-clamp-1">{place.address}</p>
-          )}
+          {place.address && <p className="place-card-addr">{place.address}</p>}
           {place.review_summary?.tagline && (
-            <p className="text-xs text-denver-amber font-medium line-clamp-2">
+            <p className="place-card-known">
               Known for: {place.review_summary.tagline.charAt(0).toUpperCase() + place.review_summary.tagline.slice(1)}
             </p>
           )}
         </div>
       </Link>
-
-      {/* Hotel CTA — outside the navigating div to avoid nested anchors */}
+      {/* Hotel CTA sits outside the card link to avoid nested anchors. */}
       {isHotel && (
-        <div className="px-4 pb-4">
-          <a
-            href={cta.href}
-            target="_blank"
-            rel={cta.rel}
-            className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-white text-sm font-semibold rounded-xl hover:bg-[#8c2b17] transition-colors"
-          >
-            {cta.label}
-          </a>
-        </div>
+        <a href={cta.href} target="_blank" rel={cta.rel} className="place-card-cta">
+          {cta.label}
+        </a>
       )}
     </div>
   );

@@ -51,7 +51,6 @@ function SearchResultCard({ place }: { place: Place }) {
   const isHotel = place.category_slug === "hotels";
   const neighborhood = NEIGHBORHOODS.find((n) => n.slug === place.neighborhood_slug);
   const category = CATEGORIES.find((c) => c.slug === place.category_slug);
-  const isOpen = place.hours?.openNow;
 
   return (
     <div className="group flex bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200">
@@ -69,15 +68,6 @@ function SearchResultCard({ place }: { place: Place }) {
           <div className="w-full h-full flex items-center justify-center min-h-[100px]">
             <span className="text-slate-300 text-xs">No photo</span>
           </div>
-        )}
-        {place.hours && (
-          <span
-            className={`absolute top-2 left-2 text-xs font-semibold px-1.5 py-0.5 rounded-sm ${
-              isOpen ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
-            }`}
-          >
-            {isOpen ? "Open" : "Closed"}
-          </span>
         )}
       </Link>
 
