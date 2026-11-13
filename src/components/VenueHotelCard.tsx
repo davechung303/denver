@@ -27,7 +27,7 @@ export default function VenueHotelCard({ place }: { place: Place }) {
           </span>
         )}
         <a href={cta.href} target="_blank" rel={cta.rel} className="cta">
-          {cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;
+          {cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"}{" "}&rarr;
         </a>
       </div>
     </div>

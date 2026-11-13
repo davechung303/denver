@@ -254,7 +254,7 @@ export default async function BusinessPage({ params }: Props) {
         </nav>
 
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">{n.name} &middot; {c.name}</p>
+          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">{n.name}{" "}&middot; {c.name}</p>
           <h1 className="text-4xl md:text-5xl font-bold">Best {subcategory.name} in {n.name}</h1>
           <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">{subcategory.description(n.name)}</p>
         </section>
@@ -614,7 +614,7 @@ export default async function BusinessPage({ params }: Props) {
                   rel={hotelCta.rel}
                   className="lg:hidden mt-5 flex items-center justify-center w-full bg-denver-amber text-white font-bold py-3 px-4 rounded-sm hover:bg-[#8c2b17] transition-colors"
                 >
-                  {hotelCta.label} &rarr;
+                  {hotelCta.label}{" "}&rarr;
                 </a>
               )}
             </div>
@@ -692,7 +692,7 @@ export default async function BusinessPage({ params }: Props) {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Link href={`/denver/where-to-stay#${nSlug}`} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
-                    Staying in {n.name} &rarr;
+                    Staying in {n.name}{" "}&rarr;
                   </Link>
                   <Link href="/denver/hotel-costs" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                     What it really costs &rarr;
@@ -702,7 +702,7 @@ export default async function BusinessPage({ params }: Props) {
                   </Link>
                   {nearestVenues(place.lat, place.lng, 2).map((v) => (
                     <Link key={v.href} href={v.href} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
-                      Staying for {v.label} &rarr;
+                      Staying for {v.label}{" "}&rarr;
                     </Link>
                   ))}
                 </div>
@@ -933,7 +933,7 @@ export default async function BusinessPage({ params }: Props) {
                   rel={hotelCta.rel}
                   className="flex items-center justify-center w-full bg-denver-amber text-white font-bold py-3 px-4 rounded-xl hover:bg-[#8c2b17] transition-colors"
                 >
-                  {hotelCta.label} &rarr;
+                  {hotelCta.label}{" "}&rarr;
                 </a>
               )}
               {place.phone && (
@@ -1123,7 +1123,7 @@ export default async function BusinessPage({ params }: Props) {
                   <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Why Stay in {n.name}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{n.description}</p>
                   <Link href={`/denver/${nSlug}`} className="inline-flex items-center gap-1 text-sm font-semibold text-denver-amber hover:underline">
-                    Explore {n.name} &rarr;
+                    Explore {n.name}{" "}&rarr;
                   </Link>
                 </div>
                 {(nearbyDining[0] || nearbyThingsToDo[0]) && (

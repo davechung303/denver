@@ -133,7 +133,7 @@ export default async function ComparisonPage({
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-            <h2 className="font-bold mb-3">Book {c.aName} if&hellip;</h2>
+            <h2 className="font-bold mb-3">Book {c.aName}{" "}if&hellip;</h2>
             <ul className="space-y-2.5">
               {c.chooseA.map((item) => (
                 <li key={item} className="text-sm leading-relaxed text-slate-600 dark:text-slate-400 pl-5 relative">
@@ -144,7 +144,7 @@ export default async function ComparisonPage({
             </ul>
           </div>
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-            <h2 className="font-bold mb-3">Book {c.bName} if&hellip;</h2>
+            <h2 className="font-bold mb-3">Book {c.bName}{" "}if&hellip;</h2>
             <ul className="space-y-2.5">
               {c.chooseB.map((item) => (
                 <li key={item} className="text-sm leading-relaxed text-slate-600 dark:text-slate-400 pl-5 relative">
@@ -202,7 +202,7 @@ export default async function ComparisonPage({
                   href={`/denver/${side.area}/hotels`}
                   className="mt-3 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
                 >
-                  All {side.name} hotels &rarr;
+                  All {side.name}{" "}hotels &rarr;
                 </Link>
               </div>
             ))}
@@ -325,7 +325,7 @@ export default async function ComparisonPage({
                 href={`/denver/${side.area}/hotels`}
                 className="inline-flex items-center px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors"
               >
-                {side.name} hotels &rarr;
+                {side.name}{" "}hotels &rarr;
               </Link>
             ))}
             <a

@@ -77,7 +77,7 @@ function HotelCard({ place }: { place: Place }) {
         {neighborhood && (
           <span className="text-xs text-slate-400">{neighborhood.name}</span>
         )}
-        <span className="text-xs text-denver-amber font-medium">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
+        <span className="text-xs text-denver-amber font-medium">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"}{" "}&rarr;</span>
       </div>
     </a>
   );
@@ -172,7 +172,7 @@ export default async function BestValueDenverHotelsPage() {
               <Link href={`/denver/${slug}/hotels`}
                 className="flex-shrink-0 text-xs font-semibold text-denver-amber hover:underline whitespace-nowrap"
               >
-                All {n.name} hotels &rarr;
+                All {n.name}{" "}hotels &rarr;
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

@@ -65,7 +65,7 @@ function HotelCardStacked({ place }: { place: Place }) {
             {place.review_count ? <span className="muted"> ({place.review_count.toLocaleString()})</span> : null}
           </span>
         )}
-        <span className="cta">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
+        <span className="cta">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"}{" "}&rarr;</span>
       </span>
     </a>
   );
@@ -470,7 +470,7 @@ export default async function WhereToStayPage() {
                 rel="noopener noreferrer sponsored"
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors"
               >
-                Browse hotels in {n.name} &rarr;
+                Browse hotels in {n.name}{" "}&rarr;
               </a>
               </div>
               {hn.venueLinks && (
@@ -479,7 +479,7 @@ export default async function WhereToStayPage() {
                     <Link key={v.href} href={v.href}
                       className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors"
                     >
-                      {v.label} &rarr;
+                      {v.label}{" "}&rarr;
                     </Link>
                   ))}
                 </div>

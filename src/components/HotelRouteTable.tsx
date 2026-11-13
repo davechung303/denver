@@ -74,7 +74,7 @@ export default function HotelRouteTable({
                 <td className="muted">{place.rating ? `★ ${place.rating.toFixed(1)}` : "—"}</td>
                 <td>
                   <a href={cta.href} target="_blank" rel={cta.rel} className="rate-chip">
-                    {cta.kind === "search" ? "Compare rates" : "Check rates"} &rarr;
+                    {cta.kind === "search" ? "Compare rates" : "Check rates"}{" "}&rarr;
                   </a>
                 </td>
               </tr>

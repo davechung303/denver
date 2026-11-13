@@ -14,7 +14,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
 import { seoMeta } from "@/lib/seo";
 
-/** Places per page. Page 1 is the top five picks plus the next 19. */
+/** Places per page. Page 1 is the top six picks plus the next 18 (full rows of three). */
 export const PER_PAGE = 24;
 
 export function categoryPageUrl(nSlug: string, cSlug: string, page: number): string {
@@ -124,8 +124,8 @@ export async function CategoryView({ nSlug, cSlug, page }: { nSlug: string; cSlu
   const totalPages = Math.max(1, Math.ceil(scored.length / PER_PAGE));
   if (page > totalPages) notFound();
   const start = (page - 1) * PER_PAGE;
-  const topPicks = page === 1 ? scored.slice(0, 5) : [];
-  const rest = page === 1 ? scored.slice(5, PER_PAGE) : scored.slice(start, start + PER_PAGE);
+  const topPicks = page === 1 ? scored.slice(0, 6) : [];
+  const rest = page === 1 ? scored.slice(6, PER_PAGE) : scored.slice(start, start + PER_PAGE);
   const pageItems = scored.slice(start, start + PER_PAGE);
 
   const pageUrl = `https://davelovesdenver.com${categoryPageUrl(nSlug, cSlug, page)}`;
@@ -208,7 +208,7 @@ export async function CategoryView({ nSlug, cSlug, page }: { nSlug: string; cSlu
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">
-          {n.name} &middot; {n.tagline}
+          {n.name}{" "}&middot; {n.tagline}
         </p>
         <h1 className="text-4xl md:text-5xl font-bold">
           Best {c.name} in {n.name}
@@ -337,7 +337,7 @@ export async function CategoryView({ nSlug, cSlug, page }: { nSlug: string; cSlu
             href={`/denver/${nSlug}/hotels`}
             className="mt-4 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
           >
-            All {n.name} hotels &rarr;
+            All {n.name}{" "}hotels &rarr;
           </Link>
         </section>
       )}

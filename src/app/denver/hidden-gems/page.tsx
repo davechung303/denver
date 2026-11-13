@@ -177,7 +177,7 @@ export default async function HiddenGemsPage() {
                 href={`/denver/${neighborhood.slug}`}
                 className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline shrink-0 ml-6 mt-1"
               >
-                Explore {neighborhood.name} &rarr;
+                Explore {neighborhood.name}{" "}&rarr;
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
