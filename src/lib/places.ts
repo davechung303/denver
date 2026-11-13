@@ -1,5 +1,6 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES, resolveNeighborhood } from "./neighborhoods";
+import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES } from "./neighborhoods";
+import { resolveNeighborhood } from "./neighborhoodResolver";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
 import { isExcludedPlace } from "@/lib/excludedPlaces";
 
@@ -859,7 +860,7 @@ export async function discoverNewPlaces(): Promise<{ added: number; neighborhood
   let totalAdded = 0;
   let neighborhoodsChecked = 0;
 
-  for (const neighborhood of NEIGHBORHOODS) {
+  for (const neighborhood of NEIGHBORHOODS.filter((n) => n.searchable !== false)) {
     for (const categorySlug of DISCOVERY_CATEGORIES) {
       const category = CATEGORIES.find((c) => c.slug === categorySlug);
       if (!category) continue;

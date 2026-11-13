@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
   const neighborhoods = onlyNeighborhood
     ? NEIGHBORHOODS.filter((n) => n.slug === onlyNeighborhood)
-    : NEIGHBORHOODS;
+    : NEIGHBORHOODS.filter((n) => n.searchable !== false);
   const categories = onlyCategory
     ? CATEGORIES.filter((c) => c.slug === onlyCategory)
     : CATEGORIES;

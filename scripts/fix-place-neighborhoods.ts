@@ -6,7 +6,8 @@
  * and those searches use radii up to 8 km. That left Malibu Jack's Thornton
  * under Washington Park, Chatfield under Five Points and Lakeside Amusement
  * Park under the airport. This recomputes each place's neighborhood from its
- * coordinates with resolveNeighborhood() in src/lib/neighborhoods.ts.
+ * coordinates against Denver's official neighborhood polygons, with
+ * resolveNeighborhood() in src/lib/neighborhoodResolver.ts.
  *
  * Dry run by default: writes a CSV of every proposed move and changes nothing.
  *
@@ -24,7 +25,7 @@
 import { config } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { resolveNeighborhood, isOutsideMetro } from "../src/lib/neighborhoods";
+import { resolveNeighborhood, isFarFromDenver } from "../src/lib/neighborhoodResolver";
 
 config({ path: ".env.local" });
 
@@ -92,7 +93,7 @@ async function main() {
     if (to === p.neighborhood_slug) continue;
     const k = `${to}|${p.category_slug}|${p.slug}`;
     const collides = (occupancy.get(k) ?? []).length > 1;
-    moves.push({ ...p, to, status: collides ? "skip-collision" : "move", outside: isOutsideMetro(p.lat, p.lng) });
+    moves.push({ ...p, to, status: collides ? "skip-collision" : "move", outside: isFarFromDenver(p.lat, p.lng) });
   }
 
   const ready = moves.filter((m) => m.status === "move");
@@ -103,7 +104,7 @@ async function main() {
   for (const m of ready) flows.set(`${m.neighborhood_slug} -> ${m.to}`, (flows.get(`${m.neighborhood_slug} -> ${m.to}`) ?? 0) + 1);
 
   mkdirSync("scripts/out", { recursive: true });
-  const header = ["status", "name", "category", "from", "to", "outside_metro", "lat", "lng", "old_url", "new_url", "place_id"];
+  const header = ["status", "name", "category", "from", "to", "far_from_denver", "lat", "lng", "old_url", "new_url", "place_id"];
   const lines = [header.join(",")];
   for (const m of moves) {
     lines.push(
@@ -128,7 +129,18 @@ async function main() {
   writeFileSync(csvPath, lines.join("\n") + "\n");
 
   console.log(`\n${ready.length} places to move, ${skipped.length} skipped (slug collision), ${places.length - moves.length} already correct.`);
-  console.log(`${outside.length} of the moves sit outside the suburbs box (far-north and far-south suburbs, Boulder, the mountains): check whether they belong on the site at all.`);
+  console.log(`${outside.length} of the moves are far from Denver (Boulder, Golden, the mountains). They go to Greater Denver Area; check whether they belong on the site at all.`);
+
+  const finalCounts = new Map<string, number>();
+  for (const p of places) {
+    const m = moves.find((x) => x.place_id === p.place_id && x.status === "move");
+    const n = m ? m.to : p.neighborhood_slug;
+    finalCounts.set(n, (finalCounts.get(n) ?? 0) + 1);
+  }
+  console.log("\nPlaces per neighborhood after the moves:");
+  for (const [n, c] of [...finalCounts.entries()].sort((a, b) => b[1] - a[1])) {
+    console.log(`  ${String(c).padStart(4)}  ${n}`);
+  }
   console.log("\nBiggest flows:");
   for (const [flow, n] of [...flows.entries()].sort((a, b) => b[1] - a[1]).slice(0, 25)) {
     console.log(`  ${String(n).padStart(4)}  ${flow}`);

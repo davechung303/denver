@@ -16,6 +16,12 @@ export interface Neighborhood {
   lat: number; // center coordinates for maps
   lng: number;
   searchRadius?: number; // Places API search radius in meters (default 1500)
+  /**
+   * false = never searched on Google directly. These neighborhoods fill from
+   * places the other searches already return, re-filed by coordinates
+   * (neighborhoodResolver.ts), so adding one costs nothing in Places spend.
+   */
+  searchable?: boolean;
   stay22EmbedId?: string; // Stay22 hotel map embed ID
 }
 
@@ -245,11 +251,107 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     stay22EmbedId: "69d053b3bfb4999cdf00063b",
   },
   {
-    slug: "denver-suburbs",
-    name: "Denver Suburbs",
-    tagline: "Aurora, Lakewood & Beyond",
+    slug: "park-hill",
+    name: "Park Hill",
+    tagline: "Tree-Lined Streets East of City Park",
     description:
-      "Aurora, Lakewood, Littleton, Englewood — the suburbs have gotten genuinely interesting. Some of the best ethnic food in the entire metro is out here, and most Denverites haven't found it yet.",
+      "North, South and Northeast Park Hill: big old houses, the little shopping strips on Kearney Street and 23rd Avenue, and neighborhood restaurants a few minutes east of City Park.",
+    gradient: "from-emerald-700 to-teal-500",
+    image: "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?auto=format&fit=crop&w=1200&q=80",
+    searchName: "Park Hill Denver Colorado",
+    lat: 39.7627, lng: -104.9257,
+    searchable: false,
+  },
+  {
+    slug: "city-park",
+    name: "City Park & Congress Park",
+    tagline: "The Zoo, the Museum & the Skyline View",
+    description:
+      "City Park holds the Denver Zoo and the Denver Museum of Nature & Science, and the view west across Ferril Lake to the skyline is the city's classic postcard. Congress Park and East Colfax fill in the restaurants and bars.",
+    gradient: "from-green-700 to-lime-500",
+    image: "https://images.unsplash.com/photo-1702568681326-7aff5eb7e80b?auto=format&fit=crop&w=1200&q=80",
+    searchName: "City Park Congress Park Denver Colorado",
+    lat: 39.7364, lng: -104.9437,
+    searchable: false,
+  },
+  {
+    slug: "south-broadway",
+    name: "South Broadway",
+    tagline: "Antique Row & the South End of Broadway",
+    description:
+      "The southern stretch of Broadway through Overland and Rosedale: Antique Row, neighborhood bars and restaurants that locals use and visitors rarely find.",
+    gradient: "from-amber-700 to-yellow-500",
+    image: "https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1200&q=80",
+    searchName: "South Broadway Overland Rosedale Denver Colorado",
+    lat: 39.6786, lng: -104.9889,
+    searchable: false,
+  },
+  {
+    slug: "university",
+    name: "University (DU)",
+    tagline: "Around the University of Denver",
+    description:
+      "The University of Denver campus and the streets around it: coffee shops full of students, cheap eats along Evans and the quiet blocks of University Park.",
+    gradient: "from-red-800 to-amber-600",
+    image: "https://images.unsplash.com/photo-1632714393265-9adbc6ab8a91?auto=format&fit=crop&w=1200&q=80",
+    searchName: "University of Denver DU Denver Colorado",
+    lat: 39.6791, lng: -104.9563,
+    searchable: false,
+  },
+  {
+    slug: "east-denver",
+    name: "Lowry & Central Park",
+    tagline: "The East Side's Newer Neighborhoods",
+    description:
+      "Central Park (formerly Stapleton) and Lowry were both built on old airfields, and both are newer, family-heavy neighborhoods with their own town centers. Wings Over the Rockies Air & Space Museum is in Lowry.",
+    gradient: "from-sky-700 to-cyan-500",
+    image: "https://images.unsplash.com/photo-1613003492754-a022330915ac?auto=format&fit=crop&w=1200&q=80",
+    searchName: "Lowry Central Park Stapleton Denver Colorado",
+    lat: 39.7598, lng: -104.8850,
+    searchable: false,
+  },
+  {
+    slug: "tech-center",
+    name: "Denver Tech Center",
+    tagline: "Office Towers & Hotels Off I-25",
+    description:
+      "The DTC straddles I-25 across southeast Denver, Greenwood Village and Centennial. A lot of business travel lands here, with hotels, steakhouses and the Belleview light rail station.",
+    gradient: "from-slate-800 to-blue-600",
+    image: "https://images.unsplash.com/photo-1677051949386-d999c9076424?auto=format&fit=crop&w=1200&q=80",
+    searchName: "Denver Tech Center DTC Greenwood Village Colorado",
+    lat: 39.627, lng: -104.897,
+    searchable: false,
+  },
+  {
+    slug: "southeast-denver",
+    name: "Southeast Denver",
+    tagline: "Virginia Village, Hampden & University Hills",
+    description:
+      "Residential southeast Denver along Colorado Boulevard, Evans and Hampden: strip-mall restaurants worth the drive, big parks and easy access to I-25.",
+    gradient: "from-violet-700 to-fuchsia-500",
+    image: "https://images.unsplash.com/photo-1586193771953-929042f3a381?auto=format&fit=crop&w=1200&q=80",
+    searchName: "Southeast Denver Virginia Village Hampden Colorado",
+    lat: 39.6768, lng: -104.9112,
+    searchable: false,
+  },
+  {
+    slug: "west-denver",
+    name: "West Denver",
+    tagline: "Federal Boulevard, Westwood & Harvey Park",
+    description:
+      "Federal Boulevard and Morrison Road are where a lot of Denver's Vietnamese and Mexican cooking lives. West Denver is less polished than the core neighborhoods, and that's the point.",
+    gradient: "from-orange-700 to-red-500",
+    image: "https://images.unsplash.com/photo-1483937107025-27d8bebc7074?auto=format&fit=crop&w=1200&q=80",
+    searchName: "West Denver Federal Boulevard Westwood Colorado",
+    lat: 39.6773, lng: -105.0406,
+    searchable: false,
+  },
+  {
+    slug: "denver-suburbs",
+    name: "Greater Denver Area",
+    tagline: "Suburbs, Nearby Towns & Beyond",
+    description:
+      "Aurora, Lakewood, Littleton, Englewood and the rest of the metro. Some of the best ethnic food in the area is out here, and most Denverites haven't found it yet.",
     gradient: "from-stone-600 to-neutral-500",
     image: "https://images.unsplash.com/photo-1613003492754-a022330915ac?auto=format&fit=crop&w=1200&q=80",
     searchName: "Aurora Lakewood Littleton Englewood Denver suburbs Colorado",
@@ -488,6 +590,14 @@ export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number
   "jefferson-park":  [39.740, 39.768, -105.038, -104.998],
   "curtis-park":     [39.748, 39.764, -104.978, -104.956],
   downtown:          [39.735, 39.752, -105.002, -104.975],
+  "park-hill":       [39.740, 39.791, -104.960, -104.903],
+  "city-park":       [39.726, 39.751, -104.960, -104.922],
+  "south-broadway":  [39.668, 39.697, -105.001, -104.973],
+  university:        [39.660, 39.697, -104.973, -104.941],
+  "east-denver":     [39.707, 39.813, -104.923, -104.828],
+  "tech-center":     [39.582, 39.672, -104.955, -104.839],
+  "southeast-denver":[39.624, 39.711, -104.959, -104.866],
+  "west-denver":     [39.614, 39.748, -105.110, -104.992],
   "denver-suburbs":  [39.600, 39.820, -105.180, -104.720],
   airport:           [39.810, 39.882, -104.760, -104.630],
 };
@@ -498,59 +608,6 @@ export function isInNeighborhood(lat: number | null, lng: number | null, slug: s
   if (!bounds) return false;
   const [minLat, maxLat, minLng, maxLng] = bounds;
   return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng;
-}
-
-function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const toRad = (d: number) => (d * Math.PI) / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLng = toRad(lng2 - lng1);
-  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
-  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
-
-/** The in-town neighborhoods. Suburbs and the airport are the fallbacks. */
-const CORE_NEIGHBORHOODS = () => NEIGHBORHOODS.filter((n) => n.slug !== "denver-suburbs" && n.slug !== "airport");
-
-/** How far outside every core box a place can sit and still take the nearest core neighborhood. */
-const CORE_FALLBACK_KM = 1.5;
-
-/**
- * Which neighborhood a place actually sits in, from its coordinates.
- *
- * A place used to be filed under whichever neighborhood's Google search found
- * it, and those searches use radii up to 8 km. That put a Thornton water park
- * under Washington Park and Chatfield under Five Points. Order of preference:
- *  1. `preferred` (the current or searched neighborhood) if the place is inside
- *     its box, so places in overlapping boxes don't flip back and forth;
- *  2. the nearest core neighborhood whose box contains the place;
- *  3. the nearest core neighborhood within CORE_FALLBACK_KM of its center;
- *  4. the airport, if inside its box;
- *  5. the suburbs, which is the catch-all.
- */
-export function resolveNeighborhood(lat: number | null, lng: number | null, preferred?: string | null): string | null {
-  if (lat == null || lng == null) return preferred ?? null;
-  if (preferred && preferred !== "denver-suburbs" && isInNeighborhood(lat, lng, preferred)) return preferred;
-
-  const core = CORE_NEIGHBORHOODS();
-  const byDistance = (list: Neighborhood[]) =>
-    list
-      .map((n) => ({ n, d: distanceKm(lat, lng, n.lat, n.lng) }))
-      .sort((a, b) => a.d - b.d);
-
-  const containing = byDistance(core.filter((n) => isInNeighborhood(lat, lng, n.slug)));
-  if (containing.length > 0) return containing[0].n.slug;
-
-  const nearest = byDistance(core)[0];
-  if (nearest && nearest.d <= CORE_FALLBACK_KM) return nearest.n.slug;
-
-  if (isInNeighborhood(lat, lng, "airport")) return "airport";
-  return "denver-suburbs";
-}
-
-/** True when a place is outside even the suburbs box (Boulder, the mountains). */
-export function isOutsideMetro(lat: number | null, lng: number | null): boolean {
-  if (lat == null || lng == null) return false;
-  return !isInNeighborhood(lat, lng, "denver-suburbs") && !isInNeighborhood(lat, lng, "airport");
 }
 
 export function getNeighborhood(slug: string): Neighborhood | undefined {
