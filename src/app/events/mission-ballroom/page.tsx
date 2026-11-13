@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Mission Ballroom Denver Events & Show Schedule 2026",
+  title: fitTitle("Mission Ballroom Denver Events & Show Schedule 2026"),
   description:
-    "Full schedule of upcoming shows at Mission Ballroom in Denver's RiNo neighborhood. One of the best mid-size venues in the country — browse shows and buy tickets.",
+    fitDescription("Upcoming shows at Mission Ballroom in Denver's RiNo neighborhood, one of the best mid-size venues in the country. Browse the schedule and buy tickets."),
   alternates: { canonical: "https://davelovesdenver.com/events/mission-ballroom" },
   openGraph: {
     title: "Mission Ballroom Denver Events & Show Schedule 2026",
@@ -155,7 +156,7 @@ export default async function EventsMissionBallroomPage() {
             <p className="text-white/70 text-sm max-w-md">RiNo and LoDo hotels put you walking distance from the venue. We cover the best options in both neighborhoods.</p>
           </div>
           <Link href="/hotels/near-mission-ballroom"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Hotels near Mission Ballroom &rarr;
           </Link>
         </div>

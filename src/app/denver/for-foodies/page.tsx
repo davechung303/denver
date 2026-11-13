@@ -4,13 +4,14 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver for Foodies — The Ultimate Food Guide to Denver, CO",
+  title: fitTitle("Denver for Foodies — The Ultimate Food Guide to Denver, CO"),
   description:
-    "The definitive Denver food guide: best steakhouses, pizza, sushi, Mexican, hidden gems, top coffee, and the food neighborhoods serious eaters actually know.",
+    fitDescription("The Denver food guide: the best steakhouses, pizza, sushi, Mexican, hidden gems and coffee, plus the neighborhoods serious eaters actually go to."),
   openGraph: {
     title: "Denver for Foodies — The Ultimate Food Guide",
     description: "Best restaurants, coffee, and food neighborhoods in Denver — from someone who actually lives here.",
@@ -34,7 +35,7 @@ const CUISINE_GUIDES = [
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
   const photo = place.photos?.[0];
   if (!photo) return <div className={`bg-slate-100 dark:bg-slate-800 ${className}`} />;
-  return <img src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
+  return <img decoding="async" src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
 }
 
 function RatingBadge({ place }: { place: Place }) {
@@ -176,7 +177,7 @@ export default async function ForFoodiesPage() {
           {foodNeighborhoods.map((n) => (
             <Link key={n.slug} href={`/denver/${n.slug}/restaurants`} className="group relative overflow-hidden rounded-2xl aspect-video flex items-end p-5 hover:scale-[1.02] transition-transform duration-200">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img loading="lazy" decoding="async" src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
               <div className="relative z-10 text-white">
                 <p className="text-xs text-white/70 mb-0.5">{n.tagline}</p>
@@ -214,7 +215,7 @@ export default async function ForFoodiesPage() {
           <p className="text-slate-500 dark:text-slate-400 max-w-xl mb-8">
             The places Denver locals know that haven&apos;t blown up yet. High ratings, low review counts, organized by neighborhood so you can find gems wherever you&apos;re headed.
           </p>
-          <Link href="/denver/hidden-gems" className="inline-flex items-center gap-2 px-6 py-3 bg-denver-amber text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+          <Link href="/denver/hidden-gems" className="inline-flex items-center gap-2 px-6 py-3 bg-denver-amber text-white font-bold rounded-xl hover:bg-[#8c2b17] transition-colors">
             Explore hidden gems &rarr;
           </Link>
         </div>
@@ -247,7 +248,7 @@ export default async function ForFoodiesPage() {
             <h2 className="text-2xl font-bold">Full Denver guide</h2>
             <p className="text-white/70 mt-2 max-w-md">Hotels, bars, things to do, and the complete neighborhood breakdown — everything you need for a Denver trip.</p>
           </div>
-          <Link href="/denver" className="shrink-0 px-6 py-3 bg-denver-amber text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+          <Link href="/denver" className="shrink-0 px-6 py-3 bg-denver-amber text-white font-bold rounded-xl hover:bg-[#8c2b17] transition-colors">
             Best of Denver &rarr;
           </Link>
         </div>

@@ -4,13 +4,14 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Coffee Shops in Denver, CO — Local Favorites & Hidden Gems",
+  title: fitTitle("Best Coffee Shops in Denver, CO — Local Favorites"),
   description:
-    "Denver's best coffee shops ranked by real reviews — from specialty roasters in RiNo to neighborhood cafes in Wash Park and Tennyson Street.",
+    fitDescription("Denver's best coffee shops ranked by real reviews — from specialty roasters in RiNo to neighborhood cafes in Wash Park and Tennyson Street."),
   openGraph: {
     title: "Best Coffee in Denver — Local Roasters & Neighborhood Cafes",
     description: "Ranked by real reviews. Denver's best coffee from RiNo to Platt Park.",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
   const photo = place.photos?.[0];
   if (!photo) return <div className={`bg-slate-100 dark:bg-slate-800 ${className}`} />;
-  return <img src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
+  return <img decoding="async" src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
 }
 
 function RatingBadge({ place }: { place: Place }) {
@@ -50,7 +51,7 @@ function CoffeeCard({ place, rank }: { place: Place; rank?: number }) {
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
         {rank && (
-          <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">
+          <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">
             #{rank}
           </span>
         )}
@@ -123,7 +124,7 @@ export default async function BestCoffeePage() {
             <h2 className="text-2xl font-bold">Browse by neighborhood</h2>
             <p className="text-white/70 mt-2 max-w-md">Every Denver neighborhood has its own coffee culture. Find the spots closest to where you&apos;re headed.</p>
           </div>
-          <Link href="/denver" className="shrink-0 px-6 py-3 bg-denver-amber text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+          <Link href="/denver" className="shrink-0 px-6 py-3 bg-denver-amber text-white font-bold rounded-xl hover:bg-[#8c2b17] transition-colors">
             Best of Denver &rarr;
           </Link>
         </div>

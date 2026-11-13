@@ -18,7 +18,7 @@ export default function NotFound() {
             className="group relative overflow-hidden rounded-xl aspect-video flex items-end p-3 hover:scale-[1.02] transition-transform"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
+            <img decoding="async" src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
             <span className="relative z-10 text-white text-sm font-bold">{n.name}</span>
           </Link>
@@ -27,7 +27,7 @@ export default function NotFound() {
 
       <Link
         href="/"
-        className="inline-flex items-center gap-2 bg-denver-amber text-slate-900 font-semibold px-6 py-3 rounded-full hover:bg-amber-400 transition-colors"
+        className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-full hover:bg-[#8c2b17] transition-colors"
       >
         &larr; Back to homepage
       </Link>

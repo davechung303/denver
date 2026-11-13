@@ -4,14 +4,15 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { searchViatorProducts } from "@/lib/viator";
 import ViatorProductCard from "@/components/ViatorProductCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
   // Brand suffix comes from the root layout template; don't repeat it here.
-  title: "Best Tours & Experiences in Denver, CO",
+  title: fitTitle("Best Tours & Experiences in Denver, CO"),
   description:
-    "The best tours and experiences in Denver — food tours, brewery tours, bike tours, and only-in-Denver adventures. Honest picks from a local who actually lives here.",
+    fitDescription("The best tours and experiences in Denver — food tours, brewery tours, bike tours, and only-in-Denver adventures. Honest picks from a local who actually lives here."),
   openGraph: {
     title: "Best Tours & Experiences in Denver",
     description:
@@ -206,7 +207,7 @@ export default async function ExperiencesPage() {
               className="group relative overflow-hidden rounded-2xl aspect-video flex flex-col justify-end p-4 hover:scale-[1.02] transition-transform duration-200"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img loading="lazy" decoding="async" src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-all" />
               <div className="relative z-10 text-white">
                 <p className="text-xs text-white/70">{n.tagline}</p>

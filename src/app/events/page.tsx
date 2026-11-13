@@ -5,12 +5,13 @@ import type { DenverEvent } from "@/lib/ticketmaster";
 import { getFeverEvents, type FeverEvent } from "@/lib/fever";
 import EventsClient from "./EventsClient";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver Events & Experiences",
-  description: "Upcoming concerts, shows, sports, and experiences in Denver — live events from Ticketmaster plus curated experiences from Fever.",
+  title: fitTitle("Denver Events & Experiences"),
+  description: fitDescription("Upcoming concerts, shows, sports, and experiences in Denver — live events from Ticketmaster plus curated experiences from Fever."),
   alternates: { canonical: "https://davelovesdenver.com/events" },
 };
 

@@ -14,6 +14,7 @@ import PlaceCard from "@/components/PlaceCard";
 import { getPlaceTag } from "@/lib/neighborhoods";
 import BookYourTrip from "@/components/BookYourTrip";
 import { hotelsForAreaListing } from "@/lib/areaHotels";
+import { seoMeta } from "@/lib/seo";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up new videos, articles, and fresh photo names
 // No generateStaticParams — pages render on first visit and are ISR-cached.
@@ -29,15 +30,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const n = getNeighborhood(slug);
   if (!n) notFound();
 
-  const title = `${n.name} Neighborhood Guide — Restaurants, Hotels & Things To Do`;
-  const description = `The best restaurants, hotels, bars, and things to do in ${n.name} (${n.tagline}), Denver. ${n.description}`;
+  const meta = seoMeta(
+    [`${n.name}, Denver: Where to Eat, Stay & What to Do`, `${n.name}, Denver: Eat, Stay & Do`, `${n.name} Denver Neighborhood Guide`]
+      .find((t) => t.length + 20 <= 60) ?? `${n.name}, Denver: Where to Eat, Stay & What to Do`,
+    `${n.name} (${n.tagline}): the best restaurants, hotels, bars and things to do, from a Denver local. ${n.description}`,
+  );
 
   return {
-    title,
-    description,
+    title: meta.title,
+    description: meta.description,
     openGraph: {
-      title,
-      description,
+      title: meta.ogTitle,
+      description: meta.description,
       url: `https://davelovesdenver.com/denver/${slug}`,
     },
     alternates: {
@@ -64,12 +68,11 @@ function CategorySection({ title, slug, categorySlug, places, limit, cols = 2 }:
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <Link
-          href={`/denver/${slug}/${categorySlug}`}
-          className="text-xl font-bold hover:text-denver-amber transition-colors"
-        >
-          {title}
-        </Link>
+        <h2 className="text-xl font-bold">
+          <Link href={`/denver/${slug}/${categorySlug}`} className="hover:text-denver-amber transition-colors">
+            {title}
+          </Link>
+        </h2>
         <Link
           href={`/denver/${slug}/${categorySlug}`}
           className="text-sm font-semibold text-denver-amber hover:underline shrink-0"
@@ -217,7 +220,7 @@ export default async function NeighborhoodPage({ params }: Props) {
       {/* Hero */}
       <section className="relative overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
+        <img fetchPriority="high" decoding="async" src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/30" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-white">
           <p className="text-white/70 text-sm font-medium uppercase tracking-widest mb-3">Denver Neighborhood</p>
@@ -253,7 +256,7 @@ export default async function NeighborhoodPage({ params }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
         <Link
           href={`/denver/hidden-gems#${slug}`}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-denver-amber text-denver-amber font-semibold text-sm hover:bg-denver-amber hover:text-slate-900 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-denver-amber text-denver-amber font-semibold text-sm hover:bg-denver-amber hover:text-white transition-colors"
         >
           See hidden gem restaurants in {n.name} &rarr;
         </Link>
@@ -305,12 +308,12 @@ export default async function NeighborhoodPage({ params }: Props) {
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
                     {photo && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photoUrl(photo)} alt={place.name}
+                      <img decoding="async" src={photoUrl(photo)} alt={place.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
                     )}
-                    <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                    <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                       NEW
                     </span>
                   </div>
@@ -417,7 +420,7 @@ export default async function NeighborhoodPage({ params }: Props) {
               className="group relative overflow-hidden rounded-2xl aspect-video flex flex-col justify-end p-4 hover:scale-[1.02] transition-transform duration-200"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={nb.image} alt={nb.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img loading="lazy" decoding="async" src={nb.image} alt={nb.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-all" />
               <div className="relative z-10 text-white">
                 <p className="text-xs text-white/70">{nb.tagline}</p>

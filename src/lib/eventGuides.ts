@@ -55,7 +55,7 @@ export const EVENT_GUIDES: EventGuide[] = [
   {
     slug: "national-western-stock-show",
     h1: "Where to Stay for the National Western Stock Show",
-    metaTitle: "National Western Stock Show: Where to Stay & How to Get There",
+    metaTitle: "National Western Stock Show: Where to Stay & Getting There",
     metaDescription:
       "Sixteen days each January, 750,000 visitors, and nothing within a real walk of the complex. Where to book, why a rodeo ticket includes parking, and the free shuttle.",
     ogTitle: "Where to Stay for the National Western Stock Show",

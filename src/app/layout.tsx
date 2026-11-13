@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Archivo, Newsreader, IBM_Plex_Mono } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import Nav from "@/components/Nav";
@@ -9,9 +9,25 @@ import PrefetchOnHover from "@/components/PrefetchOnHover";
 import ProgressBar from "@/components/ProgressBar";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Self-hosted by next/font (no request to Google at runtime). Archivo is
+// variable on width, which is what gives the headlines their condensed cut.
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
+  display: "swap",
+});
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  axes: ["opsz"],
+  display: "swap",
+});
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
+    <html lang="en" className={`${archivo.variable} ${newsreader.variable} ${plexMono.variable} h-full antialiased`}>
       <head>
         {/* Person + WebSite schema — establishes Dave's authorship sitewide for E-E-A-T */}
         <script

@@ -15,7 +15,7 @@ export default function VenueHotelCard({ place }: { place: Place }) {
       <Link href={detailHref} className="relative w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800" aria-label={place.name}>
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          <img decoding="async" src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         ) : (
           <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
         )}

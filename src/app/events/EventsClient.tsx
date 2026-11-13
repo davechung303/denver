@@ -42,7 +42,7 @@ function FeverCard({ event }: { event: FeverEvent }) {
       className="group flex gap-4 bg-white/10 border border-white/20 rounded-xl p-4 hover:border-denver-amber hover:bg-white/15 transition-all duration-200"
     >
       {event.image_url ? (
-        <img
+        <img decoding="async"
           src={event.image_url}
           alt={event.name}
           className="w-16 h-16 object-cover rounded-lg shrink-0"
@@ -149,7 +149,7 @@ export default function EventsClient({ events, feverEvents }: Props) {
                         onClick={() => setActive(dateKey, cat)}
                         className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                           active === cat
-                            ? "bg-denver-amber text-slate-900"
+                            ? "bg-denver-amber text-white"
                             : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber"
                         }`}
                       >
@@ -170,7 +170,7 @@ export default function EventsClient({ events, feverEvents }: Props) {
                     className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 hover:border-denver-amber hover:shadow-md transition-all duration-200"
                   >
                     {event.image_url && (
-                      <img
+                      <img decoding="async"
                         src={event.image_url}
                         alt={event.name}
                         className="w-16 h-16 object-cover rounded-lg shrink-0"

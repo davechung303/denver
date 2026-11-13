@@ -12,6 +12,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import VideoCard from "@/components/VideoCard";
 import ViatorProductCard from "@/components/ViatorProductCard";
 import ExpediaSearchWidget from "@/components/ExpediaSearchWidget";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
@@ -113,7 +114,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getArticle(slug);
   if (!article) return {};
 
-  const description = article.content.slice(0, 160).replace(/\n/g, " ");
+  // First prose paragraph, markdown stripped, so the snippet reads as a sentence.
+  const firstPara =
+    article.content
+      .split(/\n{2,}/)
+      .map((b: string) => b.trim())
+      .find((b: string) => b && !/^(#|!\[|>|[-*] |\d+\. |\|)/.test(b)) ?? article.content;
+  const description = fitDescription(
+    firstPara
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+      .replace(/[*_`#>]/g, "")
+      .replace(/\s+/g, " ")
+      .trim(),
+  );
   const imageUrl = article.youtube_videos?.thumbnail_url ?? null;
 
   return {
@@ -121,7 +134,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // so adding it here produced "… | Dave Loves Denver | Dave Loves Denver" on
     // every article — about twenty characters of a truncated title spent
     // repeating the brand instead of the headline.
-    title: article.title,
+    title: fitTitle(article.title),
     description,
     openGraph: {
       title: article.title,
@@ -147,7 +160,7 @@ function HotelCard({ hotel }: { hotel: Place; fallbackUrl?: string }) {
       className="group flex flex-col rounded-xl overflow-hidden border border-white/10 hover:border-denver-amber transition-colors bg-white/5">
       <div className="aspect-[16/9] overflow-hidden bg-slate-800">
         {photo && (
-          <img src={photoUrl(photo)} alt={hotel.name}
+          <img decoding="async" src={photoUrl(photo)} alt={hotel.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         )}
       </div>
@@ -280,7 +293,7 @@ export default async function ArticlePage({ params }: Props) {
           {article.title}
         </h1>
         <div className="flex items-center gap-3 mb-8 pb-8 border-b border-slate-200 dark:border-slate-800">
-          <div className="w-10 h-10 rounded-full bg-denver-amber flex items-center justify-center text-slate-900 font-bold text-sm flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-denver-amber flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
             DC
           </div>
           <div>
@@ -305,7 +318,7 @@ export default async function ArticlePage({ params }: Props) {
             : photo.photo_url;
           return (
             <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
-              <img src={imgSrc} alt={article.title} className="w-full h-64 object-cover" />
+              <img fetchPriority="high" decoding="async" src={imgSrc} alt={article.title} className="w-full h-64 object-cover" />
               {photo.photo_credit && photo.photo_credit !== "Google Places" && (
                 <div className="px-4 py-2 bg-slate-50 dark:bg-slate-900">
                   <p className="text-xs text-slate-400">
@@ -474,7 +487,7 @@ export default async function ArticlePage({ params }: Props) {
                 <p className="text-xs text-slate-400">Search all airlines · DEN International Airport</p>
               </div>
               <a href={expediaFlightsToDenverUrl()} target="_blank" rel="noopener noreferrer sponsored"
-                className="px-4 py-2 bg-denver-amber text-slate-900 text-xs font-bold rounded-lg hover:bg-amber-400 transition-colors shrink-0">
+                className="px-4 py-2 bg-denver-amber text-white text-xs font-bold rounded-lg hover:bg-[#8c2b17] transition-colors shrink-0">
                 Search flights
               </a>
             </div>
@@ -515,7 +528,7 @@ export default async function ArticlePage({ params }: Props) {
                 <Link key={rel.slug} href={`/articles/${rel.slug}`} className="group flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-denver-amber transition-all">
                   {rel.youtube_videos?.thumbnail_url && (
                     <div className="w-20 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
-                      <img src={rel.youtube_videos.thumbnail_url} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+                      <img decoding="async" src={rel.youtube_videos.thumbnail_url} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
                     </div>
                   )}
                   <div className="flex-1 min-w-0">

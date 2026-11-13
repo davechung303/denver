@@ -6,13 +6,14 @@ import { searchViatorProducts } from "@/lib/viator";
 import ViatorProductCard from "@/components/ViatorProductCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Things To Do in Denver, CO — Activities, Attractions & Experiences",
+  title: fitTitle("Best Things To Do in Denver, CO — Attractions & Experiences"),
   description:
-    "The best things to do in Denver ranked by real reviews — museums, outdoor activities, live music venues, and experiences worth your time.",
+    fitDescription("The best things to do in Denver ranked by real reviews — museums, outdoor activities, live music venues, and experiences worth your time."),
   openGraph: {
     title: "Best Things To Do in Denver — Activities & Attractions",
     description: "Ranked by real reviews. What's actually worth your time in Denver.",
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
   const photo = place.photos?.[0];
   if (!photo) return <div className={`bg-slate-100 dark:bg-slate-800 ${className}`} />;
-  return <img src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
+  return <img decoding="async" src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
 }
 
 function RatingBadge({ place }: { place: Place }) {
@@ -51,7 +52,7 @@ function ActivityCard({ place, rank }: { place: Place; rank?: number }) {
     <a href={href} className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-xl transition-all duration-200">
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
-        {rank && <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">#{rank}</span>}
+        {rank && <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">#{rank}</span>}
       </div>
       <div className="p-5 flex flex-col gap-2 flex-1">
         <NeighborhoodChip slug={place.neighborhood_slug} />
@@ -145,7 +146,7 @@ export default async function BestThingsToDoPage() {
             <h2 className="text-2xl font-bold">Explore by neighborhood</h2>
             <p className="text-white/70 mt-2 max-w-md">Each Denver neighborhood has its own things going on. Find what&apos;s close to where you&apos;re staying.</p>
           </div>
-          <Link href="/denver" className="shrink-0 px-6 py-3 bg-denver-amber text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+          <Link href="/denver" className="shrink-0 px-6 py-3 bg-denver-amber text-white font-bold rounded-xl hover:bg-[#8c2b17] transition-colors">
             Best of Denver &rarr;
           </Link>
         </div>

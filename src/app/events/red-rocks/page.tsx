@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Red Rocks Amphitheatre Events & Concert Schedule 2026",
+  title: fitTitle("Red Rocks Amphitheatre Events & Concert Schedule 2026"),
   description:
-    "Full schedule of upcoming concerts and shows at Red Rocks Amphitheatre in Morrison, CO. Browse events, buy tickets, and find hotels nearby.",
+    fitDescription("Full schedule of upcoming concerts and shows at Red Rocks Amphitheatre in Morrison, CO. Browse events, buy tickets, and find hotels nearby."),
   alternates: { canonical: "https://davelovesdenver.com/events/red-rocks" },
   openGraph: {
     title: "Red Rocks Amphitheatre Events & Concert Schedule 2026",
@@ -166,7 +167,7 @@ export default async function EventsRedRocksPage() {
             <p className="text-white/70 text-sm max-w-md">Morrison, Lakewood, and downtown Denver are your options. We break down exactly where to stay, what the tradeoffs are, and which hotels are worth it.</p>
           </div>
           <Link href="/hotels/near-red-rocks"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Hotels near Red Rocks &rarr;
           </Link>
         </div>

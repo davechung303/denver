@@ -8,13 +8,14 @@ import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
 import VenueDistanceTable from "@/components/VenueDistanceTable";
 import { getHotelPool } from "@/lib/places";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Where to Stay for the National Western Stock Show in Denver",
+  title: fitTitle("Where to Stay for the National Western Stock Show in Denver"),
   description:
-    "Routed walking distances from 41 hotels to National Western Complex. Nothing is a real walk — the closest is 0.8 miles. Where to stay for the Stock Show.",
+    fitDescription("Routed walking distances from 41 hotels to National Western Complex. Nothing is a real walk — the closest is 0.8 miles. Where to stay for the Stock Show."),
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-national-western" },
   openGraph: {
     title: "Where to Stay for the National Western Stock Show & Events",
@@ -94,7 +95,7 @@ export default async function HotelsNearNationalWesternPage() {
       <section className="relative bg-denver-navy text-white overflow-hidden">
         {heroPhoto && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+          <img fetchPriority="high" decoding="async" src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-denver-navy via-denver-navy/85 to-denver-navy/40" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -138,7 +139,7 @@ export default async function HotelsNearNationalWesternPage() {
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">RiNo & Five Points</p>
             {hotels.map((hotel) => <VenueHotelCard key={hotel.place_id} place={hotel} />)}
             <a href={expediaDenverHotelsUrl("RiNo Denver National Western")} target="_blank" rel="noopener noreferrer sponsored"
-              className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+              className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
             >
               See all nearby hotels &rarr;
             </a>

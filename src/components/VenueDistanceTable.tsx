@@ -101,7 +101,7 @@ export default function VenueDistanceTable({
                           >
                             {place.photos?.[0] ? (
                               // eslint-disable-next-line @next/next/no-img-element
-                              <img
+                              <img decoding="async"
                                 src={photoUrl(place.photos[0])}
                                 alt={place.name}
                                 loading="lazy"

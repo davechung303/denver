@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { ArticleGrid, ArticlePagination } from "@/components/ArticlesArchive";
 import { ARTICLES_PER_PAGE, getArticleCount, getArticlesPage } from "@/lib/articlesArchive";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver Guides & Articles",
-  description: "Local Denver guides, restaurant reviews, hotel picks, and neighborhood explainers from Dave Chung — Denver's most watched local creator, with 6.5 million views across YouTube and TikTok.",
+  title: fitTitle("Denver Guides & Articles"),
+  description: fitDescription("Local Denver guides, restaurant reviews, hotel picks and neighborhood explainers from Dave Chung, a Denver creator with 6.5 million views."),
   alternates: { canonical: "https://davelovesdenver.com/articles" },
 };
 

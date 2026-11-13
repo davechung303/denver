@@ -34,14 +34,14 @@ export default function Nav() {
   }, []);
 
   return (
-    <header ref={navRef} className="sticky top-0 z-[9999] bg-denver-navy border-b border-white/10">
+    <header ref={navRef} className="sticky top-0 z-[9999] bg-white/95 backdrop-blur-sm dark:bg-[#121211]/95 border-b border-ink dark:border-white/15">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             href="/"
             onClick={closeAll}
-            className="text-white font-bold text-lg tracking-tight hover:text-denver-amber transition-colors"
+            className="font-display font-extrabold text-[21px] tracking-tight [font-stretch:112%] text-ink dark:text-white hover:text-denver-amber transition-colors"
           >
             Dave Loves Denver
           </Link>
@@ -52,7 +52,7 @@ export default function Nav() {
             <div className="relative">
               <button
                 onClick={() => { setDenverOpen(!denverOpen); setNeighborhoodsOpen(false); setThingsOpen(false); }}
-                className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/denver" || pathname === "/denver/where-to-stay" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+                className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10 ${pathname === "/denver" || pathname === "/denver/where-to-stay" ? "text-denver-amber font-semibold" : "text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white"}`}
               >
                 Denver
                 <svg
@@ -175,7 +175,7 @@ export default function Nav() {
             <div className="relative">
               <button
                 onClick={() => { setNeighborhoodsOpen(!neighborhoodsOpen); setDenverOpen(false); setThingsOpen(false); }}
-                className="flex items-center gap-1 px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+                className="flex items-center gap-1 px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10"
               >
                 Neighborhoods
                 <svg
@@ -225,7 +225,7 @@ export default function Nav() {
             <div className="relative">
               <button
                 onClick={() => { setThingsOpen(!thingsOpen); setDenverOpen(false); setNeighborhoodsOpen(false); }}
-                className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname.startsWith("/denver/things-to-do") || pathname === "/denver/experiences" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+                className={`flex items-center gap-1 px-4 py-2 text-sm transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10 ${pathname.startsWith("/denver/things-to-do") || pathname === "/denver/experiences" ? "text-denver-amber font-semibold" : "text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white"}`}
               >
                 Things To Do
                 <svg className={`w-4 h-4 transition-transform ${thingsOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -276,35 +276,35 @@ export default function Nav() {
 
             <Link
               href="/hotels"
-              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/hotels" || pathname.startsWith("/hotels/") ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10 ${pathname === "/hotels" || pathname.startsWith("/hotels/") ? "text-denver-amber font-semibold" : "text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white"}`}
             >
               Hotels
             </Link>
 
             <Link
               href="/events"
-              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-white/10 ${pathname === "/events" ? "text-denver-amber font-semibold" : "text-white/80 hover:text-white"}`}
+              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10 ${pathname === "/events" ? "text-denver-amber font-semibold" : "text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white"}`}
             >
               Events
             </Link>
 
             <Link
               href="/videos"
-              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+              className="px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10"
             >
               Videos
             </Link>
 
             <Link
               href="/articles"
-              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+              className="px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10"
             >
               Articles
             </Link>
 
             <Link
               href="/about"
-              className="px-4 py-2 text-sm text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+              className="px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10"
             >
               About
             </Link>
@@ -312,7 +312,7 @@ export default function Nav() {
             {/* Search */}
             <Link
               href="/search"
-              className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="p-2 text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
               aria-label="Search"
             >
               <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -320,14 +320,14 @@ export default function Nav() {
               </svg>
             </Link>
 
-            <div className="w-px h-5 bg-white/20 mx-2" />
+            <div className="w-px h-5 bg-ink/20 dark:bg-white/20 mx-2" />
 
             {/* YouTube Subscribe */}
             <a
               href="https://www.youtube.com/davechung"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FF0000] hover:bg-[#cc0000] text-white text-xs font-semibold rounded-full transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FF0000] hover:bg-[#cc0000] text-white text-xs font-semibold rounded-sm transition-colors"
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
@@ -340,7 +340,7 @@ export default function Nav() {
               href="https://www.tiktok.com/@davelovesdenver"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-full transition-colors border border-white/20"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ink hover:bg-ink/85 text-white dark:bg-white dark:text-ink dark:hover:bg-white/85 text-xs font-semibold rounded-sm transition-colors"
             >
               <svg className="w-3 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.16 8.16 0 0 0 4.77 1.52V6.77a4.85 4.85 0 0 1-1-.08z"/>
@@ -352,7 +352,7 @@ export default function Nav() {
           {/* Mobile menu button */}
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 text-white/80 hover:text-white transition-colors"
+            className="md:hidden p-2 text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors"
             aria-label="Toggle menu"
           >
             {open ? (
@@ -369,94 +369,94 @@ export default function Nav() {
 
         {/* Mobile menu */}
         {open && (
-          <div className="md:hidden border-t border-white/10 py-4 space-y-1">
+          <div className="md:hidden border-t border-rule dark:border-white/15 py-4 space-y-1">
             <Link
               href="/denver"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Popular
             </Link>
-            <p className="px-4 pt-2 pb-1 text-xs font-semibold text-white/40 uppercase tracking-widest">Popular</p>
+            <p className="px-4 pt-2 pb-1 text-xs font-semibold text-ink-muted dark:text-white/60 uppercase tracking-widest">Popular</p>
             <Link
               href="/denver/best-steakhouses"
               onClick={closeAll}
-              className="block px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Best Steakhouses
             </Link>
             <Link
               href="/denver/best-pizza"
               onClick={closeAll}
-              className="block px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Best Pizza
             </Link>
             <Link
               href="/denver/best-sushi"
               onClick={closeAll}
-              className="block px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Best Sushi
             </Link>
             <Link
               href="/denver/best-mexican-food"
               onClick={closeAll}
-              className="block px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Best Mexican Food
             </Link>
             <Link
               href="/denver/best-burgers"
               onClick={closeAll}
-              className="block px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Best Burgers
             </Link>
             <Link
               href="/denver/best-bars"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Best Bars
             </Link>
             <Link
               href="/denver/best-coffee"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Best Coffee
             </Link>
             <Link
               href="/denver/best-things-to-do"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Things To Do
             </Link>
             <Link
               href="/denver/for-foodies"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               For Foodies
             </Link>
             <Link
               href="/denver/where-to-stay"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Where to Stay
             </Link>
             <Link
               href="/denver/hidden-gems"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Hidden Gems
             </Link>
-            <div className="border-b border-white/10 pb-3 mb-3 mt-1">
-              <p className="px-4 py-1 text-xs font-semibold text-white/40 uppercase tracking-widest">
+            <div className="border-b border-rule dark:border-white/15 pb-3 mb-3 mt-1">
+              <p className="px-4 py-1 text-xs font-semibold text-ink-muted dark:text-white/60 uppercase tracking-widest">
                 Neighborhoods
               </p>
               {NEIGHBORHOODS.map((n) => (
@@ -464,71 +464,71 @@ export default function Nav() {
                   key={n.slug}
                   href={`/denver/${n.slug}`}
                   onClick={closeAll}
-                  className="flex items-center justify-between px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+                  className="flex items-center justify-between px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
                 >
                   <span>{n.name}</span>
-                  <span className="text-xs text-white/40">{n.tagline}</span>
+                  <span className="text-xs text-ink-muted dark:text-white/60">{n.tagline}</span>
                 </Link>
               ))}
             </div>
             <Link
               href="/denver/things-to-do"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Things To Do
             </Link>
             <Link
               href="/hotels"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors font-semibold"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors font-semibold"
             >
               Hotels
             </Link>
             <Link
               href="/events"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Events
             </Link>
             <Link
               href="/videos"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Videos
             </Link>
             <Link
               href="/articles"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Articles
             </Link>
             <Link
               href="/about"
               onClick={closeAll}
-              className="block px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               About
             </Link>
             <Link
               href="/search"
               onClick={closeAll}
-              className="flex items-center gap-2 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               Search
             </Link>
-            <div className="border-t border-white/10 pt-4 mt-3 px-4 flex gap-3">
+            <div className="border-t border-rule dark:border-white/15 pt-4 mt-3 px-4 flex gap-3">
               <a
                 href="https://www.youtube.com/davechung"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 bg-[#FF0000] hover:bg-[#cc0000] text-white text-sm font-semibold rounded-full transition-colors"
+                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 bg-[#FF0000] hover:bg-[#cc0000] text-white text-sm font-semibold rounded-sm transition-colors"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
@@ -539,7 +539,7 @@ export default function Nav() {
                 href="https://www.tiktok.com/@davelovesdenver"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 bg-white/10 hover:bg-white/20 text-white text-sm font-semibold rounded-full transition-colors border border-white/20"
+                className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 bg-ink hover:bg-ink/85 text-white dark:bg-white dark:text-ink dark:hover:bg-white/85 text-sm font-semibold rounded-sm transition-colors"
               >
                 <svg className="w-3.5 h-4" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.16 8.16 0 0 0 4.77 1.52V6.77a4.85 4.85 0 0 1-1-.08z"/>

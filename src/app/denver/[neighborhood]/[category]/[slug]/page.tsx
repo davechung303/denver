@@ -14,6 +14,7 @@ import BookYourTripCard from "@/components/BookYourTripCard";
 import ExperiencesStrip from "@/components/ExperiencesStrip";
 import { experiencesTermFor } from "@/lib/experienceTerms";
 import { nearestVenues } from "@/lib/venueProximity";
+import { seoMeta } from "@/lib/seo";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up fresh photo names after monthly refresh
 export const dynamicParams = true; // generate on-demand for any slug not pre-built
@@ -130,12 +131,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Subcategory page
   const subcategory = getSubcategory(cSlug, slug);
   if (subcategory) {
-    const title = `Best ${subcategory.name} near ${n.name}, Denver`;
-    const description = subcategory.description(n.name);
+    const meta = seoMeta(`Best ${subcategory.name} in ${n.name}, Denver`, subcategory.description(n.name));
     return {
-      title,
-      description,
-      openGraph: { title, description, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
+      title: meta.title,
+      description: meta.description,
+      openGraph: { title: meta.ogTitle, description: meta.description, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
       alternates: { canonical: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
     };
   }
@@ -165,19 +165,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isUsefulPlace(place)) notFound();
 
   const isHotelPage = cSlug === "hotels";
-  const title = isHotelPage
-    ? `${place.name} — Rates, Reviews & Map`
-    : `${place.name} — ${c.name} near ${n.name}, Denver`;
+  // Lead with the name; add context only while it still fits in ~60 chars.
+  const rawTitle = isHotelPage
+    ? [`${place.name} Denver — Rates, Reviews & Map`, `${place.name} — Rates & Reviews`, place.name]
+    : [`${place.name} — ${n.name}, Denver`, `${place.name}, Denver`, place.name];
+  const titleText = rawTitle.find((t) => t.length + 20 <= 60) ?? rawTitle.find((t) => t.length <= 60) ?? place.name;
   const description = isHotelPage
     ? `${place.name} in ${n.name}, Denver.${place.rating ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.` : ""} See photos, the map, and nearby restaurants and things to do — then check live rates on Expedia.`
-    : `${place.name} near ${n.name}, Denver. ${place.rating ? `Rated ${place.rating}/5` : ""} ${place.address ? `· ${place.address}` : ""}. Find hours, photos, and more on Dave Loves Denver.`;
+    : `${place.name}: ${c.name.toLowerCase().replace(/s$/, "")} in ${n.name}, Denver.${place.rating ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.` : ""} Hours, address, photos and what's nearby.`;
+  const meta = seoMeta(titleText, description);
 
   return {
-    title,
-    description,
+    title: meta.title,
+    description: meta.description,
     openGraph: {
-      title,
-      description,
+      title: meta.ogTitle,
+      description: meta.description,
       url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
       images: place.photos?.[0]
         ? [{ url: photoAbsoluteUrl(place.photos[0]) }]
@@ -253,17 +256,17 @@ export default async function BusinessPage({ params }: Props) {
 
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">{n.name} &middot; {c.name}</p>
-          <h1 className="text-4xl md:text-5xl font-bold">Best {subcategory.name} near {n.name}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold">Best {subcategory.name} in {n.name}</h1>
           <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">{subcategory.description(n.name)}</p>
         </section>
 
         {/* Other subcategory pills */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 flex flex-wrap gap-2">
-          <Link href={`/denver/${nSlug}/${c.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors">
+          <Link href={`/denver/${nSlug}/${c.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors">
             All {c.name}
           </Link>
           {otherSubs.map((s) => (
-            <Link key={s.slug} href={`/denver/${nSlug}/${cSlug}/${s.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors">
+            <Link key={s.slug} href={`/denver/${nSlug}/${cSlug}/${s.slug}`} className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors">
               {s.name}
             </Link>
           ))}
@@ -275,11 +278,16 @@ export default async function BusinessPage({ params }: Props) {
           ) : (
             <>
               {localPlaces.length > 0 && (
+                <>
+                <h2 className="text-xl font-bold mb-6">
+                  {localPlaces.length} {subcategory.name} {localPlaces.length === 1 ? "pick" : "picks"} in {n.name}, ranked
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {localPlaces.map((place) => (
                     <PlaceCard key={place.place_id} place={place} neighborhoodSlug={nSlug} categorySlug={cSlug} tag={getPlaceTag(place.types)} />
                   ))}
                 </div>
+                </>
               )}
               {nearbyPlaces.length > 0 && (
                 <div className="mt-14">
@@ -602,12 +610,13 @@ export default async function BusinessPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-2xl overflow-hidden max-h-80">
             {heroPhotos.map((photo, i) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <img decoding="async"
                 key={i}
                 src={photoUrl(photo)}
                 alt={`${place.name} photo ${i + 1}`}
                 className={`w-full h-80 object-cover ${i === 0 && heroPhotos.length === 1 ? "sm:col-span-3" : ""} ${i === 0 && heroPhotos.length > 1 ? "sm:col-span-2" : ""}`}
                 loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority={i === 0 ? "high" : "auto"}
               />
             ))}
           </div>
@@ -961,7 +970,7 @@ export default async function BusinessPage({ params }: Props) {
                   href={hotelCta.href}
                   target="_blank"
                   rel={hotelCta.rel}
-                  className="flex items-center justify-center w-full bg-denver-amber text-slate-900 font-bold py-3 px-4 rounded-xl hover:bg-amber-400 transition-colors"
+                  className="flex items-center justify-center w-full bg-denver-amber text-white font-bold py-3 px-4 rounded-xl hover:bg-[#8c2b17] transition-colors"
                 >
                   {hotelCta.label} &rarr;
                 </a>
@@ -1223,7 +1232,7 @@ export default async function BusinessPage({ params }: Props) {
                       href={bookingCta(hotel).href}
                       target="_blank"
                       rel={bookingCta(hotel).rel}
-                      className="text-xs font-bold px-2.5 py-1.5 bg-denver-amber text-slate-900 rounded-lg hover:bg-amber-400 transition-colors shrink-0"
+                      className="text-xs font-bold px-2.5 py-1.5 bg-denver-amber text-white rounded-lg hover:bg-[#8c2b17] transition-colors shrink-0"
                     >
                       Book
                     </a>

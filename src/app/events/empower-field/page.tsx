@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Empower Field at Mile High Events & Broncos Schedule 2026",
+  title: fitTitle("Empower Field at Mile High Events & Broncos Schedule 2026"),
   description:
-    "Full schedule of Denver Broncos games and events at Empower Field at Mile High. Buy tickets and find nearby hotels in LoDo and Jefferson Park.",
+    fitDescription("Full schedule of Denver Broncos games and events at Empower Field at Mile High. Buy tickets and find nearby hotels in LoDo and Jefferson Park."),
   alternates: { canonical: "https://davelovesdenver.com/events/empower-field" },
   openGraph: {
     title: "Empower Field Events & Broncos Schedule 2026",
@@ -155,7 +156,7 @@ export default async function EventsEmpowerFieldPage() {
             <p className="text-white/70 text-sm max-w-md">LoDo and Jefferson Park put you within walking distance. We break down the closest hotels and what the tradeoffs are.</p>
           </div>
           <Link href="/hotels/near-empower-field"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Hotels near Empower Field &rarr;
           </Link>
         </div>

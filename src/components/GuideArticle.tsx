@@ -236,7 +236,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                                   className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800"
                                 >
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
+                                  <img decoding="async"
                                     src={photoUrl(lead.photos![0])}
                                     alt=""
                                     loading="lazy"
@@ -354,7 +354,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
           </p>
           <Link
             href="/denver/where-to-stay"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
           >
             Where to stay in Denver &rarr;
           </Link>

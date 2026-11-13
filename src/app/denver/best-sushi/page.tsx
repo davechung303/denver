@@ -5,13 +5,14 @@ import { getBestOfDenver, isRealRestaurant, photoUrl, type Place } from "@/lib/p
 import { supabase } from "@/lib/supabase";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Sushi in Denver, CO — Top-Rated Sushi Restaurants",
+  title: fitTitle("Best Sushi in Denver, CO — Top-Rated Sushi Restaurants"),
   description:
-    "Denver's best sushi restaurants ranked by real reviews — from Sushi Den to neighborhood spots worth knowing, with what people actually order.",
+    fitDescription("Denver's best sushi restaurants ranked by real reviews — from Sushi Den to neighborhood spots worth knowing, with what people actually order."),
   openGraph: {
     title: "Best Sushi in Denver — Top-Rated Restaurants",
     description: "Ranked by real reviews. Denver's best sushi from Platt Park to Cherry Creek.",
@@ -35,7 +36,7 @@ const DAVES_PICKS_KEYS = [
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
   const photo = place.photos?.[0];
   if (!photo) return <div className={`bg-slate-100 dark:bg-slate-800 ${className}`} />;
-  return <img src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
+  return <img decoding="async" src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
 }
 
 function RatingBadge({ place }: { place: Place }) {
@@ -74,7 +75,7 @@ function SushiCard({ place, note }: { place: Place; note?: string }) {
       <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <PlacePhoto place={place} className="w-full h-full group-hover:scale-105 transition-transform duration-300" />
         {davePick && (
-          <span className="absolute top-3 left-3 bg-denver-amber text-slate-900 text-xs font-bold px-2.5 py-1 rounded-full shadow">
+          <span className="absolute top-3 left-3 bg-denver-amber text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">
             Dave&apos;s Pick
           </span>
         )}
@@ -205,7 +206,7 @@ export default async function BestSushiPage() {
             <h2 className="text-2xl font-bold">Full food guide</h2>
             <p className="text-white/70 mt-2 max-w-md">The complete Denver food guide — neighborhoods, coffee, hidden gems, and more.</p>
           </div>
-          <Link href="/denver/for-foodies" className="shrink-0 px-6 py-3 bg-denver-amber text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+          <Link href="/denver/for-foodies" className="shrink-0 px-6 py-3 bg-denver-amber text-white font-bold rounded-xl hover:bg-[#8c2b17] transition-colors">
             For Foodies &rarr;
           </Link>
         </div>

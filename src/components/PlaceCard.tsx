@@ -60,7 +60,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
         <div className="aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <img decoding="async"
               src={photoUrl(photo)}
               alt={place.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -131,7 +131,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             href={cta.href}
             target="_blank"
             rel={cta.rel}
-            className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
+            className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-white text-sm font-semibold rounded-xl hover:bg-[#8c2b17] transition-colors"
           >
             {cta.label}
           </a>

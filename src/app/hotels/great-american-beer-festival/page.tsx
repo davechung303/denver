@@ -5,6 +5,7 @@ import VenueHotelCard from "@/components/VenueHotelCard";
 import BookYourTrip from "@/components/BookYourTrip";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 21600;
 
@@ -12,9 +13,9 @@ const UPDATED = "2026-08-29";
 const UPDATED_LABEL = "August 29, 2026";
 
 export const metadata: Metadata = {
-  title: "Where to Stay for GABF 2026 — It Moved to Ruby Hill",
+  title: fitTitle("Where to Stay for GABF 2026 — It Moved to Ruby Hill"),
   description:
-    "The Great American Beer Festival left the Convention Center. It's at Levitt Pavilion in Ruby Hill Park, Oct 10–11, and almost every lodging guide online is still wrong. Where to actually book.",
+    fitDescription("The Great American Beer Festival left the Convention Center for Levitt Pavilion in Ruby Hill Park. Where to stay for it, and how to get there."),
   alternates: { canonical: "https://davelovesdenver.com/hotels/great-american-beer-festival" },
   openGraph: {
     title: "Where to Stay for GABF 2026 — It Moved to Ruby Hill",
@@ -300,7 +301,7 @@ export default async function GabfPage() {
               href={expediaDenverHotelsUrl("Baker Denver")}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
             >
               Compare Denver hotels for GABF weekend &rarr;
             </a>

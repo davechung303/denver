@@ -46,7 +46,7 @@ export default function LinkedText({
     ? "font-semibold text-white underline decoration-denver-amber decoration-2 underline-offset-2 hover:text-denver-amber transition-colors"
     : "font-medium text-slate-900 dark:text-slate-100 underline decoration-denver-amber decoration-2 underline-offset-2 hover:text-denver-amber transition-colors";
   const chipClass = navy
-    ? "ml-1.5 inline-flex items-center rounded-full bg-denver-amber px-2 py-0.5 text-[11px] font-bold text-white align-middle hover:bg-amber-400 transition-colors"
+    ? "ml-1.5 inline-flex items-center rounded-full bg-denver-amber px-2 py-0.5 text-[11px] font-bold text-white align-middle hover:bg-[#8c2b17] transition-colors"
     : "ml-1.5 inline-flex items-center rounded-full bg-denver-amber/10 px-2 py-0.5 text-[11px] font-semibold text-denver-amber align-middle hover:bg-denver-amber hover:text-white transition-colors";
 
   // Hotel mentions inside one plain stretch of copy. `seen` carries across

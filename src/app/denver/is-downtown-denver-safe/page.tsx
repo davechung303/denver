@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import GuideArticle from "@/components/GuideArticle";
 import { GUIDES } from "@/lib/guides";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 const guide = GUIDES["is-downtown-denver-safe"];
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: guide.metaTitle,
-  description: guide.metaDescription,
+  title: fitTitle(guide.metaTitle),
+  description: fitDescription(guide.metaDescription),
   alternates: { canonical: "https://davelovesdenver.com/denver/is-downtown-denver-safe" },
   openGraph: {
     title: guide.ogTitle,

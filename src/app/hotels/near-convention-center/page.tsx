@@ -5,13 +5,14 @@ import VenueDistanceTable from "@/components/VenueDistanceTable";
 import VenueHotelCard from "@/components/VenueHotelCard";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Where to Stay for a Colorado Convention Center Conference",
+  title: fitTitle("Where to Stay for a Colorado Convention Center Conference"),
   description:
-    "41 Denver hotels routed on foot to the Colorado Convention Center: 25 are under 0.75 miles, the nearest 130 yards. Plus which are actually worth booking.",
+    fitDescription("41 Denver hotels routed on foot to the Colorado Convention Center: 25 are under 0.75 miles, the nearest 130 yards. Plus which are actually worth booking."),
   alternates: { canonical: "https://davelovesdenver.com/hotels/near-convention-center" },
   openGraph: {
     title: "Where to Stay for a Convention Center Conference",
@@ -90,7 +91,7 @@ export default async function HotelsNearConventionCenterPage() {
       <section className="relative bg-denver-navy text-white overflow-hidden">
         {heroPhoto && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+          <img fetchPriority="high" decoding="async" src={photoUrl(heroPhoto)} alt="Hotels in Denver" className="absolute inset-0 w-full h-full object-cover opacity-30" />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-denver-navy via-denver-navy/85 to-denver-navy/40" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -133,7 +134,7 @@ export default async function HotelsNearConventionCenterPage() {
             <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">Downtown &amp; Golden Triangle Hotels</p>
             {hotels.map((hotel) => <VenueHotelCard key={hotel.place_id} place={hotel} />)}
             <a href={expediaDenverHotelsUrl("Downtown Denver Convention Center")} target="_blank" rel="noopener noreferrer sponsored"
-              className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+              className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
             >
               See all nearby hotels &rarr;
             </a>

@@ -536,7 +536,7 @@ export const GUIDES: Record<string, Guide> = {
     slug: "hotel-parking",
     experiences: { term: "Denver unique experiences", heading: "Reasons to leave the car parked", note: "You are paying $42 to $70 a night for that space either way. These do not need it.", afterSection: 2 },
     title: "What Denver Hotel Parking Actually Costs",
-    metaTitle: "Denver Hotel Parking Costs — Published Rates, Hotel by Hotel",
+    metaTitle: "Denver Hotel Parking Costs: Published Rates by Hotel",
     metaDescription:
       "Downtown Denver hotel parking runs $42 to $70 a night. Published rates from the hotels themselves, plus the public garage that charges $23 for the same 24 hours.",
     ogTitle: "Denver Hotel Parking: The Real Numbers",
@@ -654,7 +654,7 @@ export const GUIDES: Record<string, Guide> = {
     slug: "resort-fees",
     experiences: { term: "Denver unique experiences", heading: "What a destination fee does not include", note: "The $28 to $30 a night buys you a fitness center and some wifi. This is what the city actually offers.", afterSection: 2 },
     title: "Do Denver Hotels Charge Resort Fees?",
-    metaTitle: "Denver Hotel Resort & Destination Fees — What's Real in 2026",
+    metaTitle: "Denver Hotel Resort & Destination Fees: What's Real in 2026",
     metaDescription:
       "Some do, most downtown flags don't. What's verified, what the FTC rule and Colorado's 2026 pricing law changed, and how to check before you book.",
     ogTitle: "Denver Resort and Destination Fees, Explained",
@@ -746,7 +746,7 @@ export const GUIDES: Record<string, Guide> = {
     slug: "ski-basecamp",
     experiences: { term: "Rocky Mountain National Park tour from Denver", heading: "Mountain days that do not need a rental car", note: "If you are basing in Denver to avoid resort-town prices, the thing you still need is a way up the hill. These run from downtown.", afterSection: 2 },
     title: "Using Denver as a Ski Basecamp",
-    metaTitle: "Denver as a Ski Basecamp — Drive Times, Trains & the I-70 Reality",
+    metaTitle: "Denver Ski Basecamp: Drive Times, Trains & the I-70 Reality",
     metaDescription:
       "Sleep in Denver, ski Winter Park, Loveland or Copper. Verified distances, the ski train, the Snowstang bus, the traction law and when I-70 actually jams.",
     ogTitle: "Denver as a Ski Basecamp: The Honest Logistics",

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Red Rocks Shuttle Guide — How to Get to a Show Without Driving (From a Local)",
+  title: fitTitle("Red Rocks Shuttle Guide — Get to a Show Without Driving"),
   description:
-    "Every way to shuttle to a Red Rocks concert: round-trip bar and event shuttles from downtown Denver, RTD event service, hotel options, and why a shuttle beats driving or Ubering to the show. What it costs and how to book.",
+    fitDescription("Every way to shuttle to a Red Rocks concert: round-trip shuttles from downtown Denver, RTD event service, hotel options, and why it beats driving."),
   alternates: { canonical: "https://davelovesdenver.com/denver/red-rocks-shuttle" },
   openGraph: {
     title: "Red Rocks Shuttle Guide — How to Get to a Show Without Driving",
@@ -143,7 +144,7 @@ export default function RedRocksShuttleGuide() {
           <p className="text-white/70 text-sm leading-relaxed mb-3">
             There&apos;s no walkable hotel at Red Rocks, so most people either base in Denver and shuttle out, or stay in the west-metro suburbs (Lakewood, Golden) for a shorter drive. If you want the full trip — great food, bars, and the city — stay downtown and take a shuttle to the show.
           </p>
-          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors">
             Where to stay for a Red Rocks show &rarr;
           </Link>
         </div>

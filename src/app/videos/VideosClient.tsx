@@ -78,7 +78,7 @@ export default function VideosClient({ videos, shorts }: Props) {
           href="https://youtube.com/davechung"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-denver-amber text-slate-900 font-semibold px-6 py-3 rounded-full hover:bg-amber-400 transition-colors"
+          className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-full hover:bg-[#8c2b17] transition-colors"
         >
           Subscribe on YouTube &rarr;
         </a>

@@ -4,13 +4,14 @@ import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { getBestOfDenver, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Mexican Food in Denver, CO — Top-Rated Mexican Restaurants",
+  title: fitTitle("Best Mexican Food in Denver, CO — Top-Rated Restaurants"),
   description:
-    "Denver's best Mexican restaurants ranked by real reviews — from authentic taquerias to green chile burritos and everything in between.",
+    fitDescription("Denver's best Mexican restaurants ranked by real reviews — from authentic taquerias to green chile burritos and everything in between."),
   openGraph: {
     title: "Best Mexican Food in Denver — Top-Rated Restaurants",
     description: "Ranked by real reviews. Denver's best Mexican food from taquerias to sit-down spots.",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 function PlacePhoto({ place, className }: { place: Place; className?: string }) {
   const photo = place.photos?.[0];
   if (!photo) return <div className={`bg-slate-100 dark:bg-slate-800 ${className}`} />;
-  return <img src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
+  return <img decoding="async" src={photoUrl(photo)} alt={place.name} className={`object-cover ${className}`} loading="lazy" />;
 }
 
 function RatingBadge({ place }: { place: Place }) {
@@ -167,7 +168,7 @@ export default async function BestMexicanFoodPage() {
             <h2 className="text-2xl font-bold">Full food guide</h2>
             <p className="text-white/70 mt-2 max-w-md">The complete Denver food guide — neighborhoods, coffee, hidden gems, and more.</p>
           </div>
-          <Link href="/denver/for-foodies" className="shrink-0 px-6 py-3 bg-denver-amber text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors">
+          <Link href="/denver/for-foodies" className="shrink-0 px-6 py-3 bg-denver-amber text-white font-bold rounded-xl hover:bg-[#8c2b17] transition-colors">
             For Foodies &rarr;
           </Link>
         </div>
