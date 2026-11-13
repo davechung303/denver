@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { ARTICLES_PER_PAGE } from "@/lib/articlesArchive";
-import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
+import { NEIGHBORHOODS, CATEGORIES, isOutOfArea } from "@/lib/neighborhoods";
 import { SUBCATEGORIES } from "@/lib/subcategories";
 import { EVENT_GUIDES } from "@/lib/eventGuides";
 import { COMPARISONS } from "@/lib/stayComparisons";
@@ -79,13 +79,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   while (true) {
     const { data } = await supabase
       .from("places")
-      .select("neighborhood_slug, category_slug, slug, cached_at")
+      .select("neighborhood_slug, category_slug, slug, cached_at, lat, lng")
       .range(from, from + PAGE_SIZE - 1);
     if (!data || data.length === 0) break;
     for (const p of data) {
       // An excluded business should not be in the index at all — its detail page
       // now 404s, and a sitemap entry pointing at a 404 is a crawl error.
       if (isExcludedPlace(p.slug)) continue;
+      // Out-of-area places (beyond day-trip range, or non-attractions beyond
+      // the metro) 404 now, so they don't belong in the sitemap either.
+      if (isOutOfArea(p.lat, p.lng, p.category_slug)) continue;
       placePages.push({
         url: `${BASE_URL}/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}`,
         lastModified: p.cached_at ? new Date(p.cached_at) : now,

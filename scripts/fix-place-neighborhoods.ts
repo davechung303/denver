@@ -26,6 +26,7 @@ import { config } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolveNeighborhood, isFarFromDenver } from "../src/lib/neighborhoodResolver";
+import { isOutOfArea } from "../src/lib/neighborhoods";
 
 config({ path: ".env.local" });
 
@@ -129,15 +130,19 @@ async function main() {
   writeFileSync(csvPath, lines.join("\n") + "\n");
 
   console.log(`\n${ready.length} places to move, ${skipped.length} skipped (slug collision), ${places.length - moves.length} already correct.`);
-  console.log(`${outside.length} of the moves are far from Denver (Boulder, Golden, the mountains). They go to Greater Denver Area; check whether they belong on the site at all.`);
+  const hidden = places.filter((p) => isOutOfArea(p.lat, p.lng, p.category_slug));
+  console.log(`${outside.length} of the moves are beyond the metro radius (day trips, or out of area).`);
+  console.log(`${hidden.length} places are out of area and are now hidden from the site (their pages 404 and leave the sitemap):`);
+  console.log("  " + hidden.map((p) => p.name).slice(0, 60).join("; ") + (hidden.length > 60 ? "; ..." : ""));
 
   const finalCounts = new Map<string, number>();
   for (const p of places) {
+    if (isOutOfArea(p.lat, p.lng, p.category_slug)) continue;
     const m = moves.find((x) => x.place_id === p.place_id && x.status === "move");
     const n = m ? m.to : p.neighborhood_slug;
     finalCounts.set(n, (finalCounts.get(n) ?? 0) + 1);
   }
-  console.log("\nPlaces per neighborhood after the moves:");
+  console.log("\nPlaces per neighborhood after the moves (visible places only):");
   for (const [n, c] of [...finalCounts.entries()].sort((a, b) => b[1] - a[1])) {
     console.log(`  ${String(c).padStart(4)}  ${n}`);
   }

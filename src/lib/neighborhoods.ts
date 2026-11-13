@@ -235,7 +235,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     gradient: "from-orange-600 to-red-500",
     image: "https://images.unsplash.com/photo-1483937107025-27d8bebc7074?auto=format&fit=crop&w=1200&q=80",
     searchName: "Curtis Park Denver Colorado",
-    lat: 39.7562, lng: -104.9672,
+    lat: 39.7583, lng: -104.9790,
     stay22EmbedId: "69d054cf8ef49a292b4d7342",
   },
   {
@@ -344,6 +344,18 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     image: "https://images.unsplash.com/photo-1483937107025-27d8bebc7074?auto=format&fit=crop&w=1200&q=80",
     searchName: "West Denver Federal Boulevard Westwood Colorado",
     lat: 39.6773, lng: -105.0406,
+    searchable: false,
+  },
+  {
+    slug: "day-trips",
+    name: "Day Trips from Denver",
+    tagline: "Mountains, Parks & Towns Within a Drive",
+    description:
+      "Rocky Mountain National Park, Georgetown, Colorado Springs and the rest of what's worth a day out of the city. Everything here is more than 40 km from downtown.",
+    gradient: "from-emerald-800 to-sky-600",
+    image: "https://images.unsplash.com/photo-1619856699906-09e1f58c98b1?auto=format&fit=crop&w=1200&q=80",
+    searchName: "day trips from Denver Colorado",
+    lat: 39.7392, lng: -105.3,
     searchable: false,
   },
   {
@@ -588,7 +600,7 @@ export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number
   berkeley:          [39.769, 39.790, -105.056, -105.025],
   "platt-park":      [39.687, 39.706, -104.986, -104.965],
   "jefferson-park":  [39.740, 39.768, -105.038, -104.998],
-  "curtis-park":     [39.748, 39.764, -104.978, -104.956],
+  "curtis-park":     [39.750, 39.766, -104.990, -104.970],
   downtown:          [39.735, 39.752, -105.002, -104.975],
   "park-hill":       [39.740, 39.791, -104.960, -104.903],
   "city-park":       [39.726, 39.751, -104.960, -104.922],
@@ -598,6 +610,7 @@ export const NEIGHBORHOOD_BOUNDS: Record<string, [number, number, number, number
   "tech-center":     [39.582, 39.672, -104.955, -104.839],
   "southeast-denver":[39.624, 39.711, -104.959, -104.866],
   "west-denver":     [39.614, 39.748, -105.110, -104.992],
+  "day-trips":       [38.200, 40.900, -107.200, -103.800],
   "denver-suburbs":  [39.600, 39.820, -105.180, -104.720],
   airport:           [39.810, 39.882, -104.760, -104.630],
 };
@@ -608,6 +621,34 @@ export function isInNeighborhood(lat: number | null, lng: number | null, slug: s
   if (!bounds) return false;
   const [minLat, maxLat, minLng, maxLng] = bounds;
   return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng;
+}
+
+const DOWNTOWN = { lat: 39.7392, lng: -104.9903 };
+
+export function distanceFromDowntownKm(lat: number, lng: number): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat - DOWNTOWN.lat);
+  const dLng = toRad(lng - DOWNTOWN.lng);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat)) * Math.cos(toRad(DOWNTOWN.lat)) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/** Beyond this, a place isn't "in" Denver: it's a day trip or it doesn't belong. */
+export const METRO_RADIUS_KM = 40;
+/** Things to do out to here are day trips. Anything further is out of area. */
+export const DAY_TRIP_RADIUS_KM = 200;
+
+/**
+ * Places the site shouldn't list at all: anything beyond day-trip range (Google
+ * searches turned up a London Bubble Planet and a Minnesota rec center), and
+ * restaurants, bars, coffee and hotels beyond the metro. A coffee shop in
+ * Windsor isn't a Denver recommendation.
+ */
+export function isOutOfArea(lat: number | null, lng: number | null, categorySlug?: string | null): boolean {
+  if (lat == null || lng == null) return false;
+  const km = distanceFromDowntownKm(lat, lng);
+  if (km > DAY_TRIP_RADIUS_KM) return true;
+  return km > METRO_RADIUS_KM && categorySlug !== "things-to-do";
 }
 
 export function getNeighborhood(slug: string): Neighborhood | undefined {

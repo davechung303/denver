@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES } from "./neighborhoods";
+import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES, isOutOfArea } from "./neighborhoods";
 import { resolveNeighborhood } from "./neighborhoodResolver";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
 import { isExcludedPlace } from "@/lib/excludedPlaces";
@@ -513,6 +513,7 @@ export async function getPlacesForSubcategory(
 // A place is considered useful if it has a rating (real Google data) or at least one photo.
 // Parks/landmarks named after the neighborhood with no data are shell records — hide them.
 export function isUsefulPlace(place: Place): boolean {
+  if (isOutOfArea(place.lat, place.lng, place.category_slug)) return false;
   return (place.rating != null && place.rating > 0) || (place.photos != null && place.photos.length > 0);
 }
 
