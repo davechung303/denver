@@ -52,29 +52,21 @@ function HotelCardStacked({ place }: { place: Place }) {
   const cta = bookingCta(place);
   const photo = place.photos?.[0];
   return (
-    <a
-      href={cta.href}
-      target="_blank"
-      rel={cta.rel}
-      className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200"
-    >
-      <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
-        {photo ? (
-          <img decoding="async" src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-        ) : (
-          <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
-        )}
-      </div>
-      <div className="flex flex-col justify-center gap-0.5 min-w-0 flex-1">
-        <h3 className="font-semibold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
-        {place.rating && (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
-            ★ {place.rating.toFixed(1)}
-            {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
+    <a href={cta.href} target="_blank" rel={cta.rel} className="hotel-mini">
+      <span className="thumb">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {photo && <img src={photoUrl(photo)} alt="" loading="lazy" decoding="async" width={56} height={56} />}
+      </span>
+      <span className="body">
+        <span className="name">{place.name}</span>
+        {place.rating != null && (
+          <span className="rating">
+            <span className="star">★</span> {place.rating.toFixed(1)}
+            {place.review_count ? <span className="muted"> ({place.review_count.toLocaleString()})</span> : null}
           </span>
         )}
-        <span className="text-xs text-denver-amber font-medium group-hover:underline">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
-      </div>
+        <span className="cta">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
+      </span>
     </a>
   );
 }

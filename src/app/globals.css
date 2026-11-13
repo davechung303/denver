@@ -343,3 +343,49 @@ h3 {
   .place-card-meta .muted, .place-card-addr, .place-card-known { color: #a8a6a0; }
   .place-card-meta .star, .place-card:hover .place-card-name { color: var(--sandstone-light); }
 }
+
+/* Compact hotel row card (Where to Stay asides, venue pages). */
+@layer components {
+  .hotel-mini {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    transition: border-color 150ms;
+  }
+  .hotel-mini:hover { border-color: var(--ink); }
+  .hotel-mini .thumb {
+    width: 3.5rem;
+    height: 3.5rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--paper);
+  }
+  .hotel-mini .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .hotel-mini .body { display: flex; flex-direction: column; gap: 0.125rem; min-width: 0; flex: 1; }
+  .hotel-mini .name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .hotel-mini .rating { font-size: 0.75rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hotel-mini .rating .star { color: var(--sandstone); }
+  .hotel-mini .rating .muted { color: var(--ink-muted); font-weight: 400; }
+  .hotel-mini .cta { font-size: 0.75rem; font-weight: 600; color: var(--sandstone); width: fit-content; }
+  .hotel-mini .cta:hover, a.hotel-mini:hover .cta { text-decoration: underline; }
+}
+@media (prefers-color-scheme: dark) {
+  .hotel-mini { background: #161615; border-color: rgba(255, 255, 255, 0.12); }
+  .hotel-mini:hover { border-color: #edebe6; }
+  .hotel-mini .thumb { background: #1c1c1a; }
+  .hotel-mini .rating .muted { color: #a8a6a0; }
+  .hotel-mini .rating .star, .hotel-mini .cta { color: var(--sandstone-light); }
+}

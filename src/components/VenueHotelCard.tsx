@@ -11,26 +11,22 @@ export default function VenueHotelCard({ place }: { place: Place }) {
   const cta = bookingCta(place);
   const photo = place.photos?.[0];
   return (
-    <div className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200">
-      <Link href={detailHref} className="relative w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800" aria-label={place.name}>
-        {photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img decoding="async" src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-        ) : (
-          <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
-        )}
+    <div className="hotel-mini">
+      <Link href={detailHref} className="thumb" aria-hidden="true" tabIndex={-1}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {photo && <img src={photoUrl(photo)} alt="" loading="lazy" decoding="async" width={56} height={56} />}
       </Link>
-      <div className="flex flex-col justify-center gap-0.5 min-w-0 flex-1">
-        <Link href={detailHref} className="font-semibold text-sm leading-snug hover:text-denver-amber transition-colors line-clamp-2">
+      <div className="body">
+        <Link href={detailHref} className="name hover:text-denver-amber">
           {place.name}
         </Link>
-        {place.rating && (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
-            ★ {place.rating.toFixed(1)}
-            {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
+        {place.rating != null && (
+          <span className="rating">
+            <span className="star">★</span> {place.rating.toFixed(1)}
+            {place.review_count ? <span className="muted"> ({place.review_count.toLocaleString()})</span> : null}
           </span>
         )}
-        <a href={cta.href} target="_blank" rel={cta.rel} className="text-xs text-denver-amber font-medium hover:underline w-fit">
+        <a href={cta.href} target="_blank" rel={cta.rel} className="cta">
           {cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;
         </a>
       </div>
