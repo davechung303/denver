@@ -313,7 +313,7 @@ export default async function NeighborhoodPage({ params }: Props) {
                         loading="lazy"
                       />
                     )}
-                    <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                    <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
                       NEW
                     </span>
                   </div>
@@ -345,28 +345,28 @@ export default async function NeighborhoodPage({ params }: Props) {
             frameBorder="0"
           />
           <div className="mt-4 flex flex-wrap gap-2">
-            <Link href="/denver/where-to-stay" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/denver/where-to-stay" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Full hotel guide
             </Link>
-            <Link href="/hotels/best-value-denver" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/hotels/best-value-denver" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Best value hotels
             </Link>
-            <Link href="/hotels/near-red-rocks" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/hotels/near-red-rocks" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Near Red Rocks
             </Link>
-            <Link href="/hotels/near-empower-field" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/hotels/near-empower-field" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Near Empower Field
             </Link>
-            <Link href="/hotels/near-coors-field" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/hotels/near-coors-field" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Near Coors Field
             </Link>
-            <Link href="/hotels/near-ball-arena" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/hotels/near-ball-arena" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Near Ball Arena
             </Link>
-            <Link href="/hotels/near-mission-ballroom" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/hotels/near-mission-ballroom" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Near Mission Ballroom
             </Link>
-            <Link href="/hotels/near-convention-center" className="px-3 py-1.5 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
+            <Link href="/hotels/near-convention-center" className="px-3 py-1.5 text-xs font-medium rounded-sm border border-slate-200 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber transition-colors whitespace-nowrap">
               Near Convention Center
             </Link>
           </div>

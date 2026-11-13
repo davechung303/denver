@@ -42,7 +42,7 @@ export default function HotelSpotlight({
                   <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
                 )}
                 {p.rating && (
-                  <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-black/70 backdrop-blur px-2.5 py-1 text-xs font-semibold text-white">
+                  <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-sm bg-black/70 backdrop-blur px-2.5 py-1 text-xs font-semibold text-white">
                     ★ {p.rating.toFixed(1)}
                     {p.review_count ? <span className="font-normal text-white/70">({p.review_count.toLocaleString()})</span> : null}
                   </span>
@@ -62,7 +62,7 @@ export default function HotelSpotlight({
                     href={cta.href}
                     target="_blank"
                     rel={cta.rel}
-                    className="inline-flex items-center justify-center rounded-full bg-denver-amber px-4 py-2 text-sm font-semibold text-white hover:bg-[#8c2b17] transition-colors"
+                    className="inline-flex items-center justify-center rounded-sm bg-denver-amber px-4 py-2 text-sm font-semibold text-white hover:bg-[#8c2b17] transition-colors"
                   >
                     {cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Check rates"} &rarr;
                   </a>

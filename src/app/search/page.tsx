@@ -29,9 +29,9 @@ function StarRating({ rating }: { rating: number }) {
           key={i}
           className={`w-3.5 h-3.5 flex-shrink-0 ${
             i <= Math.floor(rating)
-              ? "text-amber-400"
+              ? "text-denver-amber"
               : i === Math.floor(rating) + 1 && rating - Math.floor(rating) >= 0.5
-              ? "text-amber-400"
+              ? "text-denver-amber"
               : "text-slate-300"
           }`}
           fill="currentColor"
@@ -51,7 +51,6 @@ function SearchResultCard({ place }: { place: Place }) {
   const isHotel = place.category_slug === "hotels";
   const neighborhood = NEIGHBORHOODS.find((n) => n.slug === place.neighborhood_slug);
   const category = CATEGORIES.find((c) => c.slug === place.category_slug);
-  const isOpen = place.hours?.openNow;
 
   return (
     <div className="group flex bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200">
@@ -70,15 +69,6 @@ function SearchResultCard({ place }: { place: Place }) {
             <span className="text-slate-300 text-xs">No photo</span>
           </div>
         )}
-        {place.hours && (
-          <span
-            className={`absolute top-2 left-2 text-xs font-semibold px-1.5 py-0.5 rounded-full ${
-              isOpen ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
-            }`}
-          >
-            {isOpen ? "Open" : "Closed"}
-          </span>
-        )}
       </Link>
 
       {/* Info */}
@@ -90,7 +80,7 @@ function SearchResultCard({ place }: { place: Place }) {
             </h3>
           </Link>
           {tag && (
-            <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded-full flex-shrink-0">
+            <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded-sm flex-shrink-0">
               {tag}
             </span>
           )}
@@ -218,12 +208,12 @@ export default async function SearchPage({
             <div className="flex items-center gap-2 mt-3 flex-wrap">
               <span className="text-xs text-white/40">Searching</span>
               {intentCategory && (
-                <span className="text-xs bg-denver-amber/20 text-denver-amber px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-denver-amber/20 text-denver-amber px-2 py-0.5 rounded-sm">
                   {intentCategory.name}
                 </span>
               )}
               {intentNeighborhood && (
-                <span className="text-xs bg-white/10 text-white/70 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-white/10 text-white/70 px-2 py-0.5 rounded-sm">
                   {intentNeighborhood.name}
                 </span>
               )}

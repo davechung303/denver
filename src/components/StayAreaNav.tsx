@@ -107,7 +107,7 @@ export default function StayAreaNav({
                 data-slug={a.slug}
                 href={`#${a.slug}`}
                 aria-current={on ? "true" : undefined}
-                className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                className={`shrink-0 rounded-sm px-3.5 py-1.5 text-sm font-medium transition-colors ${
                   on
                     ? "bg-denver-amber text-white"
                     : "bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800"

@@ -27,7 +27,7 @@ export default function NotFound() {
 
       <Link
         href="/"
-        className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-full hover:bg-[#8c2b17] transition-colors"
+        className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-sm hover:bg-[#8c2b17] transition-colors"
       >
         &larr; Back to homepage
       </Link>

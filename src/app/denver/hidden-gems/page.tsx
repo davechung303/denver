@@ -53,7 +53,7 @@ function GemCard({ place }: { place: Place }) {
         </h3>
         <div className="flex items-center gap-2">
           {place.rating && (
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
               ★ {place.rating.toFixed(1)}
             </span>
           )}
@@ -149,7 +149,7 @@ export default async function HiddenGemsPage() {
             <a
               key={neighborhood.slug}
               href={`#${neighborhood.slug}`}
-              className="px-3 py-1 text-sm font-medium border border-slate-200 dark:border-slate-700 rounded-full hover:border-denver-amber hover:text-denver-amber transition-colors"
+              className="px-3 py-1 text-sm font-medium border border-slate-200 dark:border-slate-700 rounded-sm hover:border-denver-amber hover:text-denver-amber transition-colors"
             >
               {neighborhood.name}
             </a>

@@ -156,7 +156,7 @@ export default async function EventsParamountTheatrePage() {
             <p className="text-white/70 text-sm max-w-md">The Convention Center area and LoDo have excellent hotel options within easy walking distance of the Paramount.</p>
           </div>
           <Link href="/hotels/near-convention-center"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-sm transition-colors text-sm">
             Hotels near downtown Denver &rarr;
           </Link>
         </div>
@@ -178,10 +178,10 @@ export default async function EventsParamountTheatrePage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-wrap gap-3">
-          <Link href="/hotels/near-convention-center" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">Hotels near downtown Denver &rarr;</Link>
-          <Link href="/events/ogden-theatre" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Ogden Theatre shows &rarr;</Link>
-          <Link href="/events/mission-ballroom" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Mission Ballroom shows &rarr;</Link>
-          <Link href="/events/red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">Red Rocks shows &rarr;</Link>
+          <Link href="/hotels/near-convention-center" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">Hotels near downtown Denver &rarr;</Link>
+          <Link href="/events/ogden-theatre" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Ogden Theatre shows &rarr;</Link>
+          <Link href="/events/mission-ballroom" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Mission Ballroom shows &rarr;</Link>
+          <Link href="/events/red-rocks" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">Red Rocks shows &rarr;</Link>
         </div>
       </section>
     </>

@@ -41,7 +41,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
 function RatingBadge({ place }: { place: Place }) {
   if (!place.rating) return null;
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold text-denver-amber">
       ★ {place.rating.toFixed(1)}
       {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
     </span>
@@ -136,7 +136,7 @@ export default async function ForFoodiesPage() {
             { href: "#coffee", label: "Best Coffee" },
             { href: "#hidden-gems", label: "Hidden Gems" },
           ].map((link) => (
-            <a key={link.href} href={link.href} className="px-3 py-1 text-sm font-medium border border-slate-200 dark:border-slate-700 rounded-full hover:border-denver-amber hover:text-denver-amber transition-colors">
+            <a key={link.href} href={link.href} className="px-3 py-1 text-sm font-medium border border-slate-200 dark:border-slate-700 rounded-sm hover:border-denver-amber hover:text-denver-amber transition-colors">
               {link.label}
             </a>
           ))}

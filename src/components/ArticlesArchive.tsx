@@ -41,7 +41,7 @@ export function ArticleGrid({ articles }: { articles: ArchiveArticle[] }) {
                   })()}
                   <div className="p-4 flex flex-col gap-2 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
+                      <span className="text-xs px-2 py-0.5 rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
                         {article.content_type}
                       </span>
                     </div>

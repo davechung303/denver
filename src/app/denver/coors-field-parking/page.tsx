@@ -152,7 +152,7 @@ export default function CoorsFieldParkingGuide() {
           <p className="text-white/80 text-sm leading-relaxed">
             <strong>Stay walkable.</strong> Book a LoDo hotel and the whole night is on foot: walk to Blake Street for pregame, walk into the park, walk back when you&apos;re ready. It&apos;s the best version of a Rockies game night — and the hotels a few blocks out are often cheaper than a game-day parking spot plus a rideshare each way.
           </p>
-          <Link href="/hotels/near-coors-field" className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-coors-field" className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors">
             Hotels walking distance to Coors Field &rarr;
           </Link>
         </div>
@@ -191,13 +191,13 @@ export default function CoorsFieldParkingGuide() {
 
         {/* Related */}
         <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <Link href="/hotels/near-coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">
             Hotels near Coors Field &rarr;
           </Link>
-          <Link href="/events/coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/events/coors-field" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Coors Field events &rarr;
           </Link>
-          <Link href="/hotels" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Where to stay in Denver &rarr;
           </Link>
         </div>

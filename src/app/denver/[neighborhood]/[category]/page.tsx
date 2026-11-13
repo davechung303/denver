@@ -254,7 +254,7 @@ export default async function CategoryPage({ params }: Props) {
               <Link
                 key={s.slug}
                 href={`/denver/${nSlug}/${cSlug}/${s.slug}`}
-                className="px-4 py-1.5 bg-denver-amber/10 text-denver-amber border border-denver-amber/30 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors"
+                className="px-4 py-1.5 bg-denver-amber/10 text-denver-amber border border-denver-amber/30 rounded-sm text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors"
               >
                 {s.name}
               </Link>
@@ -270,7 +270,7 @@ export default async function CategoryPage({ params }: Props) {
             <Link
               key={cat.slug}
               href={`/denver/${nSlug}/${cat.slug}`}
-              className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors"
+              className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-sm text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors"
             >
               {cat.name}
             </Link>
@@ -314,7 +314,7 @@ export default async function CategoryPage({ params }: Props) {
                           ) : (
                             <div className="w-full h-full" />
                           )}
-                          <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                          <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-sm">
                             #{i + 1}
                           </span>
                         </div>
@@ -322,13 +322,8 @@ export default async function CategoryPage({ params }: Props) {
                         <div className="flex flex-col p-4 gap-1.5 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             {tag && (
-                              <span className="text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">
+                              <span className="text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-sm">
                                 {tag}
-                              </span>
-                            )}
-                            {place.hours?.openNow !== undefined && (
-                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${place.hours.openNow ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
-                                {place.hours.openNow ? "Open" : "Closed"}
                               </span>
                             )}
                           </div>
@@ -337,8 +332,8 @@ export default async function CategoryPage({ params }: Props) {
                           </h3>
                           {place.rating && (
                             <div className="flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400">
-                              <span className="font-semibold text-amber-500">{place.rating.toFixed(1)}</span>
-                              <span className="text-amber-400">★</span>
+                              <span className="font-semibold text-denver-amber">{place.rating.toFixed(1)}</span>
+                              <span className="text-denver-amber">★</span>
                               {place.review_count && (
                                 <span className="text-slate-400">({place.review_count.toLocaleString()})</span>
                               )}

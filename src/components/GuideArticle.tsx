@@ -144,7 +144,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                     href={bookingCta(h).href}
                     target="_blank"
                     rel={bookingCta(h).rel}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-denver-amber px-3.5 py-2 text-sm font-semibold text-white transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-sm bg-white/10 hover:bg-denver-amber px-3.5 py-2 text-sm font-semibold text-white transition-colors"
                   >
                     {h.name}
                     {h.rating ? <span className="text-denver-amber text-xs font-bold">&#9733; {h.rating.toFixed(1)}</span> : null}
@@ -154,7 +154,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                   href={expediaDenverHotelsUrl()}
                   target="_blank"
                   rel="noopener noreferrer sponsored"
-                  className="inline-flex items-center rounded-full border border-white/25 hover:border-denver-amber hover:text-denver-amber px-3.5 py-2 text-sm font-semibold text-white/80 transition-colors"
+                  className="inline-flex items-center rounded-sm border border-white/25 hover:border-denver-amber hover:text-denver-amber px-3.5 py-2 text-sm font-semibold text-white/80 transition-colors"
                 >
                   All Denver hotels &rarr;
                 </a>
@@ -202,12 +202,12 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
             )}
 
             {s.table && (
-              <div className="mt-6 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
-                <table className="w-full text-sm">
-                  <thead className="bg-slate-50 dark:bg-slate-900">
+              <div className="mt-6 data-table-wrap">
+                <table className="data-table">
+                  <thead>
                     <tr>
                       {s.table.head.map((h) => (
-                        <th key={h} className="text-left font-semibold px-4 py-3 text-slate-500 dark:text-slate-400 uppercase tracking-wide text-xs">
+                        <th key={h}>
                           {h}
                         </th>
                       ))}
@@ -215,7 +215,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                   </thead>
                   <tbody>
                     {s.table.rows.map((r) => (
-                      <tr key={r[0]} className="border-t border-slate-100 dark:border-slate-800">
+                      <tr key={r[0]}>
                         {r.map((c, i) => {
                           // If the row's first cell IS a hotel, lead with its
                           // photo. These tables were the last text-only surface
@@ -227,21 +227,12 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                                   .find((h) => h?.photos?.[0])
                               : undefined;
                           return (
-                          <td key={i} className={`px-4 py-3 align-middle ${i === 0 ? "font-medium" : "text-slate-600 dark:text-slate-400"}`}>
+                          <td key={i} className={i === 0 ? "font-medium" : "muted-cell"}>
                             {lead ? (
-                              <div className="flex items-center gap-3 min-w-[14rem]">
-                                <Link
-                                  href={`/denver/${lead.neighborhood_slug}/hotels/${lead.slug}`}
-                                  aria-label={lead.name}
-                                  className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800"
-                                >
+                              <div className="hotel-cell">
+                                <Link href={`/denver/${lead.neighborhood_slug}/hotels/${lead.slug}`} aria-hidden="true" tabIndex={-1} className="thumb">
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img decoding="async"
-                                    src={photoUrl(lead.photos![0])}
-                                    alt=""
-                                    loading="lazy"
-                                    className="w-full h-full object-cover"
-                                  />
+                                  <img src={photoUrl(lead.photos![0])} alt="" loading="lazy" decoding="async" width={48} height={48} />
                                 </Link>
                                 <span>
                                   <LinkedText text={c} index={mentions} seen={seen} />
@@ -354,7 +345,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
           </p>
           <Link
             href="/denver/where-to-stay"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors"
           >
             Where to stay in Denver &rarr;
           </Link>

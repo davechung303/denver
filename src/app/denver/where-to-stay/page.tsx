@@ -6,10 +6,11 @@ import StayAreaNav from "@/components/StayAreaNav";
 import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
 import { getHotelPool } from "@/lib/places";
 import { expediaDenverHotelsUrl, bookingCta } from "@/lib/travelpayouts";
-import { getPlaces, isRealHotel, photoUrl, type Place } from "@/lib/places";
+import { photoUrl, type Place } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import { hotelsInAreas } from "@/lib/areaHotels";
 import { STAY_AREAS, QUICK_PICKS, STAY_FAQS } from "@/lib/stayGuide";
 import { COMPARISONS } from "@/lib/stayComparisons";
 import { assignStayVideos, flattenStayVideos } from "@/lib/stayVideos";
@@ -51,29 +52,21 @@ function HotelCardStacked({ place }: { place: Place }) {
   const cta = bookingCta(place);
   const photo = place.photos?.[0];
   return (
-    <a
-      href={cta.href}
-      target="_blank"
-      rel={cta.rel}
-      className="group flex items-center gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 hover:border-denver-amber hover:shadow-md transition-all duration-200"
-    >
-      <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
-        {photo ? (
-          <img decoding="async" src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-        ) : (
-          <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
-        )}
-      </div>
-      <div className="flex flex-col justify-center gap-0.5 min-w-0 flex-1">
-        <h3 className="font-semibold text-sm leading-snug group-hover:text-denver-amber transition-colors line-clamp-2">{place.name}</h3>
-        {place.rating && (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
-            ★ {place.rating.toFixed(1)}
-            {place.review_count && <span className="text-slate-400 font-normal">({place.review_count.toLocaleString()})</span>}
+    <a href={cta.href} target="_blank" rel={cta.rel} className="hotel-mini">
+      <span className="thumb">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {photo && <img src={photoUrl(photo)} alt="" loading="lazy" decoding="async" width={56} height={56} />}
+      </span>
+      <span className="body">
+        <span className="name">{place.name}</span>
+        {place.rating != null && (
+          <span className="rating">
+            <span className="star">★</span> {place.rating.toFixed(1)}
+            {place.review_count ? <span className="muted"> ({place.review_count.toLocaleString()})</span> : null}
           </span>
         )}
-        <span className="text-xs text-denver-amber font-medium group-hover:underline">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
-      </div>
+        <span className="cta">{cta.kind === "direct" ? "Visit hotel site" : cta.kind === "search" ? "Compare Denver hotels" : "Book on Expedia"} &rarr;</span>
+      </span>
     </a>
   );
 }
@@ -87,29 +80,23 @@ export default async function WhereToStayPage() {
     NEIGHBORHOODS.some((nb) => nb.slug === a.slug)
   ).map((a) => a.slug);
 
-  // Fetch hotels for all neighborhoods in parallel
-  const [allVideos, mentionPool, hotelsByNeighborhood] = await Promise.all([
-    getAllVideos(),
-    getHotelPool(),
-    Promise.all(
-    HOTEL_NEIGHBORHOODS.map(async (hn) => {
-      const places = await getPlaces(hn.slug, "hotels");
-      const real = places.filter(isRealHotel).filter((p) => p.rating != null);
-      // Use real hotels; if fewer than 4, fall back to any rated lodging
-      const hotels = (real.length >= 4 ? real : places.filter((p) => p.rating != null)).slice(0, 4);
-      return { slug: hn.slug, hotels };
-    })
-    ),
-  ]);
-
+  const [allVideos, mentionPool] = await Promise.all([getAllVideos(), getHotelPool()]);
   // The pillar named dozens of real hotels in prose and linked none of them.
   const mentions = buildMentionIndex(mentionPool);
   const poolBySlug = new Map(mentionPool.map((h) => [h.slug, h]));
 
-  // Assigned in page order against a shared used-set, so no video repeats.
-  const areaVideos = assignStayVideos(allVideos, areaSlugs, 2);
-  const pageVideos = flattenStayVideos(areaVideos, areaSlugs);
-  const hotelMap = new Map(hotelsByNeighborhood.map((h) => [h.slug, h.hotels]));
+  // One short strip of channel videos at the end instead of two per area:
+  // they were related Denver watching, not hotel coverage, and 18 cards plus
+  // 20 VideoObjects were a large share of this page's weight.
+  const areaVideos = assignStayVideos(allVideos, areaSlugs, 1);
+  const pageVideos = flattenStayVideos(areaVideos, areaSlugs).slice(0, 3);
+
+  // Hotels by coordinates, not neighborhood_slug, and only ones with their own
+  // Expedia deep link: each hotel is assigned to the nearest area so none
+  // appears twice. The old per-slug query showed fallback "Compare Denver
+  // hotels" buttons, which waste the page's highest-intent clicks.
+  const areaPicks = hotelsInAreas(mentionPool, areaSlugs, { limit: 7 });
+  const hotelMap = new Map(Object.entries(areaPicks));
 
   return (
     <>
@@ -234,7 +221,7 @@ export default async function WhereToStayPage() {
       />
 
       {/* The logistics pages. Sourced, specific, and the reason people link to us. */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-14">
         <h2 className="text-2xl font-bold mb-2">The questions that actually decide it</h2>
         <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl mb-6">
           Every figure on these pages is sourced, and anything we could not verify from a primary source
@@ -362,46 +349,28 @@ export default async function WhereToStayPage() {
         </div>
       </section>
 
-      {/* Quick nav strip */}
-      <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2 py-3">
-            {HOTEL_NEIGHBORHOODS.map((hn) => (
-              <a
-                key={hn.slug}
-                href={`#${hn.slug}`}
-                className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap"
-              >
-                {NEIGHBORHOODS.find((nb) => nb.slug === hn.slug)?.name ?? hn.slug}
-              </a>
-            ))}
-            <Link href="/hotels/near-red-rocks" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Red Rocks shows
+      {/* Venue guides. This used to be a second sticky strip that also repeated
+          every neighborhood; StayAreaNav does that job now, and once the header
+          got shorter the old strip's second row showed through under it. */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <p className="kicker mb-3">Staying for a show or a game?</p>
+        <div className="flex flex-wrap gap-2">
+          {([
+            ["/hotels/near-red-rocks", "Red Rocks shows"],
+            ["/hotels/near-empower-field", "Broncos games"],
+            ["/hotels/near-mission-ballroom", "Mission Ballroom"],
+            ["/hotels/near-fiddlers-green", "Fiddler's Green"],
+            ["/hotels/near-convention-center", "Convention Center"],
+            ["/hotels/near-city-park", "City Park & Zoo"],
+            ["/hotels/near-botanic-gardens", "Botanic Gardens"],
+            ["/hotels/near-cherry-creek", "Cherry Creek"]
+          ] as const).map(([href, label]) => (
+            <Link key={href} href={href} className="px-3 py-1.5 text-sm rounded-sm border border-rule dark:border-white/15 hover:border-ink dark:hover:border-white transition-colors">
+              {label}
             </Link>
-            <Link href="/hotels/near-empower-field" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Broncos games
-            </Link>
-            <Link href="/hotels/near-mission-ballroom" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Mission Ballroom
-            </Link>
-            <Link href="/hotels/near-fiddlers-green" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Fiddler&apos;s Green
-            </Link>
-            <Link href="/hotels/near-convention-center" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Convention Center
-            </Link>
-            <Link href="/hotels/near-city-park" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              City Park &amp; Zoo
-            </Link>
-            <Link href="/hotels/near-botanic-gardens" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Botanic Gardens
-            </Link>
-            <Link href="/hotels/near-cherry-creek" className="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Cherry Creek
-            </Link>
-          </div>
+          ))}
         </div>
-      </div>
+      </section>
 
       {/* Neighborhood sections */}
       {HOTEL_NEIGHBORHOODS.map((hn) => {
@@ -452,10 +421,10 @@ export default async function WhereToStayPage() {
               </blockquote>
 
               <div className="mb-8 flex flex-wrap gap-2 text-sm">
-                <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 font-medium">
+                <span className="px-3 py-1 rounded-sm bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 font-medium">
                   Best for: {hn.bestFor}
                 </span>
-                <span className="px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 font-medium">
+                <span className="px-3 py-1 rounded-sm bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 font-medium">
                   Not for: {hn.notFor}
                 </span>
               </div>
@@ -499,7 +468,7 @@ export default async function WhereToStayPage() {
                 href={expediaDenverHotelsUrl(n.name)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors"
               >
                 Browse hotels in {n.name} &rarr;
               </a>
@@ -508,7 +477,7 @@ export default async function WhereToStayPage() {
                 <div className="mt-4 flex flex-wrap gap-2">
                   {hn.venueLinks.map((v) => (
                     <Link key={v.href} href={v.href}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors"
                     >
                       {v.label} &rarr;
                     </Link>
@@ -519,7 +488,7 @@ export default async function WhereToStayPage() {
 
             {asideHotels.length > 0 && (
               <aside className="hidden lg:block lg:col-span-1">
-                <div className="sticky top-24">
+                <div className="sticky" style={{ top: "var(--stay-nav-offset, 9rem)" }}>
                   <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
                     {`Popular hotels in ${n.name}`}
                   </h3>
@@ -552,7 +521,8 @@ export default async function WhereToStayPage() {
 
             {/* Hotels + map side by side */}
             {(() => {
-              const hotels = hotelMap.get(hn.slug) ?? [];
+              const asideIds = new Set(asideHotels.map((h) => h.place_id));
+              const hotels = (hotelMap.get(hn.slug) ?? []).filter((h) => !asideIds.has(h.place_id)).slice(0, 4);
               if (hotels.length === 0 && !n.stay22EmbedId) return null;
               return (
                 <div className="mt-8 flex flex-col lg:flex-row gap-4">
@@ -579,27 +549,21 @@ export default async function WhereToStayPage() {
               );
             })()}
 
-            {/* Related videos from the channel. There are no hotel-guide videos
-                yet, so these are framed as related Denver watching rather than
-                as coverage of this neighborhood. */}
-            {(areaVideos[hn.slug]?.videos.length ?? 0) > 0 && (
-              <div className="mt-10 max-w-3xl">
-                <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
-                  Related Denver videos
-                </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                  From Dave&apos;s channel &mdash; worth a watch while you&apos;re planning.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {areaVideos[hn.slug].videos.map((v) => (
-                    <VideoCard key={v.video_id} video={v} />
-                  ))}
-                </div>
-              </div>
-            )}
           </section>
         );
       })}
+
+      {pageVideos.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-rule dark:border-white/10">
+          <p className="kicker mb-2">From Dave&apos;s channel</p>
+          <h2 className="text-2xl font-bold mb-6">Worth a watch while you plan</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {pageVideos.map((v) => (
+              <VideoCard key={v.video_id} video={v} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* FAQ */}
       <section className="bg-slate-50 dark:bg-slate-900/50 py-20">
@@ -650,13 +614,13 @@ export default async function WhereToStayPage() {
         <div className="flex flex-wrap gap-4">
           <Link
             href="/denver"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors"
           >
             Browse all of Denver &rarr;
           </Link>
           <Link
             href="/denver/experiences"
-            className="inline-flex items-center gap-2 px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors"
           >
             See tours &amp; experiences &rarr;
           </Link>

@@ -238,7 +238,7 @@ export default async function ComparisonPage({
             <Link
               key={l.href}
               href={l.href}
-              className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-sm text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors"
             >
               {l.label}
             </Link>
@@ -323,7 +323,7 @@ export default async function ComparisonPage({
               <Link
                 key={side.area}
                 href={`/denver/${side.area}/hotels`}
-                className="inline-flex items-center px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
+                className="inline-flex items-center px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors"
               >
                 {side.name} hotels &rarr;
               </Link>
@@ -332,7 +332,7 @@ export default async function ComparisonPage({
               href={expediaDenverHotelsUrl()}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="inline-flex items-center px-5 py-2.5 border border-white/25 hover:border-denver-amber text-sm font-semibold rounded-full transition-colors"
+              className="inline-flex items-center px-5 py-2.5 border border-white/25 hover:border-denver-amber text-sm font-semibold rounded-sm transition-colors"
             >
               Search all Denver hotels &rarr;
             </a>

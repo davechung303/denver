@@ -41,6 +41,8 @@ interface Props {
   faqs?: FAQItem[];
 }
 
+const MAX_VIDEO_SCHEMA = 3;
+
 const DAVE_PERSON = {
   "@type": "Person",
   name: "Dave Chung",
@@ -139,7 +141,10 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, artic
 
   // VideoObject schema
   if (videos && videos.length > 0) {
-    for (const video of videos) {
+    // Capped at three. Google gives video rich results only where the video is
+    // the page's main content, so twenty VideoObjects on a hotel guide bought
+    // nothing and added ~30 KB to the page (Where to Stay shipped 20).
+    for (const video of videos.filter((v) => v.thumbnailUrl && v.uploadDate).slice(0, MAX_VIDEO_SCHEMA)) {
       // uploadDate is required on VideoObject, so a video without one is
       // skipped rather than marked up with a null.
       if (!video.thumbnailUrl || !video.uploadDate) continue;

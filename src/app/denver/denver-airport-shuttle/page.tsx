@@ -144,7 +144,7 @@ export default function DenverAirportShuttleGuide() {
           <p className="text-white/70 text-sm leading-relaxed mb-3">
             Only stay near the airport if you have a very early flight or a very late arrival. DEN is 30–45 minutes from the city, so an airport hotel otherwise means commuting in every day or skipping Denver entirely. For an early departure, an airport hotel with a free shuttle is perfect; for everything else, base downtown and take the train in.
           </p>
-          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-sm transition-colors">
             Hotels near Denver Airport &rarr;
           </Link>
         </div>
@@ -162,13 +162,13 @@ export default function DenverAirportShuttleGuide() {
         </div>
 
         <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-navy hover:bg-denver-navy/90 text-white text-sm font-semibold rounded-sm transition-colors">
             Hotels near Denver Airport &rarr;
           </Link>
-          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/denver/where-to-stay" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             Where to stay in Denver &rarr;
           </Link>
-          <Link href="/hotels" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels" className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-semibold rounded-sm transition-colors">
             All hotel guides &rarr;
           </Link>
         </div>

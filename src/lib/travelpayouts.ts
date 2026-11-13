@@ -55,8 +55,15 @@ const SPONSORED = "noopener noreferrer sponsored";
  * city-wide search box. That is a promise the click cannot keep, and a confused
  * click converts worse than an honest one.
  *
- * So: deep link where we have one, the hotel's own site where we don't, and a
- * plainly-labelled Denver search only when we have neither.
+ * So: deep link where we have one; otherwise a plainly-labelled Denver hotel
+ * search. The label never promises this hotel's rates, because the click lands
+ * on a city-wide search.
+ *
+ * Nov 2026: hotels without a deep link used to send readers to the hotel's own
+ * website, which earns nothing. Dave chose the affiliate Denver search instead
+ * so every hotel click can still earn; the hotel's site stays on its detail
+ * page. Building a deep link (scripts/export-hotels-missing-expedia-link.mjs)
+ * is still the better fix for any hotel that gets real clicks.
  */
 export function bookingCta(place: {
   expedia_affiliate_url?: string | null;
@@ -65,8 +72,5 @@ export function bookingCta(place: {
   if (place.expedia_affiliate_url) {
     return { href: place.expedia_affiliate_url, kind: "expedia", label: "Reserve on Expedia", short: "Book", rel: SPONSORED };
   }
-  if (place.website) {
-    return { href: place.website, kind: "direct", label: "Visit hotel site", short: "View website", rel: "noopener noreferrer" };
-  }
-  return { href: EXPEDIA_HOTELS_DENVER, kind: "search", label: "Compare Denver hotels", short: "Compare", rel: SPONSORED };
+  return { href: EXPEDIA_HOTELS_DENVER, kind: "search", label: "Compare Denver hotels", short: "Compare rates", rel: SPONSORED };
 }
