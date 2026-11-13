@@ -40,7 +40,7 @@ async function getStayPhotos(): Promise<Record<string, string>> {
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: { absolute: "Dave Loves Denver — Local Guides, Videos & Restaurant Reviews" },
+  title: { absolute: "Dave Loves Denver: Local Guides, Videos & Restaurant Reviews" },
   description:
     fitDescription("Hyperlocal Denver guides, restaurant reviews, hotel picks and neighborhood videos, written and filmed by a Denver local with 6.5 million views."),
   openGraph: {
