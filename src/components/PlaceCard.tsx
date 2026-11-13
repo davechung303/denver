@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { Place } from "@/lib/places";
 import { photoUrl } from "@/lib/places";
 import { bookingCta } from "@/lib/travelpayouts";
@@ -41,8 +41,10 @@ function PriceLevel({ level }: { level: number }) {
 }
 
 export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }: Props) {
-  const router = useRouter();
-  const href = `/denver/${neighborhoodSlug}/${categorySlug}/${place.slug}`;
+  // Link to the place's own canonical URL (the one in the sitemap). The page's
+  // URL can differ: subcategory pages pass the base category, and compound
+  // slugs like "restaurants-mexican_restaurant" would otherwise cost a 301 hop.
+  const href = `/denver/${place.neighborhood_slug || neighborhoodSlug}/${place.category_slug || categorySlug}/${place.slug}`;
   const photo = place.photos?.[0];
   const isOpen = place.hours?.openNow;
   const isHotel = categorySlug === "hotels";
@@ -50,8 +52,10 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
 
   return (
     <div className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200">
-      {/* Clickable card body — navigates to detail page */}
-      <div onClick={() => router.push(href)} className="flex flex-col flex-1 cursor-pointer">
+      {/* Card body is a real link. It used to be a div with an onClick, which
+          crawlers can't follow: about 2,100 place pages had no internal links
+          at all and were reachable only through the sitemap. */}
+      <Link href={href} className="flex flex-col flex-1">
         {/* Photo */}
         <div className="aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
           {photo ? (
@@ -118,7 +122,7 @@ export default function PlaceCard({ place, neighborhoodSlug, categorySlug, tag }
             </p>
           )}
         </div>
-      </div>
+      </Link>
 
       {/* Hotel CTA — outside the navigating div to avoid nested anchors */}
       {isHotel && (
