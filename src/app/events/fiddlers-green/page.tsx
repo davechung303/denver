@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Fiddler's Green Amphitheatre Events & Concert Schedule 2026",
+  title: fitTitle("Fiddler's Green Amphitheatre Events & Concert Schedule 2026"),
   description:
-    "Full schedule of upcoming concerts and shows at Fiddler's Green Amphitheatre in Greenwood Village. Browse events, buy tickets, and find nearby hotels.",
+    fitDescription("Full schedule of upcoming concerts and shows at Fiddler's Green Amphitheatre in Greenwood Village. Browse events, buy tickets, and find nearby hotels."),
   alternates: { canonical: "https://davelovesdenver.com/events/fiddlers-green" },
   openGraph: {
     title: "Fiddler's Green Amphitheatre Events & Concert Schedule 2026",
@@ -155,7 +156,7 @@ export default async function EventsFiddlersGreenPage() {
             <p className="text-white/70 text-sm max-w-md">DTC hotels put you minutes away. We cover the closest options and whether it&apos;s worth staying downtown instead.</p>
           </div>
           <Link href="/hotels/near-fiddlers-green"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Hotels near Fiddler&apos;s Green &rarr;
           </Link>
         </div>

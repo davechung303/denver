@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Ogden Theatre Denver Events & Show Schedule 2026",
+  title: fitTitle("Ogden Theatre Denver Events & Show Schedule 2026"),
   description:
-    "Full schedule of upcoming shows at the Ogden Theatre in Denver's Capitol Hill neighborhood. One of Denver's historic music venues — browse shows and buy tickets.",
+    fitDescription("Upcoming shows at the Ogden Theatre, a historic Capitol Hill music venue in Denver. Browse the full schedule and buy tickets."),
   alternates: { canonical: "https://davelovesdenver.com/events/ogden-theatre" },
   openGraph: {
     title: "Ogden Theatre Denver Events & Show Schedule 2026",
@@ -155,7 +156,7 @@ export default async function EventsOgdenTheatrePage() {
             <p className="text-white/70 text-sm max-w-md">Capitol Hill and downtown hotels keep you close to the Ogden and everything else Denver has to offer.</p>
           </div>
           <Link href="/denver/where-to-stay"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Where to stay in Denver &rarr;
           </Link>
         </div>

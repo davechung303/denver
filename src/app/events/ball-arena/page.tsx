@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Ball Arena Denver Events, Games & Concert Schedule 2026",
+  title: fitTitle("Ball Arena Denver Events, Games & Concert Schedule 2026"),
   description:
-    "Full schedule of upcoming Nuggets games, Avalanche games, and concerts at Ball Arena in downtown Denver. Buy tickets and find nearby hotels.",
+    fitDescription("Full schedule of upcoming Nuggets games, Avalanche games, and concerts at Ball Arena in downtown Denver. Buy tickets and find nearby hotels."),
   alternates: { canonical: "https://davelovesdenver.com/events/ball-arena" },
   openGraph: {
     title: "Ball Arena Denver Events & Schedule 2026",
@@ -162,7 +163,7 @@ export default async function EventsBallArenaPage() {
             <p className="text-white/70 text-sm max-w-md">LoDo and Jefferson Park are the closest neighborhoods with walkable hotel options. We break down the best picks.</p>
           </div>
           <Link href="/hotels/near-ball-arena"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Hotels near Ball Arena &rarr;
           </Link>
         </div>

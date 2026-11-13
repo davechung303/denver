@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { getAllVideos, isShort } from "@/lib/youtube";
 import VideosClient from "./VideosClient";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Videos",
-  description: "Watch all of Dave's Denver videos — neighborhood guides, restaurant reviews, hotel tours, and more.",
+  title: fitTitle("Videos"),
+  description: fitDescription("Watch all of Dave's Denver videos — neighborhood guides, restaurant reviews, hotel tours, and more."),
   robots: { index: false, follow: false }, // excluded from search indexing per plan
 };
 

@@ -30,7 +30,7 @@ export default function VideoCard({ video, neighborhood, category, short }: Prop
       <div className={`relative bg-slate-100 dark:bg-slate-800 overflow-hidden ${short ? "aspect-[9/16]" : "aspect-video"}`}>
         {video.thumbnail_url ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <img decoding="async"
             src={video.thumbnail_url}
             alt={video.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

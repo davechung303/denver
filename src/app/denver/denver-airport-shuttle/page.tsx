@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver Airport Shuttle Guide — DEN to Downtown, Hotels & the Mountains",
+  title: fitTitle("Denver Airport Shuttle Guide — DEN to Downtown & Mountains"),
   description:
-    "How to get from Denver International Airport (DEN) to where you're going: the A Line train to downtown, free hotel shuttles, shared-ride shuttles to the ski towns, and rideshare — what each costs and when to use it.",
+    fitDescription("Getting from Denver Airport (DEN) to where you're going: the A Line train downtown, free hotel shuttles, and shared-ride shuttles to the mountains."),
   alternates: { canonical: "https://davelovesdenver.com/denver/denver-airport-shuttle" },
   openGraph: {
     title: "Denver Airport Shuttle Guide — DEN to Downtown, Hotels & the Mountains",
@@ -143,7 +144,7 @@ export default function DenverAirportShuttleGuide() {
           <p className="text-white/70 text-sm leading-relaxed mb-3">
             Only stay near the airport if you have a very early flight or a very late arrival. DEN is 30–45 minutes from the city, so an airport hotel otherwise means commuting in every day or skipping Denver entirely. For an early departure, an airport hotel with a free shuttle is perfect; for everything else, base downtown and take the train in.
           </p>
-          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-denver-airport" className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors">
             Hotels near Denver Airport &rarr;
           </Link>
         </div>

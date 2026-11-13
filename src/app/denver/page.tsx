@@ -6,13 +6,14 @@ import { getBestOfDenver, getRecentlyAddedPlaces, getTrendingPlaces, isHiddenGem
 import { expediaDenverHotelsUrl, bookingCta } from "@/lib/travelpayouts";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Restaurants, Hotels & Things To Do in Denver, CO",
+  title: fitTitle("Best Restaurants, Hotels & Things To Do in Denver, CO"),
   description:
-    "The definitive Denver guide: top-rated restaurants, hotels, bars, coffee shops, and things to do in RiNo, LoHi, Capitol Hill, Cherry Creek, and every neighborhood — ranked by real reviews, not ads.",
+    fitDescription("Top-rated restaurants, hotels, bars, coffee and things to do in every Denver neighborhood, from RiNo and LoHi to Capitol Hill and Cherry Creek."),
   openGraph: {
     title: "Best of Denver — Restaurants, Hotels, Bars & Things To Do",
     description: "Top-rated places across RiNo, LoHi, Capitol Hill, Cherry Creek and every Denver neighborhood, ranked by real reviews.",
@@ -28,7 +29,7 @@ function PlacePhoto({ place, className }: { place: Place; className?: string }) 
   if (!photo) return <div className={`bg-slate-100 dark:bg-slate-800 ${className}`} />;
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <img decoding="async"
       src={photoUrl(photo)}
       alt={place.name}
       className={`object-cover ${className}`}
@@ -146,7 +147,7 @@ function HotelCard({ place }: { place: Place }) {
           href={cta.href}
           target="_blank"
           rel={cta.rel}
-          className="flex items-center justify-center w-full py-2 bg-denver-amber text-slate-900 text-sm font-bold rounded-xl hover:bg-amber-400 transition-colors"
+          className="flex items-center justify-center w-full py-2 bg-denver-amber text-white text-sm font-bold rounded-xl hover:bg-[#8c2b17] transition-colors"
         >
           {cta.label}
         </a>
@@ -253,7 +254,7 @@ export default async function BestOfDenverPage() {
               <a
                 key={cat.slug}
                 href={`#${cat.slug}`}
-                className="px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 hover:border-denver-amber transition-colors"
+                className="px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white hover:border-denver-amber transition-colors"
               >
                 {cat.name}
               </a>
@@ -304,12 +305,12 @@ export default async function BestOfDenverPage() {
                     <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
                       {photo && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={photoUrl(photo)} alt={place.name}
+                        <img decoding="async" src={photoUrl(photo)} alt={place.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         />
                       )}
-                      <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                      <span className="absolute top-2 left-2 bg-denver-amber text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                         NEW
                       </span>
                     </div>
@@ -361,14 +362,14 @@ export default async function BestOfDenverPage() {
                     <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
                       {photo && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <img decoding="async"
                           src={photoUrl(photo)}
                           alt={place.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         />
                       )}
-                      <span className="absolute top-2 right-2 bg-denver-amber text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      <span className="absolute top-2 right-2 bg-denver-amber text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                         +{place.velocity} reviews
                       </span>
                     </div>
@@ -611,7 +612,7 @@ export default async function BestOfDenverPage() {
                 className="group relative overflow-hidden rounded-xl aspect-video flex items-end p-3 hover:scale-[1.02] transition-transform"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
                 <span className="relative z-10 text-white text-xs font-bold leading-tight">{n.name}</span>
               </Link>

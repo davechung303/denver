@@ -58,7 +58,7 @@ export default function EventCard({ event }: Props) {
 
       {event.image_url && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <img decoding="async"
           src={event.image_url}
           alt={cleanName}
           className="w-20 h-20 object-cover rounded-lg shrink-0 relative z-10"

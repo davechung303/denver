@@ -1,30 +1,111 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens (redesign, Nov 2026). Editorial city guide: white page,
+ * near-black ink, one Red Rocks sandstone accent, hairline rules, square-ish
+ * corners. Fonts are self-hosted through next/font in app/layout.tsx:
+ *   --font-display  Archivo (variable width): headlines, UI, labels
+ *   --font-serif    Newsreader: long-form reading text
+ *   --font-mono     IBM Plex Mono: data (walk times, fees, counts, dates)
+ *
+ * The old names --denver-navy and --denver-amber are kept as aliases so the
+ * ~1,000 existing class usages pick up the new palette before each template
+ * is rebuilt: navy is now ink, amber is now sandstone.
+ */
 :root {
-  --background: #fafaf8;
-  --foreground: #1a1a2e;
-  --denver-navy: #0f1f3d;
-  --denver-amber: #f59e0b;
+  --background: #ffffff;
+  --foreground: #141414;
+  --ink: #141414;
+  --ink-muted: #5a5a55;
+  --rule: #d9d7d2;
+  --paper: #f3f2ef;
+  --sandstone: #a8341c;
+  --sandstone-light: #f0a98c;
+  --sage: #3f5e4b;
+  --denver-navy: var(--ink);
+  --denver-amber: var(--sandstone);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --color-paper: var(--paper);
+  --color-sandstone: var(--sandstone);
+  --color-sage: var(--sage);
   --color-denver-navy: var(--denver-navy);
   --color-denver-amber: var(--denver-amber);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-archivo);
+  --font-serif: var(--font-newsreader);
+  --font-mono: var(--font-plex-mono);
+  /* Corners: square by default. Small controls keep a hint of radius. */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f1117;
-    --foreground: #f0ede8;
+    --background: #121211;
+    --foreground: #edebe6;
+    --ink-muted: #a8a59e;
+    --rule: #34332f;
+    --paper: #1b1b19;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headlines: condensed, heavy, tight. Applies site-wide so existing pages
+   take on the new voice before their templates are rebuilt. */
+h1,
+h2 {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 78%;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+h3 {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 92%;
+}
+
+/* Long-form reading text (guide and article bodies opt in with .prose-serif). */
+.prose-serif {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* Contrast fixes while old templates still exist (unlayered, so these beat
+   the Tailwind utilities):
+   - sandstone text on ink sections would be 3:1, so it lightens there;
+   - in dark mode, sandstone text lightens for the same reason. */
+[class*="bg-denver-navy"] .text-denver-amber,
+[class*="from-denver-navy"] .text-denver-amber,
+.bg-ink .text-denver-amber {
+  color: var(--sandstone-light);
+}
+@media (prefers-color-scheme: dark) {
+  .text-denver-amber,
+  .text-sandstone {
+    color: var(--sandstone-light);
+  }
+}
+
+/* Focus that's visible on white and on ink. */
+:focus-visible {
+  outline: 2px solid var(--sandstone);
+  outline-offset: 2px;
 }

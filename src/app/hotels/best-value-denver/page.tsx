@@ -4,13 +4,14 @@ import { getBestValueHotels, isRealHotel, photoUrl, type Place } from "@/lib/pla
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { expediaDenverHotelsUrl, bookingCta } from "@/lib/travelpayouts";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Best Value Hotels in Denver — Affordable with Great Reviews (4.3+)",
+  title: fitTitle("Best Value Hotels in Denver — Affordable, 4.3+ Rated"),
   description:
-    "The best affordable hotels in Denver with excellent ratings — handpicked options under $$ with 4.3+ stars, organized by neighborhood. No overpriced mediocrity.",
+    fitDescription("The best affordable hotels in Denver with excellent ratings — handpicked options under $$ with 4.3+ stars, organized by neighborhood. No overpriced mediocrity."),
   alternates: { canonical: "https://davelovesdenver.com/hotels/best-value-denver" },
   openGraph: {
     title: "Best Value Hotels in Denver — Affordable & Highly Rated",
@@ -53,7 +54,7 @@ function HotelCard({ place }: { place: Place }) {
     >
       <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
         {photo ? (
-          <img src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          <img decoding="async" src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         ) : (
           <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
         )}
@@ -199,7 +200,7 @@ export default async function BestValueDenverHotelsPage() {
             <p className="text-white/70 text-sm">Compare prices and availability on Expedia — filters, maps, and real-time rates.</p>
           </div>
           <a href={expediaDenverHotelsUrl()} target="_blank" rel="noopener noreferrer sponsored"
-            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
           >
             Browse Expedia Denver hotels &rarr;
           </a>

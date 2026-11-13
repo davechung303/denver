@@ -117,13 +117,13 @@ const HOTEL_GUIDES = [
 
 export default function Footer() {
   return (
-    <footer className="bg-denver-navy text-white/70 mt-24">
+    <footer className="bg-ink text-white/75 mt-24 border-t border-ink">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-10">
 
           {/* Brand */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1">
-            <Link href="/" className="text-white font-bold text-lg hover:text-denver-amber transition-colors">
+            <Link href="/" className="font-display font-extrabold text-[21px] tracking-tight [font-stretch:112%] text-white hover:text-[#f0a98c] transition-colors">
               Dave Loves Denver
             </Link>
             <p className="mt-3 text-sm leading-relaxed max-w-xs">
@@ -142,7 +142,7 @@ export default function Footer() {
 
           {/* Neighborhoods */}
           <div className="col-span-1">
-            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Neighborhoods</p>
+            <p className="font-mono text-[12px] tracking-[0.06em] uppercase text-white/60 mb-4">Neighborhoods</p>
             <ul className="space-y-2">
               {TOP_NEIGHBORHOODS.map((n) => (
                 <li key={n.slug}>
@@ -152,7 +152,7 @@ export default function Footer() {
                 </li>
               ))}
               <li className="pt-1">
-                <Link href="/denver" className="text-sm text-denver-amber hover:underline font-medium">
+                <Link href="/denver" className="text-sm text-[#f0a98c] hover:underline font-medium">
                   All neighborhoods →
                 </Link>
               </li>
@@ -161,7 +161,7 @@ export default function Footer() {
 
           {/* Best Of */}
           <div className="col-span-1">
-            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Best Of Denver</p>
+            <p className="font-mono text-[12px] tracking-[0.06em] uppercase text-white/60 mb-4">Best Of Denver</p>
             <ul className="space-y-2">
               {BEST_OF.map((link) => (
                 <li key={link.href}>
@@ -175,7 +175,7 @@ export default function Footer() {
 
           {/* Explore */}
           <div className="col-span-1">
-            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Explore</p>
+            <p className="font-mono text-[12px] tracking-[0.06em] uppercase text-white/60 mb-4">Explore</p>
             <ul className="space-y-2">
               {EXPLORE.map((link) => (
                 <li key={link.href}>
@@ -189,7 +189,7 @@ export default function Footer() {
 
           {/* Venue Events */}
           <div className="col-span-1">
-            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Venue Events</p>
+            <p className="font-mono text-[12px] tracking-[0.06em] uppercase text-white/60 mb-4">Venue Events</p>
             <ul className="space-y-2">
               {VENUE_EVENTS.map((link) => (
                 <li key={link.href}>
@@ -203,7 +203,7 @@ export default function Footer() {
 
           {/* Hotel Guides */}
           <div className="col-span-1">
-            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Hotel Guides</p>
+            <p className="font-mono text-[12px] tracking-[0.06em] uppercase text-white/60 mb-4">Hotel Guides</p>
             <ul className="space-y-2">
               {HOTEL_GUIDES.map((link) => (
                 <li key={link.href}>
@@ -217,7 +217,7 @@ export default function Footer() {
 
           {/* Trip Planning */}
           <div className="col-span-1">
-            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-4">Trip Planning</p>
+            <p className="font-mono text-[12px] tracking-[0.06em] uppercase text-white/60 mb-4">Trip Planning</p>
             <ul className="space-y-2">
               {TRIP_PLANNING.map((link) => (
                 <li key={link.href}>
@@ -231,8 +231,8 @@ export default function Footer() {
 
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/10">
-          <p className="text-xs text-white/50 leading-relaxed max-w-3xl">
+        <div className="mt-16 pt-8 border-t border-white/15">
+          <p className="font-serif text-sm text-white/70 leading-relaxed max-w-3xl">
             Some links on this site &mdash; hotel bookings, event tickets and tours &mdash; are affiliate links.
             If you book through one, I earn a commission at no extra cost to you. It never changes what I recommend
             or how I rank it.
@@ -240,10 +240,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/30">
+          <p className="font-mono text-[12px] text-white/60">
             &copy; {new Date().getFullYear()} Dave Loves Denver. All rights reserved.
           </p>
-          <p className="text-xs text-white/30">
+          <p className="font-mono text-[12px] text-white/60">
             Denver, Colorado · davelovesdenver.com
           </p>
         </div>

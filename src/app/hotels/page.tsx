@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
   // Deliberately NOT "Where to Stay in Denver" — that is the pillar's query.
   // This page is the directory that feeds it.
-  title: "Denver Hotel Guides by Venue & Neighborhood",
+  title: fitTitle("Denver Hotel Guides by Venue & Neighborhood"),
   description:
-    "An index of every Denver hotel guide on the site — one for each major venue (Coors Field, Ball Arena, Red Rocks, the airport and more), plus the neighborhood breakdown and game-day parking.",
+    fitDescription("Every Denver hotel guide on the site: one for each major venue, from Coors Field and Ball Arena to Red Rocks and the airport, plus neighborhood guides."),
   alternates: { canonical: "https://davelovesdenver.com/hotels" },
   openGraph: {
     title: "Denver Hotel Guides by Venue & Neighborhood",
@@ -141,7 +142,7 @@ export default async function HotelsHubPage() {
                 >
                   {img ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={img} alt={`Hotels near ${v.name}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    <img decoding="async" src={img} alt={`Hotels near ${v.name}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-denver-navy to-slate-700" />
                   )}

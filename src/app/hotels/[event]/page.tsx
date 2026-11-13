@@ -7,6 +7,7 @@ import VenueHotelCard from "@/components/VenueHotelCard";
 import BookYourTrip from "@/components/BookYourTrip";
 import HowThisListWasMade from "@/components/HowThisListWasMade";
 import { EVENT_GUIDES, getEventGuide } from "@/lib/eventGuides";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
@@ -24,8 +25,8 @@ export async function generateMetadata({
   if (!g) return {};
   const url = `https://davelovesdenver.com/hotels/${g.slug}`;
   return {
-    title: g.metaTitle,
-    description: g.metaDescription,
+    title: fitTitle(g.metaTitle),
+    description: fitDescription(g.metaDescription),
     alternates: { canonical: url },
     openGraph: {
       title: g.ogTitle,

@@ -15,13 +15,14 @@ import { COMPARISONS } from "@/lib/stayComparisons";
 import { assignStayVideos, flattenStayVideos } from "@/lib/stayVideos";
 import { getAllVideos } from "@/lib/youtube";
 import VideoCard from "@/components/VideoCard";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Where to Stay in Denver — A Local's Neighborhood Guide",
+  title: fitTitle("Where to Stay in Denver — A Local's Neighborhood Guide"),
   description:
-    "Which Denver neighborhood to book, and who each one is wrong for. LoDo, RiNo, Cherry Creek, Cap Hill and more — with walk times, real costs and honest disqualifiers.",
+    fitDescription("Which Denver neighborhood to book, and who each one is wrong for: LoDo, RiNo, Cherry Creek, Cap Hill and more, with walk times and real costs."),
   openGraph: {
     title: "Where to Stay in Denver — Best Neighborhoods for Hotels",
     description:
@@ -58,7 +59,7 @@ function HotelCardStacked({ place }: { place: Place }) {
     >
       <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
         {photo ? (
-          <img src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          <img decoding="async" src={photoUrl(photo)} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         ) : (
           <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
         )}
@@ -192,7 +193,7 @@ export default async function WhereToStayPage() {
                       <span className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
                         {nb ? (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          <img decoding="async"
                             src={nb.image}
                             alt=""
                             loading="lazy"
@@ -431,7 +432,7 @@ export default async function WhereToStayPage() {
               <div className="relative inline-flex items-center gap-2 mb-5">
                 <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={n.image}
                     alt={n.name}
                     className="w-full h-full object-cover"
@@ -498,7 +499,7 @@ export default async function WhereToStayPage() {
                 href={expediaDenverHotelsUrl(n.name)}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
               >
                 Browse hotels in {n.name} &rarr;
               </a>

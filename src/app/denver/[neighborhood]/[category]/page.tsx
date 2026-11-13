@@ -14,6 +14,7 @@ import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
 import { bookingCta } from "@/lib/travelpayouts";
+import { seoMeta } from "@/lib/seo";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up fresh photo names after monthly refresh
 export const dynamicParams = true; // still render unknown combinations on-demand
@@ -52,15 +53,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (n && !c) redirectCompoundCategory(nSlug, cSlug);
   if (!n || !c) notFound();
 
-  const title = `Best ${c.name} near ${n.name}, Denver`;
-  const description = `Find the best ${c.name.toLowerCase()} in ${n.name} (${n.tagline}), Denver. Local picks, Google ratings, and real recommendations from someone who actually lives here.`;
+  const meta = seoMeta(
+    `Best ${c.name} in ${n.name}, Denver`,
+    `The best ${c.name.toLowerCase()} in ${n.name}, Denver, ranked by rating and review volume. Local picks with hours, maps and what's worth the trip.`,
+  );
 
   return {
-    title,
-    description,
+    title: meta.title,
+    description: meta.description,
     openGraph: {
-      title,
-      description,
+      title: meta.ogTitle,
+      description: meta.description,
       url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}`,
     },
     alternates: {
@@ -191,6 +194,17 @@ export default async function CategoryPage({ params }: Props) {
           videoId: v.video_id,
         }))}
         faqs={categoryFaqs}
+        itemLists={
+          scored.length > 0
+            ? [{
+                name: `Best ${c.name} in ${n.name}, Denver`,
+                items: scored.slice(0, 20).map((p) => ({
+                  name: p.name,
+                  url: `/denver/${p.neighborhood_slug ?? nSlug}/${p.category_slug ?? cSlug}/${p.slug}`,
+                })),
+              }]
+            : undefined
+        }
       />
 
       {/* Breadcrumb */}
@@ -210,7 +224,7 @@ export default async function CategoryPage({ params }: Props) {
           {n.name} &middot; {n.tagline}
         </p>
         <h1 className="text-4xl md:text-5xl font-bold">
-          Best {c.name} near {n.name}
+          Best {c.name} in {n.name}
         </h1>
         <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">
           {description}
@@ -240,7 +254,7 @@ export default async function CategoryPage({ params }: Props) {
               <Link
                 key={s.slug}
                 href={`/denver/${nSlug}/${cSlug}/${s.slug}`}
-                className="px-4 py-1.5 bg-denver-amber/10 text-denver-amber border border-denver-amber/30 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors"
+                className="px-4 py-1.5 bg-denver-amber/10 text-denver-amber border border-denver-amber/30 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors"
               >
                 {s.name}
               </Link>
@@ -256,7 +270,7 @@ export default async function CategoryPage({ params }: Props) {
             <Link
               key={cat.slug}
               href={`/denver/${nSlug}/${cat.slug}`}
-              className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-slate-900 transition-colors"
+              className="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-sm font-medium hover:bg-denver-amber hover:text-white transition-colors"
             >
               {cat.name}
             </Link>
@@ -292,7 +306,7 @@ export default async function CategoryPage({ params }: Props) {
                         <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
                           {photo ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img
+                            <img loading="lazy" decoding="async"
                               src={photoUrl(photo)}
                               alt={place.name}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -300,7 +314,7 @@ export default async function CategoryPage({ params }: Props) {
                           ) : (
                             <div className="w-full h-full" />
                           )}
-                          <span className="absolute top-2 left-2 bg-denver-amber text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                          <span className="absolute top-2 left-2 bg-denver-amber text-white text-xs font-bold px-2 py-0.5 rounded-full">
                             #{i + 1}
                           </span>
                         </div>
@@ -349,7 +363,7 @@ export default async function CategoryPage({ params }: Props) {
                             href={cta.href}
                             target="_blank"
                             rel={cta.rel}
-                            className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
+                            className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-white text-sm font-semibold rounded-xl hover:bg-[#8c2b17] transition-colors"
                           >
                             {cta.label}
                           </a>

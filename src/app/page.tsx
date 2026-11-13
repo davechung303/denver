@@ -7,6 +7,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import { supabase } from "@/lib/supabase";
 import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitDescription } from "@/lib/seo";
 
 const STAY_VENUES = [
   { href: "/hotels/near-coors-field", label: "Coors Field", sub: "Rockies games in LoDo", nb: "lodo" },
@@ -39,9 +40,9 @@ async function getStayPhotos(): Promise<Record<string, string>> {
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Dave Loves Denver — Local Denver Guides, Videos & Restaurant Reviews",
+  title: { absolute: "Dave Loves Denver: Local Guides, Videos & Restaurant Reviews" },
   description:
-    "Hyperlocal Denver guides, restaurant reviews, hotel picks, and neighborhood videos — written and filmed by a Denver local with 6.5 million views across YouTube and TikTok.",
+    fitDescription("Hyperlocal Denver guides, restaurant reviews, hotel picks and neighborhood videos, written and filmed by a Denver local with 6.5 million views."),
   openGraph: {
     title: "Dave Loves Denver",
     description:
@@ -91,8 +92,8 @@ export default async function HomePage() {
   const stayPhotos = await getStayPhotos();
   return (
     <>
+      {/* WebSite + Person are emitted once by the root layout. */}
       <SchemaMarkup
-        websiteSearch
         videos={videos.map((v) => ({
           name: v.title,
           description: v.description,
@@ -121,7 +122,7 @@ export default async function HomePage() {
               <div className="mt-6 flex flex-wrap gap-4">
                 <Link
                   href="/articles"
-                  className="inline-flex items-center gap-2 bg-denver-amber text-slate-900 font-semibold px-6 py-3 rounded-full hover:bg-amber-400 transition-colors"
+                  className="inline-flex items-center gap-2 bg-denver-amber text-white font-semibold px-6 py-3 rounded-full hover:bg-[#8c2b17] transition-colors"
                 >
                   Read the Guides
                 </Link>
@@ -171,22 +172,22 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <p className="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-6">As heard on</p>
           <div className="flex flex-wrap items-center justify-center gap-10 sm:gap-16">
-            <img
+            <img loading="lazy" decoding="async"
               src="/logo-koa-radio.webp"
               alt="KOA 850 AM 94.1 FM News Talk Sports"
               className="h-12 sm:h-14 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
             />
-            <img
+            <img loading="lazy" decoding="async"
               src="/logo-citycast-denver.avif"
               alt="City Cast Denver"
               className="h-10 sm:h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
             />
-            <img
+            <img loading="lazy" decoding="async"
               src="https://i.scdn.co/image/ab6765630000ba8a2261e2b686f77054c4dd1686"
               alt="Off the Clock with Jon Eks"
               className="h-12 sm:h-14 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity rounded-lg"
             />
-            <img
+            <img loading="lazy" decoding="async"
               src="https://www.witness.org/wp-content/uploads/2014/07/boingboing-700-175.png"
               alt="BoingBoing.net"
               className="h-8 sm:h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
@@ -229,7 +230,7 @@ export default async function HomePage() {
                     <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
                       {thumb && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={thumb} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                        <img decoding="async" src={thumb} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                       )}
                     </div>
                     <div className="p-4 flex flex-col gap-1.5 flex-1">
@@ -268,7 +269,7 @@ export default async function HomePage() {
               style={{ background: undefined }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img loading="lazy" decoding="async" src={n.image} alt={n.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/70 transition-all" />
               <div className="relative z-10">
                 <p className="text-xs font-medium text-white/70 mb-1">{n.tagline}</p>
@@ -305,7 +306,7 @@ export default async function HomePage() {
               >
                 {img ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={img} alt={`Hotels near ${v.label}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  <img decoding="async" src={img} alt={`Hotels near ${v.label}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-denver-navy to-slate-700" />
                 )}

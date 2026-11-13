@@ -147,7 +147,7 @@ export default function SchemaMarkup({ breadcrumbs, videos, websiteSearch, artic
         "@context": "https://schema.org",
         "@type": "VideoObject",
         name: video.name,
-        description: video.description ?? video.name,
+        description: video.description?.trim() || video.name,
         thumbnailUrl: video.thumbnailUrl,
         uploadDate: video.uploadDate,
         embedUrl: `https://www.youtube.com/embed/${video.videoId}`,

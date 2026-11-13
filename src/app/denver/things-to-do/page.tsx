@@ -10,13 +10,14 @@ import type { DenverEvent } from "@/lib/ticketmaster";
 import type { FeverEvent } from "@/lib/fever";
 import ViatorProductCard from "@/components/ViatorProductCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Things To Do in Denver — Events, Tours & Experiences",
+  title: fitTitle("Things To Do in Denver — Events, Tours & Experiences"),
   description:
-    "Everything worth doing in Denver: upcoming concerts and shows, bookable experiences, top-rated tours, and the best attractions — all in one place.",
+    fitDescription("Everything worth doing in Denver: upcoming concerts and shows, bookable experiences, top-rated tours, and the best attractions — all in one place."),
   alternates: { canonical: "https://davelovesdenver.com/denver/things-to-do" },
 };
 
@@ -52,7 +53,7 @@ function EventCard({ event }: { event: DenverEvent }) {
       className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 hover:border-denver-amber hover:shadow-md transition-all duration-200"
     >
       {event.image_url ? (
-        <img src={event.image_url} alt={event.name} className="w-16 h-16 object-cover rounded-lg shrink-0" loading="lazy" />
+        <img decoding="async" src={event.image_url} alt={event.name} className="w-16 h-16 object-cover rounded-lg shrink-0" loading="lazy" />
       ) : (
         <div className="w-16 h-16 rounded-lg shrink-0 bg-denver-amber/10 flex items-center justify-center">
           <svg className="w-7 h-7 text-denver-amber/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,7 +80,7 @@ function FeverCard({ event }: { event: FeverEvent }) {
       className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 hover:border-denver-amber hover:shadow-md transition-all duration-200"
     >
       {event.image_url ? (
-        <img src={event.image_url} alt={event.name} className="w-16 h-16 object-cover rounded-lg shrink-0" loading="lazy" />
+        <img decoding="async" src={event.image_url} alt={event.name} className="w-16 h-16 object-cover rounded-lg shrink-0" loading="lazy" />
       ) : (
         <div className="w-16 h-16 rounded-lg shrink-0 bg-denver-amber/10 flex items-center justify-center">
           <svg className="w-7 h-7 text-denver-amber/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +106,7 @@ function AttractionCard({ place }: { place: Place }) {
   return (
     <a href={href} className="group flex gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:border-denver-amber hover:shadow-md transition-all duration-200">
       {photo ? (
-        <img src={photoUrl(photo)} alt={place.name} className="w-20 h-20 object-cover shrink-0" loading="lazy" />
+        <img decoding="async" src={photoUrl(photo)} alt={place.name} className="w-20 h-20 object-cover shrink-0" loading="lazy" />
       ) : (
         <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 shrink-0" />
       )}

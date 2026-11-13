@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Paramount Theatre Denver Events & Show Schedule 2026",
+  title: fitTitle("Paramount Theatre Denver Events & Show Schedule 2026"),
   description:
-    "Full schedule of upcoming shows at the Paramount Theatre in downtown Denver. A landmark 2,000-capacity venue — browse shows and buy tickets.",
+    fitDescription("Full schedule of upcoming shows at the Paramount Theatre in downtown Denver. A landmark 2,000-capacity venue — browse shows and buy tickets."),
   alternates: { canonical: "https://davelovesdenver.com/events/paramount-theatre" },
   openGraph: {
     title: "Paramount Theatre Denver Events & Show Schedule 2026",
@@ -155,7 +156,7 @@ export default async function EventsParamountTheatrePage() {
             <p className="text-white/70 text-sm max-w-md">The Convention Center area and LoDo have excellent hotel options within easy walking distance of the Paramount.</p>
           </div>
           <Link href="/hotels/near-convention-center"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Hotels near downtown Denver &rarr;
           </Link>
         </div>

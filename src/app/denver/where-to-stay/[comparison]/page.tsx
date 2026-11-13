@@ -11,6 +11,7 @@ import ExperiencesStrip from "@/components/ExperiencesStrip";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import { COMPARISONS, getComparison } from "@/lib/stayComparisons";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
@@ -28,8 +29,8 @@ export async function generateMetadata({
   if (!c) return {};
   const url = `https://davelovesdenver.com/denver/where-to-stay/${c.slug}`;
   return {
-    title: c.metaTitle,
-    description: c.metaDescription,
+    title: fitTitle(c.metaTitle),
+    description: fitDescription(c.metaDescription),
     alternates: { canonical: url },
     openGraph: { title: c.ogTitle, description: c.ogDescription, url },
   };
@@ -322,7 +323,7 @@ export default async function ComparisonPage({
               <Link
                 key={side.area}
                 href={`/denver/${side.area}/hotels`}
-                className="inline-flex items-center px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors"
+                className="inline-flex items-center px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors"
               >
                 {side.name} hotels &rarr;
               </Link>

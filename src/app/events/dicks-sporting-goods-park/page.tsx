@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Dick's Sporting Goods Park Events & Rapids Schedule 2026",
+  title: fitTitle("Dick's Sporting Goods Park Events & Rapids Schedule 2026"),
   description:
-    "Full schedule of Colorado Rapids games and events at Dick's Sporting Goods Park in Commerce City. Buy tickets and plan your visit to Denver's soccer stadium.",
+    fitDescription("Full schedule of Colorado Rapids games and events at Dick's Sporting Goods Park in Commerce City, with tickets and tips for planning your visit."),
   alternates: { canonical: "https://davelovesdenver.com/events/dicks-sporting-goods-park" },
   openGraph: {
     title: "Dick's Sporting Goods Park Events & Rapids Schedule 2026",
@@ -155,7 +156,7 @@ export default async function EventsDicksSportingGoodsParkPage() {
             <p className="text-white/70 text-sm max-w-md">Stay downtown and drive or rideshare to the match — it&apos;s 15 minutes and you&apos;ll have the rest of the city at your disposal.</p>
           </div>
           <Link href="/denver/where-to-stay"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Where to stay in Denver &rarr;
           </Link>
         </div>

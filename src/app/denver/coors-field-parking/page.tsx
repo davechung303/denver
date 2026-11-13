@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Coors Field Parking Guide — Where to Park for a Rockies Game (From a Local)",
+  title: fitTitle("Coors Field Parking Guide — Where to Park for a Rockies Game"),
   description:
-    "Everything you need to know about parking at Coors Field for a Rockies game: official lots vs. nearby garages, what game-day parking actually costs, how to reserve ahead, free and cheap options, and the light-rail move that skips it all.",
+    fitDescription("Where to park for a Rockies game at Coors Field: official lots vs. nearby garages, what game-day parking actually costs, and when to skip the car."),
   alternates: { canonical: "https://davelovesdenver.com/denver/coors-field-parking" },
   openGraph: {
     title: "Coors Field Parking Guide — Where to Park for a Rockies Game",
@@ -151,7 +152,7 @@ export default function CoorsFieldParkingGuide() {
           <p className="text-white/80 text-sm leading-relaxed">
             <strong>Stay walkable.</strong> Book a LoDo hotel and the whole night is on foot: walk to Blake Street for pregame, walk into the park, walk back when you&apos;re ready. It&apos;s the best version of a Rockies game night — and the hotels a few blocks out are often cheaper than a game-day parking spot plus a rideshare each way.
           </p>
-          <Link href="/hotels/near-coors-field" className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-amber-500 text-white text-sm font-semibold rounded-full transition-colors">
+          <Link href="/hotels/near-coors-field" className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-denver-amber hover:bg-[#8c2b17] text-white text-sm font-semibold rounded-full transition-colors">
             Hotels walking distance to Coors Field &rarr;
           </Link>
         </div>

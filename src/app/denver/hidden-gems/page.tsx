@@ -4,13 +4,14 @@ import { NEIGHBORHOODS, CATEGORIES, isInNeighborhood } from "@/lib/neighborhoods
 import { getAllHiddenGems, isRealCoffeeShop, isRealRestaurant, photoUrl, type Place } from "@/lib/places";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Denver Hidden Gem Restaurants & Local Favorites — Under the Radar Picks",
+  title: fitTitle("Denver Hidden Gem Restaurants — Under-the-Radar Local Picks"),
   description:
-    "The best-kept secrets in Denver: restaurants, coffee shops, and things to do rated 4.5+ with under 500 reviews — organized by neighborhood so you find gems wherever you're headed.",
+    fitDescription("Denver's best-kept secrets: restaurants, coffee shops and things to do rated 4.5+ with under 500 reviews, organized by neighborhood."),
   openGraph: {
     title: "Denver's Hidden Gems — Under-the-Radar Restaurants & Local Favorites",
     description: "Rated 4.5+ with under 500 reviews — the places Denver locals know that haven't blown up yet.",
@@ -33,7 +34,7 @@ function GemCard({ place }: { place: Place }) {
       <div className="relative w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <img decoding="async"
             src={photoUrl(photo)}
             alt={place.name}
             className="w-full h-full object-cover"
@@ -206,7 +207,7 @@ export default async function HiddenGemsPage() {
           </div>
           <Link
             href="/denver"
-            className="shrink-0 px-6 py-3 bg-denver-amber text-slate-900 font-bold rounded-xl hover:bg-amber-400 transition-colors"
+            className="shrink-0 px-6 py-3 bg-denver-amber text-white font-bold rounded-xl hover:bg-[#8c2b17] transition-colors"
           >
             Best of Denver &rarr;
           </Link>

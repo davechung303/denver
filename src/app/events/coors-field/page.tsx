@@ -4,13 +4,14 @@ import { getEventsForVenueFromAPI } from "@/lib/ticketmaster";
 import { ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import EventCard from "@/components/EventCard";
 import BookYourTrip from "@/components/BookYourTrip";
+import { fitTitle, fitDescription } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Coors Field Events & Rockies Game Schedule 2026",
+  title: fitTitle("Coors Field Events & Rockies Game Schedule 2026"),
   description:
-    "Full schedule of Colorado Rockies games and events at Coors Field in LoDo Denver. Buy tickets, plan your visit, and find nearby hotels.",
+    fitDescription("Full schedule of Colorado Rockies games and events at Coors Field in LoDo Denver. Buy tickets, plan your visit, and find nearby hotels."),
   alternates: { canonical: "https://davelovesdenver.com/events/coors-field" },
   openGraph: {
     title: "Coors Field Events & Rockies Schedule 2026",
@@ -155,7 +156,7 @@ export default async function EventsCoorsFieldPage() {
             <p className="text-white/70 text-sm max-w-md">Several LoDo hotels are within easy walking distance of Coors Field. We cover the best options and what to expect.</p>
           </div>
           <Link href="/hotels/near-coors-field"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-amber-500 text-white font-semibold rounded-full transition-colors text-sm">
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-denver-amber hover:bg-[#8c2b17] text-white font-semibold rounded-full transition-colors text-sm">
             Hotels near Coors Field &rarr;
           </Link>
         </div>

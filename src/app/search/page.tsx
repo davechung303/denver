@@ -59,7 +59,7 @@ function SearchResultCard({ place }: { place: Place }) {
       <Link href={href} className="block w-32 sm:w-40 flex-shrink-0 relative overflow-hidden bg-slate-100 dark:bg-slate-800">
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <img decoding="async"
             src={photoUrl(photo)}
             alt={place.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -152,7 +152,7 @@ function SearchResultCard({ place }: { place: Place }) {
               href={bookingCta(place).href}
               target="_blank"
               rel={bookingCta(place).rel}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-denver-amber text-slate-900 text-xs font-semibold rounded-lg hover:bg-amber-400 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-denver-amber text-white text-xs font-semibold rounded-lg hover:bg-[#8c2b17] transition-colors"
             >
               {bookingCta(place).label}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -264,7 +264,7 @@ export default async function SearchPage({
             <p className="text-sm text-slate-400 mb-8">Try a different search — neighborhood name, restaurant type, or business name.</p>
             <Link
               href="/denver"
-              className="inline-flex items-center px-5 py-2.5 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
+              className="inline-flex items-center px-5 py-2.5 bg-denver-amber text-white text-sm font-semibold rounded-xl hover:bg-[#8c2b17] transition-colors"
             >
               Browse all Denver guides
             </Link>

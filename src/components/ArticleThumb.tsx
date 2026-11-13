@@ -10,7 +10,7 @@ interface Props {
 
 export default function ArticleThumb({ src, rawSrc, fallbackSrc, alt, className }: Props) {
   return (
-    <img
+    <img decoding="async"
       src={src}
       alt={alt}
       className={className}
