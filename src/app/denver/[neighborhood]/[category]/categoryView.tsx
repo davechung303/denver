@@ -212,7 +212,7 @@ export async function CategoryView({ nSlug, cSlug, page }: { nSlug: string; cSlu
         </p>
         <h1 className="text-4xl md:text-5xl font-bold">
           Best {c.name} in {n.name}
-          {page > 1 && <span className="block mt-2 text-lg font-normal text-ink-muted dark:text-white/60">Page {page} of {totalPages}</span>}
+          {page > 1 && <span className="kicker block mt-3 [font-stretch:100%]">Page {page} of {totalPages}</span>}
         </h1>
         <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">
           {description}
