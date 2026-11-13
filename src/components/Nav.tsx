@@ -47,7 +47,7 @@ export default function Nav() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1 whitespace-nowrap">
             {/* Denver dropdown */}
             <div className="relative">
               <button
