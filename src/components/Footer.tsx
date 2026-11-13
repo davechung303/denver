@@ -18,7 +18,7 @@ const TOP_NEIGHBORHOODS = [
   { slug: "jefferson-park", name: "Jefferson Park" },
   { slug: "curtis-park", name: "Curtis Park" },
   { slug: "downtown", name: "Downtown" },
-  { slug: "denver-suburbs", name: "Denver Suburbs" },
+  { slug: "denver-suburbs", name: "Greater Denver Area" },
   { slug: "airport", name: "DEN Airport Area" },
 ];
 

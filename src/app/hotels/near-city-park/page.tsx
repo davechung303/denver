@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import { photoUrl, getHotelPool } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
+import { hotelsNearVenue } from "@/lib/areaHotels";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import BookYourTrip from "@/components/BookYourTrip";
 
@@ -52,15 +53,9 @@ const FAQS = [
 
 
 export default async function HotelsNearCityParkPage() {
-  const [uptownPl, downtownPl] = await Promise.all([
-    getPlaces("uptown", "hotels"),
-    getPlaces("downtown", "hotels"),
-  ]);
-  const hotels = [...uptownPl, ...downtownPl]
-    .filter(isRealHotel)
-    .filter((p) => p.rating != null)
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    .slice(0, 6);
+  const hotelPool = await getHotelPool();
+  // Ranked by distance from the venue, not by which neighborhood a hotel is filed under.
+  const hotels = hotelsNearVenue(hotelPool, "/hotels/near-city-park", 1.5);
   const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (

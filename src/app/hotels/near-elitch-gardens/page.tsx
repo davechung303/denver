@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import { photoUrl, getHotelPool } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
+import { hotelsNearVenue } from "@/lib/areaHotels";
 import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
@@ -54,16 +55,12 @@ const FAQS = [
 
 
 export default async function HotelsNearElitchGardensPage() {
-  const [jeffPl, sloanPl, events] = await Promise.all([
-    getPlaces("jefferson-park", "hotels"),
-    getPlaces("sloan-lake", "hotels"),
+  const [hotelPool, events] = await Promise.all([
+    getHotelPool(),
     getEventsForVenue("Elitch Gardens", 6),
   ]);
-  const seen = new Set<string>();
-  const hotels = [...jeffPl, ...sloanPl]
-    .filter(isRealHotel).filter((p) => p.rating != null)
-    .filter((p) => { if (seen.has(p.place_id)) return false; seen.add(p.place_id); return true; })
-    .slice(0, 6);
+  // Ranked by distance from the venue, not by which neighborhood a hotel is filed under.
+  const hotels = hotelsNearVenue(hotelPool, "/hotels/near-elitch-gardens", 1.5);
   const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (

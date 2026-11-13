@@ -111,7 +111,9 @@ export default async function BestSteakhousesPage() {
 
   const davesPicks = DAVES_PICKS_KEYS
     .map((key) => {
-      const place = (davesPicksRaw ?? []).find((p) => p.slug === key.slug && p.neighborhood_slug === key.neighborhood_slug);
+      const place = ((davesPicksRaw ?? []).find((p) => p.slug === key.slug && p.neighborhood_slug === key.neighborhood_slug)
+        // Places are re-filed by coordinates now, so the hint can go stale; fall back to the slug.
+        ?? (davesPicksRaw ?? []).find((p) => p.slug === key.slug));
       return place ? { place: place as Place, note: key.note } : null;
     })
     .filter(Boolean) as { place: Place; note: string }[];

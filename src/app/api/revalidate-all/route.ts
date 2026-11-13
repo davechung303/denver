@@ -68,6 +68,13 @@ export async function GET(req: Request) {
   revalidatePath("/articles/[slug]", "page");
   revalidatePath("/videos");
   revalidatePath("/events");
+  // Every page of the dynamic neighborhood routes, whatever its URL. This is
+  // what reaches compound-category URLs (/restaurants-mexican_restaurant/...)
+  // and the old URLs of places that moved neighborhoods: without it they keep
+  // serving their cached page instead of redirecting to the new one.
+  revalidatePath("/denver/[neighborhood]", "page");
+  revalidatePath("/denver/[neighborhood]/[category]", "page");
+  revalidatePath("/denver/[neighborhood]/[category]/[slug]", "page");
   for (const n of NEIGHBORHOODS) {
     revalidatePath(`/denver/${n.slug}`);
     for (const c of CATEGORIES) {

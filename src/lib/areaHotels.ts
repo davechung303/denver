@@ -17,6 +17,7 @@
 // with a fallback.
 
 import { getNeighborhood } from "@/lib/neighborhoods";
+import { VENUES } from "@/lib/venueProximity";
 import type { Place } from "@/lib/places";
 
 const MILES_PER_KM = 0.621371;
@@ -222,11 +223,38 @@ export function hotelsForAreaListing(
   if (!area) return [];
   const radius = Math.max(RADIUS_MILES[areaSlug] ?? DEFAULT_RADIUS_MILES, 1.0);
 
+  // Since Nov 2026, places.neighborhood_slug is set from coordinates against
+  // Denver's official neighborhood boundaries (neighborhoodResolver.ts), so a
+  // hotel filed here really is here. That matters for the big outer areas
+  // (West Denver, Southeast Denver, Tech Center), where a radius around one
+  // center point misses most of the neighborhood.
   return pool
     .filter((p) => p.lat != null && p.lng != null)
     .map((p) => ({ p, d: haversineMiles(p.lat as number, p.lng as number, area.lat, area.lng) }))
-    .filter((x) => x.d <= radius)
+    .filter((x) => x.d <= radius || x.p.neighborhood_slug === areaSlug)
     .sort((a, b) => a.d - b.d)
     .slice(0, limit)
     .map((x) => x.p);
+}
+
+/**
+ * Hotels near a venue page's venue, best first.
+ *
+ * The /hotels/near-* pages used to pull "every hotel filed under these two
+ * neighborhoods" and sort by rating, so Fiddler's Green showed the top-rated
+ * hotels anywhere in the suburbs and the result changed whenever a place was
+ * re-filed. This works off the venue's coordinates (venueProximity.ts) instead.
+ * Unlike hotelsInArea() it doesn't demand an affiliate link: these pages list
+ * what's nearby and each card falls back to the hotel's own site.
+ */
+export function hotelsNearVenue(pool: Place[], venueHref: string, radiusMiles: number, limit = 6): Place[] {
+  const v = VENUES.find((x) => x.href === venueHref);
+  if (!v) return [];
+  const near = pool
+    .filter((p) => p.lat != null && p.lng != null && p.rating != null)
+    .filter((p) => !p.types?.some((t) => EXCLUDE_TYPES.has(t)))
+    .filter((p) => !NOT_ROOM_RANKED.has(p.slug))
+    .map((p) => ({ p, d: haversineMiles(p.lat as number, p.lng as number, v.lat, v.lng) }))
+    .filter((x) => x.d <= radiusMiles);
+  return rank(near, limit);
 }

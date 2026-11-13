@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import { photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
+import { hotelsNearVenue } from "@/lib/areaHotels";
 import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
@@ -60,17 +61,12 @@ const FAQS = [
 
 
 export default async function HotelsNearEmpowerFieldPage() {
-  const [hotelPool, lodoPl, jeffPl, events] = await Promise.all([
+  const [hotelPool, events] = await Promise.all([
     getHotelPool(),
-    getPlaces("lodo", "hotels"),
-    getPlaces("jefferson-park", "hotels"),
     getEventsForVenue("Empower Field", 6),
   ]);
-  const hotels = [...lodoPl, ...jeffPl]
-    .filter(isRealHotel)
-    .filter((p) => p.rating != null)
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    .slice(0, 6);
+  // Ranked by distance from the venue, not by which neighborhood a hotel is filed under.
+  const hotels = hotelsNearVenue(hotelPool, "/hotels/near-empower-field", 1.5);
   const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (

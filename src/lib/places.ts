@@ -835,11 +835,15 @@ export async function getPlaces(
   // Return whatever Supabase has — stale or fresh. Never call Google from a page render.
   // Google fetches only happen via the /api/refresh-places admin route (weekly cron).
   // This prevents surprise API bills from ISR revalidation or build-time pre-rendering.
+  // Include places cached under a compound subcategory slug (e.g.
+  // "restaurants-mexican_restaurant"). They're ordinary restaurants and bars
+  // that a subcategory search happened to find, but filtering on the exact slug
+  // kept them off the category page, so hundreds of them had no internal links.
   const { data } = await supabase
     .from("places")
     .select(LISTING_COLUMNS)
     .eq("neighborhood_slug", neighborhoodSlug)
-    .eq("category_slug", categorySlug)
+    .or(`category_slug.eq.${categorySlug},category_slug.like.${categorySlug}-%`)
     .order("rating", { ascending: false });
 
   return hydratePlaces((data ?? []) as Place[]);

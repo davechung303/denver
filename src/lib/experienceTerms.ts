@@ -25,6 +25,11 @@ const BY_NEIGHBORHOOD: Record<string, string> = {
   "platt-park": "Denver food tour",
   airport: "Rocky Mountain day trip from Denver",
   "denver-suburbs": "Red Rocks and foothills tour from Denver",
+  "day-trips": "Rocky Mountain day trip from Denver",
+  "city-park": "Denver city tour",
+  "park-hill": "Denver food tour",
+  "south-broadway": "Denver food tour",
+  "west-denver": "Denver food tour",
 };
 
 const DEFAULT_TERM = "Denver city tour";

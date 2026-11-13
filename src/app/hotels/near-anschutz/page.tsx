@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import { photoUrl, getHotelPool } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
+import { hotelsNearVenue } from "@/lib/areaHotels";
 import { expediaDenverHotelsUrl } from "@/lib/travelpayouts";
 import BookYourTrip from "@/components/BookYourTrip";
 
@@ -56,8 +57,9 @@ const FAQS = [
 
 
 export default async function HotelsNearAnschutzPage() {
-  const places = await getPlaces("denver-suburbs", "hotels");
-  const hotels = places.filter(isRealHotel).filter((p) => p.rating != null).slice(0, 6);
+  const hotelPool = await getHotelPool();
+  // Ranked by distance from the venue, not by which neighborhood a hotel is filed under.
+  const hotels = hotelsNearVenue(hotelPool, "/hotels/near-anschutz", 3.0);
   const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (

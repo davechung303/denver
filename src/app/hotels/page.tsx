@@ -43,7 +43,7 @@ const GROUPS: Group[] = [
     venues: [
       { href: "/hotels/near-red-rocks", name: "Red Rocks Amphitheatre", blurb: "Morrison, Lakewood & shuttle options.", nb: "denver-suburbs" },
       { href: "/hotels/near-mission-ballroom", name: "Mission Ballroom", blurb: "RiNo's best mid-size venue.", nb: "rino" },
-      { href: "/hotels/near-fiddlers-green", name: "Fiddler's Green Amphitheatre", blurb: "The DTC chain-hotel cluster.", nb: "denver-suburbs" },
+      { href: "/hotels/near-fiddlers-green", name: "Fiddler's Green Amphitheatre", blurb: "The DTC chain-hotel cluster.", nb: "tech-center" },
     ],
   },
   {

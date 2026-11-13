@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPlaces, isRealHotel, photoUrl } from "@/lib/places";
+import { photoUrl } from "@/lib/places";
 import VenueHotelCard from "@/components/VenueHotelCard";
+import { hotelsNearVenue } from "@/lib/areaHotels";
 import { expediaDenverHotelsUrl, ticketmasterAffiliateUrl } from "@/lib/travelpayouts";
 import { getEventsForVenue } from "@/lib/ticketmaster";
 import EventCard from "@/components/EventCard";
@@ -56,12 +57,12 @@ const FAQS = [
 
 
 export default async function HotelsNearFiddlersGreenPage() {
-  const [hotelPool, places, events] = await Promise.all([
+  const [hotelPool, events] = await Promise.all([
     getHotelPool(),
-    getPlaces("denver-suburbs", "hotels"),
     getEventsForVenue("Fiddler", 6),
   ]);
-  const hotels = places.filter(isRealHotel).filter((p) => p.rating != null).slice(0, 6);
+  // Ranked by distance from the venue, not by which neighborhood a hotel is filed under.
+  const hotels = hotelsNearVenue(hotelPool, "/hotels/near-fiddlers-green", 3.0);
   const heroPhoto = hotels.find((h) => h.photos?.[0])?.photos?.[0];
 
   return (
@@ -147,19 +148,19 @@ export default async function HotelsNearFiddlersGreenPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-slate-100 dark:border-slate-800">
         <h2 className="text-2xl font-bold mb-6">Best Hotels Near Fiddler&apos;s Green for Every Trip</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <Link href="/denver/denver-suburbs/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/tech-center/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best for a show night</p>
             <h3 className="font-bold mb-2">The DTC chain cluster</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Denver Tech Center packs Marriott, Hyatt, and Wyndham brands within a couple miles of the venue — SpringHill Suites, Residence Inn, Hyatt House, Wingate, and more. Closest to the gates and off the I-25 traffic.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
           </Link>
-          <Link href="/denver/denver-suburbs/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/tech-center/hotels" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best on a budget</p>
             <h3 className="font-bold mb-2">Englewood &amp; Centennial</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Just south of the DTC, generally lower rates with short rideshare times to the venue. Pair with a midweek show and it&apos;s the cheapest way to catch a night at Fiddler&apos;s Green.</p>
             <span className="mt-3 inline-flex items-center text-xs font-semibold text-denver-amber">Browse hotels &rarr;</span>
           </Link>
-          <Link href="/denver/denver-suburbs/hotels/hyatt-regency-denver-tech-center" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
+          <Link href="/denver/tech-center/hotels/hyatt-regency-denver-tech-center" className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 hover:border-denver-amber transition-colors">
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Best full-service &amp; splurge</p>
             <h3 className="font-bold mb-2">Hyatt Regency DTC — or downtown</h3>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">The Hyatt Regency Denver Tech Center is the closest full-service option. If the show is one night of a longer trip, base downtown for the food and nightlife and make the drive south just for the concert.</p>
