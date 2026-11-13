@@ -221,7 +221,7 @@ export default async function WhereToStayPage() {
       />
 
       {/* The logistics pages. Sourced, specific, and the reason people link to us. */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-14">
         <h2 className="text-2xl font-bold mb-2">The questions that actually decide it</h2>
         <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl mb-6">
           Every figure on these pages is sourced, and anything we could not verify from a primary source
@@ -349,46 +349,28 @@ export default async function WhereToStayPage() {
         </div>
       </section>
 
-      {/* Quick nav strip */}
-      <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2 py-3">
-            {HOTEL_NEIGHBORHOODS.map((hn) => (
-              <a
-                key={hn.slug}
-                href={`#${hn.slug}`}
-                className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap"
-              >
-                {NEIGHBORHOODS.find((nb) => nb.slug === hn.slug)?.name ?? hn.slug}
-              </a>
-            ))}
-            <Link href="/hotels/near-red-rocks" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Red Rocks shows
+      {/* Venue guides. This used to be a second sticky strip that also repeated
+          every neighborhood; StayAreaNav does that job now, and once the header
+          got shorter the old strip's second row showed through under it. */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <p className="kicker mb-3">Staying for a show or a game?</p>
+        <div className="flex flex-wrap gap-2">
+          {([
+            ["/hotels/near-red-rocks", "Red Rocks shows"],
+            ["/hotels/near-empower-field", "Broncos games"],
+            ["/hotels/near-mission-ballroom", "Mission Ballroom"],
+            ["/hotels/near-fiddlers-green", "Fiddler's Green"],
+            ["/hotels/near-convention-center", "Convention Center"],
+            ["/hotels/near-city-park", "City Park & Zoo"],
+            ["/hotels/near-botanic-gardens", "Botanic Gardens"],
+            ["/hotels/near-cherry-creek", "Cherry Creek"]
+          ] as const).map(([href, label]) => (
+            <Link key={href} href={href} className="px-3 py-1.5 text-sm rounded-sm border border-rule dark:border-white/15 hover:border-ink dark:hover:border-white transition-colors">
+              {label}
             </Link>
-            <Link href="/hotels/near-empower-field" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Broncos games
-            </Link>
-            <Link href="/hotels/near-mission-ballroom" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Mission Ballroom
-            </Link>
-            <Link href="/hotels/near-fiddlers-green" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Fiddler&apos;s Green
-            </Link>
-            <Link href="/hotels/near-convention-center" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Convention Center
-            </Link>
-            <Link href="/hotels/near-city-park" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              City Park &amp; Zoo
-            </Link>
-            <Link href="/hotels/near-botanic-gardens" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Botanic Gardens
-            </Link>
-            <Link href="/hotels/near-cherry-creek" className="px-3 py-1.5 text-xs font-medium rounded-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-denver-amber hover:text-white transition-colors whitespace-nowrap">
-              Cherry Creek
-            </Link>
-          </div>
+          ))}
         </div>
-      </div>
+      </section>
 
       {/* Neighborhood sections */}
       {HOTEL_NEIGHBORHOODS.map((hn) => {
@@ -506,7 +488,7 @@ export default async function WhereToStayPage() {
 
             {asideHotels.length > 0 && (
               <aside className="hidden lg:block lg:col-span-1">
-                <div className="sticky top-24">
+                <div className="sticky" style={{ top: "var(--stay-nav-offset, 9rem)" }}>
                   <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
                     {`Popular hotels in ${n.name}`}
                   </h3>
