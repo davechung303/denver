@@ -170,9 +170,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? [`${place.name} Denver — Rates, Reviews & Map`, `${place.name} — Rates & Reviews`, place.name]
     : [`${place.name} — ${n.name}, Denver`, `${place.name}, Denver`, place.name];
   const titleText = rawTitle.find((t) => t.length <= 60) ?? place.name;
-  const description = isHotelPage
-    ? `${place.name} in ${n.name}, Denver.${place.rating ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.` : ""} See photos, the map, and nearby restaurants and things to do — then check live rates on Expedia.`
-    : `${place.name}: ${c.name.toLowerCase().replace(/s$/, "")} in ${n.name}, Denver.${place.rating ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.` : ""} Hours, address, photos and what's nearby.`;
+  const ratingLine = place.rating
+    ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.`
+    : "";
+  // Longest tail that still fits in 155 characters, so the snippet never ends in "…".
+  const tails = isHotelPage
+    ? [" Photos, map, nearby restaurants and live rates on Expedia.", " Photos, map and live rates on Expedia.", " Check live rates on Expedia."]
+    : [" Hours, address, photos and what's nearby.", " Hours, address and photos."];
+  const head = isHotelPage
+    ? `${place.name} in ${n.name}, Denver.${ratingLine}`
+    : `${place.name}: ${c.name.toLowerCase().replace(/s$/, "")} in ${n.name}, Denver.${ratingLine}`;
+  const description = head + (tails.find((t) => head.length + t.length <= 155) ?? "");
   const meta = seoMeta(titleText, description);
 
   return {
