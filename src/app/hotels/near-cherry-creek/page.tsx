@@ -52,6 +52,10 @@ const FAQS = [
     q: "What are the best boutique hotels in Cherry Creek?",
     a: "The Halcyon is the signature boutique hotel — rooftop pool, a lively bar, and loaner bikes for the Cherry Creek Trail. The Jacquard leans design-luxury, and the Moxy is the playful, budget-conscious boutique option. All three sit within a short walk of Cherry Creek North.",
   },
+  {
+    q: "Which Cherry Creek hotels allow dogs?",
+    a: "Four, and the fees differ more than you'd expect. Hotel Clio charges $150 per stay for up to two pets with no weight limit. Halcyon charges $150 per pet, up to two dogs of 70 lb. The Jacquard takes one pet up to 50 lb for $150. Hyatt Place Denver/Cherry Creek charges $100 per stay. All four were confirmed by phone in November 2026.",
+  },
 ];
 
 
@@ -186,6 +190,7 @@ export default async function HotelsNearCherryCreekPage() {
           <Link href="/denver/cherry-creek/restaurants" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cherry Creek dining</Link>
           <Link href="/denver/cherry-creek/bars" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cherry Creek bars</Link>
           <Link href="/denver/cherry-creek/coffee" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Cherry Creek coffee</Link>
+          <Link href="/denver/pet-friendly-hotels#cherry-creek" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Dog-friendly Cherry Creek hotels</Link>
         </div>
       </section>
 

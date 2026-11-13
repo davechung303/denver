@@ -49,6 +49,7 @@ export async function GET(req: Request) {
   revalidatePath("/denver/hotel-free-parking");
   revalidatePath("/denver/bachelorette-party-hotels");
   revalidatePath("/denver/mountain-view-hotels");
+  revalidatePath("/denver/pet-friendly-hotels");
   revalidatePath("/denver/new-hotels-in-denver");
   revalidatePath("/denver/hotels-near-light-rail");
   revalidatePath("/denver/resort-fees");

@@ -228,11 +228,11 @@ export const STAY_AREAS: StayArea[] = [
     take:
       "If you have a 6am flight or a midnight arrival, staying near DEN makes more sense than spending $80 on an Uber to downtown. There are solid options at every price point out here, and the Gaylord Rockies is worth knowing about if you want something more than just a sleep-and-fly.",
     walk:
-      "Nothing, and pretending otherwise does nobody any favors. This is a car-and-shuttle district built on former prairie. The Westin is the exception: it's attached to the terminal, so you walk to your gate, which is the whole reason to pay for it.",
+      "Nothing, and pretending otherwise does nobody any favors. This is a car-and-shuttle district built on former prairie. The airport Westin is the exception: it's attached to the terminal, so you walk to your gate, which is the whole reason to pay for it.",
     eat:
       "Hotel restaurants and chains along Tower Road and Peña Boulevard. The Gaylord Rockies has enough inside it — restaurants, a water park, a seasonal ICE! exhibition at Christmas — to make an evening of, which is the argument for choosing it over a cheaper room nearby rather than treating it as an airport hotel at all.",
     hotels:
-      "The Westin at the terminal is the no-transfer option. The Gaylord Rockies is the resort, and it's a destination for families in its own right rather than a stopover. Below those, the Gateway Park cluster on Tower Road holds the usual Hampton, Hyatt Place and Best Western Plus options, most with free shuttles — though shuttle frequency varies a lot between them, and that's the thing worth confirming before you book a 5am departure.",
+      "The airport Westin, at the terminal, is the no-transfer option. The Gaylord Rockies is the resort, and it's a destination for families in its own right rather than a stopover. Below those, the Gateway Park cluster on Tower Road holds the usual Hampton, Hyatt Place and Best Western Plus options, most with free shuttles — though shuttle frequency varies a lot between them, and that's the thing worth confirming before you book a 5am departure.",
     cost:
       "The cheapest hotel rates in metro Denver by a wide margin, which is what tempts people into booking here for a whole trip. Do the arithmetic first: two rideshares a day into the city will erase the saving by the second morning, and you'll have spent three hours in a car doing it.",
     transit:

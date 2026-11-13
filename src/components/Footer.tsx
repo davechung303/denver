@@ -64,6 +64,7 @@ const TRIP_PLANNING = [
   { href: "/denver/hotels-near-light-rail", label: "Hotels Near Light Rail" },
   { href: "/denver/new-hotels-in-denver", label: "New Hotels in Denver" },
   { href: "/denver/mountain-view-hotels", label: "Mountain View Hotels" },
+  { href: "/denver/pet-friendly-hotels", label: "Pet-Friendly Hotels" },
   { href: "/denver/bachelorette-party-hotels", label: "Group & Bachelorette Stays" },
   { href: "/denver/resort-fees", label: "Do Hotels Charge Resort Fees?" },
   { href: "/denver/den-layover", label: "Leaving DEN on a Layover" },

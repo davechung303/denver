@@ -246,6 +246,7 @@ export default async function WhereToStayPage() {
             { href: "/denver/hotel-free-parking", title: "Where parking is actually free", blurb: "No downtown hotel. Not the airport strip either, whatever the booking sites say. Here's the verified list." },
             { href: "/denver/hotels-near-light-rail", title: "Hotels near light rail", blurb: "The downtown lines are suspended for reconstruction. Which stations still work, measured on foot." },
             { href: "/denver/new-hotels-in-denver", title: "New hotels in Denver", blurb: "Five have opened in twenty months. What's paused, what closed, and the booking pages for hotels that no longer exist." },
+            { href: "/denver/pet-friendly-hotels", title: "Pet-friendly hotels", blurb: "Five charge nothing for dogs. Every pet fee, weight limit and leave-alone rule, confirmed with the front desk." },
             { href: "/denver/mountain-view-hotels", title: "Hotels with mountain views", blurb: "Only four sell a room named for it. Where the view is real, where the upgrade is a waste, and why." },
             { href: "/denver/bachelorette-party-hotels", title: "Group and bachelorette weekends", blurb: "Most rooms here cap at four adults. What genuinely sleeps six or eight, and which hotels connect rooms." },
             { href: "/denver/resort-fees", title: "Do Denver hotels charge resort fees?", blurb: "Some do, most downtown flags don’t, and the law changed in 2025 and again in 2026." },

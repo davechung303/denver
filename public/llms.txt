@@ -14,6 +14,23 @@ Dave Chung is a Denver-based content creator and YouTube host (youtube.com/@dave
 - /denver — Best of Denver: top restaurants, hotels, bars, coffee, and things to do citywide, organized by neighborhood
 - /denver/hidden-gems — Under-the-radar restaurants, coffee shops, and local favorites rated 4.5+ with under 500 reviews, organized by neighborhood
 
+### Hotel and Trip-Planning Guides
+
+Sourced, dated guides for choosing a Denver hotel. Figures come from primary sources and each page carries a checked-on date.
+
+- /denver/where-to-stay — Where to stay in Denver, neighborhood by neighborhood, with who should skip each area
+- /hotels — Hub for hotels near Denver venues and events (Coors Field, Ball Arena, Red Rocks, the Convention Center, Denver airport and more)
+- /denver/pet-friendly-hotels — Pet-friendly Denver hotels: pet fees, weight limits, pet counts and whether a dog can be left alone in the room, confirmed by phone with each hotel (November 2026); Denver's pit bull permit rule for visitors; Railyard Dog Park
+- /denver/hotel-costs — What a Denver hotel costs once lodger's tax and parking are added
+- /denver/hotel-parking — Published downtown hotel parking rates
+- /denver/hotel-free-parking — Denver hotels where parking is free
+- /denver/resort-fees — Which Denver hotels charge resort fees
+- /denver/mountain-view-hotels — Which Denver hotels sell a mountain-view room
+- /denver/new-hotels-in-denver — Hotels opened in Denver since January 2025
+- /denver/hotels-near-light-rail — Hotels near working light rail stations, with routed walk distances
+- /denver/airport-train — The A Line between Denver airport and Union Station
+- /denver/is-downtown-denver-safe — Downtown Denver safety, from police district data
+
 ### Neighborhood Guides
 
 Each neighborhood page at /denver/[neighborhood] includes:

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { petPolicyFor } from "@/lib/petPolicies";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getPlace, getPlaceBySlug, getPlaces, getPlacesForSubcategory, isUsefulPlace, isRealHotel, type Place, photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { getVideosForPage } from "@/lib/youtube";
@@ -343,6 +344,7 @@ export default async function BusinessPage({ params }: Props) {
   if (!isUsefulPlace(place)) notFound();
 
   const isHotel = cSlug === "hotels";
+  const petPolicy = isHotel ? petPolicyFor(place.slug) : null;
   const isRestaurant = cSlug === "restaurants";
   const isBar = cSlug === "bars";
   const isThingsToDo = cSlug === "things-to-do";
@@ -461,6 +463,10 @@ export default async function BusinessPage({ params }: Props) {
       ? { description: place.review_summary.tagline }
       : {}),
     ...(priceRange && { priceRange }),
+    // Hotel.petsAllowed takes text, so the confirmed fee and limits go in whole.
+    ...(petPolicy && {
+      petsAllowed: `Yes. ${petPolicy.fee}; weight limit: ${petPolicy.weight}; max pets: ${petPolicy.maxPets}${petPolicy.dogsOnly ? " (dogs only)" : ""}.`,
+    }),
     ...(servesCuisine.length > 0 && { servesCuisine }),
     ...(place.hours?.weekdayDescriptions?.length && {
       openingHoursSpecification: parseOpeningHours(place.hours.weekdayDescriptions),
@@ -724,6 +730,36 @@ export default async function BusinessPage({ params }: Props) {
                       Staying for {v.label} &rarr;
                     </Link>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* Pet policy, for the hotels we've confirmed by phone. Booking sites
+                disagree with each other on pet fees, so this is the number a dog
+                owner came looking for, and the way into the full comparison. */}
+            {petPolicy && (
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                <h2 className="text-lg font-semibold mb-3">Bringing a dog?</h2>
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                  <div><dt className="inline font-medium">Pet fee: </dt><dd className="inline text-slate-600 dark:text-slate-400">{petPolicy.fee}</dd></div>
+                  <div><dt className="inline font-medium">Weight limit: </dt><dd className="inline text-slate-600 dark:text-slate-400">{petPolicy.weight}</dd></div>
+                  <div><dt className="inline font-medium">Max pets: </dt><dd className="inline text-slate-600 dark:text-slate-400">{petPolicy.maxPets}{petPolicy.dogsOnly ? " (dogs only)" : ""}</dd></div>
+                  <div><dt className="inline font-medium">Dog alone in the room: </dt><dd className="inline text-slate-600 dark:text-slate-400">{petPolicy.leftAlone}</dd></div>
+                </dl>
+                <p className="mt-3 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                  Confirmed with the front desk on{" "}
+                  {new Date(petPolicy.checkedOn + "T12:00:00Z").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })}.
+                  Hotel policies can change, so it never hurts to call ahead and be 100% sure your pup can come with.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link href="/denver/pet-friendly-hotels" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                    Compare every pet-friendly Denver hotel &rarr;
+                  </Link>
+                  {petPolicy.sourceUrl && (
+                    <a href={petPolicy.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-full transition-colors">
+                      Hotel&apos;s pet policy
+                    </a>
+                  )}
                 </div>
               </div>
             )}

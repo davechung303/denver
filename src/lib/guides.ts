@@ -15,7 +15,11 @@
 // at the sentence where the reader needs it; they are stripped back to prose
 // for JSON-LD.
 
+import { PET_POLICIES, formatPetCost } from "@/lib/petPolicies";
+
 export interface GuideSection {
+  /** Anchor id, so other pages can link straight to the section. */
+  id?: string;
   h2: string;
   /** 40–60 word self-contained answer. Written to survive being quoted alone. */
   answer: string;
@@ -71,6 +75,13 @@ export interface Guide {
   ogDescription: string;
   /** Lead passage. Must fully answer the primary query on its own. */
   lede: string;
+  /** A short "check before you go" note rendered under the lede. */
+  caveat?: string;
+  /**
+   * Hotels this guide ranks, in order, emitted as ItemList JSON-LD. Slugs not
+   * in the hotel pool are skipped.
+   */
+  itemList?: { name: string; description?: string; slugs: string[] };
   sections: GuideSection[];
   faqs: { q: string; a: string }[];
   /**
@@ -314,6 +325,10 @@ export const GUIDES: Record<string, Guide> = {
       {
         q: "Is parking cheaper at hotels outside downtown?",
         a: "Generally yes, and often free at airport-area and suburban hotels. Whether that saves money depends on how many rideshares into the city it costs you — two a day will usually erase the difference.",
+      },
+      {
+        q: "Do Denver hotels charge pet fees?",
+        a: "Most pet-friendly ones do, and it's another number the nightly rate hides. Three nights with two dogs costs anywhere from $0 to $300 in pet fees, depending on the hotel. Five Denver hotels charge nothing. The full list, confirmed by phone, is in [pet-friendly hotels in Denver](/denver/pet-friendly-hotels).",
       },
     ],
     booking: {
@@ -1498,6 +1513,254 @@ export const GUIDES: Record<string, Guide> = {
       ],
     },
   },
+  "pet-friendly-hotels": {
+    slug: "pet-friendly-hotels",
+    experiences: { term: "Denver walking tour", heading: "For when the dog's napping", note: "At the hotels that let you leave a dog in the room, a crate and a long walk buy you an afternoon. Here's how to spend it.", afterSection: 3 },
+    title: "Pet-Friendly Hotels in Denver: What Your Dog Will Actually Cost",
+    metaTitle: "Pet-Friendly Hotels in Denver (2026): Fees & Size Limits",
+    metaDescription:
+      "Five Denver hotels charge $0 for dogs. I called 18 front desks to confirm every pet fee, weight limit and leave-alone rule, and priced 3 nights with 2 dogs.",
+    ogTitle: "Denver's Pet-Friendly Hotels: Every Pet Fee, Confirmed by Phone",
+    ogDescription:
+      "From $0 to $300 for three nights with two dogs. Weight limits, whether you can leave the dog in the room, Denver's pit bull permit rule, and the city's only lit dog park.",
+    lede:
+      "Five Denver hotels charge nothing for dogs, and all five take dogs of any size: Kimpton Hotel Monaco, Thompson Denver, Hotel Teatro, Magnolia Hotel and Kimpton Claret in the Tech Center. If a small fee is fine, The Maven and The Rally charge $50 once. Most of the rest run $100 to $300 for three nights with two dogs.",
+    caveat:
+      "We know that hotel policies can change, so it never hurts to call ahead and be 100% sure your pup can come with. Every fee on this page comes from the hotel's own website or a call to its front desk on November 12, 2026, and where a hotel's own pages disagree with each other, I say so.",
+    updated: "2026-11-12",
+    itemList: {
+      name: "Pet-friendly hotels in Denver, cheapest first for three nights with two dogs",
+      description: "Pet fees, weight limits and leave-alone rules confirmed by phone with each hotel on November 12, 2026.",
+      slugs: PET_POLICIES.map((p) => p.slug).filter((s): s is string => Boolean(s)),
+    },
+    sections: [
+      {
+        id: "pet-fees",
+        h2: "Every Denver hotel pet fee, side by side",
+        answer:
+          "Here are 18 pet-friendly Denver hotels, cheapest first for three nights with two dogs. Fees, weight limits and pet counts come from each hotel's own website, and I called every front desk on November 12 to confirm them and ask about leaving a dog in the room. Where the call and the website disagreed, the call wins.",
+        table: {
+          head: ["Hotel", "Area", "Pet fee", "Weight limit", "Max pets", "Dog alone in room?", "3 nights, 2 dogs"],
+          rows: PET_POLICIES.map((p) => [
+            p.name,
+            p.area,
+            p.fee,
+            p.weight,
+            p.dogsOnly ? `${p.maxPets} (dogs only)` : p.maxPets,
+            p.leftAlone,
+            formatPetCost(p.threeNightsTwoDogs),
+          ]),
+        },
+        body: [
+          "The calls mattered. Published Denver pet fees contradict each other from site to site, and sometimes across one hotel's own pages.",
+          "The Maven's dog page says $50 once, while its FAQ says $50 per pet per night. The front desk says $50 once. The Rally's website says $50 per pet, and the front desk says $50 per stay.",
+          "Visit Denver lists a $50 fee and a 60-pound limit at Hotel Teatro, which charges nothing and has no limit. Travel booking sites list a 40-pound limit at Magnolia Hotel, which has none.",
+          "The Westin Denver International Airport has two Marriott pages that disagree on both the fee and the weight limit. The front desk told me $50 per stay and 80 pounds, so that's what the table shows. Call to confirm before you book that one.",
+        ],
+      },
+      {
+        id: "no-pet-fee",
+        h2: "Which Denver hotels have no pet fee?",
+        spotlight: {
+          slugs: [
+            "kimpton-hotel-monaco-denver",
+            "thompson-denver-by-hyatt",
+            "hotel-teatro",
+            "magnolia-hotel-denver-a-tribute-portfolio-hotel",
+          ],
+          heading: "No pet fee, no weight limit",
+          note: "All four are downtown and charge nothing for a dog of any size. The fifth, Kimpton Claret, is in the Tech Center.",
+        },
+        answer:
+          "Five: Kimpton Hotel Monaco, Thompson Denver, Hotel Teatro, Magnolia Hotel and Kimpton Claret. None charges a pet fee or a deposit, and none sets a weight limit. Monaco, Teatro and Claret don't cap how many dogs you bring. Thompson allows two dogs and Magnolia two pets.",
+        list: [
+          "Kimpton Hotel Monaco: no fee, no deposit and no cap on pets. The only size rule is that the dog has to fit in the elevator.",
+          "Thompson Denver: no fee, any size, two dogs. You can leave them in the room if the front desk has your number.",
+          "Hotel Teatro: no fee, no weight limit, no cap. Dogs can stay alone in the room, and the hotel will call you if there's a noise complaint.",
+          "Magnolia Hotel: no fee and no weight limit, up to two pets. You pay for any damage.",
+          "Kimpton Claret: no fee, no weight limit and no cap, and dogs can stay alone. It's at Belleview Station, so it suits a Tech Center trip more than a downtown weekend.",
+        ],
+        body: [
+          "Skip Monaco and Magnolia if you want to go to dinner without the dog. Neither lets you leave one alone in the room.",
+        ],
+      },
+      {
+        id: "big-dogs",
+        h2: "Which Denver hotels take big dogs?",
+        spotlight: {
+          slugs: [
+            "the-rally-hotel-at-mcgregor-square",
+            "catbird-hotel",
+            "the-oxford-hotel",
+          ],
+          heading: "Any size, if the free four are full",
+          note: "No weight limit at any of these. The Rally and Catbird charge once per stay; The Oxford charges per pet, per night.",
+        },
+        answer:
+          "Ten of the 18 set no weight limit: the five no-fee hotels plus The Rally, Catbird, Hotel Clio, The Oxford and La Quinta DIA. After the free hotels, The Rally ($50 per stay) and Catbird ($75 per stay) are the cheapest places to bring a big dog.",
+        body: [
+          "Skip these if your dog is over the limit:",
+        ],
+        list: [
+          "The Westin Denver Downtown: 40 lb.",
+          "The Brown Palace, The Jacquard and Hyatt Place Denver/Cherry Creek: 50 lb. Hyatt Place also caps two dogs at 75 lb combined.",
+          "The Crawford: 60 lb.",
+          "Halcyon: 70 lb.",
+          "The Westin Denver International Airport: 80 lb, and one pet only.",
+        ],
+      },
+      {
+        id: "leaving-your-dog",
+        h2: "Can you leave your dog alone in a Denver hotel room?",
+        answer:
+          "At half of them. Nine of the 18 said yes when I called, usually with a condition: leave your number, tell the front desk, or expect a call if the dog barks. The Jacquard allows it if the dog is crated, and The Crawford allows 30 minutes. Seven said no.",
+        list: [
+          "Yes: Thompson Denver, Hotel Teatro, Kimpton Claret, The Maven, The Rally, Catbird, Hyatt Place Denver/Cherry Creek, Hotel Clio and Halcyon. Clio has you sign a form letting staff in for an emergency, and Halcyon wants you to tell the front desk.",
+          "With limits: The Jacquard, if the dog is crated or contained, and The Crawford, for up to 30 minutes.",
+          "No: Kimpton Hotel Monaco, Magnolia Hotel, The Brown Palace, The Westin Denver Downtown, The Oxford, The Westin Denver International Airport and La Quinta DIA.",
+        ],
+        body: [
+          "Where it's allowed, expect a call if the dog barks. Teatro, The Maven and Hyatt Place said so outright, and Hyatt Place may add a fee for noise.",
+        ],
+      },
+      {
+        id: "downtown",
+        h2: "Downtown and Union Station with a dog",
+        spotlight: {
+          slugs: [
+            "the-crawford-hotel",
+            "the-maven-hotel-at-dairy-block",
+            "the-brown-palace-hotel-and-spa-autograph-collection",
+          ],
+          heading: "Downtown, by what the fee buys you",
+          note: "The Crawford charges per room, not per dog. The Maven charges once. The Brown Palace charges per stay but stops at 50 lb.",
+        },
+        answer:
+          "Downtown has the most choice: 11 of the 18 hotels are downtown, in LoDo or in RiNo, including the four no-fee hotels outside the Tech Center. The Maven and The Rally charge $50 once. [Railyard Dog Park](/denver/pet-friendly-hotels#dog-parks), the city's only lit off-leash area, is across the tracks from Union Station.",
+        body: [
+          "The Crawford is inside Union Station. It charges $50 per room per night, not per dog, so two dogs cost the same as one. The limit is 60 lb, and you can leave the dog for up to 30 minutes.",
+          "The Maven and The Rally are the cheap fees downtown, at $50 once either way. Both take dogs only. The Rally has no weight limit and no cap on dogs, and half the fee goes to Lifeline Puppy Rescue.",
+          "The Brown Palace is $125 per stay for up to two dogs of 50 lb or less. The Oxford is the expensive choice with two dogs: $50 per pet per night, which is $300 for three nights. Neither lets you leave the dog in the room.",
+          "Choosing between the two halves of downtown? [Union Station or RiNo](/denver/where-to-stay/union-station-vs-rino) covers who each one suits.",
+        ],
+      },
+      {
+        id: "cherry-creek",
+        h2: "Cherry Creek with a dog: one dog or two?",
+        spotlight: {
+          slugs: [
+            "hotel-clio-a-luxury-collection-hotel-denver-cherry-creek",
+            "halcyon-a-hotel-in-cherry-creek-denver",
+            "hyatt-place-denvercherry-creek",
+            "the-jacquard-autograph-collection",
+          ],
+          heading: "Cherry Creek's four dog-friendly hotels",
+          note: "Clio for two dogs, Halcyon for one big one, Hyatt Place for the lowest fee, The Jacquard for one small dog.",
+        },
+        answer:
+          "With two dogs, Hotel Clio is the better buy: $150 per stay, no weight limit, and you can leave the dogs in the room. Halcyon charges $150 per pet, so two dogs cost $300. The Jacquard takes one pet up to 50 lb. Hyatt Place Denver/Cherry Creek is the lowest fee at $100 per stay.",
+        list: [
+          "Hotel Clio: $150 per stay, up to two pets, no weight limit. Dogs can stay alone once you sign a form letting staff in for an emergency.",
+          "Halcyon: $150 per pet, up to two dogs of 70 lb, no cats. Dogs can stay alone if you tell the front desk. The hotel points guests toward Washington Park for walks.",
+          "The Jacquard: $150 per pet, one pet, 50 lb. Dogs can stay alone only if crated or contained.",
+          "Hyatt Place Denver/Cherry Creek: $100 per stay for one to six nights, two pets at 50 lb each and 75 lb combined. It's on the Glendale side of Cherry Creek.",
+        ],
+        body: [
+          "Not sure Cherry Creek is the right base? [Cherry Creek or downtown](/denver/where-to-stay/cherry-creek-vs-downtown) lays out the trade-off, and [hotels near Cherry Creek](/hotels/near-cherry-creek) covers the rest of the neighborhood.",
+        ],
+      },
+      {
+        id: "airport",
+        h2: "Pet-friendly hotels near Denver airport",
+        spotlight: {
+          slugs: [
+            "the-westin-denver-international-airport",
+            "la-quinta-inn-suites-by-wyndham-denver-airport-dia",
+          ],
+          heading: "The two airport options",
+          note: "The Westin for one dog and an early flight. La Quinta for two dogs of any size.",
+        },
+        answer:
+          "Two. The Westin Denver International Airport, at the terminal, takes one dog up to 80 lb for $50 per stay. La Quinta DIA on Tower Road takes two pets of any size for $25 per pet, per night. Neither lets you leave the dog alone in the room, so plan dinner around that.",
+        body: [
+          "The airport Westin is the one for an early flight, since you walk to the terminal. Its two Marriott pages disagree on the fee and the weight limit, so call to confirm.",
+          "Deciding whether to stay out here at all? [Downtown or the airport](/denver/where-to-stay/downtown-vs-airport) breaks it down, and [hotels near Denver airport](/hotels/near-denver-airport) covers the rest.",
+        ],
+      },
+      {
+        id: "tech-center",
+        h2: "Pet-friendly hotels in the Denver Tech Center",
+        answer:
+          "Kimpton Claret at Belleview Station is the Tech Center hotel on this list, and it's one of the five with no pet fee. It sets no weight limit and no cap on pets, and dogs can stay alone in the room. It suits a DTC work trip better than a downtown weekend.",
+      },
+      {
+        id: "pit-bulls",
+        h2: "Can you bring a pit bull to a Denver hotel?",
+        answer:
+          "Only with a Denver permit, and that includes visitors. Denver requires a Breed-Restricted Permit for American Pit Bull Terriers, American Staffordshire Terriers and Staffordshire Bull Terriers, and the city says a restricted dog can't come into Denver until it has one. A hotel's pet policy doesn't change that.",
+        body: [
+          "The permit starts with a breed evaluation at the Denver Animal Shelter. Walk-in evaluations run 1 to 3 p.m. daily with no appointment, and all three evaluators have to agree the dog is a pit bull type. Denver Animal Protection charges $25 for the evaluation, $30 per dog for the permit and $15 for a Denver pet license.",
+          "The easier route is a hotel outside Denver's city limits. Commerce City and Lone Tree dropped their bans in 2021, and Aurora voters legalized the breed in 2024, according to the Colorado Sun. Check which city a hotel is actually in, not just its mailing address.",
+          "Denver International Airport is inside Denver's city limits, so the permit rule applies at the airport Westin too.",
+        ],
+      },
+      {
+        id: "dog-parks",
+        h2: "Where to take your dog near the downtown hotels",
+        answer:
+          "Railyard Dog Park, at 19th Avenue and Little Raven in Riverfront, across the tracks from Union Station, is the one to know. The city says it's Denver's only off-leash area with lighting, so it's open 5 a.m. to 11 p.m. Denver's unlit dog parks close at sundown.",
+        list: [
+          "Railyard Dog Park, 19th Ave. & Little Raven: about an acre, with separate areas for high- and low-energy dogs, sand, shade and benches.",
+          "Little Box Car, Broadway & Lawrence St.: on the city's off-leash list, sunrise to sundown.",
+          "Sonny Lawson Park, 24th St. & California, in Five Points: also on the city's list.",
+          "Carla Madison Dog Park, 2405 E. Colfax Ave.: the pick for Uptown and City Park stays.",
+        ],
+        body: [
+          "Read the rules before you go. The city asks for a current rabies tag and a Denver dog license at its dog parks, requires dogs to be spayed or neutered, and limits each person to two dogs. Keep the leash on until you're inside the gate.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Which Denver hotels have no pet fee?",
+        a: "Five Denver hotels charge no pet fee: Kimpton Hotel Monaco, Thompson Denver, Hotel Teatro and Magnolia Hotel downtown, and Kimpton Claret in the Denver Tech Center. All five also take dogs of any size. Each front desk confirmed this by phone on November 12, 2026. Policies change, so call before you book.",
+      },
+      {
+        q: "How much are pet fees at Denver hotels?",
+        a: "From $0 to $300 for three nights with two dogs. Five hotels charge nothing. The Maven and The Rally charge $50 once per stay, and Catbird $75. Per-night, per-pet fees add up fastest: The Oxford's $50 per pet per night comes to $300 for two dogs over three nights.",
+      },
+      {
+        q: "Which Denver hotels allow large dogs?",
+        a: "Ten of the 18 hotels I checked set no weight limit: Kimpton Hotel Monaco, Thompson Denver, Hotel Teatro, Magnolia Hotel, Kimpton Claret, The Rally, Catbird, Hotel Clio, The Oxford and La Quinta DIA. The Westin Denver International Airport takes one dog up to 80 lb. The Westin Denver Downtown stops at 40 lb.",
+      },
+      {
+        q: "Can I leave my dog alone in a Denver hotel room?",
+        a: "It depends on the hotel. Nine of 18 said yes by phone, including Thompson Denver, Hotel Teatro, The Rally, Hotel Clio and Halcyon, usually if the front desk has your number. The Jacquard requires a crate, and The Crawford allows 30 minutes. Kimpton Hotel Monaco, Magnolia Hotel, The Brown Palace, The Oxford and both Westins say no.",
+      },
+      {
+        q: "Can I bring my pit bull to a Denver hotel?",
+        a: "Only with a Denver Breed-Restricted Permit, which visitors need too. Denver Animal Protection requires a breed evaluation at the Denver Animal Shelter, then a $30 permit per dog, before a restricted-breed dog can be in the city. Aurora, Commerce City and Lone Tree no longer ban pit bulls, so a hotel there avoids the permit.",
+      },
+      {
+        q: "Which hotel at Denver airport allows dogs?",
+        a: "The Westin Denver International Airport, at the terminal, takes one dog up to 80 lb for $50 per stay. La Quinta DIA on Tower Road takes up to two pets of any size for $25 per pet, per night. Neither lets you leave the dog alone in the room, and the Westin's own pages disagree, so call first.",
+      },
+      {
+        q: "Which Denver hotels allow cats?",
+        a: "Several well-known ones don't. The Maven, The Rally, The Brown Palace, The Crawford and Halcyon take dogs only. The other hotels on this page describe their policies in terms of pets, but most of the published detail is written for dogs, so ask about cats specifically when you call.",
+      },
+      {
+        q: "Where can I take my dog near downtown Denver hotels?",
+        a: "Railyard Dog Park, at 19th Avenue and Little Raven next to Union Station, is the main one. It's Denver's only lit off-leash area, open 5 a.m. to 11 p.m., with separate areas for high- and low-energy dogs. The city asks for a rabies tag and a Denver dog license at its dog parks.",
+      },
+    ],
+    related: ["hotel-costs", "resort-fees", "hotel-parking"],
+    booking: {
+      pubref: "guide-pet-friendly",
+      heading: "Check rates: no pet fee",
+      blurb: "Put your dates in, book the room, then call the hotel to add the dog to your reservation.",
+    },
+  },
   "new-hotels-in-denver": {
     slug: "new-hotels-in-denver",
     experiences: { term: "Denver food tour", heading: "What to do once you have checked in", note: "The newest rooms in Denver are clustered in RiNo and downtown, which is also where the eating is. These are the tours people actually book there.", afterSection: 2 },
@@ -1723,7 +1986,7 @@ export const GUIDES: Record<string, Guide> = {
       {
         h2: "Which hotels are near an A Line station to the airport?",
         answer:
-          "Four, plus the two ends. The Westin sits 98 metres from the Denver Airport platform, Hyatt Place Peña Station is 383 metres from 61st & Peña, and 38th & Blake in RiNo has four hotels within a twelve-minute walk. The middle of the line has nothing.",
+          "Four, plus the two ends. The airport Westin sits 98 metres from the Denver Airport platform, Hyatt Place Peña Station is 383 metres from 61st & Peña, and 38th & Blake in RiNo has four hotels within a twelve-minute walk. The middle of the line has nothing.",
         table: {
           head: ["Station", "Hotel", "Walk"],
           rows: [
@@ -1920,6 +2183,7 @@ export const GUIDE_SLUGS = Object.keys(GUIDES);
 export const GUIDE_CARDS: { slug: string; title: string; blurb: string }[] = [
   { slug: "hotels-near-light-rail", title: "Hotels near light rail", blurb: "The downtown lines are suspended. Which stations still work, walk-timed hotel by hotel." },
   { slug: "new-hotels-in-denver", title: "New hotels in Denver", blurb: "Five have opened in twenty months, not the dozen the lists claim. Plus what's paused and what closed." },
+  { slug: "pet-friendly-hotels", title: "Pet-friendly hotels", blurb: "Five charge $0 for dogs. Every pet fee and weight limit, confirmed by phone with the front desk." },
   { slug: "mountain-view-hotels", title: "Hotels with mountain views", blurb: "Only four sell a room named for it — and some famous ones advertise the opposite." },
   { slug: "hotel-free-parking", title: "Where parking is actually free", blurb: "No downtown hotel. Not the airport strip either, whatever the booking sites say." },
   { slug: "bachelorette-party-hotels", title: "Group and bachelorette weekends", blurb: "Most rooms cap at four adults. What genuinely sleeps six or eight." },

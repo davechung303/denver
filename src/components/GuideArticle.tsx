@@ -9,7 +9,7 @@ import LinkedText, { stripInlineLinks } from "@/components/LinkedText";
 import { getHotelPool } from "@/lib/places";
 import { hotelsInAreas } from "@/lib/areaHotels";
 import { buildMentionIndex, findMentions } from "@/lib/hotelMentions";
-import { photoUrl } from "@/lib/places";
+import { photoUrl, photoAbsoluteUrl } from "@/lib/places";
 import { expediaDenverHotelsUrl , bookingCta } from "@/lib/travelpayouts";
 import { relatedGuides, type Guide } from "@/lib/guides";
 
@@ -47,6 +47,22 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
   // Clamp so a mis-set index still renders the strip somewhere sensible.
   const expAfter = Math.min(guide.experiences?.afterSection ?? 1, guide.sections.length - 1);
 
+  // Ranked guides emit ItemList JSON-LD. Hotels not in the pool are skipped
+  // rather than linked to a detail page that doesn't exist.
+  const itemLists = guide.itemList
+    ? [
+        {
+          name: guide.itemList.name,
+          description: guide.itemList.description,
+          items: guide.itemList.slugs
+            .map((slug) => bySlug.get(slug))
+            .filter((h): h is NonNullable<typeof h> => Boolean(h))
+            .map((h) => ({ name: h.name, url: `/denver/${h.neighborhood_slug}/hotels/${h.slug}` })),
+        },
+      ].filter((l) => l.items.length > 0)
+    : undefined;
+  const heroPhoto = spotlit.find((h) => h.photos?.[0])?.photos?.[0];
+
   const areaHotels = areas
     .map((a) => ({ ...a, hotels: byArea[a.slug] ?? [] }))
     .filter((a) => a.hotels.length > 0);
@@ -66,7 +82,9 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
           publishedAt: guide.updated,
           updatedAt: guide.updated,
           description: guide.metaDescription,
+          imageUrl: heroPhoto ? photoAbsoluteUrl(heroPhoto) : null,
         }}
+        itemLists={itemLists}
         faqs={
           // Answers may carry inline guide links; JSON-LD wants the prose.
           guide.faqs.map((f) => ({ question: f.q, answer: stripInlineLinks(f.a) }))
@@ -107,6 +125,12 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
           <p className="mt-6 text-lg text-white/80 leading-relaxed">
             <LinkedText text={guide.lede} index={mentions} seen={new Set<string>()} chipLimit={3} tone="navy" />
           </p>
+
+          {guide.caveat && (
+            <p className="mt-4 text-sm text-white/60 leading-relaxed border-l-2 border-denver-amber/60 pl-4">
+              {guide.caveat}
+            </p>
+          )}
 
           {ledeHotels.length > 0 && (
             <div className="mt-7 border-t border-white/15 pt-6">
@@ -151,7 +175,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
             .filter((p): p is NonNullable<typeof p> => Boolean(p));
           return (
           <React.Fragment key={s.h2}>
-          <section className="mb-14">
+          <section id={s.id} className="mb-14 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-4 leading-snug">{s.h2}</h2>
 
             <p className="text-lg leading-relaxed border-l-4 border-denver-amber pl-5 py-1 text-slate-700 dark:text-slate-300">

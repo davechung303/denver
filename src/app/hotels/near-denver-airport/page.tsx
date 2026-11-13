@@ -60,6 +60,10 @@ const FAQS = [
     q: "Can I leave DEN during a long layover?",
     a: "If you've got three and a half hours or more, yes — the city is reachable, though it eats most of that window between the A Line, the walk to the terminal gates, and security on the way back. Under that, stay in the terminal. DEN also has a United Club lounge if you'd rather sit somewhere quiet than venture out at all.",
   },
+  {
+    q: "Which Denver airport hotels allow dogs?",
+    a: "The Westin Denver International Airport takes one dog up to 80 lb for $50 per stay, and you can walk to the terminal. La Quinta Inn & Suites Denver Airport DIA on Tower Road takes up to two pets of any size for $25 per pet, per night. Neither lets you leave the dog alone in the room. Both confirmed by phone in November 2026.",
+  },
 ];
 
 
@@ -202,6 +206,7 @@ export default async function HotelsNearDenverAirportPage() {
           <Link href="/denver/denver-airport-shuttle" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Airport shuttle guide</Link>
           <Link href="/denver/airport-train" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">A Line train guide</Link>
           <Link href="/denver/den-layover" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Layover guide</Link>
+          <Link href="/denver/pet-friendly-hotels#airport" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Dog-friendly airport hotels</Link>
           <Link href="/articles/denver-airport-united-club-lounge-tour-concourse-a-and-b" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">United Club lounge guide</Link>
           <Link href="/denver/where-to-stay" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">Where to stay in Denver</Link>
           <Link href="/hotels" className="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm font-medium hover:border-denver-amber hover:text-denver-amber transition-colors">All hotel guides</Link>

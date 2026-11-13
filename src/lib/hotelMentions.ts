@@ -123,6 +123,8 @@ const ALIASES: Record<string, string[]> = {
   "urban-cowboy-denver": ["Urban Cowboy Denver", "Urban Cowboy"],
   "apiary-hotel-belleview-station-denver": ["Apiary Hotel Belleview Station", "Apiary"],
   "the-westin-denver-international-airport": ["The Westin Denver International Airport"],
+  "hyatt-place-denvercherry-creek": ["Hyatt Place Denver/Cherry Creek", "Hyatt Place Cherry Creek"],
+  "la-quinta-inn-suites-by-wyndham-denver-airport-dia": ["La Quinta Inn & Suites Denver Airport DIA", "La Quinta DIA"],
   "gaylord-rockies-resort-convention-center": ["Gaylord Rockies Resort", "Gaylord Rockies"],
   "hyatt-house-denverlakewood-at-belmar": ["Hyatt House Denver/Lakewood at Belmar", "Hyatt House at Belmar"],
   "hilton-garden-inn-arvada-denver": ["Hilton Garden Inn Arvada Denver", "Hilton Garden Inn Arvada"],
