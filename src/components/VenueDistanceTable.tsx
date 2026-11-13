@@ -61,7 +61,7 @@ export default function VenueDistanceTable({
         How far is each hotel from {venueName}, on foot?
       </h2>
       <p className="text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
-        {rows.length} hotels, routed along real sidewalks and crossings rather than measured as the crow flies.
+        {`${rows.length} hotels`}, routed along real sidewalks and crossings rather than measured as the crow flies.
         The difference matters here: straight-line distance runs 23&ndash;82% short in this part of Denver, because
         the rail corridor and Speer force detours you cannot see on a map pin.
       </p>

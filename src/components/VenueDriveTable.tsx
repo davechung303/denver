@@ -41,7 +41,7 @@ export default function VenueDriveTable({ hotels }: { hotels: Place[] }) {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-rule dark:border-white/10">
       <h2 className="text-2xl font-bold mb-2">How long is the drive to Red Rocks from each hotel?</h2>
       <p className="text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
-        {rows.length} hotels, routed over the real road network to the Red Rocks parking area. Nobody walks to
+        {`${rows.length} hotels`}, routed over the real road network to the Red Rocks parking area. Nobody walks to
         Red Rocks, so this is the table that matters &mdash; and the headline number is that{" "}
         <strong className="text-slate-900 dark:text-slate-100">downtown Denver is a 28-minute drive</strong>, only
         about thirteen minutes more than the closest hotel in the metro. Proximity buys you far less here than
