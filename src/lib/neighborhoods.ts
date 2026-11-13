@@ -257,7 +257,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "North, South and Northeast Park Hill: big old houses, the little shopping strips on Kearney Street and 23rd Avenue, and neighborhood restaurants a few minutes east of City Park.",
     gradient: "from-emerald-700 to-teal-500",
-    image: "https://images.unsplash.com/photo-1546156929-a4c0ac411f47?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJo0ghGPV7bIcRkz7rIZeD8lw/photos/AVoNoXQIiu2Y-UDO_fLhHsnGNzEuITSIYKWqwR3Ekhw79K9K943A6mbq6-GLlJ5qyxuhZBgnw2vD12nVmfEsrzfxMRtNrveFwyjJHVz5biH62ulJZSQOAV149zbK4eltPsMxzRfe4bIJ-ntR20oKN2YLgSEUGSGx-IZwZwcGWwgHKEWZeVOdX-aAj_Ebeg1uVqdj4KDcFw46EBPY5Ec48u-YBbUHxcU6Cdpi66j-HxjtUwMUXpKroapYw1YOS7djdC2grmIHNVVGymE_Yhftheka704H8LsR5nYmUSlbxon0xbMdIBc3HAZ9r1LHQtY_lrPbPYcCwTUZv0J_SnA_SmZTxX61iYHxMK-TiMn65zVgBv5Tl09Go6dJOCX5co0Dy84Ttql6CcuWGKInE79aO2PAOE_yF0GrLJTmhpJnoLPzxgtbcOPt.png", // Oblio's Pizzeria (cached place photo)
     searchName: "Park Hill Denver Colorado",
     lat: 39.7627, lng: -104.9257,
     searchable: false,
@@ -269,7 +269,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "City Park holds the Denver Zoo and the Denver Museum of Nature & Science, and the view west across Ferril Lake to the skyline is the city's classic postcard. Congress Park and East Colfax fill in the restaurants and bars.",
     gradient: "from-green-700 to-lime-500",
-    image: "https://images.unsplash.com/photo-1702568681326-7aff5eb7e80b?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJJyDOGlJ5bIcRQ-oSnAOOwf8/photos/AVoNoXQMIyTIr6c7hk1hMp90FWVnKHzalnn1TztyASnmA2GGV11G0GR8MTzp7jfdDnEknEGgu4cBL5dj3m1TcFbzJAvr96e7TuKolAME9ZahQ47WreKgkLBmdTfQ4Te7aSr78GEi0gJ47KwQlZ1l5seQUD_0xHh2d31Scv6DACQFfgjOeexCahlDfyKWbWFwX3EWtm03uAE420BtCmND4j3iWbKu0tnjFaSDg7LCgqiVGZXAEIyE_nfe2t0xKNLDU_XI87_dHHftsdRl6HkzUt8vrsyYX2Xa4he-YlwAcFt3PilUYqRQcx_6Z64k6BtPINe8g-lnR4BtGkpZfuWRtrrTfNs_dIf4pIS5uDmH1jp_A53UZELkRs_xdRSJn-aSQTNfMn6gdn85QsakRa3ylg4_x91MvO8.jpg", // City Park and the skyline (cached place photo)
     searchName: "City Park Congress Park Denver Colorado",
     lat: 39.7364, lng: -104.9437,
     searchable: false,
@@ -281,7 +281,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "The southern stretch of Broadway through Overland and Rosedale: Antique Row, neighborhood bars and restaurants that locals use and visitors rarely find.",
     gradient: "from-amber-700 to-yellow-500",
-    image: "https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJU2UMlsl_bIcRKbQQ5Ly1Wsk/photos/Aa-ngMY8ibpkq_rZCxbgh0r4RvF-ijMSm8wy3UEDLJjefimeYbvWVxcIY4R0WHbPKlgZSypFAt7s1gP3pjH2xb60L1RHZAQROHXuNeD78xhbQjQ9ZOmWiRhfZKy72jC3M1rwvrOSuM9SRscCgR8Kedi4Cn03_KRB2-0oODQ9rngp6xM9ySbCqooE-5LXsAUwGqXDcpdoL_wl2G3HKGIP6o-IEcrb1Jrf_3PjWWrZ2Mx8LOnXMxBBLX0EHwvt2EL4l2lsAmUut0W4P19FnqpEZagcKLzxlDJdjd2W0Vb_G0dNH25npAOY7A_UPdHdzEEeHQ3k9by51v056Lkf87NpQt5JiP2RENHYCyLwj5F7MuRXqk8vph8Y5nP8kYSkCrmYdE3IZMSNj1nrlQQa_ApArXN2tgx-32JSo_0.jpg", // Somebody People (cached place photo)
     searchName: "South Broadway Overland Rosedale Denver Colorado",
     lat: 39.6786, lng: -104.9889,
     searchable: false,
@@ -293,7 +293,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "The University of Denver campus and the streets around it: coffee shops full of students, cheap eats along Evans and the quiet blocks of University Park.",
     gradient: "from-red-800 to-amber-600",
-    image: "https://images.unsplash.com/photo-1632714393265-9adbc6ab8a91?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJ888-ayt_bIcRIXrNRiz4lAE/photos/AVoNoXQyzWumU1nFDf5CfxD4bAQYXQr5RFZpEsWaHfv1i1bnTpZQtt-0aNz8nBHbHk0-ZRksezFFRG2U3r2GzPFyhjtKkdQsRzISjhjQ5j6TrkfQcmlybnUoe6rb6JGCLKymZfgr9vwmqvgFPIJUqYPNTlaDUpE9JhdzPwDKkPveEkz6owh-n9-9gVZ86V2QSrjd_SZFRekbHn96AKLeXFriMKO71gDVlFWdWNLWzahnFqnkbXtWhbWbx-_6DxHsyD2oh0hhKNYjaEcAmBpmSKh5_W0eC9EC6fwfPdnWfvECI85U14lOdaEWNZfVF0KSCERTYVG1pd9zcONaDkR2jweWZGkmVKs1Soomn2qv6XBCkSed3nXF8st7X_ZgotRG81Y85aF_kQf9kFws29nrgPf2HErgVQeMDY-FWWxdThYR3vBd6ejA.jpg", // Chamberlin Observatory, Observatory Park (cached place photo)
     searchName: "University of Denver DU Denver Colorado",
     lat: 39.6791, lng: -104.9563,
     searchable: false,
@@ -305,7 +305,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Central Park (formerly Stapleton) and Lowry were both built on old airfields, and both are newer, family-heavy neighborhoods with their own town centers. Wings Over the Rockies Air & Space Museum is in Lowry.",
     gradient: "from-sky-700 to-cyan-500",
-    image: "https://images.unsplash.com/photo-1613003492754-a022330915ac?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJ3XERyVl8bIcRRoX_g4U8ZPo/photos/Aa-ngMZtA27bo5heFR01zzSRoqUKc8uR5G3moWYyNCloLeYkqhKg8_lgOBUKEO-e52hnoXH59EMNlrt_xBVAt5fRa0RCtSdHEdcXtvjWY7lr4kZ_KVbDSjqh40EuNv9OWDQ8HQMh46jGqMYQaXLcLLuYSewkmPu34pkvW-q4WfnSHarQktBX9pxGgJQMcEVlZzA5IFClBtLxmxzp9XAJVI0dUCvvC-NgyeGfJ5TCk_AufIM8xAZio2bAzxlJogniFgWjJCG7Y84f-Lq-grqwFQvhQfugrokFSPWZpE_14SuH4aWHjoPszpUVUszCxle0LbS9FrWcS5ELRoA7uDIF9yBreNGwvcU3B3QzkVAjEaH4C6s9294Hc-FdiRUQCoIk2-Ofc3pQQhISzRRh_52_vWkYVPGoblrd.jpg", // Wings Over the Rockies (cached place photo)
     searchName: "Lowry Central Park Stapleton Denver Colorado",
     lat: 39.7598, lng: -104.8850,
     searchable: false,
@@ -317,7 +317,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "The DTC straddles I-25 across southeast Denver, Greenwood Village and Centennial. A lot of business travel lands here, with hotels, steakhouses and the Belleview light rail station.",
     gradient: "from-slate-800 to-blue-600",
-    image: "https://images.unsplash.com/photo-1677051949386-d999c9076424?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJOZ2mWoiGbIcRnK8qOzprxr8/photos/AVoNoXR27gekL8pO1IXfXQtKF29jo1lcIwYREZ_p2A4R81nVv9ClF5c3jv3HA6Fs3aDMj_fKqrPrjFQ1qoJlXld_HmqJlxMQBQLfRjph3WAylckeQY2jAjfF2UoYqbcVpQ5GpUXdA6nDo3SOdXMVlziL6IWmKodd0i1rmONsLKS41efC5S8jgBFHC6a0EAlX6bZ5QwQUz4o1oZrDivi-11CjoJN5OCwjJNzH5uXlDB6FGhMSqguO5jIq42S0x-dGLtr1nGEb5ltLTuwlEp-v1BTAnBjyWA5ELwGdPiHEKst1cp7TNeuTOHCnNYP_zyX5XC8hVQWyTAHoHzLoyXfk5hpeUridYzpyhwPXfb3IgfCswTZH-1-cir_jsEo4oRj7HYVE7hyF-2Nc8Q0xIgvdt21kHG2cz9AuZvB1kUd9-qyPZvu69A.jpg", // Fiddler's Green Amphitheatre (cached place photo)
     searchName: "Denver Tech Center DTC Greenwood Village Colorado",
     lat: 39.627, lng: -104.897,
     searchable: false,
@@ -329,7 +329,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Residential southeast Denver along Colorado Boulevard, Evans and Hampden: strip-mall restaurants worth the drive, big parks and easy access to I-25.",
     gradient: "from-violet-700 to-fuchsia-500",
-    image: "https://images.unsplash.com/photo-1586193771953-929042f3a381?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJMQiGfNJ9bIcRSzWPiaFhF0c/photos/AVoNoXRB6swI8ytcdJkJMc8yYacFMp6EeAdu047KISVXlnOzAimNOjgRNzWtIupEJUZhwvKGyNJL205J51wtIR-sL4BivBxTIthsOM1YPbOuufMvOzy5SH67bG8C62AyUY6mhh3mpXBQX3DMQuae05EGpzD2DzhzawF3-pqr_5Bd-3yNMkILvGSV2SZ3n2WTsNrq0_cvvB19h0AdHAvKO8qHZaqTt45moKy11HugwqC7TI5rTgFlioUFoOb4A3Lrm4FJdR1fzijQCSBLL_m-5xkTXYnItS14owHEDHiDBigfzOywPMJTv5j6Ph5Vxw0ByICjlh15gILViulscfkgmfuFSDrvafjugj3Y3mXupdzSpi0dM4PqbxZ4uQpvNrMdypdzWYSGf-1AnfOWL3zIXjZNlYM7r-96scc6DhHP-sGbCBqQMMrd.jpg", // Four Mile Historic Park (cached place photo)
     searchName: "Southeast Denver Virginia Village Hampden Colorado",
     lat: 39.6768, lng: -104.9112,
     searchable: false,
@@ -341,7 +341,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Federal Boulevard and Morrison Road are where a lot of Denver's Vietnamese and Mexican cooking lives. West Denver is less polished than the core neighborhoods, and that's the point.",
     gradient: "from-orange-700 to-red-500",
-    image: "https://images.unsplash.com/photo-1483937107025-27d8bebc7074?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJt3peSaN_bIcRmIvBRaujPZ0/photos/AVoNoXQBOgffYaqPpFfsKa4YkyHFfWK59GFEg5l4WMAUjazLZg7fbSRRegwCMb6eEp3fJBA8IkwMRRausIiAyNVA_niaGfs33kVUjBLUptbq4B22Qrzpu0x1GNqQykSm4GqS2jFBq9BLDiOlceyjQpdBVE2qsg3oIg62uBhDMKb8wtPf8MGKyoMVpsyyYg4P4GE1t1egkpYQ6kQn0fQeEFbJK6QeqoGxigLLAnAzV5kCkSQpuricK1ybWO93LFRMPpAFpJr70ELr-o29xzibh1tiiE6Q_5Zu1k1ywLpa4FBiMuunsFJjVKua_SfAaaq8Zq63MeTARr9zrbgFc2bScqlLRJUUlgGZWcgrCBL4zYrOuYOBkCmzUv-scJX1DCMAyytSs_eYyP7mPAJbJcJcovyBR8z28w9PJr-KQ9sjcOunjSIOr9dR.jpg", // Ruby Hill Park (cached place photo)
     searchName: "West Denver Federal Boulevard Westwood Colorado",
     lat: 39.6773, lng: -105.0406,
     searchable: false,
@@ -353,7 +353,7 @@ export const NEIGHBORHOODS: Neighborhood[] = [
     description:
       "Rocky Mountain National Park, Georgetown, Colorado Springs and the rest of what's worth a day out of the city. Everything here is more than 40 km from downtown.",
     gradient: "from-emerald-800 to-sky-600",
-    image: "https://images.unsplash.com/photo-1619856699906-09e1f58c98b1?auto=format&fit=crop&w=1200&q=80",
+    image: "https://bbmlumdpagxnthyqumif.supabase.co/storage/v1/object/public/place-photos/places/ChIJ6QNZReR5aYcRF4KOp0PuJ_o/photos/AVoNoXQ5IT4n0Izu3Ps6R0yf7JPMFv2aGE-KF2G_956t4W-3E95TxygfwcNMfGTiMEJ0uFNqcY_Be5JTf61SVeBJF0upkmymDBJQ3aStwEbBY6ucTMWw1bMdUFOJWoOBwI7WDcbm7JgTpHmw3GEMKTWekY7Ho6ykz5pvGTwBl4CrJbgQZWLNzq-ffslfULjq4Ld4Nu48XSchp10zCPRhZGTauKdS6qCvvJ_7ouGjnSppsU8OHruYRWqXTDW3kRlUIbNZkNtIP-CSvrvsgULitmPJd_0StNGWxxGWcppGJjMmGiC9CnmgHyX2Lvzx7kTNiEg1gonl4WR8lEx8_j63AlGNH2_5lbQrdmn0rCIB2BtnEJMIXSZnBeHcirerGBKvZAMRzr6gz6VxYJ59_-qCQzoa7W_KMG5fKYt-i1BP0YyGHgtR0A.jpg", // Rocky Mountain National Park (cached place photo)
     searchName: "day trips from Denver Colorado",
     lat: 39.7392, lng: -105.3,
     searchable: false,
