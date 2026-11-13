@@ -47,7 +47,7 @@ export default function Nav() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1 whitespace-nowrap">
+          <div className="hidden xl:flex items-center gap-1 whitespace-nowrap">
             {/* Denver dropdown */}
             <div className="relative">
               <button
@@ -352,7 +352,7 @@ export default function Nav() {
           {/* Mobile menu button */}
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors"
+            className="xl:hidden p-2 text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors"
             aria-label="Toggle menu"
           >
             {open ? (
@@ -369,7 +369,7 @@ export default function Nav() {
 
         {/* Mobile menu */}
         {open && (
-          <div className="md:hidden border-t border-rule dark:border-white/15 py-4 space-y-1">
+          <div className="xl:hidden border-t border-rule dark:border-white/15 py-4 space-y-1">
             <Link
               href="/denver"
               onClick={closeAll}
