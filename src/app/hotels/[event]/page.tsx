@@ -174,7 +174,7 @@ export default async function EventGuidePage({
                 href={`/denver/${m.neighborhood}/hotels`}
                 className="mt-3 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
               >
-                All {m.neighborhood.replace(/-/g, " ")} hotels &rarr;
+                All {m.neighborhood.replace(/-/g, " ")}{" "}hotels &rarr;
               </Link>
             </div>
           ))}

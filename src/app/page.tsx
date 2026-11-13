@@ -276,7 +276,7 @@ export default async function HomePage() {
                 <h3 className="text-2xl font-bold">{n.name}</h3>
                 <p className="mt-2 text-sm text-white/80 line-clamp-2 leading-snug">{n.description}</p>
                 <span className="mt-3 inline-flex items-center text-xs font-semibold text-white/90 group-hover:text-white transition-colors">
-                  Explore {n.name} &rarr;
+                  Explore {n.name}{" "}&rarr;
                 </span>
               </div>
             </Link>

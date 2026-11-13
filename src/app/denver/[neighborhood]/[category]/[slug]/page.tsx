@@ -202,19 +202,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex items-center gap-1">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <svg
-          key={i}
-          className={`w-5 h-5 ${i <= Math.round(rating) ? "text-denver-amber" : "text-slate-200 dark:text-slate-700"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-      <span className="ml-1 text-lg font-semibold">{rating.toFixed(1)}</span>
-    </div>
+    <span className="text-lg font-semibold tabular-nums">
+      <span className="text-denver-amber" aria-hidden="true">★</span> {rating.toFixed(1)}
+      <span className="sr-only"> out of 5</span>
+    </span>
   );
 }
 
@@ -263,7 +254,7 @@ export default async function BusinessPage({ params }: Props) {
         </nav>
 
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">{n.name} &middot; {c.name}</p>
+          <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">{n.name}{" "}&middot; {c.name}</p>
           <h1 className="text-4xl md:text-5xl font-bold">Best {subcategory.name} in {n.name}</h1>
           <p className="mt-4 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">{subcategory.description(n.name)}</p>
         </section>
@@ -463,15 +454,9 @@ export default async function BusinessPage({ params }: Props) {
     ...(place.lat && place.lng && {
       geo: { "@type": "GeoCoordinates", latitude: place.lat, longitude: place.lng },
     }),
-    ...(place.rating && {
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: place.rating,
-        reviewCount: place.review_count ?? 1,
-        bestRating: 5,
-        worstRating: 1,
-      },
-    }),
+    // No aggregateRating: these are Google's ratings, not ones collected here,
+    // and Google's review-snippet rules don't allow marking up another site's
+    // reviews. The rating stays visible on the page with its source named.
     ...(place.photos?.[0] && { image: photoAbsoluteUrl(place.photos[0]) }),
     ...(place.review_summary?.tldr
       ? { description: place.review_summary.tldr }
@@ -494,43 +479,10 @@ export default async function BusinessPage({ params }: Props) {
     ],
   };
 
-  // Review schema — the AI-generated consensus becomes a structured editorial review
-  // attributed to Dave Chung, giving Perplexity/Gemini a citable named-author opinion.
-  const reviewSchema = place.review_summary?.consensus ? {
-    "@context": "https://schema.org",
-    "@type": ["Review", "Recommendation"],
-    "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}#review`,
-    itemReviewed: {
-      "@type": SCHEMA_TYPES[cSlug] ?? "LocalBusiness",
-      "@id": `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}`,
-      name: place.name,
-      // Mirror sameAs from LocalBusiness so AI can resolve the same entity
-      sameAs: [
-        `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
-        ...(place.website ? [place.website] : []),
-      ],
-    },
-    author: {
-      "@type": "Person",
-      name: "Dave Chung",
-      url: "https://davelovesdenver.com/about",
-      sameAs: "https://www.youtube.com/@davechung",
-    },
-    reviewBody: [
-      place.review_summary.consensus,
-      ...((place.review_summary.highlights?.length ?? 0) > 0
-        ? [`Highlights: ${place.review_summary!.highlights.join(". ")}.`]
-        : []),
-    ].join(" "),
-    ...(place.rating && {
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: place.rating,
-        bestRating: 5,
-        worstRating: 1,
-      },
-    }),
-  } : null;
+  // No Review schema. It used to publish the AI summary of Google reviews as a
+  // Review authored by Dave Chung, with Google's average as his rating. The page
+  // itself says (correctly) that the summary is AI-written from Google reviews,
+  // so the markup contradicted the page and claimed a review Dave didn't write.
 
   // WebPage + Speakable — marks key sections for voice AI (Gemini Live, etc.)
   const webPageSchema = {
@@ -569,12 +521,6 @@ export default async function BusinessPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
-      {reviewSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
-        />
-      )}
       <SchemaMarkup
         breadcrumbs={[
           { name: "Home", url: "https://davelovesdenver.com" },
@@ -639,7 +585,7 @@ export default async function BusinessPage({ params }: Props) {
           {/* Left: main info */}
           <div className="lg:col-span-2 space-y-8">
             <div>
-              <p className="text-denver-amber text-sm font-semibold uppercase tracking-widest mb-2">
+              <p className="kicker mb-2">
                 {c.name} in {n.name}
               </p>
               <h1 className="text-4xl font-bold">{place.name}</h1>
@@ -659,6 +605,18 @@ export default async function BusinessPage({ params }: Props) {
                   )}
                 </div>
               )}
+              {/* Rate button above the fold on phones; the sidebar copy sits
+                  far below the review summary there. */}
+              {isHotel && hotelCta && (
+                <a
+                  href={hotelCta.href}
+                  target="_blank"
+                  rel={hotelCta.rel}
+                  className="lg:hidden mt-5 flex items-center justify-center w-full bg-denver-amber text-white font-bold py-3 px-4 rounded-sm hover:bg-[#8c2b17] transition-colors"
+                >
+                  {hotelCta.label}{" "}&rarr;
+                </a>
+              )}
             </div>
 
             {/* Neighborhood context */}
@@ -673,8 +631,8 @@ export default async function BusinessPage({ params }: Props) {
 
             {/* Dave's Take — AI review summary */}
             {place.review_summary && (
-              <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6 space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Things to Know</p>
+              <div className="bg-paper dark:bg-white/5 border-l-2 border-ink dark:border-white p-6 space-y-4">
+                <p className="kicker">Things to know</p>
                 {place.review_summary.tldr && (
                   <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed" data-speakable>
                     {place.review_summary.tldr}
@@ -687,7 +645,7 @@ export default async function BusinessPage({ params }: Props) {
                   <ul className="space-y-1">
                     {place.review_summary.highlights.map((h, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
-                        <span className="text-green-500 mt-0.5 shrink-0">✓</span>
+                        <span className="text-sage mt-0.5 shrink-0">✓</span>
                         {h}
                       </li>
                     ))}
@@ -703,12 +661,12 @@ export default async function BusinessPage({ params }: Props) {
                     ))}
                   </ul>
                 )}
-                <div className="pt-3 border-t border-amber-200/60 dark:border-amber-800/60">
+                <div className="pt-3 border-t border-rule dark:border-white/10">
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                     <strong className="font-semibold text-slate-600 dark:text-slate-300">How this is written:</strong>{" "}
                     we run the full set of recent Google reviews through AI to pull out what guests consistently
                     say &mdash; including the complaints, which is why there&apos;s a downsides list rather than
-                    only the good bits. It&apos;s rewritten as new reviews come in, so it describes the hotel as it
+                    only the good bits. It&apos;s rewritten as new reviews come in, so it describes the place as it
                     is now, not as it was whenever someone last got round to writing a paragraph about it.{" "}
                     <a
                       href={`https://search.google.com/local/reviews?placeid=${place.place_id}`}
@@ -734,7 +692,7 @@ export default async function BusinessPage({ params }: Props) {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Link href={`/denver/where-to-stay#${nSlug}`} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
-                    Staying in {n.name} &rarr;
+                    Staying in {n.name}{" "}&rarr;
                   </Link>
                   <Link href="/denver/hotel-costs" className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
                     What it really costs &rarr;
@@ -744,7 +702,7 @@ export default async function BusinessPage({ params }: Props) {
                   </Link>
                   {nearestVenues(place.lat, place.lng, 2).map((v) => (
                     <Link key={v.href} href={v.href} className="inline-flex items-center gap-1.5 px-4 py-2 border border-slate-300 dark:border-slate-700 hover:border-denver-amber hover:text-denver-amber text-sm font-medium rounded-sm transition-colors">
-                      Staying for {v.label} &rarr;
+                      Staying for {v.label}{" "}&rarr;
                     </Link>
                   ))}
                 </div>
@@ -975,7 +933,7 @@ export default async function BusinessPage({ params }: Props) {
                   rel={hotelCta.rel}
                   className="flex items-center justify-center w-full bg-denver-amber text-white font-bold py-3 px-4 rounded-xl hover:bg-[#8c2b17] transition-colors"
                 >
-                  {hotelCta.label} &rarr;
+                  {hotelCta.label}{" "}&rarr;
                 </a>
               )}
               {place.phone && (
@@ -1165,7 +1123,7 @@ export default async function BusinessPage({ params }: Props) {
                   <p className="text-xs font-semibold uppercase tracking-widest text-denver-amber">Why Stay in {n.name}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{n.description}</p>
                   <Link href={`/denver/${nSlug}`} className="inline-flex items-center gap-1 text-sm font-semibold text-denver-amber hover:underline">
-                    Explore {n.name} &rarr;
+                    Explore {n.name}{" "}&rarr;
                   </Link>
                 </div>
                 {(nearbyDining[0] || nearbyThingsToDo[0]) && (

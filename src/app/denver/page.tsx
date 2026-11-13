@@ -164,7 +164,7 @@ function SectionHeader({ title, subtitle, href, linkText }: { title: string; sub
         <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">{subtitle}</p>
       </div>
       <Link href={href} className="hidden sm:inline-flex text-sm font-semibold text-denver-amber hover:underline shrink-0 ml-4">
-        {linkText ?? "See all"} &rarr;
+        {linkText ?? "See all"}{" "}&rarr;
       </Link>
     </div>
   );

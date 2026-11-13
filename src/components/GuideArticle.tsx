@@ -292,7 +292,7 @@ export default async function GuideArticle({ guide }: { guide: Guide }) {
                     href={`/denver/${a.slug}/hotels`}
                     className="mt-3 inline-flex items-center text-sm font-semibold text-denver-amber hover:underline"
                   >
-                    All {a.label} hotels &rarr;
+                    All {a.label}{" "}hotels &rarr;
                   </Link>
                 </div>
               ))}

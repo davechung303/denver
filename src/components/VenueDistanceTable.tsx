@@ -91,9 +91,9 @@ export default function VenueDistanceTable({
       <div className="mt-10 method-note">
         <h3>How these numbers were produced</h3>
         <p>
-          Street-network walking distances from each hotel to the {venueName} entrance, routed over OpenStreetMap
+          Street-network walking distances from each hotel to the {venueName}{" "}entrance, routed over OpenStreetMap
           pedestrian data with OSRM&apos;s foot profile{dated ? `, run on ${new Date(dated + "T12:00:00Z").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })}` : ""}.
-          Times are derived from distance at a steady {WALK_MPH} mph, so you can adjust for your own pace rather than
+          Times are derived from distance at a steady {WALK_MPH}{" "}mph, so you can adjust for your own pace rather than
           trusting a routing engine&apos;s hidden default.
         </p>
         <p>

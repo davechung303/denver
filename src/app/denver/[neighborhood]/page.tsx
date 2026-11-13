@@ -258,7 +258,7 @@ export default async function NeighborhoodPage({ params }: Props) {
           href={`/denver/hidden-gems#${slug}`}
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-denver-amber text-denver-amber font-semibold text-sm hover:bg-denver-amber hover:text-white transition-colors"
         >
-          See hidden gem restaurants in {n.name} &rarr;
+          See hidden gem restaurants in {n.name}{" "}&rarr;
         </Link>
       </div>
 
