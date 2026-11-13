@@ -169,7 +169,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const rawTitle = isHotelPage
     ? [`${place.name} Denver — Rates, Reviews & Map`, `${place.name} — Rates & Reviews`, place.name]
     : [`${place.name} — ${n.name}, Denver`, `${place.name}, Denver`, place.name];
-  const titleText = rawTitle.find((t) => t.length + 20 <= 60) ?? rawTitle.find((t) => t.length <= 60) ?? place.name;
+  const titleText = rawTitle.find((t) => t.length <= 60) ?? place.name;
   const description = isHotelPage
     ? `${place.name} in ${n.name}, Denver.${place.rating ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.` : ""} See photos, the map, and nearby restaurants and things to do — then check live rates on Expedia.`
     : `${place.name}: ${c.name.toLowerCase().replace(/s$/, "")} in ${n.name}, Denver.${place.rating ? ` Rated ${place.rating}/5${place.review_count ? ` from ${place.review_count.toLocaleString()} reviews` : ""}.` : ""} Hours, address, photos and what's nearby.`;

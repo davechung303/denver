@@ -41,7 +41,7 @@ export default function Nav() {
           <Link
             href="/"
             onClick={closeAll}
-            className="font-display font-extrabold text-[21px] tracking-tight [font-stretch:112%] text-ink dark:text-white hover:text-denver-amber transition-colors"
+            className="font-display font-extrabold text-[21px] tracking-tight [font-stretch:112%] whitespace-nowrap shrink-0 text-ink dark:text-white hover:text-denver-amber transition-colors"
           >
             Dave Loves Denver
           </Link>

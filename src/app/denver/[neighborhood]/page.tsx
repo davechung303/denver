@@ -31,8 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!n) notFound();
 
   const meta = seoMeta(
-    [`${n.name}, Denver: Where to Eat, Stay & What to Do`, `${n.name}, Denver: Eat, Stay & Do`, `${n.name} Denver Neighborhood Guide`]
-      .find((t) => t.length + 20 <= 60) ?? `${n.name}, Denver: Where to Eat, Stay & What to Do`,
+    [`${n.name}, Denver: Where to Eat, Stay & What to Do`, `${n.name}, Denver: Where to Eat, Stay & Play`, `${n.name} Denver Neighborhood Guide`]
+      .find((t) => t.length <= 60) ?? `${n.name} Denver Neighborhood Guide`,
     `${n.name} (${n.tagline}): the best restaurants, hotels, bars and things to do, from a Denver local. ${n.description}`,
   );
 
