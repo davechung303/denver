@@ -13,6 +13,7 @@ import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTrip from "@/components/BookYourTrip";
+import { bookingCta } from "@/lib/travelpayouts";
 
 export const revalidate = 86400; // ISR: revalidate daily — picks up fresh photo names after monthly refresh
 export const dynamicParams = true; // still render unknown combinations on-demand
@@ -259,12 +260,16 @@ export default async function CategoryPage({ params }: Props) {
                   {topPicks.map((place, i) => {
                     const tag = getPlaceTag(place.types);
                     const photo = place.photos?.[0];
+                    // Hotels get a rate button, kept outside the card link to avoid nested
+                    // anchors. Only a hotel-specific Expedia link or the hotel's own site:
+                    // a generic Denver search here would waste the page's highest-intent click.
+                    const cta = cSlug === "hotels" ? bookingCta(place) : null;
                     return (
-                      <a
+                      <div
                         key={place.place_id}
-                        href={`/denver/${nSlug}/${cSlug}/${place.slug}`}
                         className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200 flex flex-col"
                       >
+                      <a href={`/denver/${nSlug}/${cSlug}/${place.slug}`} className="flex flex-col flex-1">
                         {/* Photo */}
                         <div className="relative aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
                           {photo ? (
@@ -320,6 +325,19 @@ export default async function CategoryPage({ params }: Props) {
                           )}
                         </div>
                       </a>
+                      {cta && cta.kind !== "search" && (
+                        <div className="px-4 pb-4">
+                          <a
+                            href={cta.href}
+                            target="_blank"
+                            rel={cta.rel}
+                            className="inline-flex items-center justify-center w-full px-4 py-2 bg-denver-amber text-slate-900 text-sm font-semibold rounded-xl hover:bg-amber-400 transition-colors"
+                          >
+                            {cta.label}
+                          </a>
+                        </div>
+                      )}
+                      </div>
                     );
                   })}
                 </div>
