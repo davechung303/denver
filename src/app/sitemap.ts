@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { ARTICLES_PER_PAGE } from "@/lib/articlesArchive";
 import { NEIGHBORHOODS, CATEGORIES } from "@/lib/neighborhoods";
 import { SUBCATEGORIES } from "@/lib/subcategories";
 import { EVENT_GUIDES } from "@/lib/eventGuides";
@@ -58,6 +59,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
+
+  // Archive pages, so older articles are linked from somewhere crawlable.
+  // Page size comes from lib/articlesArchive.ts.
+  const archivePages: MetadataRoute.Sitemap = Array.from(
+    { length: Math.max(0, Math.ceil((articles ?? []).length / ARTICLES_PER_PAGE) - 1) },
+    (_, i) => ({
+      url: `${BASE_URL}/articles/page/${i + 2}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.4,
+    })
+  );
 
   // Place pages — paginate through all ~2,800 places with real lastModified from cached_at
   const placePages: MetadataRoute.Sitemap = [];
@@ -165,6 +178,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryPages,
     ...subcategoryPages,
     ...articlePages,
+    ...archivePages,
     ...placePages,
   ];
 }

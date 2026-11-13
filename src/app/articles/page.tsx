@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { supabase } from "@/lib/supabase";
-import ArticleThumb from "@/components/ArticleThumb";
+import { ArticleGrid, ArticlePagination } from "@/components/ArticlesArchive";
+import { ARTICLES_PER_PAGE, getArticleCount, getArticlesPage } from "@/lib/articlesArchive";
 import BookYourTrip from "@/components/BookYourTrip";
 
 export const revalidate = 86400;
@@ -12,38 +11,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://davelovesdenver.com/articles" },
 };
 
-async function getArticles() {
-  try {
-    const { data } = await Promise.race([
-      supabase
-        .from("articles")
-        .select(`
-          slug,
-          title,
-          content_type,
-          neighborhood_slug,
-          category_slug,
-          generated_at,
-          places_mentioned,
-          youtube_videos (
-            video_id,
-            thumbnail_url,
-            view_count,
-            published_at
-          )
-        `)
-        .order("generated_at", { ascending: false })
-        .limit(50),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("db timeout")), 15000)),
-    ]);
-    return data ?? [];
-  } catch {
-    return [];
-  }
-}
-
 export default async function ArticlesPage() {
-  const articles = await getArticles();
+  const [articles, total] = await Promise.all([getArticlesPage(1), getArticleCount()]);
+  const totalPages = Math.max(1, Math.ceil(total / ARTICLES_PER_PAGE));
 
   return (
     <>
@@ -62,60 +32,9 @@ export default async function ArticlesPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {articles.length > 0 ? (
           <>
-            <p className="text-sm text-slate-400 mb-8">{articles.length} articles</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((article: any) => (
-                <Link
-                  key={article.slug}
-                  href={`/articles/${article.slug}`}
-                  className="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:border-denver-amber hover:shadow-lg transition-all duration-200"
-                >
-                  {(() => {
-                    const rawThumb = article.youtube_videos?.thumbnail_url;
-                    const thumb = rawThumb?.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
-                    const pUrl = article.places_mentioned?.[0]?.photo_url;
-                    const src = thumb || (pUrl?.startsWith("places/")
-                      ? `/api/places-photo?name=${encodeURIComponent(pUrl)}`
-                      : pUrl);
-                    if (!src) return null;
-                    return (
-                      <div className="aspect-video overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        {rawThumb ? (
-                          <ArticleThumb
-                            src={src}
-                            rawSrc={rawThumb}
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        ) : (
-                          <ArticleThumb
-                            src={src}
-                            fallbackSrc="https://images.unsplash.com/photo-1709689702529-6fa1f343e108?auto=format&fit=crop&w=1200&q=80"
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        )}
-                      </div>
-                    );
-                  })()}
-                  <div className="p-4 flex flex-col gap-2 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 capitalize">
-                        {article.content_type}
-                      </span>
-                    </div>
-                    <h2 className="font-semibold text-base leading-tight group-hover:text-denver-amber transition-colors line-clamp-2">
-                      {article.title}
-                    </h2>
-                    {article.youtube_videos?.view_count && (
-                      <p className="text-xs text-slate-400 mt-auto">
-                        {article.youtube_videos.view_count.toLocaleString()} video views
-                      </p>
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <p className="text-sm text-slate-400 mb-8">{total || articles.length} articles</p>
+            <ArticleGrid articles={articles} />
+            <ArticlePagination page={1} totalPages={totalPages} />
           </>
         ) : (
           <div className="text-center py-20">

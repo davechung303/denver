@@ -500,6 +500,59 @@ export function isInNeighborhood(lat: number | null, lng: number | null, slug: s
   return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng;
 }
 
+function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/** The in-town neighborhoods. Suburbs and the airport are the fallbacks. */
+const CORE_NEIGHBORHOODS = () => NEIGHBORHOODS.filter((n) => n.slug !== "denver-suburbs" && n.slug !== "airport");
+
+/** How far outside every core box a place can sit and still take the nearest core neighborhood. */
+const CORE_FALLBACK_KM = 1.5;
+
+/**
+ * Which neighborhood a place actually sits in, from its coordinates.
+ *
+ * A place used to be filed under whichever neighborhood's Google search found
+ * it, and those searches use radii up to 8 km. That put a Thornton water park
+ * under Washington Park and Chatfield under Five Points. Order of preference:
+ *  1. `preferred` (the current or searched neighborhood) if the place is inside
+ *     its box, so places in overlapping boxes don't flip back and forth;
+ *  2. the nearest core neighborhood whose box contains the place;
+ *  3. the nearest core neighborhood within CORE_FALLBACK_KM of its center;
+ *  4. the airport, if inside its box;
+ *  5. the suburbs, which is the catch-all.
+ */
+export function resolveNeighborhood(lat: number | null, lng: number | null, preferred?: string | null): string | null {
+  if (lat == null || lng == null) return preferred ?? null;
+  if (preferred && preferred !== "denver-suburbs" && isInNeighborhood(lat, lng, preferred)) return preferred;
+
+  const core = CORE_NEIGHBORHOODS();
+  const byDistance = (list: Neighborhood[]) =>
+    list
+      .map((n) => ({ n, d: distanceKm(lat, lng, n.lat, n.lng) }))
+      .sort((a, b) => a.d - b.d);
+
+  const containing = byDistance(core.filter((n) => isInNeighborhood(lat, lng, n.slug)));
+  if (containing.length > 0) return containing[0].n.slug;
+
+  const nearest = byDistance(core)[0];
+  if (nearest && nearest.d <= CORE_FALLBACK_KM) return nearest.n.slug;
+
+  if (isInNeighborhood(lat, lng, "airport")) return "airport";
+  return "denver-suburbs";
+}
+
+/** True when a place is outside even the suburbs box (Boulder, the mountains). */
+export function isOutsideMetro(lat: number | null, lng: number | null): boolean {
+  if (lat == null || lng == null) return false;
+  return !isInNeighborhood(lat, lng, "denver-suburbs") && !isInNeighborhood(lat, lng, "airport");
+}
+
 export function getNeighborhood(slug: string): Neighborhood | undefined {
   return NEIGHBORHOODS.find((n) => n.slug === slug);
 }

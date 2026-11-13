@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES } from "./neighborhoods";
+import { getNeighborhood, getCategory, NEIGHBORHOODS, CATEGORIES, resolveNeighborhood } from "./neighborhoods";
 import { generateReviewSummary, type ReviewSummary } from "./reviewSummary";
 import { isExcludedPlace } from "@/lib/excludedPlaces";
 
@@ -185,6 +185,25 @@ async function getPreservedPhotos(placeIds: string[]): Promise<Map<string, Googl
   return out;
 }
 
+// A refresh must not move a place that's already filed. The weekly refresh
+// searches every neighborhood with overlapping radii, so the same place comes
+// back from several searches and used to be re-filed under whichever ran last,
+// changing its URL. Existing rows keep their neighborhood; new rows are placed
+// by their coordinates. Re-filing existing rows is a deliberate, reviewed job:
+// scripts/fix-place-neighborhoods.ts.
+async function getExistingNeighborhoods(placeIds: string[]): Promise<Map<string, string>> {
+  const out = new Map<string, string>();
+  if (!placeIds.length) return out;
+  const { data } = await supabaseAdmin
+    .from("places")
+    .select("place_id, neighborhood_slug")
+    .in("place_id", placeIds);
+  for (const row of (data ?? []) as { place_id: string; neighborhood_slug: string | null }[]) {
+    if (row.neighborhood_slug) out.set(row.place_id, row.neighborhood_slug);
+  }
+  return out;
+}
+
 async function fetchFromGooglePlaces(
   neighborhoodSlug: string,
   categorySlug: string,
@@ -270,6 +289,11 @@ async function fetchFromGooglePlaces(
   for (const p of places) {
     const keep = preserved.get(p.place_id);
     if (keep) p.photos = keep;
+  }
+
+  const filed = await getExistingNeighborhoods(places.map((p) => p.place_id));
+  for (const p of places) {
+    p.neighborhood_slug = filed.get(p.place_id) ?? resolveNeighborhood(p.lat, p.lng, neighborhoodSlug) ?? neighborhoodSlug;
   }
 
   // Upsert into Supabase cache
@@ -425,16 +449,28 @@ export async function getPlace(
 }
 
 // Find a place by slug alone (ignoring neighborhood/category) — used for redirect resolution
-export async function getPlaceBySlug(slug: string): Promise<Place | null> {
+/**
+ * Find a place by slug alone, for redirecting an old URL to the current one.
+ * Chains share slugs across locations (four Queen City Collective rows, say),
+ * so when there's more than one, pick the row nearest the neighborhood the old
+ * URL named. Otherwise a moved place could redirect to a different location.
+ */
+export async function getPlaceBySlug(slug: string, nearNeighborhood?: string): Promise<Place | null> {
   if (isExcludedPlace(slug)) return null;
   const { data } = await supabase
     .from("places")
     .select(LISTING_COLUMNS)
     .eq("slug", slug)
-    .limit(1)
-    .single();
-  if (!data) return null;
-  const [withCdn] = await hydratePlaces([data as Place]);
+    .limit(20);
+  const rows = (data ?? []) as Place[];
+  if (rows.length === 0) return null;
+  let pick = rows[0];
+  const n = nearNeighborhood ? getNeighborhood(nearNeighborhood) : undefined;
+  if (rows.length > 1 && n) {
+    const d = (p: Place) => (p.lat == null || p.lng == null ? Infinity : (p.lat - n.lat) ** 2 + (p.lng - n.lng) ** 2);
+    pick = rows.reduce((best, p) => (d(p) < d(best) ? p : best), rows[0]);
+  }
+  const [withCdn] = await hydratePlaces([pick]);
   return withCdn;
 }
 
@@ -845,7 +881,9 @@ export async function discoverNewPlaces(): Promise<{ added: number; neighborhood
       if (newPlaces.length > 0) {
         const rows = newPlaces.map((p: any) => ({
           place_id: p.id,
-          neighborhood_slug: neighborhood.slug,
+          // Placed by coordinates, not by which search happened to find it.
+          neighborhood_slug:
+            resolveNeighborhood(p.location?.latitude ?? null, p.location?.longitude ?? null, neighborhood.slug) ?? neighborhood.slug,
           category_slug: categorySlug,
           name: p.displayName?.text ?? "",
           slug: slugify(p.displayName?.text ?? p.id),

@@ -64,6 +64,7 @@ export async function GET(req: Request) {
   for (const slug of HOTEL_PAGES) revalidatePath(`/hotels/${slug}`);
   for (const slug of EVENT_PAGES) revalidatePath(`/events/${slug}`);
   revalidatePath("/articles");
+  revalidatePath("/articles/page/[page]", "page");
   revalidatePath("/articles/[slug]", "page");
   revalidatePath("/videos");
   revalidatePath("/events");

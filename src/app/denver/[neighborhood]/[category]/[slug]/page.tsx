@@ -150,7 +150,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // chain), which makes getPlace()'s exact-match query ambiguous. In the duplicate-slug case,
     // getPlaceBySlug() may arbitrarily return a row whose neighborhood/category match this URL
     // exactly — only redirect when the canonical URL actually differs, to avoid a self-redirect.
-    const canonical = await getPlaceBySlug(slug);
+    const canonical = await getPlaceBySlug(slug, nSlug);
     if (canonical && isUsefulPlace(canonical)) {
       if (canonical.neighborhood_slug !== nSlug || canonical.category_slug !== cSlug) {
         permanentRedirect(`/denver/${canonical.neighborhood_slug}/${canonical.category_slug}/${slug}`);
@@ -325,7 +325,7 @@ export default async function BusinessPage({ params }: Props) {
   // (generateMetadata above already does this same check and normally redirects first.)
   // Guard against self-redirects when two places share a slug — see comment in generateMetadata.
   if (!place) {
-    const canonical = await getPlaceBySlug(slug);
+    const canonical = await getPlaceBySlug(slug, nSlug);
     if (canonical && isUsefulPlace(canonical)) {
       if (canonical.neighborhood_slug !== nSlug || canonical.category_slug !== cSlug) {
         permanentRedirect(`/denver/${canonical.neighborhood_slug}/${canonical.category_slug}/${slug}`);
