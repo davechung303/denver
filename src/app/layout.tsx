@@ -81,6 +81,14 @@ export default function RootLayout({
             ]),
           }}
         />
+        {/* Journey by Mediavine ad script. Mediavine's terms require it exactly as provided — do not alter or remove. */}
+        <script
+          type="text/javascript"
+          async
+          data-noptimize="1"
+          data-cfasync="false"
+          src="//scripts.scriptwrapper.com/tags/f494f2f2-ff08-4eff-ac21-b0b6c2d43c15.js"
+        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {/* Google Analytics */}
