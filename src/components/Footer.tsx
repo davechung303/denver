@@ -242,6 +242,10 @@ export default function Footer() {
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-mono text-[12px] text-white/60">
             &copy; {new Date().getFullYear()} Dave Loves Denver. All rights reserved.
+            {" · "}
+            <Link href="/privacy" className="hover:text-white transition-colors underline-offset-2 hover:underline">
+              Privacy Policy
+            </Link>
           </p>
           <p className="font-mono text-[12px] text-white/60">
             Denver, Colorado · davelovesdenver.com
