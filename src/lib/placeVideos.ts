@@ -384,6 +384,8 @@ export interface MatchResult {
   takes: number;
   waiting: number;
   errors: number;
+  /** True if work was left undone when the time budget ran out. */
+  more: boolean;
   log: string[];
 }
 
@@ -398,7 +400,7 @@ export interface MatchResult {
  */
 export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<MatchResult> {
   const started = Date.now();
-  const result: MatchResult = { videos: 0, matched: 0, takes: 0, waiting: 0, errors: 0, log: [] };
+  const result: MatchResult = { videos: 0, matched: 0, takes: 0, waiting: 0, errors: 0, more: false, log: [] };
   const timeLeft = () => budgetMs - (Date.now() - started);
 
   const { data: pending } = await supabaseAdmin
@@ -410,8 +412,13 @@ export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<
 
   const weekAgo = Date.now() - 7 * 24 * 3600 * 1000;
 
+  let seen = 0;
   for (const video of pending ?? []) {
-    if (result.videos >= limit || timeLeft() < 45_000) break;
+    if (result.videos >= limit || timeLeft() < 45_000) {
+      result.more = true;
+      break;
+    }
+    seen++;
     try {
       const transcript = await getTranscript(video.video_id);
       if (!transcript && video.published_at && new Date(video.published_at).getTime() > weekAgo) {
@@ -455,11 +462,16 @@ export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<
     }
   }
 
-  result.takes = await fillMissingTakes(timeLeft, result.log);
+  // A full page of pending rows means there may be more beyond it.
+  if ((pending ?? []).length === limit * 3 && seen === (pending ?? []).length) result.more = true;
+
+  const takes = await fillMissingTakes(timeLeft, result.log);
+  result.takes = takes.written;
+  if (takes.more) result.more = true;
   return result;
 }
 
-async function fillMissingTakes(timeLeft: () => number, log: string[]): Promise<number> {
+async function fillMissingTakes(timeLeft: () => number, log: string[]): Promise<{ written: number; more: boolean }> {
   const { data: rows } = await supabaseAdmin
     .from("place_videos")
     .select("id, is_primary, video_id, places(name), youtube_videos(title)")
@@ -473,7 +485,7 @@ async function fillMissingTakes(timeLeft: () => number, log: string[]): Promise<
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   for (const row of (rows ?? []) as any[]) {
-    if (timeLeft() < 20_000) break;
+    if (timeLeft() < 20_000) return { written, more: true };
     if (!row.places || !row.youtube_videos) continue;
 
     if (!transcripts.has(row.video_id)) transcripts.set(row.video_id, await getTranscript(row.video_id));
@@ -492,5 +504,5 @@ async function fillMissingTakes(timeLeft: () => number, log: string[]): Promise<
       log.push(`take ERROR ${row.places.name}: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
-  return written;
+  return { written, more: false };
 }
