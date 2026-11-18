@@ -63,7 +63,7 @@ export default async function MapPage() {
         <p className="kicker mb-2">The map</p>
         <h1 className="text-4xl font-bold">Every Denver place I&apos;ve filmed</h1>
         <p className="mt-4 max-w-2xl text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-          {pins.length} places from {videoCount} of my videos, pinned where they are. Tap a pin to watch the video, then
+          {`${pins.length} places from ${videoCount} of my videos, pinned where they are. `}Tap a pin to watch the video, then
           open the page for my take, hours and what&apos;s nearby. Numbered circles are groups of places &mdash; tap to zoom in.
         </p>
       </section>

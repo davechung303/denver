@@ -240,7 +240,7 @@ export default async function NeighborhoodPage({ params }: Props) {
             <div>
               <p className="kicker mb-1">On the map</p>
               <h2 className="text-2xl font-bold">
-                {videoPins.length === 1 ? "The place" : `${videoPins.length} places`} I&apos;ve filmed in {n.name}
+                {`${videoPins.length === 1 ? "The place" : `${videoPins.length} places`} I've filmed in ${n.name}`}
               </h2>
             </div>
             <Link href="/map" className="text-sm font-semibold text-denver-amber hover:underline">

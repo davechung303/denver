@@ -93,7 +93,7 @@ export default function FeaturedPlaceVideo({
 
       {others.length > 0 && (
         <div className="pt-3 border-t border-rule dark:border-white/10">
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">{placeName} also shows up in:</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">{`${placeName} also shows up in:`}</p>
           <ul className="space-y-1">
             {others.map((o) => (
               <li key={o.video_id}>
