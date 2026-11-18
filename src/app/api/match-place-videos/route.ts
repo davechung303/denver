@@ -1,6 +1,6 @@
 import { NextResponse, after } from "next/server";
 import { revalidatePath } from "next/cache";
-import { matchPlaceVideos } from "@/lib/placeVideos";
+import { matchPlaceVideos, pathsForPlaces } from "@/lib/placeVideos";
 
 export const maxDuration = 300;
 
@@ -25,11 +25,16 @@ export async function GET(request: Request) {
   const depth = parseInt(url.searchParams.get("depth") ?? "0");
 
   after(async () => {
-    const result = await matchPlaceVideos(limit, 270_000);
-    console.log(`[match-place-videos] depth=${depth}`, JSON.stringify({ ...result, log: undefined }));
+    console.log(`[match-place-videos] depth=${depth} start`);
+    // Budget well under maxDuration (300s): a single AI call can take 30s+,
+    // and a run cut off by the platform never gets to start the next one.
+    const result = await matchPlaceVideos(limit, 190_000);
+    console.log(`[match-place-videos] depth=${depth}`, JSON.stringify({ ...result, log: undefined, changedPlaceIds: result.changedPlaceIds.length }));
     for (const line of result.log) console.log(`[match-place-videos] ${line}`);
 
-    if (result.matched > 0 || result.takes > 0) revalidatePath("/map");
+    // Refresh the pages that changed, so a new match shows up now rather than
+    // whenever that page's daily ISR window happens to roll over.
+    for (const path of await pathsForPlaces(result.changedPlaceIds)) revalidatePath(path);
 
     const progressed = result.videos > 0 || result.takes > 0;
     if (chain && result.more && progressed && depth < MAX_CHAIN) {

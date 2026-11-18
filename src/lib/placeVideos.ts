@@ -386,6 +386,8 @@ export interface MatchResult {
   errors: number;
   /** True if work was left undone when the time budget ran out. */
   more: boolean;
+  /** Places that gained a match or a take this run, so their pages can be refreshed. */
+  changedPlaceIds: string[];
   log: string[];
 }
 
@@ -400,7 +402,7 @@ export interface MatchResult {
  */
 export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<MatchResult> {
   const started = Date.now();
-  const result: MatchResult = { videos: 0, matched: 0, takes: 0, waiting: 0, errors: 0, more: false, log: [] };
+  const result: MatchResult = { videos: 0, matched: 0, takes: 0, waiting: 0, errors: 0, more: false, changedPlaceIds: [], log: [] };
   const timeLeft = () => budgetMs - (Date.now() - started);
 
   const { data: pending } = await supabaseAdmin
@@ -414,7 +416,7 @@ export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<
 
   let seen = 0;
   for (const video of pending ?? []) {
-    if (result.videos >= limit || timeLeft() < 45_000) {
+    if (result.videos >= limit || timeLeft() < 60_000) {
       result.more = true;
       break;
     }
@@ -449,6 +451,7 @@ export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<
           { onConflict: "place_id,video_id" }
         );
         result.matched += matches.length;
+        result.changedPlaceIds.push(...matches.map((m) => m.place_id));
       }
       result.log.push(`${video.title} → ${matches.map((m) => m.name).join(", ") || "no match"} (${mentions.length} mentioned)`);
 
@@ -465,16 +468,16 @@ export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<
   // A full page of pending rows means there may be more beyond it.
   if ((pending ?? []).length === limit * 3 && seen === (pending ?? []).length) result.more = true;
 
-  const takes = await fillMissingTakes(timeLeft, result.log);
+  const takes = await fillMissingTakes(timeLeft, result.log, result.changedPlaceIds);
   result.takes = takes.written;
   if (takes.more) result.more = true;
   return result;
 }
 
-async function fillMissingTakes(timeLeft: () => number, log: string[]): Promise<{ written: number; more: boolean }> {
+async function fillMissingTakes(timeLeft: () => number, log: string[], changed: string[]): Promise<{ written: number; more: boolean }> {
   const { data: rows } = await supabaseAdmin
     .from("place_videos")
-    .select("id, is_primary, video_id, places(name), youtube_videos(title)")
+    .select("id, place_id, is_primary, video_id, places(name), youtube_videos(title)")
     .is("take_generated_at", null)
     .eq("hidden", false)
     .order("created_at", { ascending: false })
@@ -485,7 +488,7 @@ async function fillMissingTakes(timeLeft: () => number, log: string[]): Promise<
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   for (const row of (rows ?? []) as any[]) {
-    if (timeLeft() < 20_000) return { written, more: true };
+    if (timeLeft() < 40_000) return { written, more: true };
     if (!row.places || !row.youtube_videos) continue;
 
     if (!transcripts.has(row.video_id)) transcripts.set(row.video_id, await getTranscript(row.video_id));
@@ -498,11 +501,30 @@ async function fillMissingTakes(timeLeft: () => number, log: string[]): Promise<
         .from("place_videos")
         .update({ take, take_generated_at: new Date().toISOString() })
         .eq("id", row.id);
-      if (take) written++;
+      if (take) {
+        written++;
+        changed.push(row.place_id);
+      }
       log.push(`take ${take ? "written" : "skipped"}: ${row.places.name}`);
     } catch (err) {
       log.push(`take ERROR ${row.places.name}: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
   return { written, more: false };
+}
+
+/** Page paths to refresh for places whose matches or takes changed. */
+export async function pathsForPlaces(placeIds: string[]): Promise<string[]> {
+  const ids = [...new Set(placeIds)];
+  if (ids.length === 0) return [];
+  const { data } = await supabaseAdmin
+    .from("places")
+    .select("slug, neighborhood_slug, category_slug")
+    .in("place_id", ids);
+  const paths = new Set<string>(["/map"]);
+  for (const p of data ?? []) {
+    paths.add(`/denver/${p.neighborhood_slug}/${p.category_slug}/${p.slug}`);
+    paths.add(`/denver/${p.neighborhood_slug}`);
+  }
+  return [...paths];
 }
