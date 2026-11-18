@@ -416,7 +416,7 @@ export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<
 
   let seen = 0;
   for (const video of pending ?? []) {
-    if (result.videos >= limit || timeLeft() < 45_000) {
+    if (result.videos >= limit || timeLeft() < 60_000) {
       result.more = true;
       break;
     }
@@ -488,7 +488,7 @@ async function fillMissingTakes(timeLeft: () => number, log: string[], changed: 
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   for (const row of (rows ?? []) as any[]) {
-    if (timeLeft() < 20_000) return { written, more: true };
+    if (timeLeft() < 40_000) return { written, more: true };
     if (!row.places || !row.youtube_videos) continue;
 
     if (!transcripts.has(row.video_id)) transcripts.set(row.video_id, await getTranscript(row.video_id));

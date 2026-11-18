@@ -25,7 +25,10 @@ export async function GET(request: Request) {
   const depth = parseInt(url.searchParams.get("depth") ?? "0");
 
   after(async () => {
-    const result = await matchPlaceVideos(limit, 270_000);
+    console.log(`[match-place-videos] depth=${depth} start`);
+    // Budget well under maxDuration (300s): a single AI call can take 30s+,
+    // and a run cut off by the platform never gets to start the next one.
+    const result = await matchPlaceVideos(limit, 190_000);
     console.log(`[match-place-videos] depth=${depth}`, JSON.stringify({ ...result, log: undefined, changedPlaceIds: result.changedPlaceIds.length }));
     for (const line of result.log) console.log(`[match-place-videos] ${line}`);
 
