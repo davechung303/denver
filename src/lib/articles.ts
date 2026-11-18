@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { supabase, supabaseAdmin } from "./supabase";
 import { expediaHotelUrl } from "./travelpayouts";
+import { fetchOwnerTranscript } from "./youtubeCaptions";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
@@ -34,6 +35,19 @@ export async function fetchTranscript(videoId: string): Promise<string | null> {
     .single();
 
   if (cached?.transcript) return cached.transcript;
+
+  // Official API first (signed in as Dave). YouTube blocks the watch-page
+  // scrape below from Vercel's servers, so in production that path returns
+  // nothing; it stays as a fallback for local runs.
+  const official = await fetchOwnerTranscript(videoId).catch(() => null);
+  if (official) {
+    await supabaseAdmin.from("transcripts").upsert({
+      video_id: videoId,
+      transcript: official,
+      fetched_at: new Date().toISOString(),
+    }, { onConflict: "video_id" });
+    return official;
+  }
 
   try {
     // Fetch the YouTube watch page to extract the caption track URL with session params

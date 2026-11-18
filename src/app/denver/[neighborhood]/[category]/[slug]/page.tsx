@@ -9,6 +9,8 @@ import { getNeighborhood, getCategory, getPlaceTag, isInNeighborhood } from "@/l
 import { getSubcategory, getSubcategories } from "@/lib/subcategories";
 import PlaceCard from "@/components/PlaceCard";
 import VideoCard from "@/components/VideoCard";
+import FeaturedPlaceVideo from "@/components/FeaturedPlaceVideo";
+import { getVideosForPlace } from "@/lib/placeVideos";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import BookYourTripCard from "@/components/BookYourTripCard";
 import ExperiencesStrip from "@/components/ExperiencesStrip";
@@ -358,7 +360,7 @@ export default async function BusinessPage({ params }: Props) {
 
   const isFoodCategory = ["restaurants", "bars", "coffee"].includes(cSlug);
 
-  const [relatedPlaces, videos, nearbyRestaurants, nearbyActivities, nearbyHotelsRaw, nearbyBarsRaw] = await Promise.all([
+  const [relatedPlaces, areaVideos, nearbyRestaurants, nearbyActivities, nearbyHotelsRaw, nearbyBarsRaw, placeVideos] = await Promise.all([
     getPlaces(nSlug, cSlug),
     // Hotels/activities rarely have category-specific video associations — use neighborhood-level
     getVideosForPage(nSlug, (isHotel || isThingsToDo) ? null : cSlug, 3),
@@ -366,7 +368,13 @@ export default async function BusinessPage({ params }: Props) {
     (isHotel || isRestaurant || isBar || isThingsToDo) ? getPlaces(nSlug, "things-to-do") : Promise.resolve([]),
     !isHotel ? getPlaces(nSlug, "hotels") : Promise.resolve([]),
     (isRestaurant || isThingsToDo) ? getPlaces(nSlug, "bars") : Promise.resolve([]),
+    // Dave's own videos about this exact place (place_videos), best first.
+    getVideosForPlace(place.place_id),
   ]);
+  const featuredVideo = placeVideos[0] ?? null;
+  const placeVideoIds = new Set(placeVideos.map((v) => v.video_id));
+  // Area-level related videos, minus any already featured above.
+  const videos = areaVideos.filter((v) => !placeVideoIds.has(v.video_id));
 
   const nearby = relatedPlaces.filter((p) => p.slug !== slug).filter(isUsefulPlace).slice(0, 3);
 
@@ -528,10 +536,12 @@ export default async function BusinessPage({ params }: Props) {
           { name: c.name, url: `https://davelovesdenver.com/denver/${nSlug}/${c.slug}` },
           { name: place.name, url: `https://davelovesdenver.com/denver/${nSlug}/${cSlug}/${slug}` },
         ]}
-        videos={videos.map((v) => ({
+        // The place's own video leads: it's the page's main content, which is
+        // where Google gives video results. Area videos fill the remaining slots.
+        videos={[...placeVideos, ...videos].map((v) => ({
           name: v.title,
           description: v.description,
-          thumbnailUrl: v.thumbnail_url,
+          thumbnailUrl: v.thumbnail_url ?? `https://i.ytimg.com/vi/${v.video_id}/hqdefault.jpg`,
           uploadDate: v.published_at,
           videoId: v.video_id,
         }))}
@@ -618,6 +628,11 @@ export default async function BusinessPage({ params }: Props) {
                 </a>
               )}
             </div>
+
+            {/* Dave's own video about this place, with a take from its transcript */}
+            {featuredVideo && (
+              <FeaturedPlaceVideo placeName={place.name} video={featuredVideo} others={placeVideos.slice(1)} />
+            )}
 
             {/* Neighborhood context */}
             {categoryCount > 3 && place.rating && (

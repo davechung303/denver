@@ -289,6 +289,13 @@ export default function Nav() {
             </Link>
 
             <Link
+              href="/map"
+              className={`px-4 py-2 text-sm transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10 ${pathname === "/map" ? "text-denver-amber font-semibold" : "text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white"}`}
+            >
+              Map
+            </Link>
+
+            <Link
               href="/videos"
               className="px-4 py-2 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white transition-colors rounded-md hover:bg-ink/5 dark:hover:bg-white/10"
             >
@@ -491,6 +498,13 @@ export default function Nav() {
               className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
             >
               Events
+            </Link>
+            <Link
+              href="/map"
+              onClick={closeAll}
+              className="block px-4 py-2.5 text-sm text-ink/80 hover:text-ink dark:text-white/80 dark:hover:text-white hover:bg-ink/5 dark:hover:bg-white/10 rounded-md transition-colors"
+            >
+              Map
             </Link>
             <Link
               href="/videos"

@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     { url: `${BASE_URL}/articles`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
     { url: `${BASE_URL}/events`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
+    { url: `${BASE_URL}/map`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
   ];
 
   const neighborhoodPages: MetadataRoute.Sitemap = NEIGHBORHOODS.map((n) => ({
