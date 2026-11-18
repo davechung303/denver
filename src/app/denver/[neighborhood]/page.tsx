@@ -10,6 +10,8 @@ import VideoCard from "@/components/VideoCard";
 import EventCard from "@/components/EventCard";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import MapWrapper from "@/components/MapWrapper";
+import VideoMapWrapper from "@/components/VideoMapWrapper";
+import { getVideoMapPins } from "@/lib/placeVideos";
 import PlaceCard from "@/components/PlaceCard";
 import { getPlaceTag } from "@/lib/neighborhoods";
 import BookYourTrip from "@/components/BookYourTrip";
@@ -102,7 +104,7 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   const otherNeighborhoods = NEIGHBORHOODS.filter((nb) => nb.slug !== slug);
 
-  const [videos, events, rawRestaurants, rawHotels, rawBars, rawThingsToDo, rawCoffee, recentlyAdded] = await Promise.all([
+  const [videos, events, rawRestaurants, rawHotels, rawBars, rawThingsToDo, rawCoffee, recentlyAdded, videoPins] = await Promise.all([
     getVideosForPage(slug, null, 3),
     getEventsForNeighborhood(slug, 4),
     getPlaces(slug, "restaurants"),
@@ -114,6 +116,7 @@ export default async function NeighborhoodPage({ params }: Props) {
     getPlaces(slug, "things-to-do"),
     getPlaces(slug, "coffee"),
     getRecentlyAddedPlaces(slug, 10),
+    getVideoMapPins(slug),
   ]);
   // Sort by quality × proximity so the featured cards are actually in the neighborhood
   function sortByProximity(places: Place[]): Place[] {
@@ -229,6 +232,26 @@ export default async function NeighborhoodPage({ params }: Props) {
           <p className="mt-5 text-lg text-white/70 max-w-2xl leading-relaxed">{n.description}</p>
         </div>
       </section>
+
+      {/* Places Dave has filmed in this neighborhood */}
+      {videoPins.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14">
+          <div className="flex items-end justify-between gap-4 flex-wrap mb-4">
+            <div>
+              <p className="kicker mb-1">On the map</p>
+              <h2 className="text-2xl font-bold">
+                {videoPins.length === 1 ? "The place" : `${videoPins.length} places`} I&apos;ve filmed in {n.name}
+              </h2>
+            </div>
+            <Link href="/map" className="text-sm font-semibold text-denver-amber hover:underline">
+              See the full Denver map &rarr;
+            </Link>
+          </div>
+          <div className="h-[28rem] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+            <VideoMapWrapper pins={videoPins} center={[n.lat, n.lng]} zoom={14} fitToPins />
+          </div>
+        </section>
+      )}
 
       {/* At-a-glance place sections */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">

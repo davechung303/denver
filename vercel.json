@@ -4,6 +4,7 @@
     { "path": "/api/sync-videos",      "schedule": "0 18 * * *" },
     { "path": "/api/associate-videos?limit=50", "schedule": "30 18 * * *" },
     { "path": "/api/generate-articles?limit=30","schedule": "0 19 * * *" },
+    { "path": "/api/match-place-videos?limit=10", "schedule": "30 19 * * *" },
     { "path": "/api/sync-events",      "schedule": "0 7 * * *" },
     { "path": "/api/sync-fever-full",   "schedule": "0 8 * * *" },
     { "path": "/api/snapshot-places",  "schedule": "0 9 * * 1" },
