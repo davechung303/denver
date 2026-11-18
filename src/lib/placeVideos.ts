@@ -3,6 +3,7 @@ import { supabase, supabaseAdmin } from "./supabase";
 import { VOICE_GUIDE } from "./voiceGuide";
 import { isExcludedPlace } from "./excludedPlaces";
 import { isInNeighborhood } from "./neighborhoods";
+import { fetchTranscript } from "./articles";
 
 /**
  * Place ↔ video matching.
@@ -372,9 +373,9 @@ Return ONLY JSON: {"summary": "...", "ordered": ["..."], "verdict": "..." , "ski
   return null;
 }
 
+/** Cached transcript, else fetched (official API) and cached. */
 async function getTranscript(videoId: string): Promise<string | null> {
-  const { data } = await supabase.from("transcripts").select("transcript").eq("video_id", videoId).maybeSingle();
-  return data?.transcript ?? null;
+  return fetchTranscript(videoId);
 }
 
 export interface MatchResult {
