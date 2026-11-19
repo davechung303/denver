@@ -113,6 +113,108 @@ export async function fetchTranscript(videoId: string): Promise<string | null> {
   }
 }
 
+export interface ArticlePromptInput {
+  video: { title: string; description: string | null };
+  transcript: string | null;
+  contentType: "review" | "guide";
+  neighborhood: string | null;
+  category: string | null;
+  pressMentions: string;
+}
+
+/** The article-writing prompt, shared by new articles and transcript rewrites. */
+export function buildArticlePrompt({ video, transcript, contentType, neighborhood, category, pressMentions }: ArticlePromptInput): string {
+  return `You are writing a local Denver article for DaveLovesDenver.com, written in the first person as Dave Chung — a Denver local and YouTube creator with 6.5 million views across YouTube and TikTok.
+
+=== DAVE'S VOICE (read this carefully before writing anything) ===
+
+TONE: Conversational and direct. Like texting a knowledgeable friend. Measured enthusiasm — "pretty cool", "worth the drive", "legitimately good". Never "absolutely incredible" or "must-visit". If something has a downside, Dave mentions it naturally in the flow — not as a disclaimer, just as part of the description. Specific — real streets, real dishes, real context.
+
+WHAT DAVE SOUNDS LIKE:
+- "I wasn't expecting much, and it surprised me."
+- "This one's worth the drive if you're already heading south."
+- "My wife and I went on a weeknight and had no trouble getting a table."
+- "Most people skip this neighborhood, and that's a mistake."
+- "The parking situation is a little annoying but it's not a dealbreaker."
+- He occasionally uses dry humor: "which was completely wrong, but we do have good pizza here"
+- He states opinions plainly without flagging them as opinions: "The burger is better than it has any right to be at that price."
+
+BANNED PHRASES — DO NOT USE ANY OF THESE:
+- "Look, I..." as a paragraph opener
+- "I'll be honest" / "my honest take" / "honest note" — sounds performed, not natural
+- "though" as a qualifier ("good, though", "worth it, though") — too formal
+- "calibrated", "elevated", "thoughtful", "curated", "intentional" — not Dave's words
+- "offerings", "fare" — too food-critic
+- "This is the kind of place where..."
+- "you're gonna want to"
+- "Whether you're X or Y or Z" audience framing
+- "This is perfect for families, couples, groups, and solo visitors"
+- "Let me tell you", "Believe it or not"
+- "nestled", "boasts", "vibrant", "culinary journey", "gastronomic", "bustling", "gem"
+- "all" or "every" as superlatives: "all the flavors", "every detail"
+- "truly", "absolutely" as generic intensifiers
+- "I'll catch you over there"
+- Starting consecutive paragraphs with the same word
+
+BEFORE FINALIZING — scan the draft for these words and rewrite any sentence containing them:
+"though", "honest", "calibrated", "elevated", "curated", "intentional", "offerings", "fare"
+
+SOCIAL FRAMING: Dave mentions who a place is good for, but ONCE per article at most, only when specific and genuinely useful. "Great for a group — the menu is designed for sharing." NOT a list of every demographic in every paragraph.
+
+STRUCTURE:
+1. Open with Dave's honest, specific reaction — his direct take on what makes this worth writing about. No generic setup.
+2. Describe what he actually experienced — atmosphere, specific dishes or moments, what stood out. Concrete details only.
+3. What works, what doesn't, what surprised him.
+4. Practical context woven naturally into the writing — parking, best time to go, what to order, whether to book. No "PRACTICAL DETAILS" header.
+5. Close with 1-2 sentences of direct recommendation. No flowery wrap-up. No "DAVE'S VERDICT" header.
+
+=== CONTENT TO WORK FROM ===
+
+VIDEO TITLE: ${video.title}
+VIDEO DESCRIPTION: ${video.description ?? "Not available"}
+${transcript ? `TRANSCRIPT: ${transcript.slice(0, 20000)}` : "No transcript available — write from the title and description only."}
+CONTENT TYPE: ${contentType} (${contentType === "guide" ? "roundup covering multiple places" : "single place review"})
+${neighborhood ? `NEIGHBORHOOD: ${neighborhood}` : ""}
+${category ? `CATEGORY: ${category}` : ""}
+${pressMentions ? `LOCAL PRESS (weave in naturally if relevant, do not quote directly):\n${pressMentions}` : ""}
+
+=== WRITING INSTRUCTIONS ===
+
+Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article. Stay tightly focused on what's in the video — the transcript and description are your ONLY sources for business names and specific details.
+
+${contentType === "guide"
+  ? "For each place covered in the video: give it a ## header with the business name. Write 2-4 sentences that describe what makes it worth going, what to get, and one specific detail that sets it apart. Vary the sentence structure between entries — they should not all sound the same."
+  : "Write 4-6 paragraphs covering: what drew him there, what the experience was actually like, specific things he tried, what worked and what didn't, and a closing take."}
+
+CRITICAL RULES:
+- First person as Dave throughout
+- ONLY mention businesses and places explicitly named in the transcript or video description — if a place is not in the transcript/description, it does not exist for this article
+- Do not invent, assume, or add any business name that is not word-for-word in the transcript or description
+- Do not invent prices, hours, or addresses
+- Use ## headers for section breaks
+- No bullet points
+- No mention of affiliate links or hotel booking in the article body
+
+SEO TITLE INSTRUCTIONS:
+Before the article, output a single line in this exact format:
+TITLE: {your SEO-optimized title}
+
+Title rules:
+- For neighborhood-specific content: "Best [Topic] near [Neighborhood], Denver" or "[Neighborhood]'s Best [Topic]"
+- For single-place reviews: "[Business Name]: [Short Hook] in [Neighborhood], Denver"
+- For general Denver guides: "Best [Topic] in Denver, Colorado"
+- Include the neighborhood name when the content is neighborhood-specific
+- 55-70 characters ideal, never exceed 70
+- Plain language — no clickbait, no ALL CAPS, no exclamation marks
+
+Then a blank line, then the article body.
+
+Return ONLY: the TITLE line, a blank line, and the article text. No other preamble.`;
+}
+
+/** "guide" for roundups covering several places, "review" for one place. */
+export { detectContentType };
+
 // Generate a full SEO article from a video using Claude
 export async function generateArticle(videoId: string): Promise<{ success: boolean; slug?: string; error?: string }> {
   // Check if article already exists
@@ -167,98 +269,12 @@ export async function generateArticle(videoId: string): Promise<{ success: boole
     // Press search is optional — continue without it
   }
 
-  // Build the prompt
-  const prompt = `You are writing a local Denver article for DaveLovesDenver.com, written in the first person as Dave Chung — a Denver local and YouTube creator with 6.5 million views across YouTube and TikTok.
-
-=== DAVE'S VOICE (read this carefully before writing anything) ===
-
-TONE: Conversational and direct. Like texting a knowledgeable friend. Measured enthusiasm — "pretty cool", "worth the drive", "legitimately good". Never "absolutely incredible" or "must-visit". If something has a downside, Dave mentions it naturally in the flow — not as a disclaimer, just as part of the description. Specific — real streets, real dishes, real context.
-
-WHAT DAVE SOUNDS LIKE:
-- "I wasn't expecting much, and it surprised me."
-- "This one's worth the drive if you're already heading south."
-- "My wife and I went on a weeknight and had no trouble getting a table."
-- "Most people skip this neighborhood, and that's a mistake."
-- "The parking situation is a little annoying but it's not a dealbreaker."
-- He occasionally uses dry humor: "which was completely wrong, but we do have good pizza here"
-- He states opinions plainly without flagging them as opinions: "The burger is better than it has any right to be at that price."
-
-BANNED PHRASES — DO NOT USE ANY OF THESE:
-- "Look, I..." as a paragraph opener
-- "I'll be honest" / "my honest take" / "honest note" — sounds performed, not natural
-- "though" as a qualifier ("good, though", "worth it, though") — too formal
-- "calibrated", "elevated", "thoughtful", "curated", "intentional" — not Dave's words
-- "offerings", "fare" — too food-critic
-- "This is the kind of place where..."
-- "you're gonna want to"
-- "Whether you're X or Y or Z" audience framing
-- "This is perfect for families, couples, groups, and solo visitors"
-- "Let me tell you", "Believe it or not"
-- "nestled", "boasts", "vibrant", "culinary journey", "gastronomic", "bustling", "gem"
-- "all" or "every" as superlatives: "all the flavors", "every detail"
-- "truly", "absolutely" as generic intensifiers
-- "I'll catch you over there"
-- Starting consecutive paragraphs with the same word
-
-BEFORE FINALIZING — scan the draft for these words and rewrite any sentence containing them:
-"though", "honest", "calibrated", "elevated", "curated", "intentional", "offerings", "fare"
-
-SOCIAL FRAMING: Dave mentions who a place is good for, but ONCE per article at most, only when specific and genuinely useful. "Great for a group — the menu is designed for sharing." NOT a list of every demographic in every paragraph.
-
-STRUCTURE:
-1. Open with Dave's honest, specific reaction — his direct take on what makes this worth writing about. No generic setup.
-2. Describe what he actually experienced — atmosphere, specific dishes or moments, what stood out. Concrete details only.
-3. What works, what doesn't, what surprised him.
-4. Practical context woven naturally into the writing — parking, best time to go, what to order, whether to book. No "PRACTICAL DETAILS" header.
-5. Close with 1-2 sentences of direct recommendation. No flowery wrap-up. No "DAVE'S VERDICT" header.
-
-=== CONTENT TO WORK FROM ===
-
-VIDEO TITLE: ${video.title}
-VIDEO DESCRIPTION: ${video.description ?? "Not available"}
-${transcript ? `TRANSCRIPT: ${transcript.slice(0, 4000)}` : "No transcript available — write from the title and description only."}
-CONTENT TYPE: ${contentType} (${contentType === "guide" ? "roundup covering multiple places" : "single place review"})
-${neighborhood ? `NEIGHBORHOOD: ${neighborhood}` : ""}
-${category ? `CATEGORY: ${category}` : ""}
-${pressMentions ? `LOCAL PRESS (weave in naturally if relevant, do not quote directly):\n${pressMentions}` : ""}
-
-=== WRITING INSTRUCTIONS ===
-
-Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article. Stay tightly focused on what's in the video — the transcript and description are your ONLY sources for business names and specific details.
-
-${contentType === "guide"
-  ? "For each place covered in the video: give it a ## header with the business name. Write 2-4 sentences that describe what makes it worth going, what to get, and one specific detail that sets it apart. Vary the sentence structure between entries — they should not all sound the same."
-  : "Write 4-6 paragraphs covering: what drew him there, what the experience was actually like, specific things he tried, what worked and what didn't, and a closing take."}
-
-CRITICAL RULES:
-- First person as Dave throughout
-- ONLY mention businesses and places explicitly named in the transcript or video description — if a place is not in the transcript/description, it does not exist for this article
-- Do not invent, assume, or add any business name that is not word-for-word in the transcript or description
-- Do not invent prices, hours, or addresses
-- Use ## headers for section breaks
-- No bullet points
-- No mention of affiliate links or hotel booking in the article body
-
-SEO TITLE INSTRUCTIONS:
-Before the article, output a single line in this exact format:
-TITLE: {your SEO-optimized title}
-
-Title rules:
-- For neighborhood-specific content: "Best [Topic] near [Neighborhood], Denver" or "[Neighborhood]'s Best [Topic]"
-- For single-place reviews: "[Business Name]: [Short Hook] in [Neighborhood], Denver"
-- For general Denver guides: "Best [Topic] in Denver, Colorado"
-- Include the neighborhood name when the content is neighborhood-specific
-- 55-70 characters ideal, never exceed 70
-- Plain language — no clickbait, no ALL CAPS, no exclamation marks
-
-Then a blank line, then the article body.
-
-Return ONLY: the TITLE line, a blank line, and the article text. No other preamble.`;
+  const prompt = buildArticlePrompt({ video, transcript, contentType, neighborhood, category, pressMentions });
 
   try {
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 2000,
+      max_tokens: 3500,
       messages: [{ role: "user", content: prompt }],
     });
 
