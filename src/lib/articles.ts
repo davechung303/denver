@@ -113,6 +113,26 @@ export async function fetchTranscript(videoId: string): Promise<string | null> {
   }
 }
 
+/**
+ * Instructions for a YouTube Short: under a minute of talking, so the article
+ * is short and sized to what the video covers rather than padded to a length,
+ * but built for search the same way the guides are (answer-first lede,
+ * headers phrased like searches, the name and neighborhood used naturally).
+ */
+function shortFormatInstructions(contentType: "review" | "guide"): string {
+  return `This video is a YouTube Short: under a minute of Dave talking. The SEO FORMAT below replaces the STRUCTURE section above.
+
+LENGTH: 300-450 words, sized to what the video actually covers. Never pad to reach a length. If the transcript covers less, write less (250 words minimum). The transcript and description are your ONLY sources for business names and specific details.
+
+SEO FORMAT FOR A SHORT:
+- Open with a 40-60 word paragraph, with no header above it, that fully answers what someone searching for this wants to know: what the place or thing is, where it is (neighborhood and "Denver", when the transcript or description gives them), and Dave's bottom line. It must make sense quoted on its own.
+${contentType === "guide"
+  ? "- The video covers several places: give each one a ## header with its name, then 1-3 sentences on what makes it worth going and what to get."
+  : "- Then 2-3 ## sections with headers phrased the way people search, using the real name — for example \"What to order at [Name]\", \"Is [Name] worth it?\", \"What it's like inside\", \"Good to know before you go\". Only include a section the video gives real material for."}
+- Use the business name and neighborhood naturally a few times. Never repeat keywords for their own sake.
+- No generic filler ("I've covered a lot of Denver food", "it's hard to categorize"). Every sentence carries a fact or an opinion from the video.`;
+}
+
 export interface ArticlePromptInput {
   video: { title: string; description: string | null };
   transcript: string | null;
@@ -120,10 +140,12 @@ export interface ArticlePromptInput {
   neighborhood: string | null;
   category: string | null;
   pressMentions: string;
+  /** A YouTube Short (3 minutes or less): written short, sized to what the video covers. */
+  isShort?: boolean;
 }
 
 /** The article-writing prompt, shared by new articles and transcript rewrites. */
-export function buildArticlePrompt({ video, transcript, contentType, neighborhood, category, pressMentions }: ArticlePromptInput): string {
+export function buildArticlePrompt({ video, transcript, contentType, neighborhood, category, pressMentions, isShort = false }: ArticlePromptInput): string {
   return `You are writing a local Denver article for DaveLovesDenver.com, written in the first person as Dave Chung — a Denver local and YouTube creator with 6.5 million views across YouTube and TikTok.
 
 === DAVE'S VOICE (read this carefully before writing anything) ===
@@ -180,11 +202,11 @@ ${pressMentions ? `LOCAL PRESS (weave in naturally if relevant, do not quote dir
 
 === WRITING INSTRUCTIONS ===
 
-Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article. Stay tightly focused on what's in the video — the transcript and description are your ONLY sources for business names and specific details.
+${isShort ? shortFormatInstructions(contentType) : `Write a ${contentType === "guide" ? "1,000-1,300" : "600-800"} word article. Stay tightly focused on what's in the video — the transcript and description are your ONLY sources for business names and specific details.
 
 ${contentType === "guide"
   ? "For each place covered in the video: give it a ## header with the business name. Write 2-4 sentences that describe what makes it worth going, what to get, and one specific detail that sets it apart. Vary the sentence structure between entries — they should not all sound the same."
-  : "Write 4-6 paragraphs covering: what drew him there, what the experience was actually like, specific things he tried, what worked and what didn't, and a closing take."}
+  : "Write 4-6 paragraphs covering: what drew him there, what the experience was actually like, specific things he tried, what worked and what didn't, and a closing take."}`}
 
 CRITICAL RULES:
 - First person as Dave throughout
@@ -269,7 +291,8 @@ export async function generateArticle(videoId: string): Promise<{ success: boole
     // Press search is optional — continue without it
   }
 
-  const prompt = buildArticlePrompt({ video, transcript, contentType, neighborhood, category, pressMentions });
+  const isShort = video.duration_seconds != null && video.duration_seconds <= 180;
+  const prompt = buildArticlePrompt({ video, transcript, contentType, neighborhood, category, pressMentions, isShort });
 
   try {
     const message = await anthropic.messages.create({
