@@ -48,8 +48,9 @@ function parse(raw: string): { body: string; evidence: string[] } {
   return { body: body.trim(), evidence };
 }
 
-function grounded(body: string, evidence: string[], transcript: string): boolean {
-  if (body.length < 1500 || BANNED.test(body)) return false;
+function grounded(body: string, evidence: string[], transcript: string, isShort: boolean): boolean {
+  // Shorts are written short on purpose (250+ words); full videos run 600+.
+  if (body.length < (isShort ? 1100 : 1500) || BANNED.test(body)) return false;
   const hay = loose(transcript);
   const hits = evidence.filter((e) => {
     const needle = loose(e);
@@ -59,10 +60,11 @@ function grounded(body: string, evidence: string[], transcript: string): boolean
 }
 
 async function writeFromTranscript(
-  video: { title: string; description: string | null },
+  video: { title: string; description: string | null; duration_seconds: number | null },
   transcript: string,
   article: { content_type: string | null; neighborhood_slug: string | null; category_slug: string | null }
 ): Promise<string | null> {
+  const isShort = video.duration_seconds != null && video.duration_seconds <= 180;
   const contentType =
     article.content_type === "guide" || article.content_type === "review"
       ? article.content_type
@@ -75,6 +77,7 @@ async function writeFromTranscript(
       neighborhood: article.neighborhood_slug,
       category: article.category_slug,
       pressMentions: "",
+      isShort,
     }) + EVIDENCE_INSTRUCTION;
 
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -86,7 +89,7 @@ async function writeFromTranscript(
     const block = msg.content[0];
     if (block?.type !== "text") continue;
     const { body, evidence } = parse(block.text);
-    if (grounded(body, evidence, transcript)) return body;
+    if (grounded(body, evidence, transcript, isShort)) return body;
   }
   return null;
 }
@@ -122,7 +125,7 @@ export async function rewriteArticles(limit = 4, budgetMs = 190_000): Promise<Re
     const { data: t } = await supabase.from("transcripts").select("transcript").eq("video_id", a.video_id).maybeSingle();
     if (!t?.transcript) continue;
 
-    const { data: video } = await supabase.from("youtube_videos").select("title, description").eq("video_id", a.video_id).maybeSingle();
+    const { data: video } = await supabase.from("youtube_videos").select("title, description, duration_seconds").eq("video_id", a.video_id).maybeSingle();
     if (!video) continue;
 
     attempted++;
