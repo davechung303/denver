@@ -373,8 +373,30 @@ Return ONLY JSON: {"summary": "...", "ordered": ["..."], "verdict": "..." , "ski
   return null;
 }
 
-/** Cached transcript, else fetched (official API) and cached. */
-async function getTranscript(videoId: string): Promise<string | null> {
+const TRANSCRIPT_RECHECK_MS = 6 * 3600 * 1000;
+
+/**
+ * Cached transcript. With fetchIfMissing, a miss is fetched from YouTube (and
+ * cached), but at most once every 6 hours per video: this runs every 10
+ * minutes, and each caption check costs 50-250 units of a 10,000/day quota.
+ */
+async function getTranscript(videoId: string, fetchIfMissing = false): Promise<string | null> {
+  const { data } = await supabase.from("transcripts").select("transcript").eq("video_id", videoId).maybeSingle();
+  if (data?.transcript) return data.transcript;
+  if (!fetchIfMissing) return null;
+
+  const { data: v } = await supabaseAdmin
+    .from("youtube_videos")
+    .select("transcript_checked_at")
+    .eq("video_id", videoId)
+    .maybeSingle();
+  if (v?.transcript_checked_at && Date.now() - new Date(v.transcript_checked_at).getTime() < TRANSCRIPT_RECHECK_MS) {
+    return null;
+  }
+  await supabaseAdmin
+    .from("youtube_videos")
+    .update({ transcript_checked_at: new Date().toISOString() })
+    .eq("video_id", videoId);
   return fetchTranscript(videoId);
 }
 
@@ -422,7 +444,7 @@ export async function matchPlaceVideos(limit = 10, budgetMs = 240_000): Promise<
     }
     seen++;
     try {
-      const transcript = await getTranscript(video.video_id);
+      const transcript = await getTranscript(video.video_id, true);
       if (!transcript && video.published_at && new Date(video.published_at).getTime() > weekAgo) {
         result.waiting++;
         continue;
