@@ -155,13 +155,13 @@ export async function getVideoMapPins(neighborhoodSlug?: string): Promise<VideoM
 // Matching (cron)
 // ---------------------------------------------------------------------------
 
-interface Mention {
+export interface Mention {
   name: string;
   area_hint: string | null;
   is_primary: boolean;
 }
 
-interface Candidate {
+export interface Candidate {
   place_id: string;
   name: string;
   address: string | null;
@@ -200,7 +200,7 @@ function nameSimilarity(a: string, b: string): number {
   return (2 * shared) / (ta.size + tb.size);
 }
 
-async function findCandidates(name: string): Promise<Candidate[]> {
+export async function findCandidates(name: string): Promise<Candidate[]> {
   const toks = tokens(name).filter((t) => t.length >= 3).sort((a, b) => b.length - a.length).slice(0, 3);
   if (toks.length === 0) return [];
 
@@ -241,7 +241,7 @@ async function ask(prompt: string, maxTokens: number): Promise<string> {
   return block?.type === "text" ? block.text : "";
 }
 
-async function extractMentions(
+export async function extractMentions(
   video: { title: string; description: string | null },
   transcript: string | null
 ): Promise<Mention[]> {
