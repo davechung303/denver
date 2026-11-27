@@ -6,6 +6,7 @@
     { "path": "/api/generate-articles?limit=30","schedule": "0 19 * * *" },
     { "path": "/api/match-place-videos?limit=8", "schedule": "*/10 * * * *" },
     { "path": "/api/rewrite-articles?limit=4", "schedule": "5-59/10 * * * *" },
+    { "path": "/api/extract-mentions", "schedule": "2-59/10 * * * *" },
     { "path": "/api/sync-events",      "schedule": "0 7 * * *" },
     { "path": "/api/sync-fever-full",   "schedule": "0 8 * * *" },
     { "path": "/api/snapshot-places",  "schedule": "0 9 * * 1" },
